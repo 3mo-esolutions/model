@@ -1,53 +1,25 @@
-import Button from './Button'
-import IconButton from './IconButton'
-import IconButtonToggle from './IconButtonToggle'
-import Icon from './Icon'
-import Fab from './Fab'
-import Checkbox from './Checkbox'
-import CircularProgress from './CircularProgress'
-import LinearProgress from './LinearProgress'
-import Radio from './Radio'
-import Slider from './Slider'
-import Tab from './Tab'
-import TabBar from './TabBar'
-import Switch from './Switch'
-import TextArea from './TextArea'
-import Drawer from './Drawer'
-import TopAppBar from './TopAppBar'
-import List from './List'
-import ListItem from './ListItem'
-import ListItemRadio from './ListItemRadio'
-import ListItemCheckbox from './ListItemCheckbox'
-import Dialog from './Dialog'
-import Menu from './Menu'
-import TextField from './TextField'
-import Select from './Select'
-import Option from './Option'
-
-export {
-	Icon,
-	IconButton,
-	IconButtonToggle,
-	Button,
-	Fab,
-	Checkbox,
-	CircularProgress,
-	LinearProgress,
-	Radio,
-	Slider,
-	Tab,
-	TabBar,
-	Switch,
-	TextArea,
-	Drawer,
-	TopAppBar,
-	List,
-	ListItem,
-	ListItemRadio,
-	ListItemCheckbox,
-	Dialog,
-	Menu,
-	TextField,
-	Select,
-	Option,
-}
+export { default as Button } from './Button'
+export { default as IconButton } from './IconButton'
+export { default as IconButtonToggle } from './IconButtonToggle'
+export { default as Icon } from './Icon'
+export { default as Fab } from './Fab'
+export { default as Checkbox } from './Checkbox'
+export { default as CircularProgress } from './CircularProgress'
+export { default as LinearProgress } from './LinearProgress'
+export { default as Radio } from './Radio'
+export { default as Slider } from './Slider'
+export { default as Tab } from './Tab'
+export { default as TabBar } from './TabBar'
+export { default as Switch } from './Switch'
+export { default as TextArea } from './TextArea'
+export { default as Drawer } from './Drawer'
+export { default as TopAppBar } from './TopAppBar'
+export { default as List } from './List'
+export { default as ListItem } from './ListItem'
+export { default as ListItemRadio } from './ListItemRadio'
+export { default as ListItemCheckbox } from './ListItemCheckbox'
+export { default as Dialog } from './Dialog'
+export { default as Menu } from './Menu'
+export { default as TextField } from './TextField'
+export { default as Select } from './Select'
+export { default as Option } from './Option'

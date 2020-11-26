@@ -1,9 +1,3 @@
-import ContextMenuItem from './ContextMenuItem'
-import ContextMenuHost from './ContextMenuHost'
-import ContextMenu from './ContextMenu'
-
-export {
-	ContextMenuItem,
-	ContextMenuHost,
-	ContextMenu,
-}
+export { default as ContextMenuItem } from './ContextMenuItem'
+export { default as ContextMenuHost } from './ContextMenuHost'
+export { default as ContextMenu } from './ContextMenu'

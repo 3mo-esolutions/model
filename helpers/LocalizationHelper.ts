@@ -1,7 +1,7 @@
 import { StorageContainer } from '.'
 import { LanguageCode } from '../types'
 
-export default new class LocalizationHelper {
+const localizationHelper = new class LocalizationHelper {
 	private readonly languageMap = new Map<LanguageCode, Partial<MDC.Localization>>()
 
 	private get currentLanguage() {
@@ -19,3 +19,6 @@ export default new class LocalizationHelper {
 		this.languageMap.set(language, newResource)
 	}
 }
+
+globalThis.$ = localizationHelper.localize.bind(localizationHelper)
+export default localizationHelper

@@ -1,13 +1,4 @@
-import Application from './Application'
-import ApplicationHost from './ApplicationHost'
-import { application, authenticator, logo } from './decorators'
-import DialogAuthenticator from './DialogAuthenitcator'
-
-export {
-	ApplicationHost,
-	Application,
-	DialogAuthenticator,
-	application,
-	authenticator,
-	logo,
-}
+export { default as Application } from './Application'
+export { default as ApplicationHost } from './ApplicationHost'
+export { default as DialogAuthenticator } from './DialogAuthenitcator'
+export { application, authenticator, logo } from './decorators'

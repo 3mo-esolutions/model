@@ -1,30 +1,14 @@
 export * from './material'
-import Div from './Div'
-import Flex from './Flex'
-import Grid from './Grid'
-import Scroll from './Scroll'
-import Splitter from './Splitter'
-import SplitterItem from './SplitterItem'
-import CheckboxGroup from './CheckboxGroup'
-import Swiper from './Swiper'
-import SwiperSlide from './SwiperSlide'
-import Page from './Page'
-import DrawerItem from './DrawerItem'
-import Confetti from './Confetti'
-import DrawerList from './DrawerList'
-
-export {
-	Div,
-	Flex,
-	Grid,
-	Scroll,
-	Splitter,
-	SplitterItem,
-	DrawerItem,
-	DrawerList,
-	CheckboxGroup,
-	Swiper,
-	SwiperSlide,
-	Page,
-	Confetti,
-}
+export { default as Div } from './Div'
+export { default as Flex } from './Flex'
+export { default as Grid } from './Grid'
+export { default as Scroll } from './Scroll'
+export { default as Splitter } from './Splitter'
+export { default as SplitterItem } from './SplitterItem'
+export { default as CheckboxGroup } from './CheckboxGroup'
+export { default as Swiper } from './Swiper'
+export { default as SwiperSlide } from './SwiperSlide'
+export { default as Page } from './Page'
+export { default as DrawerItem } from './DrawerItem'
+export { default as Confetti } from './Confetti'
+export { default as DrawerList } from './DrawerList'

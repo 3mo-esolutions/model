@@ -1,10 +1,3 @@
-import { DialogComponent, DialogComponentConstructor } from './DialogComponent'
-import DialogDefault from './DialogDefault'
-import DialogHost from './DialogHost'
-
-export {
-	DialogComponent,
-	DialogComponentConstructor,
-	DialogDefault,
-	DialogHost,
-}
+export { DialogComponent, DialogComponentConstructor } from './DialogComponent'
+export { default as DialogDefault } from './DialogDefault'
+export { default as DialogHost } from './DialogHost'

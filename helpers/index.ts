@@ -1,29 +1,13 @@
-import JsonHelper from './JsonHelper'
-import ClientInfoHelper from './ClientInfoHelper'
-import PwaHelper from './PwaHelper'
-import PermissionHelper from './PermissionHelper'
-import debounce from './debounce'
-import PromiseTask from './PromiseTask'
-import LocalStorageEntry from './LocalStorage'
-import Downloader from './Downloader'
-import localStorageEntryBuilder from './localStorageEntryBuilder'
-import StorageContainer from './StorageContainer'
-import FeatureFlagHelper from './FeatureFlagHelper'
-import LocalizationHelper from './LocalizationHelper'
-
-export {
-	JsonHelper,
-	ClientInfoHelper,
-	PwaHelper,
-	PermissionHelper,
-	debounce,
-	PromiseTask,
-	LocalStorageEntry,
-	Downloader,
-	localStorageEntryBuilder,
-	StorageContainer,
-	FeatureFlagHelper,
-	LocalizationHelper,
-}
-
-globalThis.$ = LocalizationHelper.localize.bind(LocalizationHelper)
+export { default as JsonHelper } from './JsonHelper'
+export { default as ClientInfoHelper } from './ClientInfoHelper'
+export { default as PwaHelper } from './PwaHelper'
+export { default as PermissionHelper } from './PermissionHelper'
+export { default as debounce } from './debounce'
+export { default as PromiseTask } from './PromiseTask'
+export { default as LocalStorageEntry, LocalStorageContainer } from './LocalStorage'
+export { default as Downloader } from './Downloader'
+export { default as localStorageEntryBuilder } from './localStorageEntryBuilder'
+export { default as StorageContainer } from './StorageContainer'
+export { default as FeatureFlagHelper } from './FeatureFlagHelper'
+export { default as ManifestHelper } from './ManifestHelper'
+export { default as LocalizationHelper } from './LocalizationHelper'

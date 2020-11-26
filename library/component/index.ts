@@ -1,11 +1,4 @@
-import { componentize } from './componentize'
-import { element } from './decorators'
-import InputElement from './InputElement'
-import Component from './Component'
-
-export {
-	element,
-	componentize,
-	Component,
-	InputElement,
-}
+export { componentize } from './componentize'
+export { element } from './decorators'
+export { default as InputElement } from './InputElement'
+export { default as Component } from './Component'
