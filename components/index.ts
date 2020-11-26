@@ -1,6 +1,4 @@
 export * from './material'
-// TODO move to MoDeL
-export * from './3mo'
 import Div from './Div'
 import Flex from './Flex'
 import Grid from './Grid'
@@ -12,7 +10,6 @@ import Swiper from './Swiper'
 import SwiperSlide from './SwiperSlide'
 import Page from './Page'
 import DrawerItem from './DrawerItem'
-import Downloader from './Downloader'
 import Confetti from './Confetti'
 import DrawerList from './DrawerList'
 
@@ -28,7 +25,6 @@ export {
 	CheckboxGroup,
 	Swiper,
 	SwiperSlide,
-	Downloader,
 	Page,
 	Confetti,
 }

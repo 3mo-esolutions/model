@@ -5,6 +5,7 @@ import PermissionHelper from './PermissionHelper'
 import debounce from './debounce'
 import PromiseTask from './PromiseTask'
 import LocalStorageEntry from './LocalStorage'
+import Downloader from './Downloader'
 import localStorageEntryBuilder from './localStorageEntryBuilder'
 import StorageContainer from './StorageContainer'
 import FeatureFlagHelper from './FeatureFlagHelper'
@@ -18,6 +19,7 @@ export {
 	debounce,
 	PromiseTask,
 	LocalStorageEntry,
+	Downloader,
 	localStorageEntryBuilder,
 	StorageContainer,
 	FeatureFlagHelper,
