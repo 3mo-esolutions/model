@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-types
 type DebounceInterval = 250 | 500 | 750 | (number & {})
 
-export default function debounce(timeout: DebounceInterval) {
+export default function debounce(timeout: DebounceInterval = 250) {
 	let timerId: number
 	return function (_context: any, _propertyKey: string, descriptor: PropertyDescriptor) {
 		const original = descriptor.value
