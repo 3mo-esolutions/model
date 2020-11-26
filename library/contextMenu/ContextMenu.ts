@@ -11,9 +11,3 @@ export default class ContextMenu extends Component {
 		ContextMenuHost.openMenu(mouseEvent, this.childElements)
 	}
 }
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'mdc-context-menu': ContextMenu
-	}
-}

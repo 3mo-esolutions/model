@@ -11,9 +11,3 @@ export default class DialogDefault extends DialogComponent<{ header: string, con
 		`
 	}
 }
-
-declare global {
-	interface HTMLElementTagNameMap {
-		'mdc-dialog-default': DialogDefault
-	}
-}
