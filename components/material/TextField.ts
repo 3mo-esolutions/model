@@ -16,6 +16,7 @@ import { TextField as MwcTextField } from '@material/mwc-textfield'
  */
 @component('mdc-text-field')
 export default class TextField extends componentize(MwcTextField) implements InputElement<string> {
+	@property({ reflect: true }) value!: string
 	@property() icon!: MaterialIcon
 	@property() trailingIcon!: MaterialIcon
 }
