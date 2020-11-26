@@ -1,0 +1,1 @@
+export type CSSDirection = 'horizontal' | 'vertical' | 'horizontal-reversed' | 'vertical-reversed'

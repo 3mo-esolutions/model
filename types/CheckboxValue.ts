@@ -1,0 +1,1 @@
+export type CheckboxValue = 'checked' | 'unchecked' | 'indeterminate'

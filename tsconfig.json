@@ -1,0 +1,32 @@
+{
+	"compilerOptions": {
+		"incremental": true,
+		// TODO #35822 TypeScript doesn't support mixin declarations.
+		// https://github.com/microsoft/TypeScript/issues/35822
+		// "declaration": true,
+		"target": "ES2017",
+		"module": "ES2015",
+		"moduleResolution": "node",
+		"lib": [
+			"ES2017",
+			"DOM",
+			"DOM.iterable"
+		],
+		"outDir": "./out",
+		"rootDir": ".",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"plugins": [
+			{
+				"name": "ts-lit-plugin",
+				"strict": true
+			}
+		]
+	}
+}

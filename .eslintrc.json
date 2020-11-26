@@ -1,0 +1,127 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": [
+		"@typescript-eslint",
+		"import",
+		"lit"
+	],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript",
+		"plugin:lit/recommended"
+	],
+	"env": {
+		"browser": true
+	},
+	"overrides": [
+		{
+			"files": [
+				"**/*.ts"
+			],
+			"excludedFiles": "webpack.config.js"
+		}
+	],
+	"rules": {
+		"lit/no-missing-import": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-this-alias": "off",
+		"@typescript-eslint/no-non-null-assertion": "warn",
+		"@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/member-delimiter-style": [
+			"error",
+			{
+				"multiline": {
+					"delimiter": "none"
+				},
+				"singleline": {
+					"delimiter": "comma"
+				}
+			}
+		],
+		"@typescript-eslint/ban-ts-comment": [
+			"error",
+			{
+				"ts-ignore": "allow-with-description",
+				"minimumDescriptionLength": 10
+			}
+		],
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"indent": [
+			"error",
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"no-trailing-spaces": "error",
+		"eol-last": [
+			"error",
+			"never"
+		],
+		"semi": [
+			"error",
+			"never"
+		],
+		"quotes": [
+			"error",
+			"single"
+		],
+		"no-unused-vars": "error",
+		"no-case-declarations": "off",
+		"no-self-assign": "off",
+		"no-useless-escape": "off",
+		"brace-style": [
+			"error",
+			"1tbs",
+			{
+				"allowSingleLine": true
+			}
+		],
+		"keyword-spacing": [
+			"error",
+			{
+				"before": true,
+				"after": true
+			}
+		],
+		"import/no-useless-path-segments": [
+			"error",
+			{
+				"noUselessIndex": true
+			}
+		],
+		"import/no-internal-modules": [
+			"error",
+			{
+				"allow": [
+					"@3mo/**/*",
+					"@material/mwc-list/mwc-list-item"
+				]
+			}
+		],
+		"import/no-duplicates": "error",
+		"no-console": "error",
+		"space-before-blocks": "error",
+		"space-infix-ops": "error",
+		"comma-spacing": [
+			"error",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"key-spacing": [
+			"error",
+			{
+				"beforeColon": false,
+				"afterColon": true
+			}
+		]
+	}
+}

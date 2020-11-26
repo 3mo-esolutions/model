@@ -1,0 +1,71 @@
+{
+	"name": "model-core",
+	"version": "1.0.0",
+	"description": "A robust, unified and modern design library to build web applications using native web components. It also includes wrapped Material Web Components by Google's Material Design Language (MDL).",
+	"main": "index.ts",
+	"scripts": {
+		"check": "lit-analyzer ./ --strict --rules.no-missing-import off",
+		"lint": "eslint ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/3mo-esolutions/model-core.git"
+	},
+	"author": "3MO",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/3mo-esolutions/model-core/issues"
+	},
+	"homepage": "https://github.com/3mo-esolutions/model-core#readme",
+	"dependencies": {
+		"@material/mwc-button": "0.19.*",
+		"@material/mwc-checkbox": "0.19.*",
+		"@material/mwc-circular-progress": "0.19.*",
+		"@material/mwc-circular-progress-four-color": "0.19.*",
+		"@material/mwc-dialog": "0.19.*",
+		"@material/mwc-drawer": "0.19.*",
+		"@material/mwc-fab": "0.19.*",
+		"@material/mwc-formfield": "0.19.*",
+		"@material/mwc-icon": "0.19.*",
+		"@material/mwc-icon-button": "0.19.*",
+		"@material/mwc-icon-button-toggle": "0.19.*",
+		"@material/mwc-linear-progress": "0.19.*",
+		"@material/mwc-list": "0.19.*",
+		"@material/mwc-menu": "0.19.*",
+		"@material/mwc-radio": "0.19.*",
+		"@material/mwc-ripple": "0.19.*",
+		"@material/mwc-select": "^0.19.1",
+		"@material/mwc-slider": "0.19.*",
+		"@material/mwc-snackbar": "0.19.*",
+		"@material/mwc-switch": "0.19.*",
+		"@material/mwc-tab": "0.19.*",
+		"@material/mwc-tab-bar": "0.19.*",
+		"@material/mwc-textarea": "0.19.*",
+		"@material/mwc-textfield": "0.19.*",
+		"@material/mwc-top-app-bar": "0.19.*",
+		"bowser": "2.*",
+		"csstype": "3.*",
+		"lit-element": "2.*",
+		"route-parser": "0.0.5",
+		"@types/route-parser": "0.1.*",
+		"swiper": "6.*"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "4.*",
+		"@typescript-eslint/parser": "4.*",
+		"copy-webpack-plugin": "*",
+		"eslint": "*",
+		"eslint-plugin-import": "*",
+		"eslint-plugin-lit": "*",
+		"html-webpack-plugin": "*",
+		"lit-analyzer": "1.*",
+		"ts-lit-plugin": "1.*",
+		"terser-webpack-plugin": "4.*",
+		"ts-loader": "*",
+		"typescript": "4.*",
+		"typescript-eslint": "*",
+		"webpack": "4.*",
+		"webpack-cli": "3.*",
+		"webpack-dev-server": "*"
+	}
+}

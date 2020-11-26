@@ -1,0 +1,1 @@
+export type HttpError = '404' | '403'
