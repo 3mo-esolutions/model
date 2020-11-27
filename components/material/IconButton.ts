@@ -16,9 +16,7 @@ export default class IconButton extends componentize(MwcIconButton) {
 
 	@property()
 	get size() { return this.style.getPropertyValue('--mdc-icon-size') }
-	set size(value: string) {
-		this.style.setProperty('--mdc-icon-size', value)
-	}
+	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
 
 	constructor() {
 		super()

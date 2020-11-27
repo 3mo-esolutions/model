@@ -4,6 +4,11 @@ import { Icon as MwcIcon } from '@material/mwc-icon'
 
 @component('mdc-icon')
 export default class Icon extends componentize(MwcIcon) {
+	constructor() {
+		super()
+		this.size = 'var(--mdc-font-size-icon)'
+	}
+
 	@property()
 	set icon(value: MaterialIcon) { this.innerText = value }
 	get icon() { return this.innerText as MaterialIcon }

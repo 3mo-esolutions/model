@@ -94,7 +94,7 @@ export default class ApplicationHost extends Component {
 				--mdc-font-size-6: 36px;
 				--mdc-font-size-7: 48px;
 				--mdc-font-size-8: 56px;
-				--mdc-font-size-icon: 20px;
+				--mdc-font-size-icon: 18px;
 				--mdc-font-size-default: var(--mdc-font-size-3);
 				/* Spaces */
 				--mdc-thickness-xs: 2px;
