@@ -99,7 +99,7 @@ export default class PageHost extends Component {
 					visibility: hidden;
 				}
 
-				/* TODO loading + animiation
+				/* TODO [MIG] loading + animiation
 				:host([isLoading]) mo-circular-progress {
 					visibility: hidden;
 				}

@@ -3,7 +3,7 @@ export interface Manifest {
 	short_name: string
 	long_name: string
 	description: string
-	// TODO: what to to with these
+	// TODO [MIG]: what to to with these
 	// release_notes: boolean
 	// welcome_screen: boolean
 	// forcesidebar_docked: boolean

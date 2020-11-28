@@ -30,6 +30,14 @@ export const componentize = <T extends Constructor<LitElement>>(Constructor: T) 
 		}
 
 		//#region Helpers
+		switchAttribute(attribute: string, value: boolean) {
+			if (value === false) {
+				this.removeAttribute(attribute)
+			} else {
+				this.setAttribute(attribute, '')
+			}
+		}
+
 		get childElements() {
 			return Array.from(this.children) as Array<HTMLElement>
 		}
