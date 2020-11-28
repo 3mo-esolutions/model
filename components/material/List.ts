@@ -13,5 +13,11 @@ import { List as MwcList } from '@material/mwc-list'
  * @fires action
  * @fires selected
  */
-@component('mdc-list')
+@component('mo-list')
 export default class List extends componentize(MwcList) { }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-list': List
+	}
+}

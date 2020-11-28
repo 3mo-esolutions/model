@@ -2,7 +2,7 @@ import { StorageContainer } from '.'
 import { LanguageCode } from '../types'
 
 const localizationHelper = new class LocalizationHelper {
-	private readonly languageMap = new Map<LanguageCode, Partial<MDC.Localization>>()
+	private readonly languageMap = new Map<LanguageCode, Partial<MoDeL.Localization>>()
 
 	private get currentLanguage() {
 		return StorageContainer.Localization.Language.value
@@ -13,7 +13,7 @@ const localizationHelper = new class LocalizationHelper {
 		return this.languageMap.get(this.currentLanguage)?.[key] ?? key
 	}
 
-	provide(language: LanguageCode, resource: Partial<MDC.Localization>) {
+	provide(language: LanguageCode, resource: Partial<MoDeL.Localization>) {
 		const existingResources = this.languageMap.get(language) ?? {}
 		const newResource = { ...existingResources, ...resource }
 		this.languageMap.set(language, newResource)

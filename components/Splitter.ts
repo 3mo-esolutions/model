@@ -3,7 +3,7 @@ import * as CSS from 'csstype'
 import { CSSDirection } from '../types'
 import { SplitterItem } from '.'
 
-@component('mdc-splitter')
+@component('mo-splitter')
 export default class Splitter extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
@@ -60,7 +60,7 @@ export default class Splitter extends Component {
 	}
 
 	initialized() {
-		this.items = Array.from(this.querySelectorAll('mdc-splitter-item')).filter(item => item.parentElement === this)
+		this.items = Array.from(this.querySelectorAll('mo-splitter-item')).filter(item => item.parentElement === this)
 	}
 
 	protected render() {
@@ -111,7 +111,7 @@ export default class Splitter extends Component {
 				break
 		}
 		divKnob.style.borderRadius = '100px'
-		divKnob.style.background = 'var(--mdc-color-gray)'
+		divKnob.style.background = 'var(--mo-color-gray)'
 		divResizer.appendChild(divKnob)
 	}
 
@@ -173,5 +173,11 @@ export default class Splitter extends Component {
 
 		seperator.onmousedown = onMouseDown
 
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-splitter': Splitter
 	}
 }

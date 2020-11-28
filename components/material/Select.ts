@@ -22,7 +22,13 @@ import { MaterialIcon } from '../../types'
  * @fires action
  * @fires selected
  */
-@component('mdc-select')
+@component('mo-select')
 export default class Select extends componentize(MwcSelect) implements InputElement<string> {
 	@property() icon!: MaterialIcon
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-select': Select
+	}
 }

@@ -1,7 +1,7 @@
 import { css, component, html, property, Component, element } from '../library'
 import * as SwiperLibrary from 'swiper'
 
-@component('mdc-swiper')
+@component('mo-swiper')
 export default class Swiper extends Component {
 	@property({ type: Boolean, reflect: true }) hasThumb = false
 	@property({ type: Boolean, reflect: true }) autoplay = true
@@ -14,8 +14,8 @@ export default class Swiper extends Component {
 
 	get slides() {
 		return this.children.length !== 0
-			? Array.from(this.querySelectorAll('mdc-swiper-slide'))
-			: Array.from(this.divSlides.querySelectorAll('mdc-swiper-slide'))
+			? Array.from(this.querySelectorAll('mo-swiper-slide'))
+			: Array.from(this.divSlides.querySelectorAll('mo-swiper-slide'))
 	}
 
 	protected initialized() {
@@ -69,8 +69,8 @@ export default class Swiper extends Component {
 			<style>
 				:host {
 					display: block;
-					--swiper-theme-color: var(--mdc-theme-primary);
-					--swiper-navigation-color: var(--mdc-theme-primary);
+					--swiper-theme-color: var(--mo-accent);
+					--swiper-navigation-color: var(--mo-accent);
 					--swiper-gallery-height: 0px;
 					--swiper-slider-margin-bottom: 0px;
 				}
@@ -118,11 +118,17 @@ export default class Swiper extends Component {
 			<div id='divGallery' class='swiper-container gallery-thumbs'>
 				<div class='swiper-wrapper'>
 					${this.slides.map((slide, index) => html`
-						<mdc-div class='swiper-slide gallery-thumb' background=${slide.background} @click=${() => this.slider?.slideTo(index)}></mdc-div>
+						<mo-div class='swiper-slide gallery-thumb' background=${slide.background} @click=${() => this.slider?.slideTo(index)}></mo-div>
 					`)}
 				</div>
 			</div>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-swiper': Swiper
 	}
 }
 

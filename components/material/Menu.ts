@@ -27,5 +27,11 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
  * @cssprop --mdc-menu-z-index
  * @cssprop --mdc-menu-z-index
  */
-@component('mdc-menu')
+@component('mo-menu')
 export default class Menu extends componentize(MwcMenu) { }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-menu': Menu
+	}
+}

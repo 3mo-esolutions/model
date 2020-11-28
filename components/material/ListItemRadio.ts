@@ -13,5 +13,11 @@ import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-
  * @attr selected
  * @fires request-selected
  */
-@component('mdc-list-item-radio')
+@component('mo-list-item-radio')
 export default class ListItemRadio extends componentize(MwcRadioListItem) { }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-item-item': ListItemRadio
+	}
+}

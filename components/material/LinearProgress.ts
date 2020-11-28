@@ -8,5 +8,11 @@ import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progre
  * @attr reverse
  * @attr close
  */
-@component('mdc-linear-progress')
+@component('mo-linear-progress')
 export default class LinearProgress extends componentize(MwcLinearProgress) { }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-linear-progress': LinearProgress
+	}
+}

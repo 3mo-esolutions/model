@@ -2,7 +2,7 @@ import { DrawerItem } from '.'
 import { Component, component, html, property } from '../library'
 import { MaterialIcon } from '../types'
 
-@component('mdc-drawer-list')
+@component('mo-drawer-list')
 export default class DrawerList extends Component {
 	constructor() {
 		super()
@@ -36,43 +36,49 @@ export default class DrawerList extends Component {
 					display: block;
 				}
 
-				:host(:not([root])) mdc-list[activatable] {
+				:host(:not([root])) mo-list[activatable] {
 					margin-left: var(--drawer-item-depth-padding);
 				}
 
-				:host(:not([open])) mdc-list[activatable] {
+				:host(:not([open])) mo-list[activatable] {
 					display: none;
 				}
 
-				:host(:not([root])) mdc-list[activatable]::before {
+				:host(:not([root])) mo-list[activatable]::before {
 					content: ' ';
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
 					width: 1px;
 					height: calc(100% - var(--drawer-item-height) - 7px);
-					background: rgba(var(--mdc-color-foreground-base), 0.5);
+					background: rgba(var(--mo-color-foreground-base), 0.5);
 					z-index: -1;
 				}
 
-				:host(:not([root])) ::slotted(mdc-drawer-item)::before {
+				:host(:not([root])) ::slotted(mo-drawer-item)::before {
 					content: ' ';
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
 					width: 15px;
 					height: 1px;
-					background: rgba(var(--mdc-color-foreground-base), 0.5);
+					background: rgba(var(--mo-color-foreground-base), 0.5);
 					left: 0;
 					z-index: -1;
 				}
 			</style>
-			<mdc-list @click=${() => this.open = !this.open} ?hidden=${this.root}>
-				<mdc-list-item icon=${this.icon} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
+			<mo-list @click=${() => this.open = !this.open} ?hidden=${this.root}>
+				<mo-list-item icon=${this.icon} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
 					${this.label}
-				</mdc-list-item>
-			</mdc-list>
-			<mdc-list activatable>
+				</mo-list-item>
+			</mo-list>
+			<mo-list activatable>
 				<slot></slot>
-			</mdc-list>
+			</mo-list>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-drawer-list': DrawerList
 	}
 }

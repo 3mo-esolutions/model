@@ -1,7 +1,7 @@
 import { Component, component, html, property } from '../library'
 import { CSSDirection } from '../types'
 
-@component('mdc-splitter-item')
+@component('mo-splitter-item')
 export default class SplitterItem extends Component {
 	@property({ reflect: true }) size = ''
 	@property({ reflect: true }) min = '50px'
@@ -40,5 +40,11 @@ export default class SplitterItem extends Component {
 			</style>
 			<slot></slot>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-splitter-item': SplitterItem
 	}
 }

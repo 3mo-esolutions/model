@@ -88,12 +88,12 @@ class Router {
 }
 
 // @ts-ignore was readonly
-MDC.Router = new Router
-export default MDC.Router
+MoDeL.Router = new Router
+export default MoDeL.Router
 
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
-	namespace MDC {
+	namespace MoDeL {
 		interface Globals {
 			readonly Router: Router
 		}

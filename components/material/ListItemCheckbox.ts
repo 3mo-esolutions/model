@@ -13,5 +13,11 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  * @attr selected
  * @fires request-selected
  */
-@component('mdc-list-item-checkbox')
+@component('mo-list-item-checkbox')
 export default class ListItemCheckbox extends componentize(MwcCheckListItem) { }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-list-item-checkbox': ListItemCheckbox
+	}
+}

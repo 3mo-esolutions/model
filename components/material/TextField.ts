@@ -14,9 +14,15 @@ import { TextField as MwcTextField } from '@material/mwc-textfield'
  * @attr helper
  * @attr helperPersistent
  */
-@component('mdc-text-field')
+@component('mo-text-field')
 export default class TextField extends componentize(MwcTextField) implements InputElement<string> {
 	@property({ reflect: true }) value!: string
 	@property() icon!: MaterialIcon
 	@property() trailingIcon!: MaterialIcon
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-text-field': TextField
+	}
 }

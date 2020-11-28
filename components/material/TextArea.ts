@@ -16,8 +16,14 @@ import { MaterialIcon } from '../../types'
  * @attr helper
  * @attr helperPersistent
  */
-@component('mdc-text-area')
+@component('mo-text-area')
 export default class TextArea extends componentize(MwcTextArea) implements InputElement<string> {
 	@property() icon!: MaterialIcon
 	@property() iconTrailing!: MaterialIcon
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-text-area': TextArea
+	}
 }

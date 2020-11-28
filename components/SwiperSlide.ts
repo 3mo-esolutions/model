@@ -1,6 +1,6 @@
 import { Component, css, component, html } from '../library'
 
-@component('mdc-swiper-slide')
+@component('mo-swiper-slide')
 export default class SwiperSlide extends Component {
 	static get styles() {
 		return css`
@@ -18,5 +18,11 @@ export default class SwiperSlide extends Component {
 	}
 	protected render() {
 		return html`<slot></slot>`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-swiper-slide': SwiperSlide
 	}
 }

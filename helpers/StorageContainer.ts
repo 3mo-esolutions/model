@@ -3,23 +3,23 @@ import { Accents, LanguageCode, Themes, User } from '../types'
 
 export default {
 	Theme: {
-		Background: new class extends localStorageEntryBuilder<Themes>('MDC.Theme.Background', Themes.System) {
+		Background: new class extends localStorageEntryBuilder<Themes>('MoDeL.Theme.Background', Themes.System) {
 			constructor() {
 				super()
 
-				window.matchMedia('(prefers-color-scheme: dark)').addListener(() => this.value = this.value)
+				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.value)
 
 				this.changed.subscribe(theme => {
 					if (theme !== Themes.System) {
-						MDC.applicationHost.theme = theme
+						MoDeL.applicationHost.theme = theme
 						return
 					}
 					const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-					MDC.applicationHost.theme = isDark ? Themes.Dark : Themes.Light
+					MoDeL.applicationHost.theme = isDark ? Themes.Dark : Themes.Light
 				})
 			}
 		},
-		Accent: new class extends localStorageEntryBuilder<Accents>('MDC.Theme.Accent', Accents.Blue) {
+		Accent: new class extends localStorageEntryBuilder<Accents>('MoDeL.Theme.Accent', Accents.Blue) {
 			constructor() {
 				super()
 				this.changed.subscribe(value => {
@@ -28,7 +28,7 @@ export default {
 					const lastColorRgb = colors[colors.length - 1].split(',').map(c => parseInt(c))
 
 					const mixed = this.colorMixer([firstColorRgb[0], firstColorRgb[1], firstColorRgb[2]], [lastColorRgb[0], lastColorRgb[1], lastColorRgb[2]])
-					MDC.applicationHost.style.setProperty('--mdc-accent-base', mixed.join(','))
+					MoDeL.applicationHost.style.setProperty('--mo-accent-base', mixed.join(','))
 
 					let accentG = ''
 					let accentGT = ''
@@ -40,8 +40,8 @@ export default {
 						accentGT += `rgba(${colorRGB},0.25) ${percent}% ${i === colors.length - 1 ? '' : ','}`
 					}
 
-					MDC.applicationHost.style.setProperty('--mdc-accent-g', accentG)
-					MDC.applicationHost.style.setProperty('--mdc-accent-gt', accentGT)
+					MoDeL.applicationHost.style.setProperty('--mo-accent-g', accentG)
+					MoDeL.applicationHost.style.setProperty('--mo-accent-gt', accentGT)
 				})
 			}
 
@@ -74,38 +74,38 @@ export default {
 	},
 	Components: {
 		Drawer: {
-			IsDocked: new LocalStorageEntry('MDC.Components.Drawer.IsDocked', false)
+			IsDocked: new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
 		},
 	},
 	Localization: {
-		Language: new LocalStorageEntry<LanguageCode>('MDC.Localization.Language', navigator.language.split('-')[0] as LanguageCode),
+		Language: new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode),
 		Currency: {
-			Symbol: new LocalStorageEntry('MDC.Localization.Currency.Symbol', '€'),
-			Code: new LocalStorageEntry('MDC.Localization.Currency.Code', 'EUR'),
-			Name: new LocalStorageEntry('MDC.Localization.Currency.Name', 'euro'),
+			Symbol: new LocalStorageEntry('MoDeL.Localization.Currency.Symbol', '€'),
+			Code: new LocalStorageEntry('MoDeL.Localization.Currency.Code', 'EUR'),
+			Name: new LocalStorageEntry('MoDeL.Localization.Currency.Name', 'euro'),
 		},
 		Date: {
-			Seperator: new LocalStorageEntry('MDC.Localization.Date.Seperator', '.')
+			Seperator: new LocalStorageEntry('MoDeL.Localization.Date.Seperator', '.')
 		},
 		Number: {
-			Decimal: new LocalStorageEntry('MDC.Localization.Number.Decimal', ','),
-			Seperator: new LocalStorageEntry('MDC.Localization.Number.Seperator', '.'),
+			Decimal: new LocalStorageEntry('MoDeL.Localization.Number.Decimal', ','),
+			Seperator: new LocalStorageEntry('MoDeL.Localization.Number.Seperator', '.'),
 		},
 	},
 	Authentication: {
-		isAuthenticated: new LocalStorageEntry('MDC.Authentication.IsAuthenticated', false),
+		isAuthenticated: new LocalStorageEntry('MoDeL.Authentication.IsAuthenticated', false),
 		Password: new LocalStorageEntry<string | undefined>('authenticationPassword', undefined),
-		ShallRemember: new LocalStorageEntry('MDC.Authentication.ShallRemember', false),
-		Username: new LocalStorageEntry<string | undefined>('MDC.Authentication.Username', undefined),
-		User: new class extends localStorageEntryBuilder<User | undefined>('MDC.User', undefined) {
+		ShallRemember: new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false),
+		Username: new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined),
+		User: new class extends localStorageEntryBuilder<User | undefined>('MoDeL.User', undefined) {
 			get value() { return super.value }
 			set value(value) {
 				super.value = value
-				MDC.applicationHost.authenticatedUser = value
+				MoDeL.applicationHost.authenticatedUser = value
 			}
 		},
 	},
-	DeletionConfirmation: new LocalStorageEntry('MDC.DeletionConfirmation', true),
-	FeatureFlags: new LocalStorageEntry('MDC.FeatureFlags', new Array<keyof MDC.FeatureFlags>()),
-	Permissions: new LocalStorageEntry('MDC.Permissions', new Array<keyof MDC.Permissions>()),
+	DeletionConfirmation: new LocalStorageEntry('MoDeL.DeletionConfirmation', true),
+	FeatureFlags: new LocalStorageEntry('MoDeL.FeatureFlags', new Array<keyof MoDeL.FeatureFlags>()),
+	Permissions: new LocalStorageEntry('MoDeL.Permissions', new Array<keyof MoDeL.Permissions>()),
 }

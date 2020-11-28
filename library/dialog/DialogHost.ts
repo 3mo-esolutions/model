@@ -4,9 +4,9 @@ import { PermissionHelper, StorageContainer } from '../../helpers'
 
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
 
-@component('mdc-dialog-host')
+@component('mo-dialog-host')
 export default class DialogHost extends Component {
-	static get instance() { return MDC.applicationHost.shadowRoot.querySelector('mdc-dialog-host') as DialogHost }
+	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
 	static get openDialog() { return this.instance.openDialog.bind(this.instance) }
 	static get confirmDialog() { return this.instance.confirmDialog.bind(this.instance) }
@@ -65,6 +65,6 @@ export default class DialogHost extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mdc-dialog-host': DialogHost
+		'mo-dialog-host': DialogHost
 	}
 }

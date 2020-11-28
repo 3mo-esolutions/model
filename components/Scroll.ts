@@ -1,6 +1,6 @@
 import { component, html, Component } from '../library'
 
-@component('mdc-scroll')
+@component('mo-scroll')
 export default class Scroll extends Component {
 	protected render() {
 		return html`
@@ -12,7 +12,7 @@ export default class Scroll extends Component {
 					position: relative;
 					width: 100%;
 					height: 100%;
-					scrollbar-color: var(--mdc-scrollbar-foreground-color) var(--mdc-scrollbar-background-color);
+					scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
 					scrollbar-width: thin;
 				}
 
@@ -22,7 +22,7 @@ export default class Scroll extends Component {
 				}
 
 				:host::-webkit-scrollbar-thumb {
-					background: var(--mdc-scrollbar-foreground-color);
+					background: var(--mo-scrollbar-foreground-color);
 				}
 
 				div {
@@ -35,5 +35,11 @@ export default class Scroll extends Component {
 				<slot></slot>
 			</div>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-scroll': Scroll
 	}
 }

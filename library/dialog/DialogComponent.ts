@@ -3,12 +3,12 @@ import { Component, DialogHost } from '..'
 
 export type DialogParameters = Record<string, any>
 
-export type DialogComponentConstructor<T extends DialogParameters> = Constructor<DialogComponent<T>> & { permissions: Array<keyof MDC.Permissions> }
+export type DialogComponentConstructor<T extends DialogParameters> = Constructor<DialogComponent<T>> & { permissions: Array<keyof MoDeL.Permissions> }
 
 export abstract class DialogComponent<T extends DialogParameters = {}> extends Component {
 	['constructor']: DialogComponentConstructor<T>
 
-	static permissions = new Array<keyof MDC.Permissions>()
+	static permissions = new Array<keyof MoDeL.Permissions>()
 
 	@eventProperty readonly closed!: IEvent<boolean>
 
@@ -29,7 +29,7 @@ export abstract class DialogComponent<T extends DialogParameters = {}> extends C
 
 	protected get dialog() {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return this.shadowRoot.querySelector('mdc-dialog')!
+		return this.shadowRoot.querySelector('mo-dialog')!
 	}
 
 	protected initialized() {

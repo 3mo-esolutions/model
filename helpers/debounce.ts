@@ -6,7 +6,7 @@ export default function debounce(timeout: DebounceInterval = 250) {
 	return function (_context: any, _propertyKey: string, descriptor: PropertyDescriptor) {
 		const original = descriptor.value
 		descriptor.value = function (...args: any[]) {
-			if (MDC.environment === 'test') {
+			if (MoDeL.environment === 'test') {
 				original.apply(this, args)
 				return
 			}

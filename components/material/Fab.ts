@@ -11,7 +11,7 @@ import { Fab as MwcFab } from '@material/mwc-fab'
  * @attr label
  * @slot icon
  */
-@component('mdc-fab')
+@component('mo-fab')
 export default class Fab extends componentize(MwcFab) {
 	@property() icon!: MaterialIcon
 
@@ -21,5 +21,11 @@ export default class Fab extends componentize(MwcFab) {
 			this.label = this.innerText
 			this.extended = true
 		}
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-fab': Fab
 	}
 }

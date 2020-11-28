@@ -29,7 +29,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 			Snackbar.show('Unauthenticated successfully')
 			this.isAuthenticated = false
 			StorageContainer.Authentication.User.value = undefined
-			MDC.applicationHost.authenticator?.open()
+			MoDeL.applicationHost.authenticator?.open()
 		}
 	}
 
@@ -61,29 +61,29 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 					cursor: pointer;
 				}
 			</style>
-			<mdc-dialog actionsJustifyContent='center' isBlocking .primaryButtonClicked=${this.authenticate.bind(this)} style='--mdc-dialog-scrim-color: var(--mdc-color-background)'>
-				<mdc-button slot='primaryAction' justifyContent='center' raised>Login</mdc-button>
-				<mdc-flex alignItems='center' minWidth='350px'>
-					<mdc-flex height='100px' alignItems='center' gap='10px'>
-						<mdc-logo height='60px' color='var(--mdc-accent)'></mdc-logo>
-						<h2>${MDC.applicationHost.appTitle ?? 'Welcome'}</h2>
-					</mdc-flex>
-					<mdc-flex height='*' width='100%' alignItems='stretch' justifyContent='center' gap='var(--mdc-thickness-d)'>
-						<mdc-text-field label='Username'
+			<mo-dialog actionsJustifyContent='center' isBlocking .primaryButtonClicked=${this.authenticate.bind(this)} style='--mdc-dialog-scrim-color: var(--mo-color-background)'>
+				<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
+				<mo-flex alignItems='center' minWidth='350px'>
+					<mo-flex height='100px' alignItems='center' gap='10px'>
+						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
+						<h2>${MoDeL.applicationHost.appTitle ?? 'Welcome'}</h2>
+					</mo-flex>
+					<mo-flex height='*' width='100%' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-d)'>
+						<mo-text-field label='Username'
 							@input=${(e: CustomEvent<undefined, TextField>) => this.username = e.source.value}
-							.value=${this.username}></mdc-text-field>
+							.value=${this.username}></mo-text-field>
 
-						<mdc-text-field label='Password' type='password'
+						<mo-text-field label='Password' type='password'
 							@input=${(e: CustomEvent<undefined, TextField>) => this.password = e.source.value}
-							.value=${this.password}></mdc-text-field>
+							.value=${this.password}></mo-text-field>
 
-						<mdc-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
-							<mdc-checkbox @change=${(e: CustomEvent<undefined, Checkbox>) => this.shallRememberPassword = e.source.checked}>Remember Password</mdc-checkbox>
+						<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
+							<mo-checkbox @change=${(e: CustomEvent<undefined, Checkbox>) => this.shallRememberPassword = e.source.checked}>Remember Password</mo-checkbox>
 							<a @click=${() => this.resetPassword()}>Reset Password</a>
-						</mdc-flex>
-					</mdc-flex>
-				</mdc-flex>
-			</mdc-dialog>
+						</mo-flex>
+					</mo-flex>
+				</mo-flex>
+			</mo-dialog>
 		`
 	}
 
@@ -100,7 +100,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 			if (this.isAuthenticated === false) {
 				throw new Error('Something went wrong.\nTry again')
 			}
-			MDC.applicationHost.authenticatedUser = user
+			MoDeL.applicationHost.authenticatedUser = user
 			StorageContainer.Authentication.User.value = user
 			Snackbar.show('Authenticated successfully')
 		} catch (error) {

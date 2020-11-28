@@ -1,6 +1,6 @@
 import { component, html, property, Component } from '../library'
 
-@component('mdc-grid')
+@component('mo-grid')
 export default class Grid extends Component {
 	@property()
 	get rowGap() { return this.style.rowGap }
@@ -27,5 +27,11 @@ export default class Grid extends Component {
 			</style>
 			<slot></slot>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-grid': Grid
 	}
 }

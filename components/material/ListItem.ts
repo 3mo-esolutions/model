@@ -11,7 +11,7 @@ import { MaterialIcon } from '../../types'
  * @attr selected
  * @fires request-selected
  */
-@component('mdc-list-item')
+@component('mo-list-item')
 export default class ListItem extends componentize(MwcListItem) {
 	constructor() {
 		super()
@@ -34,7 +34,7 @@ export default class ListItem extends componentize(MwcListItem) {
 	protected renderGraphic() {
 		return html`
 			<span class='mdc-list-item__graphic'>
-				<mdc-icon icon=${this.icon} opacity='0.75'></mdc-icon>
+				<mo-icon icon=${this.icon} opacity='0.75'></mo-icon>
 			</span>
 		`
 	}
@@ -42,8 +42,14 @@ export default class ListItem extends componentize(MwcListItem) {
 	protected renderMeta() {
 		return html`
 			<span class='mdc-list-item__meta'>
-				<mdc-icon icon=${this.metaIcon} opacity='0.75'></mdc-icon>
+				<mo-icon icon=${this.metaIcon} opacity='0.75'></mo-icon>
 			</span>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-list-item': ListItem
 	}
 }

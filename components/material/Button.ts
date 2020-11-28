@@ -14,7 +14,13 @@ import { MaterialIcon } from '../../types'
  * @slot icon
  * @slot trailingIcon
  */
-@component('mdc-button')
+@component('mo-button')
 export default class Button extends componentize(MwcButton) {
 	@property() icon!: MaterialIcon
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-button': Button
+	}
 }

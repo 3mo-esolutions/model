@@ -7,10 +7,16 @@ import { labelize } from './labelize'
  * @attr disabled
  * @fires change
  */
-@component('mdc-switch')
+@component('mo-switch')
 export default class Switch extends labelize(componentize(MwcSwitch)) implements InputElement<boolean> {
 	@property({ type: Boolean })
 	// @ts-ignore overriding the value property
 	get value(): boolean { this.checked === true }
 	set value(value: boolean) { this.checked = value }
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-switch': Switch
+	}
 }

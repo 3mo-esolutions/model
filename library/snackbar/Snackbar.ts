@@ -10,21 +10,27 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
  * @fires MDCSnackbar:closed
  * @cssprop --mdc-snackbar-action-color
  */
-@component('mdc-snackbar')
+@component('mo-snackbar')
 export default class Snackbar extends componentize(MwcSnackbar) {
-	static get instance() { return MDC.applicationHost.shadowRoot.querySelector('mdc-snackbar') as Snackbar }
+	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
 	static get show() { return this.instance.createAndShow.bind(this.instance) }
 
 	private createAndShow(message: string, actionText = '', action: () => void = () => void 0) {
 		const slots = html`
-			<mdc-button slot='action' @click=${() => action()} ?hidden=${actionText === ''}>${actionText}</mdc-button>
-			<mdc-icon-button slot='dismiss' icon='close' size='18px' foreground='white'></mdc-icon-button>
+			<mo-button slot='action' @click=${() => action()} ?hidden=${actionText === ''}>${actionText}</mo-button>
+			<mo-icon-button slot='dismiss' icon='close' size='18px' foreground='white'></mo-icon-button>
 		`
 		render(slots, this)
 
 		this.timeoutMs = 5000
 		this.labelText = message
 		this.show()
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-snackbar': Snackbar
 	}
 }

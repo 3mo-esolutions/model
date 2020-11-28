@@ -2,7 +2,7 @@ import { component, html, property } from '../library'
 import { Checkbox } from './material'
 import { CheckboxValue, CSSDirection } from '../types'
 
-@component('mdc-checkbox-group')
+@component('mo-checkbox-group')
 export default class CheckboxGroup extends Checkbox {
 	@property() direction: CSSDirection = 'vertical'
 
@@ -39,19 +39,25 @@ export default class CheckboxGroup extends Checkbox {
 		return html`
 			<style>
 				:host {
-					--mdc-checkbox-group-nested-margin: 25px;
+					--mo-checkbox-group-nested-margin: 25px;
 				}
 
 				::slotted(*) {
-					margin-left: var(--mdc-checkbox-group-nested-margin);
+					margin-left: var(--mo-checkbox-group-nested-margin);
 				}
 			</style>
-			<mdc-flex>
+			<mo-flex>
 				${super.render()}
-				<mdc-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mdc-thickness-xl))'>
+				<mo-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mo-thickness-xl))'>
 					<slot></slot>
-				</mdc-flex>
-			</mdc-flex>
+				</mo-flex>
+			</mo-flex>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-checkbox-group': CheckboxGroup
 	}
 }

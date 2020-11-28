@@ -4,7 +4,7 @@
 	"description": "A robust, unified and modern design library to build web applications using native web components. It also includes wrapped Material Web Components by Google's Material Design Language (MDL).",
 	"main": "index.ts",
 	"scripts": {
-		"check": "lit-analyzer ./ --strict --rules.no-missing-import off",
+		"check": "lit-analyzer ./{components,library/**/*} --strict --rules.no-missing-import off",
 		"lint": "eslint ."
 	},
 	"repository": {

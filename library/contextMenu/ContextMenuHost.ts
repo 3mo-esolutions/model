@@ -2,9 +2,9 @@ import { Component, component, html, property, query } from '..'
 import { PromiseTask } from '../../helpers'
 import { Menu } from '../../components'
 
-@component('mdc-context-menu-host')
+@component('mo-context-menu-host')
 export default class ContextMenuHolder extends Component {
-	static get instance() { return MDC.applicationHost.shadowRoot.querySelector('mdc-context-menu-host') as ContextMenuHolder }
+	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHolder }
 	static get openMenu() { return this.instance.openMenu.bind(this.instance) }
 
 	private readonly lengthBuffer = 16
@@ -36,7 +36,7 @@ export default class ContextMenuHolder extends Component {
 		}
 	}
 
-	@query('mdc-menu') private readonly menuContext!: Menu
+	@query('mo-menu') private readonly menuContext!: Menu
 
 	get list() {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
@@ -62,24 +62,24 @@ export default class ContextMenuHolder extends Component {
 	protected render() {
 		return html`
 			<style>
-				mdc-menu {
+				mo-menu {
 					--mdc-menu-z-index: 10;
-					--mdc-menu-item-height: var(--mdc-elm-height-s);
+					--mdc-menu-item-height: var(--mo-elm-height-s);
 				}
 
-				::slotted(mdc-context-menu-item) {
-					font-size: var(--mdc-fontsize-d);
+				::slotted(mo-context-menu-item) {
+					font-size: var(--mo-fontsize-d);
 				}
 			</style>
-			<mdc-menu fixed quick @click=${() => this.isOpen = false}>
+			<mo-menu fixed quick @click=${() => this.isOpen = false}>
 				${this.menuItems}
-			</mdc-menu>
+			</mo-menu>
 		`
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mdc-context-menu-host': ContextMenuHolder
+		'mo-context-menu-host': ContextMenuHolder
 	}
 }

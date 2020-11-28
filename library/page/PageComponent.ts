@@ -4,12 +4,12 @@ import { NavigationMode } from './PageHost'
 
 export type PageParameters = Record<string, string | number | undefined>
 
-export type PageComponentConstructor<T extends PageParameters> = Constructor<PageComponent<T>> & { permissions: Array<keyof MDC.Permissions> }
+export type PageComponentConstructor<T extends PageParameters> = Constructor<PageComponent<T>> & { permissions: Array<keyof MoDeL.Permissions> }
 
 export abstract class PageComponent<T extends PageParameters = {}> extends Component {
 	['constructor']: PageComponentConstructor<T>
 
-	static permissions = new Array<keyof MDC.Permissions>()
+	static permissions = new Array<keyof MoDeL.Permissions>()
 
 	@eventProperty readonly closed!: IEvent<boolean>
 
@@ -35,11 +35,11 @@ export abstract class PageComponent<T extends PageParameters = {}> extends Compo
 	protected firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		if (this.page === undefined) {
-			throw new Error(`${this.constructor.name} does not wrap its content in an 'mdc-page' element`)
+			throw new Error(`${this.constructor.name} does not wrap its content in an 'mo-page' element`)
 		}
 	}
 
 	protected get page() {
-		return this.shadowRoot.querySelector('mdc-page') ?? undefined
+		return this.shadowRoot.querySelector('mo-page') ?? undefined
 	}
 }

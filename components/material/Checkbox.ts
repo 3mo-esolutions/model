@@ -3,7 +3,7 @@ import { CheckboxValue } from '../../types'
 import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 import { labelize } from './labelize'
 
-@component('mdc-checkbox')
+@component('mo-checkbox')
 export default class Checkbox extends labelize(componentize(MwcCheckbox)) implements InputElement<CheckboxValue> {
 	@property()
 	// @ts-ignore overriding the value property
@@ -26,5 +26,11 @@ export default class Checkbox extends labelize(componentize(MwcCheckbox)) implem
 			this.indeterminate = false
 			this.checked = false
 		}
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-checkbox': Checkbox
 	}
 }

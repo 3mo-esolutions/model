@@ -2,7 +2,7 @@ import { component, property, PageComponent, DialogComponentConstructor, PageCom
 import { Drawer, ListItem } from '.'
 import { PromiseTask } from '../helpers'
 
-@component('mdc-drawer-item')
+@component('mo-drawer-item')
 export default class DrawerItem extends ListItem {
 	@property({ type: Object })
 	set component(value: PageComponent<any> | DialogComponent<any>) {
@@ -17,7 +17,7 @@ export default class DrawerItem extends ListItem {
 	constructor() {
 		super()
 
-		MDC.Router.navigated.subscribe(pageConstructor => PromiseTask.delegateToEventLoop(() => this.selected = pageConstructor === this.componentConstructor?.[0]))
+		MoDeL.Router.navigated.subscribe(pageConstructor => PromiseTask.delegateToEventLoop(() => this.selected = pageConstructor === this.componentConstructor?.[0]))
 
 		this.onclick = () => {
 			if (this.componentConstructor) {
@@ -36,5 +36,11 @@ export default class DrawerItem extends ListItem {
 		if (!this.componentConstructor) {
 			this.remove()
 		}
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-drawer-item': DrawerItem
 	}
 }

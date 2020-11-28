@@ -1,0 +1,175 @@
+.animated {
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+}
+
+@keyframes show {
+    from {
+        display: "none";
+        opacity: 0;
+    }
+
+    to {
+        display: "";
+        opacity: 1;
+    }
+}
+
+@keyframes hide {
+    from {
+        display: "";
+        opacity: 1;
+    }
+
+    to {
+        display: "none";
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+
+    from,
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate3d(-10px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate3d(10px, 0, 0);
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideOutUp {
+    from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+}
+
+@keyframes colorError {
+    from {
+        color: transparent;
+    }
+
+    to {
+        color: var(--mo-error-color);
+    }
+}
+
+@keyframes colorForeground3 {
+    from {
+        color: transparent;
+    }
+
+    to {
+        color: var(--mo-gray);
+    }
+}
+
+.zoomOut {
+    animation-name: zoomOut;
+}
+
+.zoomIn {
+    animation-name: zoomIn;
+}
+
+.shake {
+    animation-name: shake;
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+
+.fadeOut {
+    animation-name: fadeOut;
+}
+
+.slideInDown {
+    animation-name: slideInDown;
+}
+
+.slideOutUp {
+    animation-name: slideOutUp;
+}

@@ -16,8 +16,14 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @attr active
  * @fires MDCTab:interacted
  */
-@component('mdc-tab')
+@component('mo-tab')
 export default class Tab extends componentize(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value?: string
 	@property({ reflect: true }) icon!: MaterialIcon
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-tab': Tab
+	}
 }

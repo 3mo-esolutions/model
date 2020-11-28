@@ -1,8 +1,8 @@
 import { Component, Snackbar, component, html, property } from '..'
 import { PageComponent, PageError } from '.'
 import { PageParameters } from './PageComponent'
-import Router from './Router'
 import { PermissionHelper, PwaHelper } from '../../helpers'
+import Router from './Router'
 
 export const enum NavigationMode {
 	Navigate,
@@ -10,9 +10,9 @@ export const enum NavigationMode {
 	NewWindow
 }
 
-@component('mdc-page-host')
+@component('mo-page-host')
 export default class PageHost extends Component {
-	static get instance() { return MDC.applicationHost.shadowRoot.querySelector('mdc-page-host') as PageHost }
+	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-page-host') as PageHost }
 
 	static get navigateToHomePage() { return this.instance.navigateToHomePage.bind(this.instance) }
 	static get navigateToPage() { return this.instance.navigateToPage.bind(this.instance) }
@@ -92,48 +92,48 @@ export default class PageHost extends Component {
 		return html`
 			<style>
 				:host {
-					--mdc-page-host-padding-top: var(--mdc-thickness-d);
+					--mo-page-host-padding-top: var(--mo-thickness-d);
 				}
 
-				mdc-circular-progress {
+				mo-circular-progress {
 					visibility: hidden;
 				}
 
 				/* TODO loading + animiation
-				:host([isLoading]) mdc-circular-progress {
+				:host([isLoading]) mo-circular-progress {
 					visibility: hidden;
 				}
 
-				mdc-scroll {
+				mo-scroll {
 					transform: translate3d(0);
 					opacity: 1;
-					transition: var(--mdc-duration-quick);
+					transition: var(--mo-duration-quick);
 				}
 
-				:host([isLoading]) mdc-scroll {
+				:host([isLoading]) mo-scroll {
 					opacity: 0;
 					transform: translate3d(0, 100px, 100px);
-					transition: var(--mdc-duration-instant);
+					transition: var(--mo-duration-instant);
 				} */
 
 				::slotted(:first-child) {
-					--mdc-page-padding: 8px;
-					--mdc-page-max-width: 1920px;
-					width: calc(100% - calc(2 * var(--mdc-page-padding)));
-					max-width: var(--mdc-page-max-width);
-					padding: 0 var(--mdc-page-padding);
+					--mo-page-padding: 8px;
+					--mo-page-max-width: 1920px;
+					width: calc(100% - calc(2 * var(--mo-page-padding)));
+					max-width: var(--mo-page-max-width);
+					padding: 0 var(--mo-page-padding);
 				}
 			</style>
-			<mdc-flex alignItems='center' height='calc(100% - var(--mdc-top-app-bar-height) - var(--mdc-page-host-padding-top))' margin='var(--mdc-page-host-padding-top) 0 0 0'>
-				<mdc-circular-progress indeterminate position='absolute'></mdc-circular-progress>
+			<mo-flex alignItems='center' height='calc(100% - var(--mdc-top-app-bar-height) - var(--mo-page-host-padding-top))' margin='var(--mo-page-host-padding-top) 0 0 0'>
+				<mo-circular-progress indeterminate position='absolute'></mo-circular-progress>
 				<slot></slot>
-			</mdc-flex>
+			</mo-flex>
 		`
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mdc-page-host': PageHost
+		'mo-page-host': PageHost
 	}
 }

@@ -48,9 +48,9 @@ class ConfettiParticle {
 	}
 }
 
-@component('mdc-confetti')
+@component('mo-confetti')
 export default class Confetti extends Component {
-	static get instance() { return MDC.applicationHost.shadowRoot.querySelector('mdc-confetti') as Confetti }
+	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-confetti') as Confetti }
 
 	public async rain() {
 		const animate = () => {
@@ -113,5 +113,11 @@ export default class Confetti extends Component {
 			</style>
 			<canvas id='canvParticle' width=${this.canvasWidth} height=${this.canvasHeight}></canvas>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-confetti': Confetti
 	}
 }

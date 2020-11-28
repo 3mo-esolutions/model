@@ -7,11 +7,17 @@ import { labelize } from './labelize'
  * @attr name
  * @attr global
  */
-@component('mdc-radio')
+@component('mo-radio')
 export default class Radio extends labelize(componentize(MwcRadio)) implements InputElement<boolean> {
 	@property({ type: Boolean })
 	// @ts-ignore overriding the value property
 	get value(): boolean { return this.checked }
 	// @ts-ignore overriding the value property
 	set value(value: boolean) { this.checked = value }
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-radio': Radio
+	}
 }

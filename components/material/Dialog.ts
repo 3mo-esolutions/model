@@ -19,7 +19,7 @@ type DialogSize = 'large' | 'medium' | 'small'
  * @cssprop --mdc-dialog-max-height
  * @cssprop --mdc-dialog-box-shadow
  */
-@component('mdc-dialog')
+@component('mo-dialog')
 export default class Dialog extends componentize(MwcDialog) {
 	@eventProperty readonly finished!: IEvent<boolean>
 	primaryButtonClicked: () => Promise<any> | any = () => void 0
@@ -141,5 +141,11 @@ export default class Dialog extends componentize(MwcDialog) {
 	private handleSecondaryButtonClick() {
 		this.close()
 		this.finished.trigger(false)
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-dialog': Dialog
 	}
 }

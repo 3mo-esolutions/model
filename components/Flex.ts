@@ -2,7 +2,7 @@ import { component, html, property, Component } from '../library'
 import { CSSDirection } from '../types'
 import * as CSS from 'csstype'
 
-@component('mdc-flex')
+@component('mo-flex')
 export default class Flex extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
@@ -86,5 +86,11 @@ export default class Flex extends Component {
 			</style>
 			<slot></slot>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-flex': Flex
 	}
 }

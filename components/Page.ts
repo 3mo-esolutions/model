@@ -1,6 +1,6 @@
 import { component, html, property, Component, PageHost } from '../library'
 
-@component('mdc-page')
+@component('mo-page')
 export default class Page extends Component {
 	private _header = ''
 	@property()
@@ -8,8 +8,8 @@ export default class Page extends Component {
 	set header(value) {
 		this._header = value
 		if (this.isConnected) {
-			MDC.applicationHost.pageTitle = value
-			document.title = `${MDC.applicationHost.pageTitle} | ${MDC.applicationHost.appTitle}`
+			MoDeL.applicationHost.pageTitle = value
+			document.title = `${MoDeL.applicationHost.pageTitle} | ${MoDeL.applicationHost.appTitle}`
 		}
 	}
 
@@ -36,5 +36,11 @@ export default class Page extends Component {
 			</style>
 			<slot></slot>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-page': Page
 	}
 }
