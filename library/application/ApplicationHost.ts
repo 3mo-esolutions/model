@@ -56,7 +56,7 @@ export default class ApplicationHost extends Component {
 	protected render() {
 		return html`
 			<mo-drawer type='modal' height='64px'>
-				<mo-flex slot='title' alignItems='center' justifyContent='center' textAlign='center' gap='10px' foreground='var(--mo-accent)'>
+				<mo-flex slot='title' alignItems='center' justifyContent='center' textAlign='center' gap='10px' foreground='var(--mo-color-foreground)' opacity='0.75'>
 					<mo-logo height='75px'></mo-logo>
 					<span>${this.appTitle}</span>
 				</mo-flex>
@@ -67,7 +67,7 @@ export default class ApplicationHost extends Component {
 					<mo-icon-button slot='navigationIcon' icon='menu'></mo-icon-button>
 
 					<mo-flex slot='title' direction='horizontal' alignItems='center' gap='8px'>
-						<mo-logo height='40px'></mo-logo>
+						<mo-logo height='40px' foreground='var(--mo-color-accessible)'></mo-logo>
 						<span>${this.appTitle} ${this.pageTitle ? '|' : ''} ${this.pageTitle}</span>
 					</mo-flex>
 
