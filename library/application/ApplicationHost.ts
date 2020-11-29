@@ -7,9 +7,10 @@ import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 export default class ApplicationHost extends Component {
 	constructor() {
 		super()
+		DocumentHelper.linkCSS('https://fonts.googleapis.com/css2?family=Roboto')
+		DocumentHelper.linkCSS('https://fonts.googleapis.com/icon?family=Material+Icons+Sharp')
 		DocumentHelper.linkCSS('/styles/theme.css')
 		DocumentHelper.linkCSS('/styles/animation.css')
-		DocumentHelper.linkCSS('https://fonts.googleapis.com/icon?family=Material+Icons+Sharp')
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
 		PwaHelper.enablePWA()
@@ -42,7 +43,7 @@ export default class ApplicationHost extends Component {
 		return css`
 			:host {
 				--mo-top-app-bar-height: 64px;
-				display: block;
+				display: flex;
 				font-family: var(--mo-font-family);
 				font-size: var(--mo-font-size-default);
 				background-color: var(--mo-color-background);
@@ -62,12 +63,12 @@ export default class ApplicationHost extends Component {
 
 				<slot name='drawerContent'></slot>
 
-				<mo-top-app-bar slot='appContent' height='var(--mdc-top-app-bar-height)'>
+				<mo-top-app-bar slot='appContent' height='var(--mo-top-app-bar-height)'>
 					<mo-icon-button slot='navigationIcon' icon='menu'></mo-icon-button>
 
 					<mo-flex slot='title' direction='horizontal' alignItems='center' gap='8px'>
 						<mo-logo height='40px'></mo-logo>
-						<span>${this.appTitle} | ${this.pageTitle}</span>
+						<span>${this.appTitle} ${this.pageTitle ? '|' : ''} ${this.pageTitle}</span>
 					</mo-flex>
 
 					${this.profileTemplate}

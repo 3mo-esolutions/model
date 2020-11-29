@@ -92,7 +92,8 @@ export default class PageHost extends Component {
 		return html`
 			<style>
 				:host {
-					--mo-page-host-padding-top: var(--mo-thickness-d);
+					padding-top: var(--mo-top-app-bar-height);
+					flex: 1;
 				}
 
 				mo-circular-progress {
@@ -124,7 +125,7 @@ export default class PageHost extends Component {
 					padding: 0 var(--mo-page-padding);
 				}
 			</style>
-			<mo-flex alignItems='center' height='calc(100% - var(--mdc-top-app-bar-height) - var(--mo-page-host-padding-top))' margin='var(--mo-page-host-padding-top) 0 0 0'>
+			<mo-flex alignItems='center' height='calc(100% - var(--mo-thickness-d))' margin='var(--mo-thickness-d) 0 0 0'>
 				<mo-circular-progress indeterminate position='absolute'></mo-circular-progress>
 				<slot></slot>
 			</mo-flex>
