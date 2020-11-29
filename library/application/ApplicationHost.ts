@@ -127,9 +127,6 @@ declare global {
 			readonly applicationHost: ApplicationHost
 		}
 	}
-	interface HTMLElementTagNameMap {
-		'mo-logo': HTMLImageElement
-	}
 }
 
 window.document.body.innerHTML = '<mo-application-host></mo-application-host>'
