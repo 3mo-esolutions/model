@@ -6,18 +6,20 @@ export default class Option<TValue = string> extends ListItem {
 	@property({ type: Object }) rawValue?: TValue
 	@property({ type: Boolean, reflect: true }) default = false
 
-	getValue() {
-		return this.rawValue ?? this.value as unknown as TValue
+	initialized() {
+		super.initialized()
+		this.select.subscribe(() => {
+			if (this.default === true) {
+				this.selected = false
+			}
+		})
 	}
 
-	isValueEquals(value: TValue | undefined) {
-		if (this.rawValue === value)
-			return true
+	getValue() {
+		if (this.default)
+			return undefined
 
-		if (typeof value === 'string')
-			return this.value === value
-
-		return false
+		return this.rawValue ?? this.value as unknown as TValue
 	}
 }
 

@@ -9,7 +9,7 @@ import { MaterialIcon } from '../../types'
  * @attr activated
  * @attr noninteractive
  * @attr selected
- * @fires request-selected
+ * @fires select
  */
 @component('mo-list-item')
 export default class ListItem extends componentize(MwcListItem) {
