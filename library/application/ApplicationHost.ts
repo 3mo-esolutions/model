@@ -57,7 +57,7 @@ export default class ApplicationHost extends Component {
 		return html`
 			<mo-drawer type='modal' height='64px'>
 				<mo-flex slot='title' alignItems='center' justifyContent='center' textAlign='center' gap='10px' foreground='var(--mo-color-foreground)' opacity='0.75'>
-					<mo-logo height='75px'></mo-logo>
+					<mo-logo height='50px'></mo-logo>
 					<span>${this.appTitle}</span>
 				</mo-flex>
 
@@ -109,11 +109,11 @@ export default class ApplicationHost extends Component {
 
 		return html`
 			<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
-				<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-4)'>${this.authenticatedUser.name}</mo-flex>
-				<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-3)'>${this.authenticatedUser.email}</mo-flex>
+				<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)'>${this.authenticatedUser.name}</mo-flex>
+				<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
 				<mo-flex gridColumn='2' gridRow='1 / span 2' height='var(--mo-elm-height-d)' width='var(--mo-elm-height-d)'
 					alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
-					borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-4)'>
+					borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
 					${initials}
 				</mo-flex>
 			</mo-grid>

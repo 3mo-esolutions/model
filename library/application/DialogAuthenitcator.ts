@@ -68,7 +68,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
 						<h2>${MoDeL.applicationHost.appTitle ?? 'Welcome'}</h2>
 					</mo-flex>
-					<mo-flex height='*' width='100%' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-d)'>
+					<mo-flex height='*' width='100%' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
 						<mo-text-field label='Username'
 							@input=${(e: CustomEvent<undefined, TextField>) => this.username = e.source.value}
 							.value=${this.username}></mo-text-field>

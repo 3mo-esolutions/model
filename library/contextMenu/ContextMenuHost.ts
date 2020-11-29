@@ -68,7 +68,7 @@ export default class ContextMenuHolder extends Component {
 				}
 
 				::slotted(mo-context-menu-item) {
-					font-size: var(--mo-fontsize-d);
+					font-size: var(--mo-font-size-l);
 				}
 			</style>
 			<mo-menu fixed quick @click=${() => this.isOpen = false}>

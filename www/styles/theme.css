@@ -18,21 +18,12 @@
 }
 
 html {
-    height: 100%;
+    width: 100%;
     height: 100%;
     scrollbar-width: thin;
     scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
 }
 
-/* TODO [MIG]: body {
-	position: absolute;
-	font-size: var(--mo-fontsize-d);
-	margin: 0;
-	width: 100% !important;
-	height: 100% !important;
-	background-color: var(--mo-color-background);
-	overflow: hidden;
-} */
 
 body {
     height: 100%;
@@ -86,20 +77,20 @@ mo-application-host {
     --mo-shadow-deep: 0px 5px 5px -3px rgba(var(--mo-shadow-base), 0.2), 0px 8px 10px 1px rgba(var(--mo-shadow-base), 0.14), 0px 3px 14px 2px rgba(var(--mo-shadow-base), 0.12);
     --mo-shadow-deep-hover: 0px 5px 5px -3px rgba(var(--mo-shadow-base), 0.2), 0px 8px 10px 1px rgba(var(--mo-shadow-base), 0.14), 0px 3px 14px 2px rgba(var(--mo-shadow-base), 0.12);
     /* Font Sizes */
-    --mo-font-size-1: 10px;
-    --mo-font-size-2: 12px;
-    --mo-font-size-3: 14px;
-    --mo-font-size-4: 18px;
-    --mo-font-size-5: 24px;
-    --mo-font-size-6: 36px;
-    --mo-font-size-7: 48px;
-    --mo-font-size-8: 56px;
-    --mo-font-size-icon: 18px;
-    --mo-font-size-default: var(--mo-font-size-3);
+    --mo-font-size-xxxs: 6px;
+    --mo-font-size-xxs: 8px;
+    --mo-font-size-xs: 10px;
+    --mo-font-size-s: 12px;
+    --mo-font-size-m: 14px;
+    --mo-font-size-l: 18px;
+    --mo-font-size-xl: 24px;
+    --mo-font-size-xxl: 36px;
+    --mo-font-size-xxxl: 48px;
+    --mo-font-size-icon: var(--mo-font-size-l);
     /* Spaces */
     --mo-thickness-xs: 2px;
     --mo-thickness-s: 4px;
-    --mo-thickness-d: 6px;
+    --mo-thickness-m: 6px;
     --mo-thickness-l: 8px;
     --mo-thickness-xl: 14px;
     --mo-thickness-xxl: 20px;
