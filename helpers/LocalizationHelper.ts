@@ -20,5 +20,6 @@ const localizationHelper = new class LocalizationHelper {
 	}
 }
 
+// @ts-ignore Setting the global localizer
 globalThis.$ = localizationHelper.localize.bind(localizationHelper)
 export default localizationHelper

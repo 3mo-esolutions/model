@@ -8,7 +8,7 @@ export default class ApplicationHost extends Component {
 	constructor() {
 		super()
 		DocumentHelper.linkCSS('/styles/theme.css')
-		DocumentHelper.linkCSS('/styles/animations.css')
+		DocumentHelper.linkCSS('/styles/animation.css')
 		DocumentHelper.linkCSS('https://fonts.googleapis.com/icon?family=Material+Icons+Sharp')
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
