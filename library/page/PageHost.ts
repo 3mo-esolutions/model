@@ -122,10 +122,10 @@ export default class PageHost extends Component {
 					--mo-page-max-width: 1920px;
 					width: calc(100% - calc(2 * var(--mo-page-padding)));
 					max-width: var(--mo-page-max-width);
-					padding: 0 var(--mo-page-padding);
+					padding: var(--mo-page-padding);
 				}
 			</style>
-			<mo-flex alignItems='center' height='calc(100% - var(--mo-thickness-m))' margin='var(--mo-thickness-m) 0 0 0'>
+			<mo-flex alignItems='center' height='100%'>
 				<mo-circular-progress indeterminate position='absolute'></mo-circular-progress>
 				<slot></slot>
 			</mo-flex>

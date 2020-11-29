@@ -109,7 +109,7 @@ WebpackPlugin.js {
 						from: 'node_modules/@3mo/model/www/',
 						to: '',
 						globOptions: {
-							ignore: options.isDevelopmentEnvironment ? ['**/service-worker.js'] : []
+							ignore: options.isDevelopmentEnvironment ? ['**/ServiceWorker.js'] : []
 						},
 					},
 					{
