@@ -14,8 +14,8 @@ export default class Icon extends componentize(MwcIcon) {
 	get icon() { return this.innerText as MaterialIcon }
 
 	@property()
-	set size(value: string) { this.style.setProperty('--mo-icon-size', value) }
-	get size() { return this.style.getPropertyValue('--mo-icon-size') }
+	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
+	get size() { return this.style.getPropertyValue('--mdc-icon-size') }
 }
 
 declare global {
