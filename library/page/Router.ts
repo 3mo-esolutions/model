@@ -71,7 +71,7 @@ class Router {
 
 	injectParametersToPath(relativePath: string, parameters: PageParameters): string {
 		const routerPath = this.getRouterPath(relativePath)
-		const route = new Route(routerPath).reverse(parameters)
+		const route = new Route(routerPath).reverse(parameters ? parameters : {})
 		if (!route)
 			return this.relativePath
 		return route
