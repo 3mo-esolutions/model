@@ -43,7 +43,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 
 		window.addEventListener('keypress', async event => {
 			if (event.key === KeyboardKey.Enter && this.isAuthenticated === false) {
-				await this.dialog['handlePrimaryButtonClick']()
+				await this.dialog?.['handlePrimaryButtonClick']()
 			}
 		})
 	}
