@@ -52,7 +52,9 @@ class ConfettiParticle {
 export default class Confetti extends Component {
 	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-confetti') as Confetti }
 
-	public async rain() {
+	static get rain() { return this.instance.rain.bind(this.instance) }
+
+	async rain() {
 		const animate = () => {
 			requestAnimationFrame(animate)
 			this.canvParticleContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
