@@ -64,7 +64,7 @@ export default class ApplicationHost extends Component {
 				<slot name='drawerContent'></slot>
 
 				<mo-top-app-bar slot='appContent' height='var(--mo-top-app-bar-height)'>
-					<mo-icon-button slot='navigationIcon' icon='menu'></mo-icon-button>
+					<mo-icon-button slot='navigationIcon' icon='menu' size='22px'></mo-icon-button>
 
 					<mo-flex slot='title' direction='horizontal' alignItems='center' gap='8px'>
 						<mo-logo height='40px' foreground='var(--mo-color-accessible)'></mo-logo>
