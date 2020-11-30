@@ -39,14 +39,14 @@ export default class DialogHost extends Component {
 		}).confirm()
 	}
 
-	private async confirmDialog<T extends DialogComponent>(dialog: T) {
+	private async confirmDialog<T extends DialogComponent<TParams>, TParams>(dialog: T) {
 		const response = await this.openDialog(dialog)
 		if (response === false) {
 			throw new Error('Dialog canceled')
 		}
 	}
 
-	private async openDialog<T extends DialogComponent>(dialog: T) {
+	private async openDialog<T extends DialogComponent<TParams>, TParams>(dialog: T) {
 		if (PermissionHelper.isAuthorized(...dialog.constructor.permissions) === false) {
 			Snackbar.show('🔒 Access denied')
 			return false

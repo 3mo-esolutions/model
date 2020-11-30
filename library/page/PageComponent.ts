@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { PropertyValues, Component, PageHost } from '..'
 import { NavigationMode } from './PageHost'
 
-export type PageParameters = Record<string, string | number | undefined>
+export type PageParameters = void | Record<string, string | number | undefined>
 
 export type PageComponentConstructor<T extends PageParameters> = Constructor<PageComponent<T>> & { permissions: Array<keyof MoDeL.Permissions> }
 
-export abstract class PageComponent<T extends PageParameters = {}> extends Component {
+export abstract class PageComponent<T extends PageParameters = void> extends Component {
 	['constructor']: PageComponentConstructor<T>
 
 	static permissions = new Array<keyof MoDeL.Permissions>()
@@ -25,9 +24,9 @@ export abstract class PageComponent<T extends PageParameters = {}> extends Compo
 		PageHost.navigateToPage(this, NavigationMode.NewWindow)
 	}
 
-	constructor(parameters?: T) {
+	constructor(parameters: T) {
 		super()
-		this.parameters = parameters ?? {} as T
+		this.parameters = parameters as T
 	}
 
 	protected readonly parameters: T
