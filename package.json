@@ -46,6 +46,7 @@
 		"bowser": "2.*",
 		"csstype": "3.*",
 		"lit-element": "2.*",
+		"lit-virtualizer": "0.*",
 		"route-parser": "0.0.5",
 		"@types/route-parser": "0.1.*",
 		"swiper": "6.*"
