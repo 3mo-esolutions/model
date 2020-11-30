@@ -34,7 +34,7 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 	protected firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		if (this.page === undefined) {
-			throw new Error(`${this.constructor.name} does not wrap its content in an 'mo-page' element`)
+			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-page' element`)
 		}
 	}
 

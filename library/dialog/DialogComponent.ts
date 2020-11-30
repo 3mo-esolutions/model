@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Component, DialogHost } from '..'
+import { Component, DialogHost, PropertyValues } from '..'
 
 export type DialogParameters = void | Record<string, any>
 
@@ -28,8 +28,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 	protected readonly parameters: T
 
 	protected get dialog() {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return this.shadowRoot.querySelector('mo-dialog')!
+		return this.shadowRoot.querySelector('mo-dialog') ?? undefined
 	}
 
 	protected initialized() {
@@ -45,6 +44,13 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 	private set isOpen(value) {
 		if (this.dialog) {
 			this.dialog.open = value
+		}
+	}
+
+	protected firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
+		if (this.dialog === undefined) {
+			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
 	}
 }
