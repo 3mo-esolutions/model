@@ -12,7 +12,9 @@ export default class IconButton extends componentize(MwcIconButton) {
 	@property() icon!: MaterialIcon
 
 	@property({ type: Boolean })
-	set small(value: boolean) { this.style.setProperty('--mdc-icon-button-size', `calc(var(--mdc-icon-size) * ${value ? '1.5' : '2'})`) }
+	set small(value: boolean) {
+		this.style.setProperty('--mdc-icon-button-size', `calc(var(--mdc-icon-size) * ${value ? '1.5' : '2'})`)
+	}
 
 	@property()
 	get size() { return this.style.getPropertyValue('--mdc-icon-size') }
@@ -21,6 +23,7 @@ export default class IconButton extends componentize(MwcIconButton) {
 	constructor() {
 		super()
 		this.size = 'var(--mo-font-size-icon)'
+		this.small = false
 		if (this.innerText !== '') {
 			this.icon = this.innerText as MaterialIcon
 			this.innerText = ''
