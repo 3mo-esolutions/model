@@ -22,7 +22,7 @@ export default class LocalStorageEntry<T> {
 		protected readonly defaultValue: T
 	) {
 		LocalStorageContainer.push(this)
-		setTimeout(() => this.changed.trigger(this.value), 10)
+		setTimeout(() => this.value = this.defaultValue, 1)
 	}
 
 	get value(): T {
