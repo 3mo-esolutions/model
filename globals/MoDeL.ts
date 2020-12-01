@@ -38,7 +38,7 @@ globalThis.MoDeL = new class {
 		if (global.__karma__)
 			return 'test'
 
-		if (global.describe?.() === 0)
+		if (global.webpackJsonp || global.describe?.() === 0)
 			return 'development'
 
 		return 'production'

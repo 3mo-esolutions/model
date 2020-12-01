@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
-const getSharedConfigs = (inDevEnv) => ({
+const sharedConfigs = {
 	module: {
 		rules: [
 			{
@@ -21,18 +21,12 @@ const getSharedConfigs = (inDevEnv) => ({
 				{
 					from: 'node_modules/@3mo/model-core/www/',
 					to: '',
-					noErrorOnMissing: true,
-					globOptions: {
-						ignore: inDevEnv ? ['**/ServiceWorker.js'] : []
-					},
+					noErrorOnMissing: true
 				},
 				{
 					from: 'node_modules/@3mo/model/www/',
 					to: '',
-					noErrorOnMissing: true,
-					globOptions: {
-						ignore: inDevEnv ? ['**/ServiceWorker.js'] : []
-					},
+					noErrorOnMissing: true
 				},
 				{
 					from: 'images/',
@@ -63,7 +57,7 @@ const getSharedConfigs = (inDevEnv) => ({
 			new TsconfigPathsPlugin({ configFile: './tsconfig.json' })
 		]
 	}
-})
+}
 
 const productionConfigs = {
 	optimization: {
@@ -89,7 +83,6 @@ const developmentConfigs = {
 }
 
 module.exports = (config, isDevelopmentEnvironment = false) => {
-	const sharedConfigs = getSharedConfigs(isDevelopmentEnvironment)
 	const MoDeLConfig = isDevelopmentEnvironment
 		? { ...sharedConfigs, ...developmentConfigs }
 		: { ...sharedConfigs, ...productionConfigs }
