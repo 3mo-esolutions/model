@@ -1,4 +1,4 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent } from '../library'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html } from '../library'
 import { Drawer, ListItem } from '.'
 import { PromiseTask } from '../helpers'
 
@@ -36,6 +36,14 @@ export default class DrawerItem extends ListItem {
 		if (!this.componentConstructor) {
 			this.remove()
 		}
+	}
+
+	protected renderGraphic() {
+		return html`
+			<span class='mdc-list-item__graphic'>
+				<mo-icon icon=${this.icon} opacity='0.75' size='24px'></mo-icon>
+			</span>
+		`
 	}
 }
 
