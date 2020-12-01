@@ -1,4 +1,4 @@
-class PwaHelper {
+export default new class PwaHelper {
 	readonly appInstalled = new PureEvent()
 
 	private pwaPrompt?: Event
@@ -12,11 +12,10 @@ class PwaHelper {
 	}
 
 	async registerServiceWorker() {
-		// @ts-ignore If karma is executing tests
-		if (window.__karma__)
+		if (!navigator.serviceWorker || navigator.serviceWorker.controller)
 			return
 
-		if ('serviceWorker' in navigator === false)
+		if (MoDeL.environment === 'test')
 			return
 
 		if (MoDeL.environment === 'development') {
@@ -24,9 +23,6 @@ class PwaHelper {
 			serviceWorkers.forEach(serviceWorker => serviceWorker.unregister())
 			return
 		}
-
-		if (navigator.serviceWorker.controller)
-			return
 
 		await navigator.serviceWorker.register('./ServiceWorker.js', { scope: './' })
 	}
@@ -48,5 +44,3 @@ class PwaHelper {
 		}
 	}
 }
-
-export default new PwaHelper
