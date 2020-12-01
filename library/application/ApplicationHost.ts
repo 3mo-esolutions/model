@@ -25,11 +25,7 @@ export default class ApplicationHost extends Component {
 
 	protected async initialized() {
 		if (this.authenticator) {
-			try {
-				await this.authenticator.quickAuthenticate()
-			} catch (error) {
-				await this.authenticator.confirm()
-			}
+			await this.authenticator.confirm()
 		}
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {

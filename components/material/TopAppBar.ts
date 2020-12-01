@@ -1,4 +1,4 @@
-import { component, componentize } from '../../library'
+import { component, componentize, query } from '../../library'
 import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
 
 /**
