@@ -5,31 +5,20 @@ import { StorageContainer } from '../../helpers'
 import { KeyboardKey, User } from '../../types'
 
 export default abstract class DialogAuthenticator extends DialogComponent {
-	get isAuthenticated() { return StorageContainer.Authentication.isAuthenticated.value }
-	set isAuthenticated(value) { StorageContainer.Authentication.isAuthenticated.value = value }
-
-	async quickAuthenticate() {
-		this.isAuthenticated = await this.checkAuthenticationProcess()
-
-		if (this.isAuthenticated)
-			return
-
-		if (StorageContainer.Authentication.ShallRemember.value) {
-			await this.authenticate()
-			return
-		}
-
-		throw new Error('Cannot authenticate automatically')
-	}
-
 	async unauthenticate() {
 		try {
 			await this.unauthenticateProcess()
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
-			this.isAuthenticated = false
-			StorageContainer.Authentication.User.value = undefined
+			StorageContainer.Authentication.AuthenticatedUser.value = undefined
 			MoDeL.applicationHost.authenticator?.open()
+		}
+	}
+
+	async confirm() {
+		const isAuthenticated = await this.isAuthenticated()
+		if (isAuthenticated !== true) {
+			super.confirm()
 		}
 	}
 
@@ -38,14 +27,20 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 	protected abstract checkAuthenticationProcess(): Promise<boolean>
 	protected abstract resetPasswordProcess(): Promise<void>
 
-	protected initialized() {
+	protected async initialized() {
 		super.initialized()
 
 		window.addEventListener('keypress', async event => {
-			if (event.key === KeyboardKey.Enter && this.isAuthenticated === false) {
+			const isAuthenticated = StorageContainer.Authentication.AuthenticatedUser !== undefined
+			if (event.key === KeyboardKey.Enter && isAuthenticated === false) {
 				await this.dialog?.['handlePrimaryButtonClick']()
 			}
 		})
+
+		if (StorageContainer.Authentication.ShallRemember.value) {
+			await this.authenticate()
+			this.close()
+		}
 	}
 
 	@property({ type: Boolean }) shallRememberPassword = StorageContainer.Authentication.ShallRemember.value ?? false
@@ -68,7 +63,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
 						<h2>${MoDeL.applicationHost.appTitle ?? 'Welcome'}</h2>
 					</mo-flex>
-					<mo-flex height='*' width='100%' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
+					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
 						<mo-text-field label='Username'
 							@input=${(e: CustomEvent<undefined, TextField>) => this.username = e.source.value}
 							.value=${this.username}></mo-text-field>
@@ -87,6 +82,12 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 		`
 	}
 
+	protected async isAuthenticated() {
+		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
+		const isAuthenticatedClientSide = StorageContainer.Authentication.AuthenticatedUser !== undefined
+		return isAuthenticatedServerSide && isAuthenticatedClientSide
+	}
+
 	protected async authenticate() {
 		StorageContainer.Authentication.ShallRemember.value = this.shallRememberPassword
 		if (StorageContainer.Authentication.ShallRemember.value) {
@@ -96,12 +97,12 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 
 		try {
 			const user = await this.authenticateProcess()
-			this.isAuthenticated = await this.checkAuthenticationProcess()
-			if (this.isAuthenticated === false) {
+			StorageContainer.Authentication.AuthenticatedUser.value = user
+			const isAuthenticated = await this.isAuthenticated()
+			if (isAuthenticated === false) {
 				throw new Error('Something went wrong.\nTry again')
 			}
 			MoDeL.applicationHost.authenticatedUser = user
-			StorageContainer.Authentication.User.value = user
 			Snackbar.show('Authenticated successfully')
 		} catch (error) {
 			throw new Error('Incorrect Credentials')

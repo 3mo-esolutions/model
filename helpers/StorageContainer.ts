@@ -93,11 +93,10 @@ export default {
 		},
 	},
 	Authentication: {
-		isAuthenticated: new LocalStorageEntry('MoDeL.Authentication.IsAuthenticated', false),
 		Password: new LocalStorageEntry<string | undefined>('authenticationPassword', undefined),
 		ShallRemember: new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false),
 		Username: new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined),
-		User: new class extends localStorageEntryBuilder<User | undefined>('MoDeL.User', undefined) {
+		AuthenticatedUser: new class extends localStorageEntryBuilder<User | undefined>('MoDeL.AuthenticatedUser', undefined) {
 			get value() { return super.value }
 			set value(value) {
 				super.value = value
