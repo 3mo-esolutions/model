@@ -1,6 +1,6 @@
 /* eslint-disable */
 export {
-	property, internalProperty, customElement as component,
+	customElement as component,
 	CSSResult, query, queryAll, queryAsync,
 	html, css, CSSResultArray, TemplateResult,
 	PropertyValues,

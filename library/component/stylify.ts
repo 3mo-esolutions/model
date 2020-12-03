@@ -1,4 +1,4 @@
-import { property } from '..'
+import { property } from 'lit-element'
 import { IStyledElement } from './IStyledElement'
 import * as CSS from 'csstype'
 

@@ -1,9 +1,15 @@
 import { LitElement, PropertyValues } from 'lit-element'
-import IComponent from './IComponent'
+import { Observer } from './Observer'
 import { stylify } from './stylify'
+import IComponent from './IComponent'
+import { ComponentConstructor } from './Component'
 
 export const componentize = <T extends Constructor<LitElement>>(Constructor: T) =>
 	class extends stylify(Constructor) implements IComponent {
+		['constructor']: ComponentConstructor
+
+		static readonly observers = new Map<PropertyKey, Observer<any>>()
+
 		readonly shadowRoot!: ShadowRoot
 		readonly parentElement!: HTMLElement
 
@@ -12,7 +18,15 @@ export const componentize = <T extends Constructor<LitElement>>(Constructor: T) 
 		protected firstUpdated(props: PropertyValues) {
 			super.firstUpdated(props)
 			this.initialized()
-			// this.onInitialized.trigger()
+			// this.initialized.trigger()
+		}
+
+		protected updated(changedProperties: PropertyValues) {
+			super.updated(changedProperties)
+			changedProperties.forEach((value, _key) => {
+				const key = _key as keyof this
+				this.constructor.observers.get(key)?.call(this, this[key], value)
+			})
 		}
 
 		protected initialized() {
