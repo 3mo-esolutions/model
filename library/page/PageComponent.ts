@@ -1,9 +1,11 @@
-import { PropertyValues, Component, PageHost } from '..'
+import { PropertyValues, Component, PageHost, ComponentConstructor } from '..'
 import { NavigationMode } from './PageHost'
 
 export type PageParameters = void | Record<string, string | number | undefined>
 
-export type PageComponentConstructor<T extends PageParameters> = Constructor<PageComponent<T>> & { permissions: Array<keyof MoDeL.Permissions> }
+export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
+	permissions: Array<keyof MoDeL.Permissions>
+}
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
 	['constructor']: PageComponentConstructor<T>

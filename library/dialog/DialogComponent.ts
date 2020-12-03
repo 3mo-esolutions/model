@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { Component, DialogHost, PropertyValues } from '..'
+import { ComponentConstructor } from '../component'
 
 export type DialogParameters = void | Record<string, any>
 
-export type DialogComponentConstructor<T extends DialogParameters> = Constructor<DialogComponent<T>> & { permissions: Array<keyof MoDeL.Permissions> }
+export interface DialogComponentConstructor<T extends DialogParameters> extends Constructor<DialogComponent<T>>, ComponentConstructor {
+	permissions: Array<keyof MoDeL.Permissions>
+}
 
 export abstract class DialogComponent<T extends DialogParameters = void> extends Component {
 	['constructor']: DialogComponentConstructor<T>
