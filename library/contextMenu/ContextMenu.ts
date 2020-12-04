@@ -1,4 +1,4 @@
-import { Component, component } from '..'
+import { Component, component, html } from '..'
 import { ContextMenuHost } from '.'
 
 @component('mo-context-menu')
@@ -8,7 +8,7 @@ export default class ContextMenu extends Component {
 	}
 
 	open(mouseEvent: MouseEvent) {
-		ContextMenuHost.openMenu(mouseEvent, this.childElements)
+		ContextMenuHost.openMenu(mouseEvent, html`${this.childElements.map(element => element.clone())}`)
 	}
 }
 

@@ -1,4 +1,4 @@
-import { Component, component, html, property, query } from '..'
+import { Component, component, html, nothing, property, query, TemplateResult } from '..'
 import { PromiseTask } from '../../helpers'
 import { Menu } from '../../components'
 
@@ -9,18 +9,13 @@ export default class ContextMenuHolder extends Component {
 
 	private readonly lengthBuffer = 16
 
-	@property({ type: Array })
-	menuItems = new Array<HTMLElement>()
+	@property({ type: Object }) menu?: TemplateResult
 
-	async openMenu(mouseEvent: MouseEvent, menuItems: Array<HTMLElement>) {
-		this.isOpen = false
-
-		// FIX clone causes RIPPLE effect not to work
-		this.menuItems = menuItems.map(item => item.clone())
+	async openMenu(mouseEvent: MouseEvent, template: TemplateResult) {
+		this.menu = template
 
 		if (this.list) {
 			this.list.style.opacity = '0'
-			this.isOpen = true
 			await PromiseTask.sleep(1)
 
 			const x = (mouseEvent.clientX + this.list.offsetWidth + this.lengthBuffer > window.innerWidth)
@@ -42,23 +37,6 @@ export default class ContextMenuHolder extends Component {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
 
-	private set isOpen(value: boolean) {
-		this.menuContext.open = value
-		if (value === false) {
-			this.menuItems = new Array<HTMLElement>()
-		}
-	}
-
-	protected initialized() {
-		super.initialized()
-		this.isOpen = false
-
-		this.menuContext.x = 0
-		this.menuContext.y = 0
-		this.menuContext.anchor = document.body
-		this.menuContext.addEventListener('closed', () => this.isOpen = false)
-	}
-
 	protected render() {
 		return html`
 			<style>
@@ -71,8 +49,8 @@ export default class ContextMenuHolder extends Component {
 					font-size: var(--mo-font-size-l);
 				}
 			</style>
-			<mo-menu fixed quick @click=${() => this.isOpen = false}>
-				${this.menuItems}
+			<mo-menu x='0' y='0' fixed quick .anchor=${document.body} ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
+				${this.menu ?? nothing}
 			</mo-menu>
 		`
 	}
