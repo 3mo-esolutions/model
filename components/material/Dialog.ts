@@ -1,4 +1,4 @@
-import { component, property, query, componentize, Snackbar } from '../../library'
+import { component, property, query, ComponentMixin, Snackbar } from '../../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import { Button, IconButton } from '.'
 import * as CSS from 'csstype'
@@ -20,7 +20,7 @@ type DialogSize = 'large' | 'medium' | 'small'
  * @cssprop --mdc-dialog-box-shadow
  */
 @component('mo-dialog')
-export default class Dialog extends componentize(MwcDialog) {
+export default class Dialog extends ComponentMixin(MwcDialog) {
 	@eventProperty readonly finished!: IEvent<boolean>
 	primaryButtonClicked: () => Promise<any> | any = () => void 0
 

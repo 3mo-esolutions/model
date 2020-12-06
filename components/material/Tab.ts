@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { Tab as MwcTab } from '@material/mwc-tab'
 import { MaterialIcon } from '../../types'
 
@@ -17,7 +17,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @fires MDCTab:interacted
  */
 @component('mo-tab')
-export default class Tab extends componentize(MwcTabWithCompatibleMinWidth) {
+export default class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value?: string
 	@property({ reflect: true }) icon!: MaterialIcon
 }

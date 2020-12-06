@@ -1,4 +1,4 @@
-import { component, componentize } from '../../library'
+import { component, ComponentMixin } from '../../library'
 import { List as MwcList } from '@material/mwc-list'
 
 /**
@@ -14,7 +14,7 @@ import { List as MwcList } from '@material/mwc-list'
  * @fires selected
  */
 @component('mo-list')
-export default class List extends componentize(MwcList) { }
+export default class List extends ComponentMixin(MwcList) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

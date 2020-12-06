@@ -1,11 +1,11 @@
 import { LitElement, PropertyValues } from 'lit-element'
 import { Observer } from './Observer'
-import { stylify } from './stylify'
+import { StyleMixin } from './StyleMixin'
 import IComponent from './IComponent'
 import { ComponentConstructor } from './Component'
 
-export const componentize = <T extends Constructor<LitElement>>(Constructor: T) =>
-	class extends stylify(Constructor) implements IComponent {
+export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
+	class extends StyleMixin(Constructor) implements IComponent {
 		['constructor']: ComponentConstructor
 
 		static observers: Map<PropertyKey, Observer<any>>

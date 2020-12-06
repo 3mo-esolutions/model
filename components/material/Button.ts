@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { Button as MwcButton } from '@material/mwc-button'
 import { MaterialIcon } from '../../types'
 
@@ -15,7 +15,7 @@ import { MaterialIcon } from '../../types'
  * @slot trailingIcon
  */
 @component('mo-button')
-export default class Button extends componentize(MwcButton) {
+export default class Button extends ComponentMixin(MwcButton) {
 	@property() icon!: MaterialIcon
 }
 

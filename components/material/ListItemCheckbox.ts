@@ -1,4 +1,4 @@
-import { component, componentize } from '../../library'
+import { component, ComponentMixin } from '../../library'
 // eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
@@ -14,7 +14,7 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  * @fires request-selected
  */
 @component('mo-list-item-checkbox')
-export default class ListItemCheckbox extends componentize(MwcCheckListItem) { }
+export default class ListItemCheckbox extends ComponentMixin(MwcCheckListItem) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

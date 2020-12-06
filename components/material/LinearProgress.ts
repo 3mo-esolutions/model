@@ -1,4 +1,4 @@
-import { component, componentize } from '../../library'
+import { component, ComponentMixin } from '../../library'
 import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progress'
 
 /**
@@ -9,7 +9,7 @@ import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progre
  * @attr close
  */
 @component('mo-linear-progress')
-export default class LinearProgress extends componentize(MwcLinearProgress) { }
+export default class LinearProgress extends ComponentMixin(MwcLinearProgress) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

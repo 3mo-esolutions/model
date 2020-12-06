@@ -1,6 +1,7 @@
-import { component, property, componentize, InputElement } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { Switch as MwcSwitch } from '@material/mwc-switch'
-import { labelize } from './labelize'
+import { LabelMixin } from './LabelMixin'
+import { InputMixin } from './InputMixin'
 
 /**
  * @attr checked
@@ -8,11 +9,10 @@ import { labelize } from './labelize'
  * @fires change
  */
 @component('mo-switch')
-export default class Switch extends labelize(componentize(MwcSwitch)) implements InputElement<boolean> {
+export default class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
 	@property({ type: Boolean })
-	// @ts-ignore overriding the value property
-	get value(): boolean { this.checked === true }
-	set value(value: boolean) { this.checked = value }
+	get value() { return this.checked === true }
+	set value(value) { this.checked = value }
 }
 
 declare global {

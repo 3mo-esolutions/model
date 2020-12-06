@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { MaterialIcon } from '../../types'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
@@ -12,7 +12,7 @@ import { Fab as MwcFab } from '@material/mwc-fab'
  * @slot icon
  */
 @component('mo-fab')
-export default class Fab extends componentize(MwcFab) {
+export default class Fab extends ComponentMixin(MwcFab) {
 	@property() icon!: MaterialIcon
 
 	constructor() {

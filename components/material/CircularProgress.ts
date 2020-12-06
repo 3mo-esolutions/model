@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { CircularProgressFourColor as MwcCircularProgress } from '@material/mwc-circular-progress-four-color'
 
 /**
@@ -7,7 +7,7 @@ import { CircularProgressFourColor as MwcCircularProgress } from '@material/mwc-
  * @attr closed
  */
 @component('mo-circular-progress')
-export default class CircularProgress extends componentize(MwcCircularProgress) {
+export default class CircularProgress extends ComponentMixin(MwcCircularProgress) {
 	@property({ type: Boolean })
 	set fourColor(value: boolean) {
 		this.style.setProperty('--mo-circular-progress-bar-color-1', value ? '#2196f3' : '--mo-theme-primary')

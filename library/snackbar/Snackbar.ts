@@ -1,4 +1,4 @@
-import { componentize, render, component, html } from '..'
+import { ComponentMixin, render, component, html } from '..'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
 
 /**
@@ -11,7 +11,7 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
  * @cssprop --mdc-snackbar-action-color
  */
 @component('mo-snackbar')
-export default class Snackbar extends componentize(MwcSnackbar) {
+export default class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
 	static get show() { return this.instance.createAndShow.bind(this.instance) }

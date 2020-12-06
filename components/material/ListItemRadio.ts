@@ -1,4 +1,4 @@
-import { component, componentize } from '../../library'
+import { component, ComponentMixin } from '../../library'
 // eslint-disable-next-line import/no-internal-modules
 import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-list-item'
 
@@ -14,7 +14,7 @@ import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-
  * @fires request-selected
  */
 @component('mo-list-item-radio')
-export default class ListItemRadio extends componentize(MwcRadioListItem) { }
+export default class ListItemRadio extends ComponentMixin(MwcRadioListItem) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

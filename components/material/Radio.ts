@@ -1,6 +1,7 @@
-import { component, property, componentize, InputElement } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { Radio as MwcRadio } from '@material/mwc-radio'
-import { labelize } from './labelize'
+import { LabelMixin } from './LabelMixin'
+import { InputMixin } from './InputMixin'
 
 /**
  * @attr disabled
@@ -8,7 +9,7 @@ import { labelize } from './labelize'
  * @attr global
  */
 @component('mo-radio')
-export default class Radio extends labelize(componentize(MwcRadio)) implements InputElement<boolean> {
+export default class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 	@property({ type: Boolean })
 	// @ts-ignore overriding the value property
 	get value(): boolean { return this.checked }

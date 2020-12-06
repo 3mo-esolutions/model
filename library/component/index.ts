@@ -1,4 +1,3 @@
-export { componentize } from './componentize'
+export { ComponentMixin } from './ComponentMixin'
 export { element, property, internalProperty } from './decorators'
-export { default as InputElement } from './InputElement'
 export { default as Component, ComponentConstructor } from './Component'

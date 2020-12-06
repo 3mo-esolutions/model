@@ -1,4 +1,4 @@
-import { component, property, componentize, InputElement } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { Select as MwcSelect } from '@material/mwc-select'
 import { MaterialIcon } from '../../types'
 
@@ -23,7 +23,7 @@ import { MaterialIcon } from '../../types'
  * @fires selected
  */
 @component('mo-select')
-export default class Select extends componentize(MwcSelect) implements InputElement<string> {
+export default class Select extends ComponentMixin(MwcSelect) {
 	@property() icon!: MaterialIcon
 }
 

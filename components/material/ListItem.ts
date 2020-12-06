@@ -1,4 +1,4 @@
-import { component, html, property, TemplateResult, componentize } from '../../library'
+import { component, html, property, TemplateResult, ComponentMixin } from '../../library'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 import { MaterialIcon } from '../../types'
 
@@ -12,7 +12,7 @@ import { MaterialIcon } from '../../types'
  * @fires select
  */
 @component('mo-list-item')
-export default class ListItem extends componentize(MwcListItem) {
+export default class ListItem extends ComponentMixin(MwcListItem) {
 	constructor() {
 		super()
 		this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')

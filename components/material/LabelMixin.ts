@@ -2,8 +2,8 @@ import { html, PropertyValues, query } from '../../library'
 import { property, LitElement } from 'lit-element'
 import '@material/mwc-formfield'
 
-export const labelize = <T extends Constructor<LitElement>>(Constructor: T) => {
-	class LabelizedClass extends Constructor {
+export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) => {
+	class LabelMixinConstructor extends Constructor {
 		@property() label = ''
 
 		constructor(...parameters: any[]) {
@@ -30,5 +30,5 @@ export const labelize = <T extends Constructor<LitElement>>(Constructor: T) => {
 
 		@query('mwc-formfield') private readonly formFieldElement!: HTMLElement
 	}
-	return LabelizedClass
+	return LabelMixinConstructor
 }

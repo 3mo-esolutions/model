@@ -1,10 +1,11 @@
-import { component, property, componentize, InputElement } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { CheckboxValue } from '../../types'
 import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
-import { labelize } from './labelize'
+import { LabelMixin } from './LabelMixin'
+import { InputMixin } from './InputMixin'
 
 @component('mo-checkbox')
-export default class Checkbox extends labelize(componentize(MwcCheckbox)) implements InputElement<CheckboxValue> {
+export default class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))) {
 	@property()
 	// @ts-ignore overriding the value property
 	get value(): CheckboxValue {

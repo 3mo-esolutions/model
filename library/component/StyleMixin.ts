@@ -2,8 +2,8 @@ import { property } from 'lit-element'
 import { IStyledElement } from './IStyledElement'
 import * as CSS from 'csstype'
 
-export const stylify = <T extends Constructor<HTMLElement>>(Constructor: T) => {
-	abstract class StyledElement extends Constructor implements IStyledElement {
+export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) => {
+	abstract class StyleMixinConstructor extends Constructor implements IStyledElement {
 		@property()
 		get display() { return this.style.display as CSS.Property.Display }
 		set display(value) { this.style.display = value }
@@ -143,7 +143,7 @@ export const stylify = <T extends Constructor<HTMLElement>>(Constructor: T) => {
 		get userSelect() { return this.style.userSelect as CSS.Property.UserSelect }
 		set userSelect(value) { this.style.userSelect = value }
 	}
-	return StyledElement
+	return StyleMixinConstructor
 }
 
 function isAsteriskSyntax(length: string) {

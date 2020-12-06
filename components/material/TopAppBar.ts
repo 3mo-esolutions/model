@@ -1,4 +1,4 @@
-import { component, componentize, query } from '../../library'
+import { component, ComponentMixin, query } from '../../library'
 import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
 
 /**
@@ -13,7 +13,7 @@ import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
  * @slot actionItems
  */
 @component('mo-top-app-bar')
-export default class TopAppBar extends componentize(MwcTopAppBar) {
+export default class TopAppBar extends ComponentMixin(MwcTopAppBar) {
 	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-top-app-bar') as TopAppBar }
 	static set title(value: string) { this.instance.title = value }
 

@@ -1,4 +1,4 @@
-import { component, property, componentize, InputElement } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { TextArea as MwcTextArea } from '@material/mwc-textarea'
 import { MaterialIcon } from '../../types'
 
@@ -17,9 +17,18 @@ import { MaterialIcon } from '../../types'
  * @attr helperPersistent
  */
 @component('mo-text-area')
-export default class TextArea extends componentize(MwcTextArea) implements InputElement<string> {
+export default class TextArea extends ComponentMixin(MwcTextArea) {
+	@eventProperty change!: IEvent<string>
+
 	@property() icon!: MaterialIcon
 	@property() iconTrailing!: MaterialIcon
+
+	protected initialized() {
+		this.formElement.addEventListener('change', (e) => {
+			e.stopImmediatePropagation()
+			this.change.trigger(this.value)
+		})
+	}
 }
 
 declare global {

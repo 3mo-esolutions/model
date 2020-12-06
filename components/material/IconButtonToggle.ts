@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { MaterialIcon } from '../../types'
 import { IconButtonToggle as MwcIconButtonToggle } from '@material/mwc-icon-button-toggle'
 
@@ -11,7 +11,7 @@ import { IconButtonToggle as MwcIconButtonToggle } from '@material/mwc-icon-butt
  * @slot offIcon
  */
 @component('mo-icon-button-toggle')
-export default class IconButtonToggle extends componentize(MwcIconButtonToggle) {
+export default class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
 	@property() onIcon!: MaterialIcon
 	@property() offIcon!: MaterialIcon
 

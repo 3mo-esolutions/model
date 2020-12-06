@@ -1,4 +1,4 @@
-import { component, property, componentize } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { TabBar as MwcTabBar } from '@material/mwc-tab-bar'
 import { Tab } from '.'
 
@@ -7,7 +7,7 @@ import { Tab } from '.'
  * @fires MDCTabBar:activated
  */
 @component('mo-tab-bar')
-export default class TabBar extends componentize(MwcTabBar) {
+export default class TabBar extends ComponentMixin(MwcTabBar) {
 	get tabs() { return Array.from(this.children) as Array<Tab> }
 
 	get selectedTab() { return this.tabs.find(tab => tab.active) }
