@@ -22,12 +22,12 @@ export default class LocalStorageEntry<T> {
 		protected readonly defaultValue: T
 	) {
 		LocalStorageContainer.push(this)
-		setTimeout(() => this.value = this.defaultValue, 1)
+		setTimeout(() => this.value = this.value, 1)
 	}
 
 	get value(): T {
 		const value = window.localStorage.getItem(this.name) ?? undefined
-		if (value === undefined)
+		if (value === undefined || value === 'undefined')
 			return this.defaultValue
 		return JsonHelper.isJson(value) ? JSON.parse(value) : value
 	}
