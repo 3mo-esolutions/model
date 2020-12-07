@@ -1,4 +1,4 @@
-import { Component, Snackbar, component, html, property } from '..'
+import { Component, Snackbar, component, html } from '..'
 import { PageComponent, PageError } from '.'
 import { PageParameters } from './PageComponent'
 import { PermissionHelper, PwaHelper } from '../../helpers'
@@ -18,8 +18,6 @@ export default class PageHost extends Component {
 	static get navigateToPage() { return this.instance.navigateToPage.bind(this.instance) }
 	static get navigateToPath() { return this.instance.navigateToPath.bind(this.instance) }
 	static get currentPage() { return this.instance.pageComponent }
-
-	@property({ type: Boolean, reflect: true }) isLoading = false
 
 	private get pageComponent() { return this.firstChild as PageComponent<any> }
 	private set pageComponent(value) {
@@ -75,8 +73,6 @@ export default class PageHost extends Component {
 	}
 
 	private navigate<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
-		this.isLoading = true
-
 		this.pageComponent =
 			PermissionHelper.isAuthorized(...page.constructor.permissions) ? page : new PageError({ error: '403' })
 
@@ -84,53 +80,28 @@ export default class PageHost extends Component {
 		if (path) {
 			Router.relativePath = path
 		}
-
-		setTimeout(() => this.isLoading = false, 100)
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					padding-top: var(--mo-top-app-bar-height);
-					flex: 1;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				padding-top: var(--mo-top-app-bar-height);
+				flex: 1;
+			}
 
-				mo-circular-progress {
-					visibility: hidden;
-				}
-
-				/* TODO [MIG] loading + animiation
-				:host([isLoading]) mo-circular-progress {
-					visibility: hidden;
-				}
-
-				mo-scroll {
-					transform: translate3d(0);
-					opacity: 1;
-					transition: var(--mo-duration-quick);
-				}
-
-				:host([isLoading]) mo-scroll {
-					opacity: 0;
-					transform: translate3d(0, 100px, 100px);
-					transition: var(--mo-duration-instant);
-				} */
-
-				::slotted(:first-child) {
-					--mo-page-padding: 8px;
-					--mo-page-max-width: 1920px;
-					width: calc(100% - calc(2 * var(--mo-page-padding)));
-					max-width: var(--mo-page-max-width);
-					padding: var(--mo-page-padding);
-				}
-			</style>
-			<mo-flex alignItems='center' height='100%'>
-				<mo-circular-progress indeterminate position='absolute'></mo-circular-progress>
-				<slot></slot>
-			</mo-flex>
-		`
-	}
+			::slotted(:first-child) {
+				--mo-page-padding: 8px;
+				--mo-page-max-width: 1920px;
+				width: calc(100% - calc(2 * var(--mo-page-padding)));
+				max-width: var(--mo-page-max-width);
+				padding: var(--mo-page-padding);
+			}
+		</style>
+		<mo-flex alignItems='center' height='100%'>
+			<slot></slot>
+		</mo-flex>
+	`
+}
 }
 
 declare global {

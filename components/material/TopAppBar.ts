@@ -17,7 +17,7 @@ export default class TopAppBar extends ComponentMixin(MwcTopAppBar) {
 	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-top-app-bar') as TopAppBar }
 	static set title(value: string) { this.instance.title = value }
 
-	// NOTE: the height of the material top app bar is hardcoded to 64px
+	// The height of the material top app bar is hardcoded to 64px
 	// Here the internals are accessed to manipulate the height
 	@query('.mdc-top-app-bar__row') private divRow!: HTMLDivElement
 
