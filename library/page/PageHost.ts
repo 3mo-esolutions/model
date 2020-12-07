@@ -102,7 +102,6 @@ export default class PageHost extends Component {
 		</mo-flex>
 	`
 }
-}
 
 declare global {
 	interface HTMLElementTagNameMap {
