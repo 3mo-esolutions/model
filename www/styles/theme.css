@@ -13,6 +13,7 @@
 * {
     font-family: var(--mo-font-family);
     font-weight: 400;
+    font-size: var(--mo-font-size-m);
     color: var(--mo-color-foreground);
     box-sizing: border-box;
 }
