@@ -126,7 +126,7 @@ export default class Splitter extends Component {
 			secondSize: number
 		}
 
-		const onMouseDown = (e: MouseEvent): void => {
+		const onMouseDown = (e: MouseEvent) => {
 			mouseDownInfo = {
 				e,
 				offsetLeft: seperator.offsetLeft,
@@ -138,7 +138,7 @@ export default class Splitter extends Component {
 			document.onmouseup = () => document.onmousemove = document.onmouseup = null
 		}
 
-		const onMouseMove = (e: MouseEvent): void => {
+		const onMouseMove = (e: MouseEvent) => {
 			const delta = {
 				x: e.clientX - mouseDownInfo.e.x,
 				y: e.clientY - mouseDownInfo.e.y
@@ -168,11 +168,12 @@ export default class Splitter extends Component {
 					break
 			}
 		}
-		if (nextElement === this.items[this.items.length - 1])
+
+		if (nextElement === this.items[this.items.length - 1]) {
 			nextElement.style.flex = '1'
+		}
 
 		seperator.onmousedown = onMouseDown
-
 	}
 }
 
