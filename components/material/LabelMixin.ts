@@ -15,7 +15,7 @@ export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 
 		protected render() {
 			return html`
-				<mwc-formfield label=${this.label}>
+				<mwc-formfield label=${this.label} style='height: 100%;'>
 					${super.render()}
 				</mwc-formfield>
 			`
