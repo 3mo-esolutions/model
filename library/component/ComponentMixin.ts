@@ -1,4 +1,5 @@
-import { LitElement, PropertyValues } from 'lit-element'
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { LitElement } from 'lit-element'
 import { Observer } from './Observer'
 import { StyleMixin } from './StyleMixin'
 import IComponent from './IComponent'
@@ -13,21 +14,15 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 		readonly shadowRoot!: ShadowRoot
 		readonly parentElement!: HTMLElement
 
-		// @eventProperty readonly initialized!: IEvent
+		/**
+		 * Life-cycle callback after all elements are rendered for the first time
+		 */
+		protected initialized() { }
 
-		protected firstUpdated(props: PropertyValues) {
-			super.firstUpdated(props)
-			this.initialized()
-			// this.initialized.trigger()
-		}
-
-		protected initialized() {
-			// Life-cycle callback after all elements are rendered for the first time
-		}
-
-		protected uninitialized() {
-			// Life-cycle callback when this component is uninitializing
-		}
+		/**
+		 * Life-cycle callback when this component is uninitialized
+		 */
+		protected uninitialized() { }
 
 		disconnectedCallback() {
 			super.disconnectedCallback()

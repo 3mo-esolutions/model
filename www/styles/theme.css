@@ -95,7 +95,7 @@ mo-application-host {
     --mo-thickness-m: 6px;
     --mo-thickness-l: 8px;
     --mo-thickness-xl: 14px;
-    --mo-thickness-xxl: 20px;
+    --mo-thickness-xxl: 18px;
     /* Selection Colors */
     --mo-hover-foreground: inherit;
     --mo-selected-background: var(--mo-accent-gradient-transparent);
