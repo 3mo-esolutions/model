@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 declare namespace MoDeL {
 	type Environement = 'development' | 'production' | 'test'
 
@@ -7,29 +5,9 @@ declare namespace MoDeL {
 		readonly environment: Environement
 	}
 
-	interface Permissions { }
-
-	interface FeatureFlags { }
-
-	interface LocalizationParametersMap {
-		'Authenticated successfully': []
-		'Incorrect Credentials': []
-		'Password reset instructions have been sent to your email address': []
-		'Password could not be reset': []
-		'Something went wrong': []
-		'Try again': []
-		'Username': []
-		'Password': []
-		'Remember Password': []
-		'Welcome': []
-		'Login': []
-	}
-
-	type Localization = Record<keyof LocalizationParametersMap, string>
 }
 
 declare const MoDeL: MoDeL.Globals
-declare function $<K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...args: MoDeL.LocalizationParametersMap[K]): string
 
 // @ts-ignore defining MoDeL
 globalThis.MoDeL = new class {

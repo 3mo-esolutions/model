@@ -8,8 +8,9 @@ const localizationHelper = new class LocalizationHelper {
 		return StorageContainer.Localization.Language.value
 	}
 
-	localize(...args: Parameters<typeof $>): ReturnType<typeof $> {
-		const key = args[0]
+	localize<K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]): string {
+		// TODO: parameters
+		params
 		return this.languageMap.get(this.currentLanguage)?.[key] ?? key
 	}
 
@@ -20,6 +21,16 @@ const localizationHelper = new class LocalizationHelper {
 	}
 }
 
-// @ts-ignore Setting the global localizer
-globalThis.$ = localizationHelper.localize.bind(localizationHelper)
 export default localizationHelper
+
+globalThis._ = localizationHelper.localize.bind(localizationHelper)
+
+declare global {
+	function _(...args: Parameters<typeof localizationHelper.localize>): ReturnType<typeof localizationHelper.localize>
+
+	namespace MoDeL {
+		type Localization = Record<keyof LocalizationParametersMap, string>
+		// eslint-disable-next-line @typescript-eslint/no-empty-interface
+		interface LocalizationParametersMap { }
+	}
+}

@@ -1,4 +1,5 @@
 import './globals'
+import './localization'
 import './types'
 import './helpers'
 import './library'

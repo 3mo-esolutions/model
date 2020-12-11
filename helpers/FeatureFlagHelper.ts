@@ -17,3 +17,10 @@ export default new class PermissionHelper {
 			StorageContainer.FeatureFlags.value.filter(p => featureFlags.includes(p) === false)
 	}
 }
+
+declare global {
+	namespace MoDeL {
+		// eslint-disable-next-line @typescript-eslint/no-empty-interface
+		interface FeatureFlags { }
+	}
+}
