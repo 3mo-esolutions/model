@@ -33,6 +33,7 @@
 		"@typescript-eslint/no-non-null-assertion": "warn",
 		"@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
 		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/no-empty-function": "off",
 		"no-prototype-builtins": "off",
 		"@typescript-eslint/member-delimiter-style": [
 			"error",

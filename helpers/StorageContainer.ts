@@ -1,4 +1,4 @@
-import { localStorageEntryBuilder, LocalStorageEntry } from '.'
+import { localStorageEntryBuilder, LocalStorageEntry, PromiseTask } from '.'
 import { Accents, LanguageCode, Themes, User } from '../types'
 
 export default {
@@ -6,43 +6,48 @@ export default {
 		Background: new class extends localStorageEntryBuilder<Themes>('MoDeL.Theme.Background', Themes.System) {
 			constructor() {
 				super()
-
+				this.handleChange()
+				this.changed.subscribe(() => this.handleChange())
 				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.value)
+			}
 
-				this.changed.subscribe(theme => {
-					if (theme !== Themes.System) {
-						MoDeL.applicationHost.theme = theme
-						return
-					}
-					const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-					MoDeL.applicationHost.theme = isDark ? Themes.Dark : Themes.Light
-				})
+			private async handleChange() {
+				if (this.value !== Themes.System) {
+					MoDeL.applicationHost.theme = this.value
+					return
+				}
+				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+				PromiseTask.delegateToEventLoop(() => MoDeL.applicationHost.theme = isDark ? Themes.Dark : Themes.Light)
 			}
 		},
+
 		Accent: new class extends localStorageEntryBuilder<Accents>('MoDeL.Theme.Accent', Accents.Blue) {
 			constructor() {
 				super()
-				this.changed.subscribe(value => {
-					const colors = value.split('/')
-					const firstColorRgb = colors[0].split(',').map(c => parseInt(c))
-					const lastColorRgb = colors[colors.length - 1].split(',').map(c => parseInt(c))
+				this.handleChange()
+				this.changed.subscribe(() => this.handleChange())
+			}
 
-					const mixed = this.colorMixer([firstColorRgb[0], firstColorRgb[1], firstColorRgb[2]], [lastColorRgb[0], lastColorRgb[1], lastColorRgb[2]])
-					MoDeL.applicationHost.style.setProperty('--mo-accent-base', mixed.join(','))
+			private handleChange() {
+				const colors = this.value.split('/')
+				const firstColorRgb = colors[0].split(',').map(c => parseInt(c))
+				const lastColorRgb = colors[colors.length - 1].split(',').map(c => parseInt(c))
 
-					let accentG = ''
-					let accentGT = ''
+				const mixed = this.colorMixer([firstColorRgb[0], firstColorRgb[1], firstColorRgb[2]], [lastColorRgb[0], lastColorRgb[1], lastColorRgb[2]])
+				document.documentElement.style.setProperty('--mo-accent-base', mixed.join(','))
 
-					for (let i = 0; i < colors.length; i++) {
-						const colorRGB = colors[i]
-						const percent = i / colors.length * 100
-						accentG += `rgb(${colorRGB}) ${percent}% ${i === colors.length - 1 ? '' : ','}`
-						accentGT += `rgba(${colorRGB},0.25) ${percent}% ${i === colors.length - 1 ? '' : ','}`
-					}
+				let accentG = ''
+				let accentGT = ''
 
-					MoDeL.applicationHost.style.setProperty('--mo-accent-g', accentG)
-					MoDeL.applicationHost.style.setProperty('--mo-accent-gt', accentGT)
-				})
+				for (let i = 0; i < colors.length; i++) {
+					const colorRGB = colors[i]
+					const percent = i / colors.length * 100
+					accentG += `rgb(${colorRGB}) ${percent}% ${i === colors.length - 1 ? '' : ','}`
+					accentGT += `rgba(${colorRGB},0.25) ${percent}% ${i === colors.length - 1 ? '' : ','}`
+				}
+
+				document.documentElement.style.setProperty('--mo-accent-g', accentG)
+				document.documentElement.style.setProperty('--mo-accent-gt', accentGT)
 			}
 
 			private colorMixer(rgbA: [R: number, G: number, B: number], rgbB: [R: number, G: number, B: number], amountToMix = 0.5): [R: number, G: number, B: number] {
