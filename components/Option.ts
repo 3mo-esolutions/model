@@ -8,7 +8,7 @@ export default class Option<TValue = string> extends ListItem {
 
 	initialized() {
 		super.initialized()
-		this.select.subscribe(() => {
+		this.selectionChange.subscribe(() => {
 			if (this.default === true) {
 				this.selected = false
 			}

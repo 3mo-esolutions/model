@@ -20,7 +20,7 @@ export default class DrawerList extends Component {
 	}
 
 	protected initialized() {
-		this.items.forEach(item => item.select?.subscribe(() => this.open = true))
+		this.items.forEach(item => item.selectionChange.subscribe(() => this.open = true))
 	}
 
 	render() {

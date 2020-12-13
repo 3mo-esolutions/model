@@ -9,19 +9,20 @@ import { MaterialIcon } from '../../types'
  * @attr activated
  * @attr noninteractive
  * @attr selected
- * @fires select
+ * @fires selectionChange
  */
 @component('mo-list-item')
 export default class ListItem extends ComponentMixin(MwcListItem) {
+	@eventProperty readonly selectionChange!: IEvent<boolean>
+
 	constructor() {
 		super()
 		this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')
 		this.graphic = Array.from(this.children).find(child => child.slot === 'graphic') ? 'control' : null
 		this.twoline = !!Array.from(this.children).find(child => child.slot === 'secondary')
-		this.addEventListener('request-selected', () => this.select.trigger())
+		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))
 	}
 
-	@eventProperty select!: IEvent
 	@property() icon!: MaterialIcon
 	@property() metaIcon!: MaterialIcon
 

@@ -11,10 +11,19 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  * @attr activated
  * @attr noninteractive
  * @attr selected
- * @fires request-selected
+ * @fires selectionChange
  */
 @component('mo-list-item-checkbox')
-export default class ListItemCheckbox extends ComponentMixin(MwcCheckListItem) { }
+export default class ListItemCheckbox extends ComponentMixin(MwcCheckListItem) {
+	@eventProperty readonly selectionChange!: IEvent<boolean>
+
+	constructor() {
+		super()
+		this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')
+		this.twoline = !!Array.from(this.children).find(child => child.slot === 'secondary')
+		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))
+	}
+}
 
 declare global {
 	interface HTMLElementTagNameMap {
