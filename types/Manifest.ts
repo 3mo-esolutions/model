@@ -15,7 +15,7 @@ export interface Manifest {
 }
 
 export interface ManifestFeatureFlag {
-	key: string
+	key: keyof MoDeL.FeatureFlags
 	name: string
 	mandatory_from: string
 }

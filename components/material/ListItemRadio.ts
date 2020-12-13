@@ -27,6 +27,6 @@ export default class ListItemRadio extends ComponentMixin(MwcRadioListItem) {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-item-item': ListItemRadio
+		'mo-list-item-radio': ListItemRadio
 	}
 }
