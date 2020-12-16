@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, css } from '../../library'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 /**
@@ -17,6 +17,22 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 export default class Drawer extends ComponentMixin(MwcDrawer) {
 	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-drawer') as Drawer }
 	static set isOpen(value: boolean) { this.instance.open = value }
+
+	static get styles() {
+		return css`
+			${super.styles}
+
+			.mdc-drawer__header {
+				border-bottom: 1px solid var(--mo-color-gray-transparent);
+			}
+
+			:host([type=dismissible]) .mdc-drawer {
+				height: calc(100% - var(--mo-top-app-bar-height));
+				margin-top: var(--mo-top-app-bar-height);
+				background: var(--mo-color-background);
+			}
+		`
+	}
 
 	@property() type: 'dismissible' | 'modal' = 'modal'
 

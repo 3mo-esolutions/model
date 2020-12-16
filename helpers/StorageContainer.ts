@@ -101,13 +101,7 @@ export default {
 		Password: new LocalStorageEntry<string | undefined>('authenticationPassword', undefined),
 		ShallRemember: new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false),
 		Username: new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined),
-		AuthenticatedUser: new class extends localStorageEntryBuilder<User | undefined>('MoDeL.AuthenticatedUser', undefined) {
-			get value() { return super.value }
-			set value(value) {
-				super.value = value
-				MoDeL.applicationHost.authenticatedUser = value
-			}
-		},
+		AuthenticatedUser: new LocalStorageEntry<User | undefined>('MoDeL.AuthenticatedUser', undefined),
 	},
 	DeletionConfirmation: new LocalStorageEntry('MoDeL.DeletionConfirmation', true),
 	FeatureFlags: new LocalStorageEntry('MoDeL.FeatureFlags', new Array<keyof MoDeL.FeatureFlags>()),

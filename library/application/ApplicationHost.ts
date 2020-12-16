@@ -22,6 +22,8 @@ export default class ApplicationHost extends Component {
 	@property() appTitle?: string
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
+	@property({ type: Boolean }) drawerOpen = false
+	@property({ type: Boolean }) isDrawerDocked = StorageContainer.Components.Drawer.IsDocked.value
 
 	protected async initialized() {
 		if (this.authenticator) {
@@ -33,6 +35,9 @@ export default class ApplicationHost extends Component {
 		} else {
 			PageHost.navigateToPath(MoDeL.Router.relativePath)
 		}
+
+		StorageContainer.Authentication.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
+		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.isDrawerDocked = isDocked)
 	}
 
 	static get styles() {
@@ -55,24 +60,24 @@ export default class ApplicationHost extends Component {
 
 	protected render() {
 		return html`
-			<mo-drawer type='modal'>
-				<mo-flex slot='title' alignItems='center' justifyContent='center' textAlign='center' gap='10px' foreground='var(--mo-color-foreground)' opacity='0.75'>
-					<mo-logo height='50px'></mo-logo>
-					<span>${this.appTitle}</span>
+			<mo-top-app-bar height='var(--mo-top-app-bar-height)' dense>
+				<mo-icon-button slot='navigationIcon' icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+
+				<mo-flex slot='title' direction='horizontal' alignItems='center'>
+					<mo-logo height='30px' foreground='var(--mo-color-accessible)'></mo-logo>
+					<span id='spnAppBarTitle'>${this.appTitle} ${this.pageTitle ? '|' : ''} ${this.pageTitle}</span>
 				</mo-flex>
 
+				${this.profileTemplate}
+			</mo-top-app-bar>
+
+			<mo-drawer
+				type=${this.isDrawerDocked ? 'dismissible' : 'modal'}
+				?open=${this.drawerOpen}
+				@MDCDrawer:opened=${() => this.drawerOpen = true}
+				@MDCDrawer:closed=${() => this.drawerOpen = false}
+			>
 				<slot name='drawerContent'></slot>
-
-				<mo-top-app-bar slot='appContent' height='var(--mo-top-app-bar-height)' dense>
-					<mo-icon-button slot='navigationIcon' icon='menu'></mo-icon-button>
-
-					<mo-flex slot='title' direction='horizontal' alignItems='center'>
-						<mo-logo height='30px' foreground='var(--mo-color-accessible)'></mo-logo>
-						<span id='spnAppBarTitle'>${this.appTitle} ${this.pageTitle ? '|' : ''} ${this.pageTitle}</span>
-					</mo-flex>
-
-					${this.profileTemplate}
-				</mo-top-app-bar>
 			</mo-drawer>
 
 			<mo-page-host></mo-page-host>

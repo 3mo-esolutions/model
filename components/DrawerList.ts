@@ -16,20 +16,30 @@ export default class DrawerList extends Component {
 	@property() label = ''
 
 	private get items() {
-		return this.childElements as Array<DrawerItem>
+		return this.childElements as Array<DrawerItem | DrawerList>
 	}
 
 	protected initialized() {
-		this.items.forEach(item => item.selectionChange.subscribe(() => this.open = true))
+		for (const item of this.items) {
+			if (item instanceof DrawerItem) {
+				item.selectionChange.subscribe(() => this.open = true)
+			}
+		}
 	}
 
 	render() {
 		return html`
 			<style>
 				:host {
-					--drawer-item-depth-padding: 27px;
-					--drawer-item-height: 56px;
+					--drawer-item-depth-padding: 18px;
+					--drawer-item-height: 40px;
+					--drawer-item-vertical-margin: 4px;
+					--drawer-list-side-margin: 6px;
 					position: relative;
+				}
+
+				:host([root]) {
+					margin: 0 var(--drawer-list-side-margin);
 				}
 
 				:host([open]) {
@@ -49,7 +59,7 @@ export default class DrawerList extends Component {
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
 					width: 1px;
-					height: calc(100% - var(--drawer-item-height) - 7px);
+					height: calc(100% - var(--drawer-item-height));
 					background: rgba(var(--mo-color-foreground-base), 0.5);
 					z-index: -1;
 				}
@@ -58,14 +68,27 @@ export default class DrawerList extends Component {
 					content: ' ';
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
-					width: 15px;
+					width: 10px;
 					height: 1px;
 					background: rgba(var(--mo-color-foreground-base), 0.5);
 					left: 0;
 					z-index: -1;
 				}
+
+				mo-list-item, mo-drawer-item, ::slotted(mo-drawer-item) {
+					margin-bottom: var(--drawer-item-vertical-margin);
+					margin-top: var(--drawer-item-vertical-margin);
+					border-radius: var(--mo-border-radius);
+					height: var(--drawer-item-height);
+					--mdc-list-side-padding: 6px;
+				}
+
+				mo-list, mo-drawer-list, ::slotted(mo-drawer-list) {
+					--mdc-list-vertical-padding: 0px;
+					--mdc-typography-subtitle1-font-size: var(--mo-font-size-m);
+				}
 			</style>
-			<mo-list @click=${() => this.open = !this.open} ?hidden=${this.root}>
+			<mo-list height='var(--drawer-item-height)' @click=${() => this.open = !this.open} ?hidden=${this.root}>
 				<mo-list-item icon=${this.icon} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
 					${this.label}
 				</mo-list-item>
