@@ -25,6 +25,15 @@ export default class Drawer extends ComponentMixin(MwcDrawer) {
 			.mdc-drawer__header {
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
 			}
+
+			.mdc-drawer {
+				height: calc(100% - var(--mo-top-app-bar-height));
+				margin-top: var(--mo-top-app-bar-height);
+			}
+
+			:host([type=dismissible]) .mdc-drawer {
+				background: var(--mo-color-background);
+			}
 		`
 	}
 
