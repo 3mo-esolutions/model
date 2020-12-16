@@ -71,7 +71,12 @@ export default class ApplicationHost extends Component {
 				${this.profileTemplate}
 			</mo-top-app-bar>
 
-			<mo-drawer type=${this.isDrawerDocked ? 'dismissible' : 'modal'} ?open=${this.drawerOpen}>
+			<mo-drawer
+				type=${this.isDrawerDocked ? 'dismissible' : 'modal'}
+				?open=${this.drawerOpen}
+				@MDCDrawer:opened=${() => this.drawerOpen = true}
+				@MDCDrawer:closed=${() => this.drawerOpen = false}
+			>
 				<slot name='drawerContent'></slot>
 			</mo-drawer>
 
