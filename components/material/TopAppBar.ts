@@ -1,4 +1,4 @@
-import { component, ComponentMixin, query } from '../../library'
+import { component, ComponentMixin } from '../../library'
 import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
 
 /**
