@@ -31,7 +31,7 @@ export default class DrawerList extends Component {
 		return html`
 			<style>
 				:host {
-					--drawer-item-depth-padding: 27px;
+					--drawer-item-depth-padding: 18px;
 					--drawer-item-height: 40px;
 					--drawer-item-vertical-margin: 4px;
 					--drawer-list-side-margin: 6px;
@@ -68,7 +68,7 @@ export default class DrawerList extends Component {
 					content: ' ';
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
-					width: 15px;
+					width: 10px;
 					height: 1px;
 					background: rgba(var(--mo-color-foreground-base), 0.5);
 					left: 0;
@@ -80,6 +80,7 @@ export default class DrawerList extends Component {
 					margin-top: var(--drawer-item-vertical-margin);
 					border-radius: var(--mo-border-radius);
 					height: var(--drawer-item-height);
+					--mdc-list-side-padding: 6px;
 				}
 
 				mo-list, mo-drawer-list, ::slotted(mo-drawer-list) {
