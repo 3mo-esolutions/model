@@ -827,6 +827,7 @@ export type MaterialIcon =
 	| 'system_update_alt'
 	| 'tab'
 	| 'tab_unselected'
+	| 'table_chart'
 	| 'tablet'
 	| 'tablet_android'
 	| 'tablet_mac'

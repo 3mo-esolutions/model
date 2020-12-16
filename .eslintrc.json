@@ -34,6 +34,7 @@
 		"@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
 		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-empty-function": "off",
+		"@typescript-eslint/no-empty-interface": "off",
 		"no-prototype-builtins": "off",
 		"@typescript-eslint/member-delimiter-style": [
 			"error",
