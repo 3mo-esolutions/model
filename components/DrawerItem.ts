@@ -41,7 +41,7 @@ export default class DrawerItem extends ListItem {
 	protected renderGraphic() {
 		return html`
 			<span class='mdc-list-item__graphic'>
-				<mo-icon icon=${this.icon} opacity='0.75' size='24px'></mo-icon>
+				<mo-icon icon=${this.icon} opacity='0.75'></mo-icon>
 			</span>
 		`
 	}
