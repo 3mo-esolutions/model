@@ -525,6 +525,7 @@ export type MaterialIcon =
 	| 'markunread_mailbox'
 	| 'memory'
 	| 'menu'
+	| 'menu_open'
 	| 'merge_type'
 	| 'message'
 	| 'mic'
