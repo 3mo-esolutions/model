@@ -7,7 +7,7 @@ import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 export default class ApplicationHost extends Component {
 	constructor() {
 		super()
-		DocumentHelper.linkCSS('https://fonts.googleapis.com/css2?family=Roboto')
+		DocumentHelper.linkCSS('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap')
 		DocumentHelper.linkCSS('https://fonts.googleapis.com/icon?family=Material+Icons+Sharp')
 		DocumentHelper.linkCSS('/styles/theme.css')
 		DocumentHelper.linkCSS('/styles/animation.css')
