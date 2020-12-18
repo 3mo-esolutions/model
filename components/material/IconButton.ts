@@ -24,10 +24,6 @@ export default class IconButton extends ComponentMixin(MwcIconButton) {
 		super()
 		this.size = 'var(--mo-font-size-icon)'
 		this.small = false
-		if (this.innerText !== '') {
-			this.icon = this.innerText as MaterialIcon
-			this.innerText = ''
-		}
 	}
 }
 
