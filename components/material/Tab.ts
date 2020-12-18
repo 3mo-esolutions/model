@@ -9,7 +9,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
 
 /**
  * @attr label
-* @attr hasImageIcon
+ * @attr hasImageIcon
  * @attr indicatorIcon
  * @attr isFadingIndicator
  * @attr stacked
@@ -17,13 +17,20 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @fires MDCTab:interacted
  */
 @component('mo-tab')
-export default class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
-	@property({ reflect: true }) value?: string
+export default class Tab<TValue extends string> extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
+	@property({ reflect: true }) value?: TValue
 	@property({ reflect: true }) icon!: MaterialIcon
+
+	initialized() {
+		if (this.textContent) {
+			this.label = this.textContent
+		}
+		// if(this.textContent)
+	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-tab': Tab
+		'mo-tab': Tab<string>
 	}
 }
