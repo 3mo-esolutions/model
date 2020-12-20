@@ -3,6 +3,8 @@ import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import { Button, IconButton } from '.'
 import * as CSS from 'csstype'
 
+type ClickHandler = (() => Promise<any>) | (() => any)
+
 type DialogSize = 'large' | 'medium' | 'small'
 
 /**
@@ -22,7 +24,9 @@ type DialogSize = 'large' | 'medium' | 'small'
 @component('mo-dialog')
 export default class Dialog extends ComponentMixin(MwcDialog) {
 	@eventProperty readonly finished!: IEvent<boolean>
-	primaryButtonClicked: () => Promise<any> | any = () => void 0
+
+	primaryButtonClicked: ClickHandler = () => void 0
+	secondaryButtonClicked?: ClickHandler
 
 	constructor() {
 		super()
@@ -43,7 +47,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 
 		this.icbClose = new IconButton
 		this.icbClose.icon = 'close'
-		this.icbClose.onclick = () => this.handleSecondaryButtonClick()
+		this.icbClose.onclick = () => this.handleCancellation()
 		this.icbClose.position = 'absolute'
 		this.icbClose.style.right = '8px'
 		this.icbClose.style.top = '8px'
@@ -119,7 +123,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		this.secondaryElement.addEventListener('click', this.handleSecondaryButtonClick.bind(this))
 		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined }>) => {
 			if (e.detail.action === 'close') {
-				this.handleSecondaryButtonClick()
+				this.handleCancellation()
 			}
 		})
 
@@ -130,17 +134,35 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 	private async handlePrimaryButtonClick() {
 		try {
 			await this.primaryButtonClicked()
-			this.close()
-			this.finished.trigger(true)
+			this.close(true)
 		} catch (e) {
 			Snackbar.show(e.message)
 			throw e
 		}
 	}
 
-	private handleSecondaryButtonClick() {
-		this.close()
-		this.finished.trigger(false)
+	private async handleSecondaryButtonClick() {
+		if (!this.secondaryButtonClicked) {
+			this.handleCancellation()
+			return
+		}
+
+		try {
+			await this.secondaryButtonClicked()
+			this.close(true)
+		} catch (e) {
+			Snackbar.show(e.message)
+			throw e
+		}
+	}
+
+	private handleCancellation() {
+		this.close(false)
+	}
+
+	close(isSuccess = false) {
+		super.close()
+		this.finished.trigger(isSuccess)
 	}
 }
 
