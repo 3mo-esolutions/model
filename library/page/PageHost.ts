@@ -90,7 +90,7 @@ export default class PageHost extends Component {
 			}
 
 			::slotted(:first-child) {
-				--mo-page-padding: var(--mo-thickness-xxl);
+				--mo-page-padding: var(--mo-thickness-xl);
 				--mo-page-max-width: 1920px;
 				width: calc(100% - calc(2 * var(--mo-page-padding)));
 				max-width: var(--mo-page-max-width);
