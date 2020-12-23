@@ -13,11 +13,11 @@ export default {
 
 			private async handleChange() {
 				if (this.value !== Themes.System) {
-					MoDeL.applicationHost.theme = this.value
+					MoDeL.application.theme = this.value
 					return
 				}
 				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-				PromiseTask.delegateToEventLoop(() => MoDeL.applicationHost.theme = isDark ? Themes.Dark : Themes.Light)
+				PromiseTask.delegateToEventLoop(() => MoDeL.application.theme = isDark ? Themes.Dark : Themes.Light)
 			}
 		},
 

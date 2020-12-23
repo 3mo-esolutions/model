@@ -8,8 +8,8 @@ export default class Page extends Component {
 	set header(value) {
 		this._header = value
 		if (this.isConnected) {
-			MoDeL.applicationHost.pageTitle = value
-			document.title = `${MoDeL.applicationHost.pageTitle} | ${MoDeL.applicationHost.appTitle}`
+			MoDeL.application.pageTitle = value
+			document.title = `${MoDeL.application.pageTitle} | ${MoDeL.application.appTitle}`
 		}
 	}
 

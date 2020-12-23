@@ -22,8 +22,8 @@ globalThis.MoDeL = new class {
 		return 'production'
 	}
 
-	get applicationHost() {
+	get application() {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return window.document.body.querySelector('mo-application-host')!
+		return window.document.body.querySelector('#application')!
 	}
 }

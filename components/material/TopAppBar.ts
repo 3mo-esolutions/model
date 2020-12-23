@@ -14,7 +14,7 @@ import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
  */
 @component('mo-top-app-bar')
 export default class TopAppBar extends ComponentMixin(MwcTopAppBar) {
-	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-top-app-bar') as TopAppBar }
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-top-app-bar') as TopAppBar }
 	static set title(value: string) { this.instance.title = value }
 }
 

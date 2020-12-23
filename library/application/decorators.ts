@@ -1,19 +1,13 @@
-import { render } from 'lit-html'
-import { DialogAuthenticator } from '.'
-import Application from './Application'
+import { Application, DialogAuthenticator } from '.'
 
 export const application = <T extends Application>(applicationConstructor: Constructor<T>) => {
-	const app = new applicationConstructor()
-	window.document.title = app.title
-	MoDeL.applicationHost.appTitle = app.title
-	const div = document.createElement('div')
-	div.slot = 'drawerContent'
-	render(app.drawerContent, div)
-	MoDeL.applicationHost.appendChild(div)
+	const application = new applicationConstructor()
+	window.document.body.appendChild(application)
+	window.document.title = application.appTitle ?? ''
 }
 
 export const authenticator = <T extends DialogAuthenticator>(authenticatorConstructor: Constructor<T>) => {
-	MoDeL.applicationHost.authenticator = new authenticatorConstructor()
+	MoDeL.application.authenticator = new authenticatorConstructor()
 }
 
 export const logo = <T extends HTMLElement>(elementConstructor: Constructor<T>) => {

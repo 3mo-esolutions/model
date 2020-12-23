@@ -15,7 +15,7 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
  */
 @component('mo-drawer')
 export default class Drawer extends ComponentMixin(MwcDrawer) {
-	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-drawer') as Drawer }
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
 	static set isOpen(value: boolean) { this.instance.open = value }
 
 	static get styles() {
