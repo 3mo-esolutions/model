@@ -11,7 +11,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
 			StorageContainer.Authentication.AuthenticatedUser.value = undefined
-			MoDeL.applicationHost.authenticator?.open()
+			MoDeL.application.authenticator?.open()
 		}
 	}
 
@@ -61,7 +61,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 				<mo-flex alignItems='center' minWidth='350px'>
 					<mo-flex height='100px' alignItems='center' gap='10px'>
 						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
-						<h2>${MoDeL.applicationHost.appTitle ?? 'Welcome'}</h2>
+						<h2>${MoDeL.application.appTitle ?? 'Welcome'}</h2>
 					</mo-flex>
 					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
 						<mo-text-field label='Username'
@@ -102,7 +102,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 			if (isAuthenticated === false) {
 				throw new Error('Something went wrong.\nTry again')
 			}
-			MoDeL.applicationHost.authenticatedUser = user
+			MoDeL.application.authenticatedUser = user
 			Snackbar.show('Authenticated successfully')
 		} catch (error) {
 			throw new Error('Incorrect Credentials')

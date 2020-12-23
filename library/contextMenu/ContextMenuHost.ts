@@ -4,7 +4,7 @@ import { Menu } from '../../components'
 
 @component('mo-context-menu-host')
 export default class ContextMenuHolder extends Component {
-	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHolder }
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHolder }
 	static get openMenu() { return this.instance.openMenu.bind(this.instance) }
 
 	private readonly lengthBuffer = 16

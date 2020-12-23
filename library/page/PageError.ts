@@ -8,6 +8,8 @@ export class PageError extends PageComponent<{ error: HttpError }> {
 		return this.parameters.error
 	}
 
+	// TODO: Localize
+
 	private errors = new Map<HttpError, { emoji: string, message: string }>([
 		['404', { emoji: '🧐', message: 'Page Not Found' }],
 		['403', { emoji: '🔒', message: 'Access Denied' }],

@@ -12,7 +12,7 @@ export const enum NavigationMode {
 
 @component('mo-page-host')
 export default class PageHost extends Component {
-	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-page-host') as PageHost }
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-page-host') as PageHost }
 
 	static get navigateToHomePage() { return this.instance.navigateToHomePage.bind(this.instance) }
 	static get navigateToPage() { return this.instance.navigateToPage.bind(this.instance) }

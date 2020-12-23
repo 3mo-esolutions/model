@@ -6,7 +6,7 @@ type DefaultDialogParameters = [header: string, content: string, primaryButtonTe
 
 @component('mo-dialog-host')
 export default class DialogHost extends Component {
-	static get instance() { return MoDeL.applicationHost.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
 	static get openDialog() { return this.instance.openDialog.bind(this.instance) }
 	static get confirmDialog() { return this.instance.confirmDialog.bind(this.instance) }
