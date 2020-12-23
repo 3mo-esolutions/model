@@ -4,7 +4,6 @@ import DialogAuthenticator from './DialogAuthenitcator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 
 export default abstract class Application extends Component {
-	abstract title: string
 	abstract get drawerContent(): TemplateResult
 
 	constructor() {
