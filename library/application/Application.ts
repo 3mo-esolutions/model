@@ -24,8 +24,8 @@ export default abstract class Application extends Component {
 	@property() abstract appTitle?: string
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
-	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean }) isDrawerDocked = StorageContainer.Components.Drawer.IsDocked.value
+	@property({ type: Boolean }) drawerOpen = this.isDrawerDocked
 	@property({ type: Boolean, reflect: true }) isTopAppBarProminent = false
 
 	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
@@ -124,7 +124,9 @@ export default abstract class Application extends Component {
 				<mo-flex height='100%'>
 					<mo-drawer-list height='*' open root>
 						${this.drawerContent}
-						<mo-div height='*'></mo-div>
+					</mo-drawer-list>
+
+					<mo-drawer-list open root>
 						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
 						<mo-drawer-item icon='login'>${this.authenticatedUser ? 'Logout' : 'Login'}</mo-drawer-item>
 					</mo-drawer-list>
