@@ -1,4 +1,4 @@
-import { css, html, property, Component, PageHost, TemplateResult } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, query } from '..'
 import { Themes } from '../../types'
 import DialogAuthenticator from './DialogAuthenitcator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
@@ -27,6 +27,8 @@ export default abstract class Application extends Component {
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean }) isDrawerDocked = StorageContainer.Components.Drawer.IsDocked.value
 	@property({ type: Boolean, reflect: true }) isTopAppBarProminent = false
+
+	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
 	protected async initialized() {
 		if (this.authenticator) {
@@ -74,23 +76,20 @@ export default abstract class Application extends Component {
 		`
 	}
 
-	protected render() {
-		return html`
-			<mo-top-app-bar dense centerTitle ?prominent=${this.isTopAppBarProminent}>
-				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
-					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
-					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-					<span id='spnAppTitle'>${this.appTitle}</span>
-				</mo-flex>
+	protected render = () => html`
+		<mo-top-app-bar dense centerTitle ?prominent=${this.isTopAppBarProminent}>
+			<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
+				<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+				<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+				<span id='spnAppTitle'>${this.appTitle}</span>
+			</mo-flex>
 
-				<mo-flex slot='title' alignItems='center'>
-					<span id='spnPageTitle'>${this.pageTitle}</span>
-					<slot name='topAppBarDetails'></slot>
-				</mo-flex>
+			<mo-flex slot='title' alignItems='center'>
+				<span id='spnPageTitle'>${this.pageTitle}</span>
+				<slot name='topAppBarDetails'></slot>
+			</mo-flex>
 
-				${this.profileTemplate}
-				<mo-page-host></mo-page-host>
-			</mo-top-app-bar>
+			${this.profileTemplate}
 
 			<mo-drawer
 				type=${this.isDrawerDocked ? 'dismissible' : 'modal'}
@@ -99,14 +98,16 @@ export default abstract class Application extends Component {
 				@MDCDrawer:closed=${() => this.drawerOpen = false}
 			>
 				${this.drawerContent}
-			</mo-drawer>
 
-			<mo-snackbar></mo-snackbar>
-			<mo-dialog-host></mo-dialog-host>
-			<mo-context-menu-host></mo-context-menu-host>
-			<mo-confetti></mo-confetti>
-		`
-	}
+				<mo-page-host slot='appContent'></mo-page-host>
+			</mo-drawer>
+		</mo-top-app-bar>
+
+		<mo-snackbar></mo-snackbar>
+		<mo-dialog-host></mo-dialog-host>
+		<mo-context-menu-host></mo-context-menu-host>
+		<mo-confetti></mo-confetti>
+	`
 
 	private get profileTemplate() {
 		if (this.authenticator === undefined)

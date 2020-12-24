@@ -21,7 +21,6 @@ export default class Page extends Component {
 	@property({ type: Boolean })
 	set fullHeight(value: boolean) {
 		PageHost.currentPage.style.flex = value ? '1' : ''
-		// TODO: minus 5px is needed? find out why.
 		this.style.height = value ? 'calc(100% - 5px)' : ''
 	}
 
@@ -30,9 +29,10 @@ export default class Page extends Component {
 	}
 
 	private handleTopAppBarDetails() {
-		const topAppBarDetails = this.querySelector<HTMLElement>('[slot="topAppBarDetails"]')
+		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]') as HTMLElement
 		if (topAppBarDetails) {
-			MoDeL.application.appendChild(topAppBarDetails.clone())
+			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
+			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails.clone())
 			topAppBarDetails.remove()
 		}
 		MoDeL.application.isTopAppBarProminent = !!topAppBarDetails
