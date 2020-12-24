@@ -16,14 +16,19 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 @component('mo-drawer')
 export default class Drawer extends ComponentMixin(MwcDrawer) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
+	static get type() { return this.instance.type }
 	static set isOpen(value: boolean) { this.instance.open = value }
 
 	static get styles() {
 		return css`
 			${super.styles}
 
-			.mdc-drawer__header {
-				border-bottom: 1px solid var(--mo-color-gray-transparent);
+			.mdc-drawer .mdc-drawer__title {
+				color: var(--mo-color-foreground);
+			}
+
+			.mdc-drawer .mdc-drawer__subtitle {
+				color: var(--mo-color-foreground);
 			}
 
 			:host {

@@ -29,6 +29,7 @@ interface HTMLElement {
 
 HTMLElement.prototype.clone = function <T extends HTMLElement>() {
 	const cloned = this.cloneNode(true) as T
+	this.initializeEventHandlersIfNotExists()
 	this.eventHandlers.forEach(ev => cloned.addEventListener(ev.name, ev.eventListener))
 	return cloned as T
 }

@@ -27,7 +27,9 @@ export default class DrawerItem extends ListItem {
 				} else {
 					component.open()
 				}
-				Drawer.isOpen = false
+				if (Drawer.type === 'modal') {
+					Drawer.isOpen = false
+				}
 			}
 		}
 	}
