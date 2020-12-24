@@ -85,6 +85,16 @@ export default abstract class Application extends Component {
 				font-weight: 400;
 				color: var(--mo-color-gray)
 			}
+
+			@media (max-width: 768px) {
+				mo-logo {
+					display: none;
+				}
+
+				#spnAppTitle {
+					display: none;
+				}
+			}
 		`
 	}
 
