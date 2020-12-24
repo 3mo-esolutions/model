@@ -128,7 +128,8 @@ export default abstract class Application extends Component {
 
 					<mo-drawer-list open root>
 						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
-						<mo-drawer-item icon='login'>${this.authenticatedUser ? 'Logout' : 'Login'}</mo-drawer-item>
+						<mo-drawer-item ?hidden=${!this.authenticator} icon='login' @click=${this.authenticate.bind(this)}>Login</mo-drawer-item>
+						<mo-drawer-item ?hidden=${!!this.authenticator} icon='exit_to_app' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
 					</mo-drawer-list>
 				</mo-flex>
 
@@ -141,6 +142,9 @@ export default abstract class Application extends Component {
 		<mo-context-menu-host></mo-context-menu-host>
 		<mo-confetti></mo-confetti>
 	`
+
+	private authenticate = async () => await this.authenticator?.confirm()
+	private unauthenticate = async () => await this.authenticator?.unauthenticate()
 
 	private get drawerProfile() {
 		if (this.isDrawerDocked === true)
@@ -182,7 +186,7 @@ export default abstract class Application extends Component {
 		} else {
 			return html`
 				<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
-					<mo-icon-button icon='account_circle' @click=${() => this.authenticator?.confirm()}></mo-icon-button>
+					<mo-icon-button icon='account_circle' @click=${this.authenticate.bind(this)}></mo-icon-button>
 				</mo-flex>
 			`
 		}

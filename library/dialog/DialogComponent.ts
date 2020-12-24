@@ -33,11 +33,6 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 		return this.shadowRoot.querySelector('mo-dialog') ?? undefined
 	}
 
-	protected initialized() {
-		this.isOpen = true
-		this.dialog?.finished.subscribe(result => this.closed.trigger(result))
-	}
-
 	protected close() {
 		this.isOpen = false
 	}
@@ -54,5 +49,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 		if (this.dialog === undefined) {
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
+		this.isOpen = true
+		this.dialog?.finished.subscribe(result => this.closed.trigger(result))
 	}
 }
