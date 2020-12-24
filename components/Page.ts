@@ -30,11 +30,12 @@ export default class Page extends Component {
 	}
 
 	private handleTopAppBarDetails() {
-		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]')
-		MoDeL.application.isTopAppBarProminent = !!topAppBarDetails
+		const topAppBarDetails = this.querySelector<HTMLElement>('[slot="topAppBarDetails"]')
 		if (topAppBarDetails) {
-			MoDeL.application.appendChild(topAppBarDetails)
+			MoDeL.application.appendChild(topAppBarDetails.clone())
+			topAppBarDetails.remove()
 		}
+		MoDeL.application.isTopAppBarProminent = !!topAppBarDetails
 	}
 
 	protected render() {
