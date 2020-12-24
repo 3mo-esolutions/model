@@ -37,10 +37,12 @@ export default class Drawer extends ComponentMixin(MwcDrawer) {
 
 			:host([type=dismissible]) aside {
 				background: var(--mo-color-background);
+				z-index: 0;
 			}
 
 			:host([type=modal]) aside {
 				top: 0;
+				z-index: 9;
 			}
 
 			.mdc-drawer__content {
