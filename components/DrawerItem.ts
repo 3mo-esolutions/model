@@ -34,12 +34,6 @@ export default class DrawerItem extends ListItem {
 		}
 	}
 
-	protected initialized() {
-		if (!this.componentConstructor) {
-			this.remove()
-		}
-	}
-
 	protected renderGraphic() {
 		return html`
 			<span class='mdc-list-item__graphic'>

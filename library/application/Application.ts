@@ -1,4 +1,4 @@
-import { css, html, property, Component, PageHost, TemplateResult, query } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, query, nothing } from '..'
 import { Themes } from '../../types'
 import DialogAuthenticator from './DialogAuthenitcator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
@@ -58,7 +58,8 @@ export default abstract class Application extends Component {
 
 			#spnAppTitle {
 				margin: 2px 0 0 8px;
-				font-size: var(--mo-font-size-l);
+				font-size: 23px;
+				font-family: Google Sans;
 			}
 
 			#spnPageTitle {
@@ -72,6 +73,17 @@ export default abstract class Application extends Component {
 			slot[name=topAppBarDetails] {
 				--mdc-theme-primary: white;
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
+			}
+
+			.username {
+				font-size: var(--mo-font-size-xl);
+				font-weight: 500;
+			}
+
+			.email {
+				font-size: var(--mo-font-size-m);
+				font-weight: 400;
+				color: var(--mo-color-gray)
 			}
 		`
 	}
@@ -89,7 +101,7 @@ export default abstract class Application extends Component {
 				<slot name='topAppBarDetails'></slot>
 			</mo-flex>
 
-			${this.profileTemplate}
+			${this.topAppBarProfile}
 
 			<mo-drawer
 				type=${this.isDrawerDocked ? 'dismissible' : 'modal'}
@@ -97,7 +109,17 @@ export default abstract class Application extends Component {
 				@MDCDrawer:opened=${() => this.drawerOpen = true}
 				@MDCDrawer:closed=${() => this.drawerOpen = false}
 			>
-				${this.drawerContent}
+				${this.drawerProfile}
+
+				<mo-flex height='100%'>
+					<mo-flex height='*'>
+						${this.drawerContent}
+					</mo-flex>
+					<mo-drawer-list open root>
+						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
+						<mo-drawer-item icon='login'>${this.authenticatedUser ? 'Logout' : 'Login'}</mo-drawer-item>
+					</mo-drawer-list>
+				</mo-flex>
 
 				<mo-page-host slot='appContent'></mo-page-host>
 			</mo-drawer>
@@ -109,41 +131,50 @@ export default abstract class Application extends Component {
 		<mo-confetti></mo-confetti>
 	`
 
-	private get profileTemplate() {
-		if (this.authenticator === undefined)
-			return
+	private get drawerProfile() {
+		if (this.isDrawerDocked === true)
+			return nothing
 
-		return this.authenticatedUser
-			? this.authenticatedProfileTemplate
-			: this.unauthenticatedProfileTemplate
-	}
+		if (this.authenticator === undefined || this.authenticatedUser === undefined)
+			return nothing
 
-	private get unauthenticatedProfileTemplate() {
 		return html`
-			<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
-				<mo-icon-button icon='account_circle' @click=${() => this.authenticator?.confirm()}></mo-icon-button>
+			<mo-flex slot='title'>
+				<span class='username'>${this.authenticatedUser.name}</span>
+				<span class='email'>${this.authenticatedUser.email}</span>
 			</mo-flex>
 		`
 	}
 
-	private get authenticatedProfileTemplate() {
-		if (!this.authenticatedUser)
-			return
+	private get topAppBarProfile() {
+		if (this.isDrawerDocked === false)
+			return nothing
 
-		const splittedName = this.authenticatedUser.name.split(' ')
-		const initials = `${splittedName[0].charAt(0)}${splittedName.length > 1 ? splittedName[splittedName.length - 1].charAt(0) : ''}`
+		if (this.authenticator === undefined)
+			return nothing
 
-		return html`
-			<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
-				<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)' justifyContent='flex-end'>${this.authenticatedUser.name}</mo-flex>
-				<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
-				<mo-flex gridColumn='2' gridRow='1 / span 2' height='40px' width='40px'
-					alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
-					borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
-					${initials}
+		if (this.authenticatedUser) {
+			const splittedName = this.authenticatedUser.name.split(' ')
+			const initials = `${splittedName[0].charAt(0)}${splittedName.length > 1 ? splittedName[splittedName.length - 1].charAt(0) : ''}`
+
+			return html`
+				<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
+					<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)' justifyContent='flex-end'>${this.authenticatedUser.name}</mo-flex>
+					<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
+					<mo-flex gridColumn='2' gridRow='1 / span 2' height='40px' width='40px'
+						alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
+						borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
+						${initials}
+					</mo-flex>
+				</mo-grid>
+			`
+		} else {
+			return html`
+				<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
+					<mo-icon-button icon='account_circle' @click=${() => this.authenticator?.confirm()}></mo-icon-button>
 				</mo-flex>
-			</mo-grid>
-		`
+			`
+		}
 	}
 }
 
