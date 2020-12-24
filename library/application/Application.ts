@@ -122,10 +122,9 @@ export default abstract class Application extends Component {
 				${this.drawerProfile}
 
 				<mo-flex height='100%'>
-					<mo-flex height='*'>
+					<mo-drawer-list height='*' open root>
 						${this.drawerContent}
-					</mo-flex>
-					<mo-drawer-list open root>
+						<mo-div height='*'></mo-div>
 						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
 						<mo-drawer-item icon='login'>${this.authenticatedUser ? 'Logout' : 'Login'}</mo-drawer-item>
 					</mo-drawer-list>
