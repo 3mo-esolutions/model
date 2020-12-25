@@ -31,9 +31,7 @@ export default abstract class Application extends Component {
 	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
 	protected async initialized() {
-		if (this.authenticator) {
-			await this.authenticator.confirm()
-		}
+		await this.authenticate()
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()

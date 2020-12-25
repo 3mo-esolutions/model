@@ -47,6 +47,17 @@ export default class Drawer extends ComponentMixin(MwcDrawer) {
 
 			.mdc-drawer__content {
 				margin-top: var(--mo-thickness-m);
+				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+				scrollbar-width: thin;
+			}
+
+			.mdc-drawer__content::-webkit-scrollbar {
+				width: 5px;
+				height: 5px;
+			}
+
+			.mdc-drawer__content::-webkit-scrollbar-thumb {
+				background: var(--mo-scrollbar-foreground-color);
 			}
 		`
 	}
