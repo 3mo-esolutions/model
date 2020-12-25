@@ -47,6 +47,10 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 
 	protected render = () => html`
 		<style>
+			mo-dialog {
+				--mdc-dialog-scrim-color: var(--mo-color-background)
+			}
+
 			a {
 				font-size: small;
 				opacity: 0.85;
@@ -61,7 +65,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 				font-weight: 500;
 			}
 		</style>
-		<mo-dialog actionsJustifyContent='center' isBlocking .primaryButtonClicked=${this.authenticate.bind(this)} style='--mdc-dialog-scrim-color: var(--mo-color-background)'>
+		<mo-dialog actionsJustifyContent='center' isBlocking primaryOnEnter .primaryButtonClicked=${this.authenticate.bind(this)}>
 			<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
 			<mo-flex alignItems='center' minWidth='350px'>
 				<mo-flex height='100px' alignItems='center' gap='10px'>

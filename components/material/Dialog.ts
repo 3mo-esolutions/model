@@ -57,6 +57,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
+	@property({ type: Boolean }) primaryOnEnter = false
 
 	@property() actionsJustifyContent: CSS.Property.JustifyContent = 'flex-end'
 
@@ -86,8 +87,11 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 			}
 		})
 
-		// To prevent the default behavior of executing primaryAction when Enter key is pressed
-		this.mdcRoot.onkeydown = e => e.stopImmediatePropagation()
+		this.mdcRoot.onkeydown = e => {
+			if (this.primaryOnEnter === false) {
+				e.stopImmediatePropagation()
+			}
+		}
 	}
 
 	static get styles() {
