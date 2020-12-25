@@ -92,7 +92,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 
 	protected async isAuthenticated() {
 		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
-		const isAuthenticatedClientSide = StorageContainer.Authentication.AuthenticatedUser !== undefined
+		const isAuthenticatedClientSide = StorageContainer.Authentication.AuthenticatedUser.value !== undefined
 		return isAuthenticatedServerSide && isAuthenticatedClientSide
 	}
 
