@@ -507,6 +507,7 @@ export type MaterialIcon =
 	| 'lock'
 	| 'lock_open'
 	| 'lock_outline'
+	| 'login'
 	| 'looks'
 	| 'looks_3'
 	| 'looks_4'

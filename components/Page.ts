@@ -21,7 +21,21 @@ export default class Page extends Component {
 	@property({ type: Boolean })
 	set fullHeight(value: boolean) {
 		PageHost.currentPage.style.flex = value ? '1' : ''
-		this.style.height = value ? '100%' : ''
+		this.style.height = value ? 'calc(100% - 5px)' : ''
+	}
+
+	protected initialized() {
+		this.handleTopAppBarDetails()
+	}
+
+	private handleTopAppBarDetails() {
+		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]') as HTMLElement
+		if (topAppBarDetails) {
+			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
+			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails.clone())
+			topAppBarDetails.remove()
+		}
+		MoDeL.application.topAppBarProminent = !!topAppBarDetails
 	}
 
 	protected render() {

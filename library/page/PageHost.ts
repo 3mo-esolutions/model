@@ -97,11 +97,19 @@ export default class PageHost extends Component {
 				padding: var(--mo-page-padding);
 			}
 		</style>
-		<mo-flex alignItems='center' height='100%'>
-			<slot></slot>
-		</mo-flex>
+		<mo-scroll>
+			<mo-flex alignItems='center' height='100%'>
+				<slot></slot>
+			</mo-flex>
+		</mo-scroll>
 	`
 }
+
+/* TODO UPSTREAM
+	PageHost being a scroller itself, causes Material's TopAppBar not to collapse on page scroll.
+	If this is needed, the mo-scroll should be removed, and another solution shall be found.
+	An issue is therefore filed here: https://github.com/material-components/material-components-web-components/issues/2028
+*/
 
 declare global {
 	interface HTMLElementTagNameMap {

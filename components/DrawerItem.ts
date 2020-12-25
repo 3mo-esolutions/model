@@ -19,6 +19,12 @@ export default class DrawerItem extends ListItem {
 
 		MoDeL.Router.navigated.subscribe(pageConstructor => PromiseTask.delegateToEventLoop(() => this.selected = pageConstructor === this.componentConstructor?.[0]))
 
+		this.selectionChange.subscribe(() => {
+			if (!this.componentConstructor) {
+				this.selected = false
+			}
+		})
+
 		this.onclick = () => {
 			if (this.componentConstructor) {
 				const component = new this.componentConstructor[0](this.componentConstructor[1])
@@ -27,14 +33,10 @@ export default class DrawerItem extends ListItem {
 				} else {
 					component.open()
 				}
-				Drawer.isOpen = false
+				if (Drawer.type === 'modal') {
+					Drawer.isOpen = false
+				}
 			}
-		}
-	}
-
-	protected initialized() {
-		if (!this.componentConstructor) {
-			this.remove()
 		}
 	}
 

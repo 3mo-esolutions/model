@@ -4,6 +4,7 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 /**
  * @attr open
  * @attr type
+ * @attr hasHeader
  * @fires MDCDrawer:opened
  * @fires MDCDrawer:closed
  * @fires MDCDrawer:nav
@@ -16,20 +17,48 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 @component('mo-drawer')
 export default class Drawer extends ComponentMixin(MwcDrawer) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
+	static get type() { return this.instance.type }
 	static set isOpen(value: boolean) { this.instance.open = value }
 
 	static get styles() {
 		return css`
 			${super.styles}
 
-			.mdc-drawer__header {
-				border-bottom: 1px solid var(--mo-color-gray-transparent);
+			.mdc-drawer .mdc-drawer__title {
+				color: var(--mo-color-foreground);
 			}
 
-			:host([type=dismissible]) .mdc-drawer {
-				height: calc(100% - var(--mo-top-app-bar-height));
-				margin-top: var(--mo-top-app-bar-height);
+			.mdc-drawer .mdc-drawer__subtitle {
+				color: var(--mo-color-foreground);
+			}
+
+			:host {
+				position: relative;
+			}
+
+			:host([type=dismissible]) aside {
 				background: var(--mo-color-background);
+				z-index: 0;
+			}
+
+			:host([type=modal]) aside {
+				top: 0;
+				z-index: 9;
+			}
+
+			.mdc-drawer__content {
+				margin-top: var(--mo-thickness-m);
+				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+				scrollbar-width: thin;
+			}
+
+			.mdc-drawer__content::-webkit-scrollbar {
+				width: 5px;
+				height: 5px;
+			}
+
+			.mdc-drawer__content::-webkit-scrollbar-thumb {
+				background: var(--mo-scrollbar-foreground-color);
 			}
 		`
 	}

@@ -1,10 +1,10 @@
-import { css, html, property, Component, PageHost, TemplateResult } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, query, nothing } from '..'
 import { Themes } from '../../types'
 import DialogAuthenticator from './DialogAuthenitcator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 
 export default abstract class Application extends Component {
-	abstract get drawerContent(): TemplateResult
+	abstract get drawerTemplate(): TemplateResult
 
 	constructor() {
 		super()
@@ -18,19 +18,24 @@ export default abstract class Application extends Component {
 		PwaHelper.enablePWA()
 	}
 
-	authenticator?: DialogAuthenticator
+	authenticatorConstructor?: Constructor<DialogAuthenticator>
+
+	get authenticator() {
+		return this.authenticatorConstructor ? new this.authenticatorConstructor() : undefined
+	}
 
 	@property({ reflect: true }) theme: Exclude<Themes, Themes.System> = Themes.Light
 	@property() abstract appTitle?: string
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
-	@property({ type: Boolean }) drawerOpen = false
-	@property({ type: Boolean }) isDrawerDocked = StorageContainer.Components.Drawer.IsDocked.value
+	@property({ type: Boolean }) drawerDocked = StorageContainer.Components.Drawer.IsDocked.value
+	@property({ type: Boolean }) drawerOpen = this.drawerDocked
+	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
+
+	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
 	protected async initialized() {
-		if (this.authenticator) {
-			await this.authenticator.confirm()
-		}
+		await this.authenticate()
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()
@@ -39,7 +44,7 @@ export default abstract class Application extends Component {
 		}
 
 		StorageContainer.Authentication.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.isDrawerDocked = isDocked)
+		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 	}
 
 	static get styles() {
@@ -53,78 +58,138 @@ export default abstract class Application extends Component {
 				min-height: 100%;
 			}
 
-			#spnAppBarTitle {
+			#spnAppTitle {
 				margin: 2px 0 0 8px;
+				font-size: 23px;
+				font-family: Google Sans;
+			}
+
+			#spnPageTitle {
 				font-size: var(--mo-font-size-l);
+			}
+
+			:host([isTopAppBarProminent]) #spnPageTitle {
+				margin-bottom: 9px;
+			}
+
+			slot[name=topAppBarDetails] {
+				--mdc-theme-primary: white;
+				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
+			}
+
+			.username {
+				font-size: var(--mo-font-size-xl);
+				font-weight: 500;
+			}
+
+			.email {
+				font-size: var(--mo-font-size-m);
+				font-weight: 400;
+				color: var(--mo-color-gray)
+			}
+
+			@media (max-width: 768px) {
+				mo-logo {
+					display: none;
+				}
+
+				#spnAppTitle {
+					display: none;
+				}
 			}
 		`
 	}
 
-	protected render() {
-		return html`
-			<mo-top-app-bar height='var(--mo-top-app-bar-height)' dense>
-				<mo-icon-button slot='navigationIcon' icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+	protected render = () => html`
+		<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
+			<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
+				<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+				<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+				<span id='spnAppTitle'>${this.appTitle}</span>
+			</mo-flex>
 
-				<mo-flex slot='title' direction='horizontal' alignItems='center'>
-					<mo-logo height='30px' foreground='var(--mo-color-accessible)'></mo-logo>
-					<span id='spnAppBarTitle'>${this.appTitle} ${this.pageTitle ? '|' : ''} ${this.pageTitle}</span>
-				</mo-flex>
+			<mo-flex slot='title' alignItems='center'>
+				<span id='spnPageTitle'>${this.pageTitle}</span>
+				<slot name='topAppBarDetails'></slot>
+			</mo-flex>
 
-				${this.profileTemplate}
-			</mo-top-app-bar>
+			${this.topAppBarProfile}
 
 			<mo-drawer
-				type=${this.isDrawerDocked ? 'dismissible' : 'modal'}
+				type=${this.drawerDocked ? 'dismissible' : 'modal'}
 				?open=${this.drawerOpen}
+				?hasHeader=${this.hasDrawerProfile}
 				@MDCDrawer:opened=${() => this.drawerOpen = true}
 				@MDCDrawer:closed=${() => this.drawerOpen = false}
 			>
-				${this.drawerContent}
+				${this.drawerProfile}
+
+				<mo-flex height='100%'>
+					<mo-drawer-list height='*' open root>
+						${this.drawerTemplate}
+					</mo-drawer-list>
+
+					<mo-drawer-list open root>
+						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
+						<mo-drawer-item ?hidden=${!this.authenticatorConstructor || !this.authenticatedUser} icon='login' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
+					</mo-drawer-list>
+				</mo-flex>
+
+				<mo-page-host slot='appContent'></mo-page-host>
 			</mo-drawer>
+		</mo-top-app-bar>
 
-			<mo-page-host></mo-page-host>
-			<mo-snackbar></mo-snackbar>
-			<mo-dialog-host></mo-dialog-host>
-			<mo-context-menu-host></mo-context-menu-host>
-			<mo-confetti></mo-confetti>
-		`
+		<mo-snackbar></mo-snackbar>
+		<mo-dialog-host></mo-dialog-host>
+		<mo-context-menu-host></mo-context-menu-host>
+		<mo-confetti></mo-confetti>
+	`
+
+	private authenticate = async () => await this.authenticator?.confirm()
+	private unauthenticate = async () => {
+		await this.authenticator?.unauthenticate()
+		this.drawerOpen = false
 	}
 
-	private get profileTemplate() {
-		if (this.authenticator === undefined)
-			return
-
-		return this.authenticatedUser
-			? this.authenticatedProfileTemplate
-			: this.unauthenticatedProfileTemplate
+	private get hasDrawerProfile() {
+		return !this.drawerDocked && !!this.authenticatorConstructor && !!this.authenticatedUser
 	}
 
-	private get unauthenticatedProfileTemplate() {
-		return html`
-			<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
-				<mo-icon-button icon='account_circle' @click=${() => this.authenticator?.confirm()}></mo-icon-button>
+	private get drawerProfile() {
+		return !this.hasDrawerProfile ? nothing : html`
+			<mo-flex slot='title'>
+				<span class='username'>${this.authenticatedUser?.name}</span>
+				<span class='email'>${this.authenticatedUser?.email}</span>
 			</mo-flex>
 		`
 	}
 
-	private get authenticatedProfileTemplate() {
-		if (!this.authenticatedUser)
-			return
+	private get topAppBarProfile() {
+		if (this.drawerDocked === false || this.authenticatorConstructor === undefined)
+			return nothing
 
-		const splittedName = this.authenticatedUser.name.split(' ')
-		const initials = `${splittedName[0].charAt(0)}${splittedName.length > 1 ? splittedName[splittedName.length - 1].charAt(0) : ''}`
+		if (this.authenticatedUser) {
+			const splittedName = this.authenticatedUser.name.split(' ')
+			const initials = `${splittedName[0].charAt(0)}${splittedName.length > 1 ? splittedName[splittedName.length - 1].charAt(0) : ''}`
 
-		return html`
-			<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
-				<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)' justifyContent='flex-end'>${this.authenticatedUser.name}</mo-flex>
-				<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
-				<mo-flex gridColumn='2' gridRow='1 / span 2' height='40px' width='40px'
-					alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
-					borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
-					${initials}
+			return html`
+				<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
+					<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)' justifyContent='flex-end'>${this.authenticatedUser.name}</mo-flex>
+					<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
+					<mo-flex gridColumn='2' gridRow='1 / span 2' height='40px' width='40px'
+						alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
+						borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
+						${initials}
+					</mo-flex>
+				</mo-grid>
+			`
+		} else {
+			return html`
+				<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
+					<mo-icon-button icon='account_circle' @click=${this.authenticate.bind(this)}></mo-icon-button>
 				</mo-flex>
-			</mo-grid>
-		`
+			`
+		}
 	}
 }
 
