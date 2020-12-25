@@ -35,7 +35,7 @@ export default class Page extends Component {
 			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails.clone())
 			topAppBarDetails.remove()
 		}
-		MoDeL.application.isTopAppBarProminent = !!topAppBarDetails
+		MoDeL.application.topAppBarProminent = !!topAppBarDetails
 	}
 
 	protected render() {

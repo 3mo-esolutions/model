@@ -4,6 +4,7 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 /**
  * @attr open
  * @attr type
+ * @attr hasHeader
  * @fires MDCDrawer:opened
  * @fires MDCDrawer:closed
  * @fires MDCDrawer:nav

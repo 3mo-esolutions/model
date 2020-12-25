@@ -7,7 +7,7 @@ export const application = <T extends Application>(applicationConstructor: Const
 }
 
 export const authenticator = <T extends DialogAuthenticator>(authenticatorConstructor: Constructor<T>) => {
-	MoDeL.application.authenticator = new authenticatorConstructor()
+	MoDeL.application.authenticatorConstructor = authenticatorConstructor
 }
 
 export const logo = <T extends HTMLElement>(elementConstructor: Constructor<T>) => {

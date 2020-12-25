@@ -52,6 +52,14 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 				opacity: 0.85;
 				cursor: pointer;
 			}
+
+			a:hover {
+				color: var(--mo-accent);
+			}
+
+			h2 {
+				font-weight: 500;
+			}
 		</style>
 		<mo-dialog actionsJustifyContent='center' isBlocking .primaryButtonClicked=${this.authenticate.bind(this)} style='--mdc-dialog-scrim-color: var(--mo-color-background)'>
 			<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
@@ -96,12 +104,12 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 			StorageContainer.Authentication.AuthenticatedUser.value = user
 			const isAuthenticated = await this.isAuthenticated()
 			if (isAuthenticated === false) {
-				throw new Error('Something went wrong.\nTry again')
+				throw new Error('Something went wrong.\nTry again.')
 			}
 			MoDeL.application.authenticatedUser = user
 			Snackbar.show('Authenticated successfully')
 		} catch (error) {
-			throw new Error('Incorrect Credentials')
+			throw new Error(error.message ?? 'Incorrect Credentials')
 		}
 	}
 
