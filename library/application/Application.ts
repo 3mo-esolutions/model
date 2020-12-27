@@ -130,7 +130,7 @@ export default abstract class Application extends Component {
 					</mo-drawer-list>
 
 					<mo-drawer-list open root>
-						<mo-drawer-item icon='settings'>Settings</mo-drawer-item>
+						${this.renderDrawerExtras()}
 						<mo-drawer-item ?hidden=${!this.authenticatorConstructor || !this.authenticatedUser} icon='login' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
 					</mo-drawer-list>
 				</mo-flex>
@@ -190,6 +190,10 @@ export default abstract class Application extends Component {
 				</mo-flex>
 			`
 		}
+	}
+
+	protected renderDrawerExtras() {
+		return nothing
 	}
 }
 
