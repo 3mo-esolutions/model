@@ -1,8 +1,8 @@
 import { Manifest } from '../types'
 
 export default class ManifestHelper {
-	public static cache: Manifest | undefined = undefined
-	public static async load(): Promise<Manifest> {
+	static cache: Manifest | undefined = undefined
+	static async fetch(): Promise<Manifest> {
 		if (this.cache)
 			return this.cache
 
