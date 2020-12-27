@@ -14,8 +14,6 @@ import { Slider as MwcSlider } from '@material/mwc-slider'
 @component('mo-slider')
 export default class Slider extends ComponentMixin(MwcSlider) {
 	@property() label = ''
-	// @ts-ignore overriding the type
-	value: number
 }
 
 declare global {
