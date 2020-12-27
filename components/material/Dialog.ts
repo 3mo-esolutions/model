@@ -82,9 +82,12 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick.bind(this))
 		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick.bind(this))
 		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined }>) => {
-			if (e.detail.action === 'close') {
-				this.handleCancellation()
+			if (e.detail?.action !== 'close') {
+				e.stopImmediatePropagation()
+				return
 			}
+
+			this.handleCancellation()
 		})
 
 		this.mdcRoot.onkeydown = e => {
