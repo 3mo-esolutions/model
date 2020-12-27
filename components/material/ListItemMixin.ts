@@ -15,16 +15,16 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 		}
 
 		static get styles() {
-			/* @ts-ignore Material components do have styles, but it is comiled from SASS, therefore not recognized */
-			const superStyles = super.styles
-			return css`
-				${superStyles}
-
-				.mdc-list-item__meta {
-					width: var(--mdc-list-item-meta-width, var(--mdc-list-item-meta-size, 24px));
-					height: var(--mdc-list-item-meta-height, var(--mdc-list-item-meta-size, 24px));
-				}
-			`
+			return [
+				/* @ts-ignore Material components do have styles, but it is comiled from SASS, therefore not recognized AoT */
+				super.styles,
+				css`
+					.mdc-list-item__meta {
+						width: var(--mdc-list-item-meta-width, var(--mdc-list-item-meta-size, 24px));
+						height: var(--mdc-list-item-meta-height, var(--mdc-list-item-meta-size, 24px));
+					}
+				`
+			]
 		}
 
 		@property() icon?: MaterialIcon
