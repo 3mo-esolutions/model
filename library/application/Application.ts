@@ -16,6 +16,7 @@ export default abstract class Application extends Component {
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
 		PwaHelper.enablePWA()
+		this.handlerThemes()
 	}
 
 	authenticatorConstructor?: Constructor<DialogAuthenticator>
@@ -24,7 +25,7 @@ export default abstract class Application extends Component {
 		return this.authenticatorConstructor ? new this.authenticatorConstructor() : undefined
 	}
 
-	@property({ reflect: true }) theme: Exclude<Themes, Themes.System> = Themes.Light
+	@property({ reflect: true }) theme?: Exclude<Themes, Themes.System>
 	@property() abstract appTitle?: string
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
@@ -45,6 +46,19 @@ export default abstract class Application extends Component {
 
 		StorageContainer.Authentication.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
 		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
+	}
+
+	private handlerThemes() {
+		const getTheme = (theme: Themes = StorageContainer.Theme.Background.value) => {
+			if (theme === Themes.System) {
+				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+				return isDark ? Themes.Dark : Themes.Light
+			}
+			return this.theme
+		}
+		this.theme = getTheme()
+		StorageContainer.Theme.Background.changed.subscribe(theme => this.theme = getTheme(theme))
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.theme = getTheme())
 	}
 
 	static get styles() {
