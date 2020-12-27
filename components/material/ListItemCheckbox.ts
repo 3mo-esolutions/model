@@ -1,4 +1,5 @@
 import { component, ComponentMixin } from '../../library'
+import { ListItemMixin } from './ListItemMixin'
 // eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
@@ -11,17 +12,19 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  * @attr activated
  * @attr noninteractive
  * @attr selected
+ * @attr hasMeta
+ * @attr graphic
+ * @attr twoline
  * @fires selectionChange
  */
 @component('mo-list-item-checkbox')
-export default class ListItemCheckbox extends ComponentMixin(MwcCheckListItem) {
+export default class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItem)) {
 	@eventProperty readonly selectionChange!: IEvent<boolean>
 
 	constructor() {
 		super()
-		this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')
-		this.twoline = !!Array.from(this.children).find(child => child.slot === 'secondary')
-		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))
+		this.addEventListener('request-selected', () => this.selectionChange.trigger(this.checkboxElement.checked))
+		this.addEventListener('click', () => this.checkboxElement.checked = !this.checkboxElement.checked)
 	}
 }
 

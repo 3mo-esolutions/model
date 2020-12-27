@@ -1,4 +1,5 @@
 import { component, ComponentMixin } from '../../library'
+import { ListItemMixin } from './ListItemMixin'
 // eslint-disable-next-line import/no-internal-modules
 import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-list-item'
 
@@ -11,17 +12,17 @@ import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-
  * @attr activated
  * @attr noninteractive
  * @attr selected
+ * @attr hasMeta
+ * @attr graphic
+ * @attr twoline
  * @fires selectionChange
  */
 @component('mo-list-item-radio')
-export default class ListItemRadio extends ComponentMixin(MwcRadioListItem) {
-	@eventProperty readonly selectionChange!: IEvent<boolean>
-
+export default class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItem)) {
 	constructor() {
 		super()
-		this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')
-		this.twoline = !!Array.from(this.children).find(child => child.slot === 'secondary')
-		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))
+		this.addEventListener('request-selected', () => this.selectionChange.trigger(this.radioElement.checked))
+		this.addEventListener('click', () => this.radioElement.checked = !this.radioElement.checked)
 	}
 }
 
