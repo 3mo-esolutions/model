@@ -54,7 +54,7 @@ export default abstract class Application extends Component {
 				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 				return isDark ? Themes.Dark : Themes.Light
 			}
-			return this.theme
+			return theme
 		}
 		this.theme = getTheme()
 		StorageContainer.Theme.Background.changed.subscribe(theme => this.theme = getTheme(theme))
