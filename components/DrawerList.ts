@@ -34,12 +34,7 @@ export default class DrawerList extends Component {
 					--drawer-item-depth-padding: 18px;
 					--drawer-item-height: 40px;
 					--drawer-item-vertical-margin: 4px;
-					--drawer-list-side-margin: 6px;
 					position: relative;
-				}
-
-				:host([root]) {
-					margin: 0 var(--drawer-list-side-margin);
 				}
 
 				:host([open]) {
