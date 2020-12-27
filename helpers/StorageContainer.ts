@@ -1,26 +1,9 @@
-import { localStorageEntryBuilder, LocalStorageEntry, PromiseTask } from '.'
+import { localStorageEntryBuilder, LocalStorageEntry } from '.'
 import { Accents, LanguageCode, Themes, User } from '../types'
 
 export default {
 	Theme: {
-		Background: new class extends localStorageEntryBuilder<Themes>('MoDeL.Theme.Background', Themes.System) {
-			constructor() {
-				super()
-				this.handleChange()
-				this.changed.subscribe(() => this.handleChange())
-				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.value)
-			}
-
-			private async handleChange() {
-				if (this.value !== Themes.System) {
-					MoDeL.application.theme = this.value
-					return
-				}
-				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-				PromiseTask.delegateToEventLoop(() => MoDeL.application.theme = isDark ? Themes.Dark : Themes.Light)
-			}
-		},
-
+		Background: new LocalStorageEntry('MoDeL.Theme.Background', Themes.System),
 		Accent: new class extends localStorageEntryBuilder<Accents>('MoDeL.Theme.Accent', Accents.Blue) {
 			constructor() {
 				super()
