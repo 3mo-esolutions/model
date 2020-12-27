@@ -23,6 +23,10 @@ export default class TopAppBar extends ComponentMixin(MwcTopAppBar) {
 				width: 100%;
 			}
 
+			header {
+				background: var(--mo-accent-gradient);
+			}
+
 			header+div {
 				width: 100%;
 			}

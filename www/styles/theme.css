@@ -118,6 +118,7 @@ body {
     /* Override Material Web Components variables */
     --mdc-theme-primary: var(--mo-accent) !important;
     --mdc-theme-secondary: var(--mo-accent) !important;
+    --mdc-theme-text-secondary-on-background: var(--mo-color-gray) !important;
     --mdc-icon-font: Material Icons Sharp !important;
     --mdc-theme-text-primary-on-dark: var(--mo-color-surface) !important;
     --mdc-switch-unchecked-color: var(--mo-color-foreground) !important;
