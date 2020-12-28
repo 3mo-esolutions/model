@@ -29,8 +29,8 @@ const sharedConfigs = {
 					noErrorOnMissing: true
 				},
 				{
-					from: 'images/',
-					to: 'images/',
+					from: 'assets/',
+					to: 'assets/',
 					noErrorOnMissing: true
 				},
 				{
