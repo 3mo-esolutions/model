@@ -58,6 +58,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
 	@property({ type: Boolean }) primaryOnEnter = false
+	@property({ type: Boolean }) manualClose = false
 
 	@property() actionsJustifyContent: CSS.Property.JustifyContent = 'flex-end'
 
@@ -140,7 +141,9 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 	private async handlePrimaryButtonClick() {
 		try {
 			await this.primaryButtonClicked()
-			this.close(true)
+			if (this.manualClose !== true) {
+				this.close(true)
+			}
 		} catch (e) {
 			Snackbar.show(e.message)
 			throw e
@@ -155,7 +158,9 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 
 		try {
 			await this.secondaryButtonClicked()
-			this.close(true)
+			if (this.manualClose !== true) {
+				this.close(true)
+			}
 		} catch (e) {
 			Snackbar.show(e.message)
 			throw e
