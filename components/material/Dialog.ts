@@ -102,8 +102,16 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		return css`
 			${super.styles}
 
+			:host {
+				--mdc-dialog-min-width: 100%;
+			}
+
 			#actions {
 				gap: var(--mo-thickness-xl);
+			}
+
+			#title {
+				padding-right: 48px;
 			}
 		`
 	}
@@ -120,7 +128,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		this.icbClose.onclick = () => this.handleCancellation()
 		this.icbClose.position = 'absolute'
 		this.icbClose.style.right = '8px'
-		this.icbClose.style.top = '8px'
+		this.icbClose.style.top = '13px'
 		this.divSurface.appendChild(this.icbClose)
 	}
 
