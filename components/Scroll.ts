@@ -6,6 +6,8 @@ export default class Scroll extends Component {
 		return html`
 			<style>
 				:host {
+					/* 'overlay' is not supported in firefox so it fallbacks to auto, otherwise overlay is set */
+					overflow: auto;
 					overflow: overlay;
 					min-height: 0;
 					display: block;
