@@ -6,7 +6,7 @@ export default class Scroll extends Component {
 		return html`
 			<style>
 				:host {
-					overflow: auto;
+					overflow: overlay;
 					min-height: 0;
 					display: block;
 					position: relative;
