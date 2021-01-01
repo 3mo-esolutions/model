@@ -1,12 +1,13 @@
 import LocalStorageEntry from './LocalStorage'
 
-export default <T>(pName: string, pDefaultValue: T) => {
+export default <T>(pName: string, pDefaultValue: T, pReviver?: (key: string, value: any) => any) => {
 	return class extends LocalStorageEntry<T> {
 		constructor(
-			protected readonly name: string = pName,
-			protected readonly defaultValue: T = pDefaultValue
+			protected readonly name = pName,
+			protected readonly defaultValue = pDefaultValue,
+			protected readonly reviver = pReviver,
 		) {
-			super(name, defaultValue)
+			super(name, defaultValue, reviver)
 		}
 	}
 }

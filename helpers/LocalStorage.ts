@@ -19,7 +19,8 @@ export default class LocalStorageEntry<T> {
 
 	constructor(
 		protected readonly name: string,
-		protected readonly defaultValue: T
+		protected readonly defaultValue: T,
+		protected readonly reviver?: (key: string, value: any) => any
 	) {
 		LocalStorageContainer.push(this)
 	}
@@ -28,7 +29,7 @@ export default class LocalStorageEntry<T> {
 		const value = window.localStorage.getItem(this.name) ?? undefined
 		if (value === undefined || value === 'undefined')
 			return this.defaultValue
-		return JsonHelper.isJson(value) ? JSON.parse(value) : value
+		return JsonHelper.isJson(value) ? JSON.parse(value, this.reviver) : value
 	}
 
 	set value(obj: T) {
