@@ -8,6 +8,7 @@ export default class Option<TValue = string> extends ListItem {
 
 	initialized() {
 		super.initialized()
+		this.style.maxWidth = '600px'
 		this.selectionChange.subscribe(() => {
 			if (this.default === true) {
 				this.selected = false
