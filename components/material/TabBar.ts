@@ -4,11 +4,13 @@ import { Tab } from '.'
 
 /**
  * @attr activeIndex
- * @fires MDCTabBar:activated
+ * @fires navigate
  */
 @component('mo-tab-bar')
-export default class TabBar<TValue extends string> extends ComponentMixin(MwcTabBar) {
-	get tabs() { return Array.from(this.children) as Array<Tab<TValue>> }
+export default class TabBar extends ComponentMixin(MwcTabBar) {
+	@eventProperty readonly navigate!: IEvent<string>
+
+	get tabs() { return Array.from(this.children) as Array<Tab> }
 
 	get selectedTab() { return this.tabs.find(tab => tab.active) }
 
@@ -26,13 +28,16 @@ export default class TabBar<TValue extends string> extends ComponentMixin(MwcTab
 			if (this.isFirstNavigation && this.preventFirstTabNavigation) {
 				this.isFirstNavigation = false
 				e.stopImmediatePropagation()
+				return
 			}
+
+			this.navigate.trigger(this.value)
 		})
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-tab-bar': TabBar<string>
+		'mo-tab-bar': TabBar
 	}
 }

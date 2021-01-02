@@ -17,20 +17,19 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @fires MDCTab:interacted
  */
 @component('mo-tab')
-export default class Tab<TValue extends string> extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
-	@property({ reflect: true }) value?: TValue
+export default class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
+	@property({ reflect: true }) value!: string
 	@property({ reflect: true }) icon!: MaterialIcon
 
 	initialized() {
 		if (this.textContent) {
 			this.label = this.textContent
 		}
-		// if(this.textContent)
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-tab': Tab<string>
+		'mo-tab': Tab
 	}
 }
