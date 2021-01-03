@@ -3,6 +3,11 @@ import { ListItemMixin } from './ListItemMixin'
 // eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
+class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
+	// @ts-ignore It is actually a boolean
+	left: string
+}
+
 /**
  * @attr left
  * @attr group
@@ -18,7 +23,7 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  * @fires selectionChange
  */
 @component('mo-list-item-checkbox')
-export default class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItem)) {
+export default class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItemWidthCompatibleLeft)) {
 	@eventProperty() readonly selectionChange!: IEvent<boolean>
 
 	constructor() {

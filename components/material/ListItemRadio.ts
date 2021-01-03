@@ -3,6 +3,11 @@ import { ListItemMixin } from './ListItemMixin'
 // eslint-disable-next-line import/no-internal-modules
 import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-list-item'
 
+class MwcRadioListItemWidthCompatibleLeft extends MwcRadioListItem {
+	// @ts-ignore It is actually a boolean
+	left: string
+}
+
 /**
  * @attr left
  * @attr group
@@ -18,7 +23,7 @@ import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-
  * @fires selectionChange
  */
 @component('mo-list-item-radio')
-export default class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItem)) {
+export default class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItemWidthCompatibleLeft)) {
 	constructor() {
 		super()
 		this.addEventListener('request-selected', () => this.selectionChange.trigger(this.radioElement.checked))

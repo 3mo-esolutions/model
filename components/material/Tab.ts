@@ -4,7 +4,7 @@ import { MaterialIcon } from '../../types'
 
 class MwcTabWithCompatibleMinWidth extends MwcTab {
 	// @ts-ignore It is actually a boolean to resolve TS error
-	minWidth: number
+	minWidth: string
 }
 
 /**
