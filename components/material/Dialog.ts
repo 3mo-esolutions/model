@@ -23,7 +23,7 @@ type DialogSize = 'large' | 'medium' | 'small'
  */
 @component('mo-dialog')
 export default class Dialog extends ComponentMixin(MwcDialog) {
-	@eventProperty readonly finished!: IEvent<boolean>
+	@eventProperty() readonly finished!: IEvent<boolean>
 
 	primaryButtonClicked: ClickHandler = () => void 0
 	secondaryButtonClicked?: ClickHandler

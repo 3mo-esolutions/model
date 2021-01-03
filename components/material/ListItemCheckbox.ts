@@ -19,7 +19,7 @@ import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-
  */
 @component('mo-list-item-checkbox')
 export default class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItem)) {
-	@eventProperty readonly selectionChange!: IEvent<boolean>
+	@eventProperty() readonly selectionChange!: IEvent<boolean>
 
 	constructor() {
 		super()

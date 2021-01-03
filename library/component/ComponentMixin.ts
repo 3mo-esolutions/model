@@ -13,21 +13,13 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 		readonly shadowRoot!: ShadowRoot
 		readonly parentElement!: HTMLElement
 
-		// @eventProperty readonly initialized!: IEvent
-
 		protected firstUpdated(props: PropertyValues) {
 			super.firstUpdated(props)
 			this.initialized()
 		}
 
-		/**
-		 * Life-cycle callback after all elements are rendered for the first time
-		 */
 		protected initialized() { }
 
-		/**
-		 * Life-cycle callback when this component is uninitializing
-		 */
 		protected uninitialized() { }
 
 		disconnectedCallback() {

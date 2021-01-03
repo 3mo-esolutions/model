@@ -8,7 +8,7 @@ import { Tab } from '.'
  */
 @component('mo-tab-bar')
 export default class TabBar extends ComponentMixin(MwcTabBar) {
-	@eventProperty readonly navigate!: IEvent<string>
+	@eventProperty() readonly navigate!: IEvent<string>
 
 	get tabs() { return Array.from(this.children) as Array<Tab> }
 

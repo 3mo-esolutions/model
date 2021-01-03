@@ -12,7 +12,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 
 	static permissions = new Array<keyof MoDeL.Permissions>()
 
-	@eventProperty readonly closed!: IEvent<boolean>
+	@eventProperty() readonly closed!: IEvent<boolean>
 
 	async open(): Promise<boolean> {
 		return await DialogHost.openDialog(this)

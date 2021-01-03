@@ -5,7 +5,7 @@ import { PageComponentConstructor, PageParameters } from './PageComponent'
 class Router {
 	HomePageConstructor?: PageComponentConstructor<any>
 
-	@eventProperty readonly navigated!: IEvent<PageComponentConstructor<any> | undefined>
+	@eventProperty() readonly navigated!: IEvent<PageComponentConstructor<any> | undefined>
 
 	constructor() {
 		window.onpopstate = () => this.triggerNavigationEvent()

@@ -251,6 +251,7 @@ export type MaterialIcon =
 	| 'done_all'
 	| 'donut_large'
 	| 'donut_small'
+	| 'double_arrow'
 	| 'drafts'
 	| 'drag_handle'
 	| 'drive_eta'

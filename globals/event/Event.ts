@@ -23,7 +23,7 @@ class PureEvent<T = void> implements IEvent<T> {
 }
 
 class HTMLElementEvent<T = void> implements IEvent<T> {
-	constructor(private target: HTMLElement, private eventName: string) { }
+	constructor(private target: HTMLElement, private eventName: string, private options?: EventInit) { }
 
 	private handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
 
@@ -33,8 +33,8 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 			.map(e => e.eventListener)
 	}
 
-	trigger(value: T, options?: CustomEventInit<T>) {
-		this.target.dispatchEvent(new CustomEvent<T>(this.eventName, { detail: value, ...options }))
+	trigger(value: T) {
+		this.target.dispatchEvent(new CustomEvent<T>(this.eventName, { detail: value, ...this.options }))
 	}
 
 	subscribe(handler: EventHandler<T>) {

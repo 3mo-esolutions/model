@@ -18,7 +18,7 @@ import { MaterialIcon } from '../../types'
  */
 @component('mo-text-area')
 export default class TextArea extends ComponentMixin(MwcTextArea) {
-	@eventProperty change!: IEvent<string>
+	@eventProperty() change!: IEvent<string>
 
 	@property() icon!: MaterialIcon
 	@property() iconTrailing!: MaterialIcon
