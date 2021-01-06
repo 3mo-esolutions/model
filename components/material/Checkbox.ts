@@ -4,6 +4,12 @@ import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 import { LabelMixin } from './LabelMixin'
 import { InputMixin } from './InputMixin'
 
+/**
+ * @attr checked
+ * @attr indeterminate
+ * @attr disabled
+ * @attr value
+ */
 @component('mo-checkbox')
 export default class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))) {
 	@property()
