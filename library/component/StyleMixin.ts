@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { property } from 'lit-element'
 import { IStyledElement } from './IStyledElement'
 import * as CSS from 'csstype'
@@ -96,11 +97,11 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		set fontSize(value) { this.style.fontSize = value }
 
 		@property()
-		get lineHeight() { return this.style.lineHeight }
-		set lineHeight(value) { this.style.lineHeight = value }
+		get lineHeight() { return this.style.lineHeight as CSS.Property.LineHeight<string> }
+		set lineHeight(value) { this.style.lineHeight = value.toString() }
 
 		@property()
-		get flexGrow() { return this.style.flexGrow }
+		get flexGrow() { return this.style.flexGrow as CSS.Property.FlexGrow | (string | {}) }
 		set flexGrow(value) { this.style.flex = `${value} 0 0` }
 
 		@property()
@@ -108,15 +109,15 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		set flexBasis(value) { this.style.flexBasis = value }
 
 		@property()
-		get gridRow() { return this.style.gridRow }
-		set gridRow(value) { this.style.gridRow = value }
+		get gridRow() { return this.style.gridRow as CSS.Property.GridRow }
+		set gridRow(value) { this.style.gridRow = value.toString() }
 
 		@property()
-		get gridColumn() { return this.style.gridColumn }
-		set gridColumn(value) { this.style.gridColumn = value }
+		get gridColumn() { return this.style.gridColumn as CSS.Property.GridColumn }
+		set gridColumn(value) { this.style.gridColumn = value.toString() }
 
 		@property()
-		get textAlign() { return this.style.textAlign as CSS.Property.TextAlign }
+		get textAlign() { return this.style.textAlign as CSS.Property.TextAlign | (string & {}) }
 		set textAlign(value) { this.style.textAlign = value }
 
 		@property()

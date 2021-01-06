@@ -61,7 +61,7 @@ export interface IStyledElement {
 	/** @attr */ flexBasis: CSS.Property.FlexBasis<string>
 	/** @attr */ gridRow: CSS.Property.GridRow
 	/** @attr */ gridColumn: CSS.Property.GridColumn
-	/** @attr */ textAlign: CSS.Property.TextAlign
+	/** @attr */ textAlign: CSS.Property.TextAlign | (string | {})
 	/** @attr */ borderRadius: CSS.Property.BorderRadius<string> | MoDeL.Styles.BorderRadius
 	/** @attr */ background: CSS.Property.Background<string> | MoDeL.Styles.Color
 	/** @attr */ foreground: CSS.Property.Color | MoDeL.Styles.Color
