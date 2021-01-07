@@ -18,7 +18,7 @@ export default abstract class Application extends Component {
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
 		PwaHelper.enablePWA()
-		this.handlerThemes()
+		this.handleThemes()
 	}
 
 
@@ -49,7 +49,7 @@ export default abstract class Application extends Component {
 		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 	}
 
-	private handlerThemes() {
+	private handleThemes() {
 		const getTheme = (theme: Themes = StorageContainer.Theme.Background.value) => {
 			if (theme === Themes.System) {
 				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
