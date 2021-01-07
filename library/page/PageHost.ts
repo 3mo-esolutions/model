@@ -19,6 +19,11 @@ export default class PageHost extends Component {
 	static get navigateToPath() { return this.instance.navigateToPath.bind(this.instance) }
 	static get currentPage() { return this.instance.pageComponent }
 
+	constructor() {
+		super()
+		MoDeL.Router.navigated.subscribe(() => this.navigateToPath(MoDeL.Router.relativePath))
+	}
+
 	private get pageComponent() { return this.firstChild as PageComponent<any> }
 	private set pageComponent(value) {
 		this.removeChildren()
@@ -30,6 +35,9 @@ export default class PageHost extends Component {
 	private navigateToPage<T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) {
 		const relativePath = Router.getPath(page)
 		const url = window.location.origin + relativePath
+
+		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent?.['parameters']) === JSON.stringify(page['parameters']))
+			return
 
 		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab) {
 			mode = NavigationMode.NewWindow
