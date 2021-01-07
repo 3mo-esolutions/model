@@ -1,10 +1,12 @@
-import { css, html, property, Component, PageHost, TemplateResult, query, nothing } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
 import { Themes } from '../../types'
-import DialogAuthenticator from './DialogAuthenitcator'
+import DialogAuthenticator from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 
 export default abstract class Application extends Component {
 	abstract get drawerTemplate(): TemplateResult
+	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
+	static readonly providers = new Set<ApplicationProvider>()
 
 	constructor() {
 		super()
@@ -19,10 +21,9 @@ export default abstract class Application extends Component {
 		this.handlerThemes()
 	}
 
-	authenticatorConstructor?: Constructor<DialogAuthenticator>
 
 	get authenticator() {
-		return this.authenticatorConstructor ? new this.authenticatorConstructor() : undefined
+		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
 	}
 
 	@property({ reflect: true }) theme?: Exclude<Themes, Themes.System>
@@ -145,7 +146,7 @@ export default abstract class Application extends Component {
 
 					<mo-drawer-list open root>
 						${this.renderDrawerExtras()}
-						<mo-drawer-item ?hidden=${!this.authenticatorConstructor || !this.authenticatedUser} icon='login' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
+						<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
 					</mo-drawer-list>
 				</mo-flex>
 
@@ -166,7 +167,7 @@ export default abstract class Application extends Component {
 	}
 
 	private get hasDrawerProfile() {
-		return !this.drawerDocked && !!this.authenticatorConstructor && !!this.authenticatedUser
+		return !this.drawerDocked && !!this.authenticator && !!this.authenticatedUser
 	}
 
 	private get drawerProfile() {
@@ -179,7 +180,7 @@ export default abstract class Application extends Component {
 	}
 
 	private get topAppBarProfile() {
-		if (this.drawerDocked === false || this.authenticatorConstructor === undefined)
+		if (this.drawerDocked === false || this.authenticator === undefined)
 			return nothing
 
 		if (this.authenticatedUser) {

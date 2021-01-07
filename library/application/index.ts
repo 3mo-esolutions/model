@@ -1,3 +1,4 @@
 export { default as Application } from './Application'
-export { default as DialogAuthenticator } from './DialogAuthenitcator'
-export { application, authenticator, logo } from './decorators'
+export { default as ApplicationProvider } from './ApplicationProvider'
+export { default as DialogAuthenticator } from './DialogAuthenticator'
+export { application, applicationProvider, authenticator, logo } from './decorators'
