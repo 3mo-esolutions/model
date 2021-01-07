@@ -55,7 +55,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 				return
 
 			await this.updateComplete
-			render(html`<mo-icon icon=${this.icon} foreground='var(--mo-list-item-icon-color, var(--mo-color-gray))' opacity='0.75'></mo-icon>`, this.graphicSlot)
+			render(html`<mo-icon icon=${this.icon} foreground='var(--mo-list-item-icon-color)' opacity='0.75'></mo-icon>`, this.graphicSlot)
 		}
 
 		private async renderMetaIcon() {
@@ -68,7 +68,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 			if (!this.metaSlot)
 				return
 
-			render(html`<mo-icon icon=${this.metaIcon} foreground='var(--mo-list-item-meta-icon-color, var(--mo-color-gray))' opacity='0.75'></mo-icon>`, this.metaSlot)
+			render(html`<mo-icon icon=${this.metaIcon} foreground='var(--mo-list-item-meta-icon-color)' opacity='0.75'></mo-icon>`, this.metaSlot)
 		}
 	}
 	return ListItemMixinConstructor

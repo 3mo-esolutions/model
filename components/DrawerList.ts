@@ -82,6 +82,10 @@ export default class DrawerList extends Component {
 					--mdc-list-vertical-padding: 0px;
 					--mdc-typography-subtitle1-font-size: var(--mo-font-size-m);
 				}
+
+				:host(:not([root])) ::slotted(mo-drawer-item) {
+					padding-left: var(--drawer-item-depth-padding);
+				}
 			</style>
 			<mo-list height='var(--drawer-item-height)' @click=${() => this.open = !this.open} ?hidden=${this.root}>
 				<mo-list-item icon=${this.icon} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
