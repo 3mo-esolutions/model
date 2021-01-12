@@ -56,9 +56,9 @@ export const internalProperty = <T>(options?: InternalPropertyDeclaration & { ob
 	}
 }
 
-export const view = <T extends Component>(containerQuery: string) => {
+export const renderContainer = <T extends Component>(containerQuery: string) => {
 	return (prototype: T, _property: string, descriptor: PropertyDescriptor) => {
-		const renderView = function (this: T) {
+		const renderTemplate = function (this: T) {
 			let template: unknown | undefined
 			if (typeof descriptor.get === 'function') {
 				template = descriptor.get.call(this)
@@ -75,12 +75,12 @@ export const view = <T extends Component>(containerQuery: string) => {
 		const originalFirstUpdated = prototype['firstUpdated']
 		prototype['firstUpdated'] = function (this: T, changedProperties: PropertyValues) {
 			originalFirstUpdated.call(this, changedProperties)
-			renderView.call(this)
+			renderTemplate.call(this)
 		}
 
 		const originalRender = prototype['render']
 		prototype['render'] = function () {
-			renderView.call(this)
+			renderTemplate.call(this)
 			return originalRender.call(this)
 		}
 	}
