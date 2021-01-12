@@ -28,6 +28,10 @@ export default class Page extends Component {
 		this.handleTopAppBarDetails()
 	}
 
+	protected uninitialized() {
+		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
+	}
+
 	private handleTopAppBarDetails() {
 		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]') as HTMLElement
 		if (topAppBarDetails) {
