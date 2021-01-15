@@ -10,10 +10,10 @@ export const application = <T extends Application>(applicationConstructor: Const
 	const process = async () => {
 		const providers = Array.from(Application.providers.keys())
 		await Promise.all(providers.filter(p => p.differ === false).map(p => p.provide()))
-		await Promise.all(providers.filter(p => p.differ === true).map(p => p.provide()))
 		const application = new applicationConstructor()
 		window.document.body.appendChild(application)
 		window.document.title = application.appTitle ?? ''
+		await Promise.all(providers.filter(p => p.differ === true).map(p => p.provide()))
 	}
 	process()
 }
