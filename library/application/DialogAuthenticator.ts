@@ -18,7 +18,7 @@ export default abstract class DialogAuthenticator extends DialogComponent {
 	async confirm() {
 		const isAuthenticated = await this.isAuthenticated()
 		if (isAuthenticated !== true) {
-			super.confirm()
+			await super.confirm()
 		}
 	}
 
