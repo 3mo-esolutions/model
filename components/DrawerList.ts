@@ -1,5 +1,5 @@
 import { DrawerItem } from '.'
-import { Component, component, html, property } from '../library'
+import { Component, component, html, property, ifDefined } from '../library'
 import { MaterialIcon } from '../types'
 
 @component('mo-drawer-list')
@@ -12,7 +12,7 @@ export default class DrawerList extends Component {
 
 	@property({ type: Boolean, reflect: true }) root = false
 	@property({ type: Boolean, reflect: true }) open = false
-	@property() icon!: MaterialIcon
+	@property() icon?: MaterialIcon
 	@property() label = ''
 
 	private get items() {
@@ -35,18 +35,15 @@ export default class DrawerList extends Component {
 					--drawer-item-height: 40px;
 					--drawer-item-vertical-margin: 4px;
 					position: relative;
-				}
-
-				:host([open]) {
 					display: block;
-				}
-
-				:host(:not([root])) mo-list[activatable] {
-					margin-left: var(--drawer-item-depth-padding);
 				}
 
 				:host(:not([open])) mo-list[activatable] {
 					display: none;
+				}
+
+				:host(:not([root])) mo-list[activatable] {
+					margin-left: var(--drawer-item-depth-padding);
 				}
 
 				:host(:not([root])) mo-list[activatable]::before {
@@ -59,11 +56,11 @@ export default class DrawerList extends Component {
 					z-index: -1;
 				}
 
-				:host(:not([root])) ::slotted(mo-drawer-item)::before {
+				:host(:not([root])) ::slotted(mo-drawer-item)::before, :host(:not([root])) ::slotted(mo-drawer-list)::before {
 					content: ' ';
 					position: absolute;
 					top: calc(var(--drawer-item-height) / 2);
-					width: 10px;
+					width: calc(var(--drawer-item-height) / 2);
 					height: 1px;
 					background: rgba(var(--mo-color-foreground-base), 0.5);
 					left: 0;
@@ -78,17 +75,21 @@ export default class DrawerList extends Component {
 					--mdc-list-side-padding: 6px;
 				}
 
+				:host(:not([root])) mo-list-item, :host(:not([root])) mo-drawer-item, :host(:not([root])) ::slotted(mo-drawer-item) {
+					padding-left: calc(var(--drawer-item-depth-padding) * 1.5);
+				}
+
+				:host([icon]:not([root])) mo-list-item, :host(:not([root])) mo-list-item[icon], :host(:not([root])) ::slotted(mo-drawer-item[icon]) {
+					padding-left: calc(var(--drawer-item-depth-padding) * 1.5 - 20px);
+				}
+
 				mo-list, mo-drawer-list, ::slotted(mo-drawer-list) {
 					--mdc-list-vertical-padding: 0px;
 					--mdc-typography-subtitle1-font-size: var(--mo-font-size-m);
 				}
-
-				:host(:not([root])) ::slotted(mo-drawer-item) {
-					padding-left: var(--drawer-item-depth-padding);
-				}
 			</style>
 			<mo-list height='var(--drawer-item-height)' @click=${() => this.open = !this.open} ?hidden=${this.root}>
-				<mo-list-item icon=${this.icon} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
+				<mo-list-item icon=${ifDefined(this.icon)} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
 					${this.label}
 				</mo-list-item>
 			</mo-list>
