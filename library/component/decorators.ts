@@ -12,6 +12,16 @@ export const element = <T extends HTMLElement>(prototype: T, property: string) =
 	})
 }
 
+export const queryAll = (selector: string) => {
+	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
+		Object.defineProperty(prototype, propertyKey, {
+			get: function () {
+				return Array.from(this.shadowRoot.querySelectorAll(selector))
+			}
+		})
+	}
+}
+
 export const observer = <T>(observerFn: Observer<T>) => {
 	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
 		if (!prototype.constructor.observers) {

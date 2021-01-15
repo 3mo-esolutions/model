@@ -1,7 +1,7 @@
 /* eslint-disable */
 export {
 	customElement as component,
-	CSSResult, query, queryAll, queryAsync,
+	CSSResult, query, queryAsync,
 	html, css, CSSResultArray, TemplateResult,
 	PropertyValues,
 } from 'lit-element'
