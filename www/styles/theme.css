@@ -6,7 +6,7 @@
 }
 
 :root {
-    --mo-scrollbar-background-color: transperent;
+    --mo-scrollbar-background-color: transparent;
     --mo-scrollbar-foreground-color: rgba(128, 128, 128, 0.75);
 }
 

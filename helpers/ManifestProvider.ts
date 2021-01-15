@@ -1,7 +1,7 @@
 import { ApplicationProvider, applicationProvider } from '../library'
 import { Manifest } from '../types'
 
-@applicationProvider
+@applicationProvider()
 export default class ManifestProvider extends ApplicationProvider {
 	async provide() {
 		try {
