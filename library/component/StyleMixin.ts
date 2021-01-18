@@ -17,7 +17,7 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 			if (value) {
 				this.displayBeforeHidden = this.display
 			}
-			this.display = value ? 'none' : this.displayBeforeHidden ?? 'inline'
+			this.display = value ? 'none' : this.displayBeforeHidden ?? ''
 		}
 
 		@property()
