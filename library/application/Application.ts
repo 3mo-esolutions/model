@@ -39,6 +39,9 @@ export default abstract class Application extends Component {
 	protected async initialized() {
 		await this.authenticate()
 
+		const providers = Array.from(Application.providers.keys())
+		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
+
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()
 		} else {
