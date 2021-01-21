@@ -40,21 +40,7 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		this.icbClose.hidden = value
 	}
 
-	@property()
-	set size(value: DialogSize) {
-		switch (value) {
-			case 'large':
-				this.style.setProperty('--mdc-dialog-max-width', 'calc(100% - 32px)')
-				break
-			case 'medium':
-				this.style.setProperty('--mdc-dialog-max-width', 'var(--mdc-min-width)')
-				break
-			case 'small':
-				this.style.setProperty('--mdc-dialog-max-width', '560px')
-				break
-		}
-	}
-
+	@property({ reflect: true }) size: DialogSize = 'small'
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
 	@property({ type: Boolean }) primaryOnEnter = false
@@ -102,8 +88,28 @@ export default class Dialog extends ComponentMixin(MwcDialog) {
 		return css`
 			${super.styles}
 
-			:host {
-				--mdc-dialog-min-width: 100%;
+			:host([size=small]) {
+				--mdc-dialog-max-width: 480px;
+			}
+
+			:host([size=medium]) {
+				--mdc-dialog-max-width: 1024px;
+				--mdc-dialog-min-width: calc(100% - 32px);
+				--mdc-dialog-min-height: 768px;
+			}
+
+			:host([size=large]) {
+				--mdc-dialog-max-width: calc(100% - 32px);
+				--mdc-dialog-min-width: calc(100% - 32px);
+				--mdc-dialog-min-height: calc(100% - 32px);
+			}
+
+			.mdc-dialog__container {
+				width: var(--mdc-dialog-max-width);
+			}
+
+			.mdc-dialog__surface {
+				height: var(--mdc-dialog-min-height);
 			}
 
 			#actions {
