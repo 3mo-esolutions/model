@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, css } from '../../library'
 import { MaterialIcon } from '../../types'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
@@ -14,6 +14,23 @@ import { Fab as MwcFab } from '@material/mwc-fab'
 @component('mo-fab')
 export default class Fab extends ComponentMixin(MwcFab) {
 	@property() icon!: MaterialIcon
+	@property({ type: Boolean, reflect: true }) scrollHide = false
+	lastScrollElementTop = 0
+
+	static get styles() {
+		return css`
+			${super.styles}
+
+			:host {
+				transition: var(--mo-fab-transition, var(--mo-duration-quick));
+			}
+
+			:host([scrollHide]) {
+				transform: scale(0);
+				opacity: 0;
+			}
+		`
+	}
 
 	constructor() {
 		super()
@@ -21,6 +38,16 @@ export default class Fab extends ComponentMixin(MwcFab) {
 			this.label = this.innerText
 			this.extended = true
 		}
+	}
+
+	protected initialized() {
+		this.previousElementSibling?.addEventListener('scroll', (e: Event) => {
+			const targetElement = e.composedPath()[0] as HTMLElement
+			const scrollTop = targetElement.scrollTop
+			const isUpScroll = scrollTop <= this.lastScrollElementTop
+			this.scrollHide = !isUpScroll
+			this.lastScrollElementTop = scrollTop <= 0 ? 0 : scrollTop
+		}, { passive: true })
 	}
 }
 
