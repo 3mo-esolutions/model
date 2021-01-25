@@ -3,8 +3,8 @@ import { PromiseTask } from '../../helpers'
 import { Menu } from '../../components'
 
 @component('mo-context-menu-host')
-export default class ContextMenuHolder extends Component {
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHolder }
+export default class ContextMenuHost extends Component {
+	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu.bind(this.instance) }
 
 	private readonly lengthBuffer = 16
@@ -48,6 +48,21 @@ export default class ContextMenuHolder extends Component {
 				::slotted(mo-context-menu-item) {
 					font-size: var(--mo-font-size-l);
 				}
+
+				/* NOTE: Material Design's Dialog scans the root elements and 'inert's them.
+					This is ok as long as our root-level elements do not need any focus-related behaviours
+					Which is the case here unfortunately. This code snippet overwrites the effect of 'inert' attribute
+					so that the context menu is always focusable.
+					More to inert that MWC uses: https://github.com/WICG/inert
+				*/
+				:host([inert]) {
+					pointer-events: auto !important;
+					cursor: default !important;
+					user-select: auto !important;
+					-webkit-user-select: auto !important;
+					-moz-user-select: auto !important;
+					-ms-user-select: auto !important;
+				}
 			</style>
 			<mo-menu x='0' y='0' fixed quick .anchor=${document.body} ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
 				${this.menu ?? nothing}
@@ -58,6 +73,6 @@ export default class ContextMenuHolder extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-context-menu-host': ContextMenuHolder
+		'mo-context-menu-host': ContextMenuHost
 	}
 }
