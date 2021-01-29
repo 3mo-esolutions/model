@@ -68,6 +68,9 @@ export default class Flex extends Component {
 }
 
 function applyGap(this: Flex) {
+	if (!this.gap)
+		return
+
 	for (let i = 0; i < this.gapElements.length; i++) {
 		const child = this.gapElements[i] as HTMLElement
 		const marginStart = i !== 0 ? `calc(${this.gap} / 2)` : '0'
