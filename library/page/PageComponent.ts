@@ -12,8 +12,6 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	static permissions = new Array<keyof MoDeL.Permissions>()
 
-	@eventProperty() readonly closed!: IEvent<boolean>
-
 	async navigate() {
 		PageHost.navigateToPage(this, NavigationMode.Navigate)
 	}
