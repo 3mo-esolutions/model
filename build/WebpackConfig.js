@@ -34,6 +34,11 @@ const sharedConfigs = {
 					noErrorOnMissing: true
 				},
 				{
+					from: 'docs/',
+					to: 'docs/',
+					noErrorOnMissing: true
+				},
+				{
 					from: 'release_notes/',
 					to: 'release_notes/',
 					noErrorOnMissing: true
