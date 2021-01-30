@@ -9,7 +9,7 @@ export default class Page extends Component {
 		this._header = value
 		if (this.isConnected) {
 			MoDeL.application.pageTitle = value
-			document.title = `${MoDeL.application.pageTitle} | ${MoDeL.application.appTitle}`
+			document.title = `${MoDeL.application.pageTitle} | ${Manifest.short_name}`
 		}
 	}
 

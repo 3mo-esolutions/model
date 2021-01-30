@@ -27,7 +27,6 @@ export default abstract class Application extends Component {
 	}
 
 	@property({ reflect: true }) theme?: Exclude<Themes, Themes.System>
-	@property() abstract appTitle?: string
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = StorageContainer.Components.Drawer.IsDocked.value
@@ -123,7 +122,7 @@ export default abstract class Application extends Component {
 			<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
 				<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
 				<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-				<span id='spnAppTitle'>${this.appTitle}</span>
+				<span id='spnAppTitle'>${Manifest.short_name}</span>
 			</mo-flex>
 
 			<mo-flex slot='title' alignItems='center'>
