@@ -43,6 +43,7 @@ export default class ContextMenuHost extends Component {
 				mo-menu {
 					--mdc-menu-z-index: 10;
 					--mdc-menu-item-height: var(--mo-elm-height-s);
+					--mo-list-item-icon-color: var(--mo-color-gray);
 				}
 
 				::slotted(mo-context-menu-item) {
