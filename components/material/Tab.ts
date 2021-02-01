@@ -21,7 +21,7 @@ export default class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value!: string
 	@property({ reflect: true }) icon!: MaterialIcon
 
-	initialized() {
+	protected initialized() {
 		if (this.textContent) {
 			this.label = this.textContent
 		}
