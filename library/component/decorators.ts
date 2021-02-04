@@ -12,6 +12,16 @@ export const element = <T extends HTMLElement>(prototype: T, property: string) =
 	})
 }
 
+export const query = (selector: string) => {
+	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
+		Object.defineProperty(prototype, propertyKey, {
+			get: function () {
+				return this.shadowRoot.querySelector(selector)
+			}
+		})
+	}
+}
+
 export const queryAll = (selector: string) => {
 	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
 		Object.defineProperty(prototype, propertyKey, {
