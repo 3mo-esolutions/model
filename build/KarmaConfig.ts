@@ -1,4 +1,6 @@
 /* eslint-disable */
+// @ts-nocheck
+
 const process = require('process')
 process.env.EDGE_BIN = require('puppeteer').executablePath()
 

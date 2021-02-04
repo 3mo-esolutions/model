@@ -8,6 +8,7 @@ declare namespace MoDeL {
 }
 
 declare const MoDeL: MoDeL.Globals
+declare const environment: string
 
 // @ts-ignore defining MoDeL
 globalThis.MoDeL = new class {
@@ -16,7 +17,7 @@ globalThis.MoDeL = new class {
 		if (global.__karma__)
 			return 'test'
 
-		if (global.webpackJsonp || global.describe?.() === 0)
+		if (environment !== 'production')
 			return 'development'
 
 		return 'production'

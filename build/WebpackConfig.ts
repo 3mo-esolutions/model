@@ -1,4 +1,5 @@
 /* eslint-disable */
+const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -20,39 +21,12 @@ const sharedConfigs = {
 			patterns: [
 				{
 					from: 'node_modules/@3mo/model-core/www/',
-					to: '',
-					noErrorOnMissing: true
-				},
-				{
-					from: 'node_modules/@3mo/model/www/',
-					to: '',
-					noErrorOnMissing: true
-				},
-				{
-					from: 'assets/',
-					to: 'assets/',
-					noErrorOnMissing: true
-				},
-				{
-					from: 'docs/',
-					to: 'docs/',
-					noErrorOnMissing: true
-				},
-				{
-					from: 'release_notes/',
-					to: 'release_notes/',
-					noErrorOnMissing: true
+					to: ''
 				},
 				{
 					from: 'manifest.json',
-					to: 'manifest.json',
-					noErrorOnMissing: true
-				},
-				{
-					from: 'instance.json',
-					to: 'instance.json',
-					noErrorOnMissing: true
-				},
+					to: 'manifest.json'
+				}
 			]
 		})
 	],
@@ -87,7 +61,10 @@ const developmentConfigs = {
 	}
 }
 
-module.exports = (config, isDevelopmentEnvironment = false) => {
+module.exports = (config, isDevelopmentEnvironment = false, plugins = []) => {
+	sharedConfigs.plugins.push(...plugins, new webpack.DefinePlugin({
+		environment: JSON.stringify(isDevelopmentEnvironment ? 'development' : 'production')
+	}))
 	const MoDeLConfig = isDevelopmentEnvironment
 		? { ...sharedConfigs, ...developmentConfigs }
 		: { ...sharedConfigs, ...productionConfigs }
