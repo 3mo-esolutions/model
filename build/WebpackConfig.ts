@@ -62,9 +62,11 @@ const developmentConfigs = {
 }
 
 module.exports = (config, isDevelopmentEnvironment = false, plugins = []) => {
-	sharedConfigs.plugins.push(...plugins, new webpack.DefinePlugin({
-		environment: JSON.stringify(isDevelopmentEnvironment ? 'development' : 'production')
-	}))
+	sharedConfigs.plugins.push(...plugins,
+		new webpack.DefinePlugin({
+			environment: JSON.stringify(isDevelopmentEnvironment ? 'development' : 'production')
+		})
+	)
 	const MoDeLConfig = isDevelopmentEnvironment
 		? { ...sharedConfigs, ...developmentConfigs }
 		: { ...sharedConfigs, ...productionConfigs }
