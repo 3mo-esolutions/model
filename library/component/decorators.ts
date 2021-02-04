@@ -13,7 +13,7 @@ export const element = <T extends HTMLElement>(prototype: T, property: string) =
 }
 
 export const query = (selector: string) => {
-	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
+	return (prototype: HTMLElement, propertyKey: PropertyKey) => {
 		Object.defineProperty(prototype, propertyKey, {
 			get: function () {
 				return this.shadowRoot.querySelector(selector)
@@ -23,7 +23,7 @@ export const query = (selector: string) => {
 }
 
 export const queryAll = (selector: string) => {
-	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
+	return (prototype: HTMLElement, propertyKey: PropertyKey) => {
 		Object.defineProperty(prototype, propertyKey, {
 			get: function () {
 				return Array.from(this.shadowRoot.querySelectorAll(selector))
