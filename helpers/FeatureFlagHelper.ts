@@ -1,26 +1,38 @@
-import { StorageContainer } from '.'
+import { LocalStorageEntry } from '.'
 
-export default new class PermissionHelper {
-	isActivated(...featureFlags: Array<keyof MoDeL.FeatureFlags>) {
-		return featureFlags.every(p => StorageContainer.FeatureFlags.value.includes(p))
+type FeatureFlag = string
+
+export type FeatureFlagDefinition = {
+	key: string
+	title?: string
+	mandatoryFrom: Date
+}
+
+export class FeatureFlagHelper {
+	private static readonly Container = new Array<FeatureFlagDefinition>()
+	private static readonly ActivatedContainer = new LocalStorageEntry('MoDeL.FeatureFlags.Activated', new Array<FeatureFlag>())
+
+	static get flags() {
+		return FeatureFlagHelper.Container as ReadonlyArray<FeatureFlagDefinition>
 	}
 
-	activate(...featureFlags: Array<keyof MoDeL.FeatureFlags>) {
-		StorageContainer.FeatureFlags.value = [
+	static define(...featureFlagDefinitions: Array<FeatureFlagDefinition>) {
+		FeatureFlagHelper.Container.push(...featureFlagDefinitions)
+	}
+
+	static isActivated(...featureFlags: Array<FeatureFlag>) {
+		return featureFlags.every(p => FeatureFlagHelper.ActivatedContainer.value.includes(p))
+	}
+
+	static activate(...featureFlags: Array<FeatureFlag>) {
+		FeatureFlagHelper.ActivatedContainer.value = [
 			...featureFlags,
-			...StorageContainer.FeatureFlags.value,
+			...FeatureFlagHelper.ActivatedContainer.value,
 		]
 	}
 
-	deactivate(...featureFlags: Array<keyof MoDeL.FeatureFlags>) {
-		StorageContainer.FeatureFlags.value =
-			StorageContainer.FeatureFlags.value.filter(p => featureFlags.includes(p) === false)
-	}
-}
-
-declare global {
-	namespace MoDeL {
-		// eslint-disable-next-line @typescript-eslint/no-empty-interface
-		interface FeatureFlags { }
+	static deactivate(...featureFlags: Array<FeatureFlag>) {
+		FeatureFlagHelper.ActivatedContainer.value =
+			FeatureFlagHelper.ActivatedContainer.value.filter(p => featureFlags.includes(p) === false)
 	}
 }

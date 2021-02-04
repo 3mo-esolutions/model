@@ -87,6 +87,5 @@ export default {
 		AuthenticatedUser: new LocalStorageEntry<User | undefined>('MoDeL.AuthenticatedUser', undefined),
 	},
 	DeletionConfirmation: new LocalStorageEntry('MoDeL.DeletionConfirmation', true),
-	FeatureFlags: new LocalStorageEntry('MoDeL.FeatureFlags', new Array<keyof MoDeL.FeatureFlags>()),
 	Permissions: new LocalStorageEntry('MoDeL.Permissions', new Array<keyof MoDeL.Permissions>()),
 }

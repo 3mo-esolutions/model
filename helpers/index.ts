@@ -8,7 +8,7 @@ export { default as LocalStorageEntry, LocalStorageContainer } from './LocalStor
 export { default as Downloader } from './Downloader'
 export { default as localStorageEntryBuilder } from './localStorageEntryBuilder'
 export { default as StorageContainer } from './StorageContainer'
-export { default as FeatureFlagHelper } from './FeatureFlagHelper'
+export { FeatureFlagHelper, FeatureFlagDefinition } from './FeatureFlagHelper'
 export { default as ManifestProvider } from './ManifestProvider'
 export { default as LocalizationHelper } from './LocalizationHelper'
 export { default as DocumentHelper } from './DocumentHelper'
