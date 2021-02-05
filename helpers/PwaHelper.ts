@@ -1,14 +1,19 @@
 export default new class PwaHelper {
 	readonly appInstalled = new PureEvent()
 
+	constructor() {
+		window.addEventListener('beforeinstallprompt', e => {
+			e.preventDefault()
+			this.pwaPrompt = e
+		})
+
+		window.addEventListener('appinstalled', () => this.appInstalled.trigger())
+	}
+
 	private pwaPrompt?: Event
 
 	get isInstalled() {
 		return window.matchMedia('(display-mode: standalone)').matches
-	}
-
-	get isRequestPossible() {
-		return this.pwaPrompt !== undefined
 	}
 
 	async registerServiceWorker() {
@@ -25,18 +30,15 @@ export default new class PwaHelper {
 		}
 
 		await navigator.serviceWorker.register('./ServiceWorker.js', { scope: './' })
+		await this.requestInstallation()
 	}
 
-	enablePWA() {
-		window.addEventListener('beforeinstallprompt', e => {
-			e.preventDefault()
-			this.pwaPrompt = e
-		})
+	private async requestInstallation() {
+		const isRequestPossible = this.pwaPrompt !== undefined
 
-		window.addEventListener('appinstalled', () => this.appInstalled.trigger())
-	}
+		if (isRequestPossible === false)
+			return
 
-	async requestInstallation() {
 		// @ts-ignore TypeScript library doesn't know about this specific event
 		const choiceResult = await this.pwaPrompt?.prompt()
 		if (choiceResult.outcome !== 'accepted') {

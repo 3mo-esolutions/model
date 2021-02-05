@@ -17,7 +17,6 @@ export default abstract class Application extends Component {
 		DocumentHelper.linkCSS('/styles/animation.css')
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
-		PwaHelper.enablePWA()
 		this.handleThemes()
 	}
 
