@@ -1,4 +1,4 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html } from '../library'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost } from '../library'
 import { Drawer, ListItem } from '.'
 import { PromiseTask } from '../helpers'
 
@@ -17,7 +17,11 @@ export default class DrawerItem extends ListItem {
 	constructor() {
 		super()
 
-		MoDeL.Router.navigated.subscribe(pageConstructor => PromiseTask.delegateToEventLoop(() => this.selected = pageConstructor === this.componentConstructor?.[0]))
+		MoDeL.Router.navigated.subscribe(pageConstructor => {
+			const arePagesEqual = pageConstructor === this.componentConstructor?.[0]
+			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage['parameters'])
+			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && arePageParametersEqual)
+		})
 
 		this.selectionChange.subscribe(() => {
 			if (!this.componentConstructor) {
