@@ -8,11 +8,9 @@ import { Tab } from '.'
  */
 @component('mo-tab-bar')
 export default class TabBar extends ComponentMixin(MwcTabBar) {
-	@eventProperty() readonly navigate!: IEvent<string>
+	@eventProperty() readonly navigate!: IEvent<string | undefined>
 
-	@property()
-	get value() { return this.tabs[this.activeIndex]?.value }
-	set value(value) { this.activeIndex = this.tabs.findIndex(tab => tab.getAttribute('value') === value) }
+	@property({ observer: valueChanged }) value?: string
 
 	@property({ type: Boolean }) preventFirstTabNavigation = false
 
@@ -20,8 +18,12 @@ export default class TabBar extends ComponentMixin(MwcTabBar) {
 		return Array.from(this.children).filter(c => c instanceof Tab) as Array<Tab>
 	}
 
-	get selectedTab() {
+	get activeTab() {
 		return this.tabs.find(tab => tab.active)
+	}
+
+	get selectedTab() {
+		return this.tabs.find(tab => tab.value === this.value)
 	}
 
 	private isFirstNavigation = true
@@ -35,18 +37,22 @@ export default class TabBar extends ComponentMixin(MwcTabBar) {
 				return
 			}
 
-			this.navigate.trigger(this.value)
+			this.navigate.trigger(this.activeTab?.value)
 		})
 	}
 
 	protected initialized() {
 		this.tabsSlot.addEventListener('slotchange', () => {
-			const valueAttribute = this.getAttribute('value')
-			if (!this.value && valueAttribute) {
-				this.value = valueAttribute
-			}
+			this.value = this.value ?? this.getAttribute('value') ?? undefined
+			valueChanged.call(this)
 		})
 	}
+}
+
+async function valueChanged(this: TabBar) {
+	this.activeIndex = this.tabs.findIndex(tab => tab.value === this.value)
+	await Promise.all(this.tabs.map(tab => tab.updateComplete))
+	this.selectedTab?.activate({} as ClientRect)
 }
 
 declare global {
