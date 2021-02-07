@@ -29,7 +29,7 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		this.parameters = parameters as T
 	}
 
-	protected readonly parameters: T
+	protected readonly parameters = {} as T
 
 	protected firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)

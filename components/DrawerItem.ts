@@ -8,7 +8,7 @@ export default class DrawerItem extends ListItem {
 	set component(value: PageComponent<any> | DialogComponent<any>) {
 		this.componentConstructor = [
 			value.constructor,
-			(value instanceof PageComponent) ? value['parameters'] : value['parameters']
+			(value instanceof PageComponent) ? value['parameters'] ?? {} : value['parameters'] ?? {}
 		]
 	}
 

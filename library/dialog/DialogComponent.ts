@@ -27,7 +27,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 		this.parameters = parameters as T
 	}
 
-	protected readonly parameters: T
+	protected readonly parameters = {} as T
 
 	protected get dialog() {
 		return this.shadowRoot.querySelector('mo-dialog') ?? undefined
