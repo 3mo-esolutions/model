@@ -75,7 +75,7 @@
 			"error",
 			"single"
 		],
-		"no-unused-vars": "error",
+		"no-unused-vars": "off",
 		"no-case-declarations": "off",
 		"no-self-assign": "off",
 		"no-useless-escape": "off",
