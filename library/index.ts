@@ -1,6 +1,6 @@
 /* eslint-disable */
 export { customElement as component, CSSResult, queryAsync, html, css, CSSResultArray, TemplateResult, PropertyValues } from 'lit-element'
-export { render } from 'lit-html'
+export { render, NodePart, directive } from 'lit-html'
 export { repeat } from 'lit-html/directives/repeat'
 export { cache } from 'lit-html/directives/cache'
 export { ifDefined } from 'lit-html/directives/if-defined'
