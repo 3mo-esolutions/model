@@ -24,7 +24,6 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 
 		disconnectedCallback() {
 			super.disconnectedCallback()
-			this.removeAllEventListeners()
 			this.uninitialized()
 		}
 
