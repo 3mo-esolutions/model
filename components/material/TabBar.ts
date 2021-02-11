@@ -41,6 +41,13 @@ export default class TabBar extends ComponentMixin(MwcTabBar) {
 		})
 	}
 
+	async updateTabs() {
+		this.activeIndex = this.tabs.findIndex(tab => tab.value === this.value)
+		await Promise.all(this.tabs.map(tab => tab.updateComplete))
+		this.tabs.forEach(tab => tab.deactivate())
+		this.selectedTab?.activate({} as ClientRect)
+	}
+
 	protected initialized() {
 		this.tabsSlot.addEventListener('slotchange', () => {
 			this.value = this.value ?? this.getAttribute('value') ?? undefined
@@ -50,9 +57,7 @@ export default class TabBar extends ComponentMixin(MwcTabBar) {
 }
 
 async function valueChanged(this: TabBar) {
-	this.activeIndex = this.tabs.findIndex(tab => tab.value === this.value)
-	await Promise.all(this.tabs.map(tab => tab.updateComplete))
-	this.selectedTab?.activate({} as ClientRect)
+	await this.updateTabs()
 }
 
 declare global {
