@@ -670,6 +670,7 @@ export type MaterialIcon =
 	| 'power'
 	| 'power_input'
 	| 'power_settings_new'
+	| 'push_pin'
 	| 'pregnant_woman'
 	| 'present_to_all'
 	| 'print'
