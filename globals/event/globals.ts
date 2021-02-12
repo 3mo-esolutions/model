@@ -15,10 +15,14 @@ Object.defineProperty(Event.prototype, 'source', {
 })
 
 Object.defineProperty(HTMLElement.prototype, 'eventHandlers', {
-	value: [],
+	get: function () {
+		if (!this.__eventHandlers) {
+			this.__eventHandlers = []
+		}
+		return this.__eventHandlers
+	},
 	enumerable: true,
-	configurable: false,
-	writable: true
+	configurable: false
 })
 
 interface HTMLElement {
@@ -29,7 +33,7 @@ interface HTMLElement {
 	addEventListener<T>(type: string, listener: CustomEventHandler<T>, options?: boolean | AddEventListenerOptions): void
 	removeEventListener<T>(type: string, listener: CustomEventHandler<T>): void
 
-	eventHandlers: Array<{ name: string, eventListener: (data: any) => void }>
+	readonly eventHandlers: Array<{ name: string, eventListener: (data: any) => void }>
 	removeAllEventListeners(): void
 }
 
@@ -49,11 +53,15 @@ HTMLElement.prototype.addEventListener = function (type: string, listener: Event
 HTMLElement.prototype.removeEventListenerBase = HTMLElement.prototype.removeEventListener
 // @ts-ignore overriding other overload of the removeEventListener
 HTMLElement.prototype.removeEventListener = function (type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
-	this.eventHandlers = this.eventHandlers.filter(ev => ev.name === type && ev.eventListener === listener)
+	this.eventHandlers.forEach((e, i) => {
+		if (e.name === type && e.eventListener === listener) {
+			delete this.eventHandlers[i]
+		}
+	})
 	this.removeEventListenerBase(type, listener, options)
 }
 
 HTMLElement.prototype.removeAllEventListeners = function () {
 	this.eventHandlers.forEach(event => this.removeEventListener(event.name, event.eventListener))
-	this.eventHandlers = []
+	this.eventHandlers.length = 0
 }

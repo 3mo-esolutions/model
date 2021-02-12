@@ -36,8 +36,7 @@ export default class Page extends Component {
 		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]') as HTMLElement
 		if (topAppBarDetails) {
 			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
-			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails.clone())
-			topAppBarDetails.remove()
+			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails)
 		}
 		MoDeL.application.topAppBarProminent = !!topAppBarDetails
 	}
