@@ -1,6 +1,6 @@
 import { component, html, property } from '../library'
-import { Checkbox } from './material'
-import { CheckboxValue, CSSDirection } from '../types'
+import { Checkbox, CheckboxValue } from '.'
+import { CSSDirection } from '../types'
 
 @component('mo-checkbox-group')
 export default class CheckboxGroup extends Checkbox {

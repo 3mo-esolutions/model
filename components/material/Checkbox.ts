@@ -1,8 +1,9 @@
 import { component, property, ComponentMixin } from '../../library'
-import { CheckboxValue } from '../../types'
 import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 import { LabelMixin } from './LabelMixin'
 import { InputMixin } from './InputMixin'
+
+export type CheckboxValue = 'checked' | 'unchecked' | 'indeterminate'
 
 /**
  * @attr checked

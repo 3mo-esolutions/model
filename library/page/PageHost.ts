@@ -11,7 +11,7 @@ export const enum NavigationMode {
 }
 
 @component('mo-page-host')
-export default class PageHost extends Component {
+export class PageHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-page-host') as PageHost }
 
 	static get navigateToHomePage() { return this.instance.navigateToHomePage.bind(this.instance) }
