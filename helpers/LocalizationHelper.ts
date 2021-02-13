@@ -8,7 +8,7 @@ const localizationHelper = new class LocalizationHelper {
 		return StorageContainer.Localization.Language.value
 	}
 
-	localize<K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]): string {
+	localize = <K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]) => {
 		const currentLanguageDictionary = this.languageMap.get(this.currentLanguage)
 
 		if (!currentLanguageDictionary)
@@ -26,7 +26,7 @@ const localizationHelper = new class LocalizationHelper {
 		return translationProvider(...params)
 	}
 
-	provide(language: LanguageCode, resource: Partial<MoDeL.Localization>) {
+	provide = (language: LanguageCode, resource: Partial<MoDeL.Localization>) => {
 		const existingResources = this.languageMap.get(language) ?? {}
 		const newResource = { ...existingResources, ...resource } as MoDeL.Localization
 		this.languageMap.set(language, newResource)
@@ -35,11 +35,11 @@ const localizationHelper = new class LocalizationHelper {
 
 export default localizationHelper
 
-globalThis._ = localizationHelper.localize.bind(localizationHelper)
+globalThis._ = localizationHelper.localize
 
 declare global {
-	// REFACTOR: why ...args: Parameters<typeof localizationHelper.localize> does not work?
-	function _<K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]): ReturnType<typeof localizationHelper.localize>
+	// eslint-disable-next-line no-var
+	var _: typeof localizationHelper.localize
 
 	namespace MoDeL {
 		type LocalizationProvider<K extends keyof LocalizationParametersMap> = (...args: MoDeL.LocalizationParametersMap[K]) => string

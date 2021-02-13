@@ -50,11 +50,23 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Window {
-	PureEvent: typeof PureEvent
-	HTMLElementEvent: typeof HTMLElementEvent
+function eventProperty(options?: EventInit) {
+	return (prototype: unknown, propertykey: string) => {
+		if (propertykey === undefined)
+			return
+
+		const eventFieldName = `__${propertykey}Event`
+		Object.defineProperty(prototype, propertykey, {
+			get(this) {
+				if (!this[eventFieldName]) {
+					this[eventFieldName] = this instanceof HTMLElement
+						? new HTMLElementEvent(this, propertykey, options)
+						: new PureEvent()
+				}
+				return this[eventFieldName]
+			}
+		})
+	}
 }
 
-window.PureEvent = PureEvent
-window.HTMLElementEvent = HTMLElementEvent
+globalThis.eventProperty = eventProperty

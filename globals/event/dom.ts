@@ -1,13 +1,7 @@
-/* eslint-disable */
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type EventHandler<T> = (data: T) => void
 
 type CustomEventHandler<T> = (event: CustomEvent<T>) => void
-
-interface CustomEvent<T, TElement extends HTMLElement = HTMLElement> extends Event {
-	readonly detail: T
-	readonly source: TElement
-}
 
 Object.defineProperty(Event.prototype, 'source', {
 	get(this: Event) { return this.target },
@@ -24,18 +18,6 @@ Object.defineProperty(HTMLElement.prototype, 'eventHandlers', {
 	enumerable: true,
 	configurable: false
 })
-
-interface HTMLElement {
-	clone<T extends HTMLElement>(): T
-	addEventListenerBase(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void
-	removeEventListenerBase(type: string, listener: EventListener, options?: boolean | EventListenerOptions): void
-
-	addEventListener<T>(type: string, listener: CustomEventHandler<T>, options?: boolean | AddEventListenerOptions): void
-	removeEventListener<T>(type: string, listener: CustomEventHandler<T>): void
-
-	readonly eventHandlers: Array<{ name: string, eventListener: (data: any) => void }>
-	removeAllEventListeners(): void
-}
 
 HTMLElement.prototype.clone = function <T extends HTMLElement>() {
 	const cloned = this.cloneNode(true) as T
@@ -64,4 +46,21 @@ HTMLElement.prototype.removeEventListener = function (type: string, listener: Ev
 HTMLElement.prototype.removeAllEventListeners = function () {
 	this.eventHandlers.forEach(event => this.removeEventListener(event.name, event.eventListener))
 	this.eventHandlers.length = 0
+}
+
+interface CustomEvent<T, TElement extends HTMLElement = HTMLElement> extends Event {
+	readonly detail: T
+	readonly source: TElement
+}
+
+interface HTMLElement {
+	clone<T extends HTMLElement>(): T
+	addEventListenerBase(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void
+	removeEventListenerBase(type: string, listener: EventListener, options?: boolean | EventListenerOptions): void
+
+	addEventListener<T>(type: string, listener: CustomEventHandler<T>, options?: boolean | AddEventListenerOptions): void
+	removeEventListener<T>(type: string, listener: CustomEventHandler<T>): void
+
+	readonly eventHandlers: Array<{ name: string, eventListener: (data: any) => void }>
+	removeAllEventListeners(): void
 }

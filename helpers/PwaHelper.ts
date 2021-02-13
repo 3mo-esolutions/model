@@ -1,5 +1,5 @@
-export default new class PwaHelper {
-	readonly appInstalled = new PureEvent()
+class PwaHelper {
+	@eventProperty() readonly appInstalled!: IEvent
 
 	constructor() {
 		window.addEventListener('beforeinstallprompt', e => {
@@ -46,3 +46,5 @@ export default new class PwaHelper {
 		}
 	}
 }
+
+export default new PwaHelper

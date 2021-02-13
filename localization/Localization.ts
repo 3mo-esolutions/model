@@ -1,4 +1,4 @@
-/* eslint-disable */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare namespace MoDeL {
 	interface LocalizationParametersMap {
 		'Authenticated successfully': []

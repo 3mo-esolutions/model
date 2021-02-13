@@ -1,3 +1,3 @@
-import './globals'
+import './types'
 import './MoDeL'
 import './event'
