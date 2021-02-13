@@ -1,6 +1,6 @@
 import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
 import { Themes } from '../../types'
-import DialogAuthenticator from './DialogAuthenticator'
+import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 
 export abstract class Application extends Component {
