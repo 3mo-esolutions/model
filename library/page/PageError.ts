@@ -1,6 +1,7 @@
 import { component, html } from '..'
-import { HttpError } from '../../types'
 import { PageComponent } from '.'
+
+export type HttpError = '403' | '404'
 
 @component('mo-page-error')
 export class PageError extends PageComponent<{ error: HttpError }> {
