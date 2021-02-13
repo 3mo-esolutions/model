@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 interface IEvent<T = void> {
 	trigger(value: T): void
 	subscribe(handler: EventHandler<T>): void
@@ -52,6 +50,7 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Window {
 	PureEvent: typeof PureEvent
 	HTMLElementEvent: typeof HTMLElementEvent
