@@ -1,4 +1,3 @@
-import { PromiseTask } from '../helpers'
 import { component, html, Component, element, internalProperty } from '../library'
 
 class ConfettiParticle {

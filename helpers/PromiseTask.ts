@@ -7,3 +7,12 @@ export default class PromiseTask {
 		return new Promise<T>(resolve => setTimeout(() => resolve(task()), 1))
 	}
 }
+
+globalThis.PromiseTask = PromiseTask
+
+type PromiseTaskType = typeof PromiseTask
+
+declare global {
+	// eslint-disable-next-line no-var
+	var PromiseTask: PromiseTaskType
+}

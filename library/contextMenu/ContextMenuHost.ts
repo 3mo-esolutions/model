@@ -1,5 +1,4 @@
 import { Component, component, html, nothing, property, query, TemplateResult } from '..'
-import { PromiseTask } from '../../helpers'
 import { Menu } from '../../components'
 
 @component('mo-context-menu-host')

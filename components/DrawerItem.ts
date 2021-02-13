@@ -1,6 +1,5 @@
 import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost } from '../library'
 import { Drawer, ListItem } from '.'
-import { PromiseTask } from '../helpers'
 
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {
