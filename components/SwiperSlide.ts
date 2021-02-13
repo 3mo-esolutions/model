@@ -1,7 +1,7 @@
 import { Component, css, component, html } from '../library'
 
 @component('mo-swiper-slide')
-export default class SwiperSlide extends Component {
+export class SwiperSlide extends Component {
 	static get styles() {
 		return css`
 			:host {

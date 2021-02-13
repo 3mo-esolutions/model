@@ -15,7 +15,7 @@ import { ListItemMixin } from './ListItemMixin'
  * @fires selectionChange
  */
 @component('mo-list-item')
-export default class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
+export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 	constructor() {
 		super()
 		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))

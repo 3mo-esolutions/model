@@ -2,7 +2,7 @@ import { Component, component, html } from '..'
 import { ContextMenuHost } from '.'
 
 @component('mo-context-menu')
-export default class ContextMenu extends Component {
+export class ContextMenu extends Component {
 	protected initialized() {
 		this.parentElement.addEventListener('contextmenu', (e: MouseEvent) => this.open(e))
 	}

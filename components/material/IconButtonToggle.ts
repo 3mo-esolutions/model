@@ -11,7 +11,7 @@ import { IconButtonToggle as MwcIconButtonToggle } from '@material/mwc-icon-butt
  * @slot offIcon
  */
 @component('mo-icon-button-toggle')
-export default class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
+export class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
 	@property() onIcon!: MaterialIcon
 	@property() offIcon!: MaterialIcon
 

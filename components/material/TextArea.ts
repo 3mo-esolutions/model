@@ -17,7 +17,7 @@ import { MaterialIcon } from '../../types'
  * @attr helperPersistent
  */
 @component('mo-text-area')
-export default class TextArea extends ComponentMixin(MwcTextArea) {
+export class TextArea extends ComponentMixin(MwcTextArea) {
 	@eventProperty() readonly change!: IEvent<string>
 	@eventProperty() readonly input!: IEvent<string>
 

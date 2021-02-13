@@ -3,7 +3,7 @@ import { PromiseTask } from '../../helpers'
 import { Menu } from '../../components'
 
 @component('mo-context-menu-host')
-export default class ContextMenuHost extends Component {
+export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu.bind(this.instance) }
 

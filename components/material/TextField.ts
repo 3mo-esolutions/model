@@ -16,7 +16,7 @@ import { InputMixin } from './InputMixin'
  * @attr helperPersistent
  */
 @component('mo-text-field')
-export default class TextField extends InputMixin(ComponentMixin(MwcTextField)) {
+export class TextField extends InputMixin(ComponentMixin(MwcTextField)) {
 	@property({ reflect: true }) value!: string
 	@property() icon!: MaterialIcon
 	@property() trailingIcon!: MaterialIcon

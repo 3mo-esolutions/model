@@ -3,7 +3,7 @@ import { Themes } from '../../types'
 import DialogAuthenticator from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
 
-export default abstract class Application extends Component {
+export abstract class Application extends Component {
 	abstract get drawerTemplate(): TemplateResult
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
 	static readonly providers = new Set<ApplicationProvider>()

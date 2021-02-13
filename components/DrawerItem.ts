@@ -3,7 +3,7 @@ import { Drawer, ListItem } from '.'
 import { PromiseTask } from '../helpers'
 
 @component('mo-drawer-item')
-export default class DrawerItem extends ListItem {
+export class DrawerItem extends ListItem {
 	@property({ type: Object })
 	set component(value: PageComponent<any> | DialogComponent<any>) {
 		this.componentConstructor = [

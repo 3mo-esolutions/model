@@ -2,7 +2,7 @@ import { css, component, html, property, Component, element } from '../library'
 import * as SwiperLibrary from 'swiper'
 
 @component('mo-swiper')
-export default class Swiper extends Component {
+export class Swiper extends Component {
 	@property({ type: Boolean, reflect: true }) hasThumb = false
 	@property({ type: Boolean, reflect: true }) autoplay = true
 

@@ -15,7 +15,7 @@ import { MaterialIcon } from '../../types'
  * @slot trailingIcon
  */
 @component('mo-button')
-export default class Button extends ComponentMixin(MwcButton) {
+export class Button extends ComponentMixin(MwcButton) {
 	static get styles() {
 		return css`
 			${super.styles}

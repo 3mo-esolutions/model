@@ -9,7 +9,7 @@ import { InputMixin } from './InputMixin'
  * @attr global
  */
 @component('mo-radio')
-export default class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
+export class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 	@property({ type: Boolean })
 	// @ts-ignore overriding the value property
 	get value(): boolean { return this.checked }

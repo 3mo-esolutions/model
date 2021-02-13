@@ -17,7 +17,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @fires MDCTab:interacted
  */
 @component('mo-tab')
-export default class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
+export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value!: string
 	@property({ reflect: true }) icon!: MaterialIcon
 

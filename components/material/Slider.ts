@@ -12,7 +12,7 @@ import { Slider as MwcSlider } from '@material/mwc-slider'
  * @fires change
  */
 @component('mo-slider')
-export default class Slider extends ComponentMixin(MwcSlider) {
+export class Slider extends ComponentMixin(MwcSlider) {
 	@property() label = ''
 }
 

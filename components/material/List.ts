@@ -14,7 +14,7 @@ import { List as MwcList } from '@material/mwc-list'
  * @fires selected
  */
 @component('mo-list')
-export default class List extends ComponentMixin(MwcList) { }
+export class List extends ComponentMixin(MwcList) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

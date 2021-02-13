@@ -11,7 +11,7 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
  * @cssprop --mdc-snackbar-action-color
  */
 @component('mo-snackbar')
-export default class Snackbar extends ComponentMixin(MwcSnackbar) {
+export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
 	static get show() { return this.instance.createAndShow.bind(this.instance) }

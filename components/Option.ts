@@ -2,7 +2,7 @@ import { component, property } from '../library'
 import { ListItem } from './material'
 
 @component('mo-option')
-export default class Option<TValue = string> extends ListItem {
+export class Option<TValue = string> extends ListItem {
 	@property({ type: Object }) rawValue?: TValue
 	@property({ type: Boolean, reflect: true }) default = false
 

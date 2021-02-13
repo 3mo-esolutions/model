@@ -1,7 +1,7 @@
 import { component, html, Component } from '../library'
 
 @component('mo-div')
-export default class Div extends Component {
+export class Div extends Component {
 	protected render() {
 		return html`<slot></slot>`
 	}

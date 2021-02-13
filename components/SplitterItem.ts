@@ -3,7 +3,7 @@ import { CSSDirection } from '../types'
 
 // REFACTOR: use lit-html for templating
 @component('mo-splitter-item')
-export default class SplitterItem extends Component {
+export class SplitterItem extends Component {
 	@property({ reflect: true }) size = ''
 	@property({ reflect: true }) min = '50px'
 	@property({ reflect: true }) max = ''

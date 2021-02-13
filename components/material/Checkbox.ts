@@ -3,8 +3,6 @@ import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 import { LabelMixin } from './LabelMixin'
 import { InputMixin } from './InputMixin'
 
-export type CheckboxValue = 'checked' | 'unchecked' | 'indeterminate'
-
 /**
  * @attr checked
  * @attr indeterminate
@@ -12,7 +10,7 @@ export type CheckboxValue = 'checked' | 'unchecked' | 'indeterminate'
  * @attr value
  */
 @component('mo-checkbox')
-export default class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))) {
+export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))) {
 	@property()
 	// @ts-ignore overriding the value property
 	get value(): CheckboxValue {
@@ -38,6 +36,7 @@ export default class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCh
 }
 
 declare global {
+	type CheckboxValue = 'checked' | 'unchecked' | 'indeterminate'
 	interface HTMLElementTagNameMap {
 		'mo-checkbox': Checkbox
 	}

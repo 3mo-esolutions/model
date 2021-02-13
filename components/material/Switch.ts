@@ -9,7 +9,7 @@ import { InputMixin } from './InputMixin'
  * @fires change
  */
 @component('mo-switch')
-export default class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
+export class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
 	@property({ type: Boolean })
 	get value() { return this.checked === true }
 	set value(value) { this.checked = value }

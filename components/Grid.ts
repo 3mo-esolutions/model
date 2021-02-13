@@ -1,7 +1,7 @@
 import { component, html, property, Component } from '../library'
 
 @component('mo-grid')
-export default class Grid extends Component {
+export class Grid extends Component {
 	@property()
 	get rowGap() { return this.style.rowGap }
 	set rowGap(value) { this.style.rowGap = value }

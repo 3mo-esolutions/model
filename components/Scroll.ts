@@ -1,7 +1,7 @@
 import { component, html, Component } from '../library'
 
 @component('mo-scroll')
-export default class Scroll extends Component {
+export class Scroll extends Component {
 	protected render() {
 		return html`
 			<style>

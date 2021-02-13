@@ -12,7 +12,7 @@ import { Fab as MwcFab } from '@material/mwc-fab'
  * @slot icon
  */
 @component('mo-fab')
-export default class Fab extends ComponentMixin(MwcFab) {
+export class Fab extends ComponentMixin(MwcFab) {
 	@property() icon!: MaterialIcon
 	@property({ type: Boolean, reflect: true }) scrollHide = false
 	lastScrollElementTop = 0

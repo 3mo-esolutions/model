@@ -3,7 +3,7 @@ import { MaterialIcon } from '../../types'
 import { Icon as MwcIcon } from '@material/mwc-icon'
 
 @component('mo-icon')
-export default class Icon extends ComponentMixin(MwcIcon) {
+export class Icon extends ComponentMixin(MwcIcon) {
 	constructor() {
 		super()
 		this.size = 'var(--mo-font-size-icon)'

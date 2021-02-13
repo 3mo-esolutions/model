@@ -1,1 +1,1 @@
-export { default as DialogPrompt } from './DialogPrompt'
+export { DialogPrompt } from './DialogPrompt'

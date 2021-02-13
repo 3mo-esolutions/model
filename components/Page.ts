@@ -1,7 +1,7 @@
 import { component, html, property, Component, PageHost } from '../library'
 
 @component('mo-page')
-export default class Page extends Component {
+export class Page extends Component {
 	private _header = ''
 	@property()
 	get header() { return this._header }

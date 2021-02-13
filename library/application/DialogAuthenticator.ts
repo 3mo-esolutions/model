@@ -4,7 +4,7 @@ import { Checkbox, TextField } from '../../components'
 import { StorageContainer } from '../../helpers'
 import { KeyboardKey, User } from '../../types'
 
-export default abstract class DialogAuthenticator extends DialogComponent {
+export abstract class DialogAuthenticator extends DialogComponent {
 	async unauthenticate() {
 		try {
 			await this.unauthenticateProcess()

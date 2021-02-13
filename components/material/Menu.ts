@@ -28,7 +28,7 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
  * @cssprop --mdc-menu-z-index
  */
 @component('mo-menu')
-export default class Menu extends ComponentMixin(MwcMenu) { }
+export class Menu extends ComponentMixin(MwcMenu) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

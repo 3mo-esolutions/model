@@ -22,7 +22,7 @@ type DialogSize = 'large' | 'medium' | 'small'
  * @cssprop --mdc-dialog-box-shadow
  */
 @component('mo-dialog')
-export default class Dialog extends ComponentMixin(MwcDialog) {
+export class Dialog extends ComponentMixin(MwcDialog) {
 	@eventProperty() readonly finished!: IEvent<boolean>
 
 	primaryButtonClicked: ClickHandler = () => void 0

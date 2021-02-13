@@ -8,7 +8,7 @@ import { IconButton as MwcIconButton } from '@material/mwc-icon-button'
  * @attr disabled
  */
 @component('mo-icon-button')
-export default class IconButton extends ComponentMixin(MwcIconButton) {
+export class IconButton extends ComponentMixin(MwcIconButton) {
 	@property() icon!: MaterialIcon
 
 	@property({ type: Boolean })

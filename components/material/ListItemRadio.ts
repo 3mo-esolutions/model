@@ -23,7 +23,7 @@ class MwcRadioListItemWidthCompatibleLeft extends MwcRadioListItem {
  * @fires selectionChange
  */
 @component('mo-list-item-radio')
-export default class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItemWidthCompatibleLeft)) {
+export class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItemWidthCompatibleLeft)) {
 	constructor() {
 		super()
 		this.addEventListener('request-selected', () => this.selectionChange.trigger(this.radioElement.checked))

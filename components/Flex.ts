@@ -3,7 +3,7 @@ import { CSSDirection } from '../types'
 import * as CSS from 'csstype'
 
 @component('mo-flex')
-export default class Flex extends Component {
+export class Flex extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
 	set flexDirection(value) {

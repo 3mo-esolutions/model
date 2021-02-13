@@ -3,7 +3,7 @@ import { Component, component, html, property, ifDefined } from '../library'
 import { MaterialIcon } from '../types'
 
 @component('mo-drawer-list')
-export default class DrawerList extends Component {
+export class DrawerList extends Component {
 	constructor() {
 		super()
 		this.root = this.parentElement === null

@@ -9,7 +9,7 @@ import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progre
  * @attr close
  */
 @component('mo-linear-progress')
-export default class LinearProgress extends ComponentMixin(MwcLinearProgress) { }
+export class LinearProgress extends ComponentMixin(MwcLinearProgress) { }
 
 declare global {
 	interface HTMLElementTagNameMap {

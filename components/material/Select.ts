@@ -23,7 +23,7 @@ import { MaterialIcon } from '../../types'
  * @fires selected
  */
 @component('mo-select')
-export default class Select extends ComponentMixin(MwcSelect) {
+export class Select extends ComponentMixin(MwcSelect) {
 	@property() icon!: MaterialIcon
 }
 

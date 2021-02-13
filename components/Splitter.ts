@@ -4,7 +4,7 @@ import { CSSDirection } from '../types'
 import { SplitterItem } from '.'
 
 @component('mo-splitter')
-export default class Splitter extends Component {
+export class Splitter extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
 	set flexDirection(value) { this.style.flexDirection = value }

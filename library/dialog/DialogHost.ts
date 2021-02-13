@@ -5,7 +5,7 @@ import { PermissionHelper, StorageContainer } from '../../helpers'
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
 
 @component('mo-dialog-host')
-export default class DialogHost extends Component {
+export class DialogHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
 	static get openDialog() { return this.instance.openDialog.bind(this.instance) }

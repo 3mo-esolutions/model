@@ -7,7 +7,7 @@ import { Tab } from '.'
  * @fires navigate
  */
 @component('mo-tab-bar')
-export default class TabBar extends ComponentMixin(MwcTabBar) {
+export class TabBar extends ComponentMixin(MwcTabBar) {
 	@eventProperty() readonly navigate!: IEvent<string | undefined>
 
 	@property({ observer: valueChanged }) value?: string
