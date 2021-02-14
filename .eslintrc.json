@@ -11,21 +11,6 @@
 		"dist",
 		"coverage"
 	],
-	"settings": {
-		"import/resolver": {
-			"node": {
-				"extensions": [
-					".js",
-					".jsx",
-					".ts",
-					".tsx"
-				],
-				"paths": [
-					"."
-				]
-			}
-		}
-	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
@@ -169,7 +154,11 @@
 			"error",
 			{
 				"selector": "TSEnumDeclaration:not([const=true])",
-				"message": "Don't declare non-const enums"
+				"message": "MoDeL: Don't declare non-const enums to decrease application size at runtime"
+			},
+			{
+				"selector": "Identifier[name='bind']",
+				"message": "MoDeL: Try to declare arrow functions to avoid using context bindings"
 			}
 		],
 		"template-curly-spacing": [

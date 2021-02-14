@@ -4,13 +4,13 @@ import { Menu } from '../../components'
 @component('mo-context-menu-host')
 export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
-	static get openMenu() { return this.instance.openMenu.bind(this.instance) }
+	static get openMenu() { return this.instance.openMenu }
 
 	private readonly lengthBuffer = 16
 
 	@property({ type: Object }) menu?: TemplateResult
 
-	async openMenu(mouseEvent: MouseEvent, template: TemplateResult) {
+	openMenu = async (mouseEvent: MouseEvent, template: TemplateResult) => {
 		this.menu = template
 
 		if (this.list) {

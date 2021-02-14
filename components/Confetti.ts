@@ -1,4 +1,4 @@
-import { component, html, Component, element, internalProperty } from '../library'
+import { component, html, Component, internalProperty, query } from '../library'
 
 class ConfettiParticle {
 	constructor(
@@ -51,12 +51,12 @@ class ConfettiParticle {
 export class Confetti extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-confetti') as Confetti }
 
-	static get rain() { return this.instance.rain.bind(this.instance) }
+	static get rain() { return this.instance.rain }
 
-	async rain() {
+	rain = async () => {
 		const animate = () => {
 			requestAnimationFrame(animate)
-			this.canvParticleContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
+			this.canvasParticleContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
 
 			for (const particle of particles) {
 				particle.width = this.canvasWidth
@@ -73,7 +73,7 @@ export class Confetti extends Component {
 		const particles = Array<ConfettiParticle>()
 		const totalParticleCount = Math.round(this.canvasWidth / 2.5)
 		for (let i = 0; i < totalParticleCount; ++i) {
-			particles.push(new ConfettiParticle(this.canvParticleContext, this.canvasWidth, this.canvasHeight))
+			particles.push(new ConfettiParticle(this.canvasParticleContext, this.canvasWidth, this.canvasHeight))
 		}
 
 		animate()
@@ -88,8 +88,8 @@ export class Confetti extends Component {
 	@internalProperty() private canvasWidth = 0
 	@internalProperty() private canvasHeight = 0
 
-	@element private readonly canvParticle!: HTMLCanvasElement
-	private get canvParticleContext() { return this.canvParticle.getContext('2d') as CanvasRenderingContext2D }
+	@query('canvas') private readonly canvasParticle!: HTMLCanvasElement
+	private get canvasParticleContext() { return this.canvasParticle.getContext('2d') as CanvasRenderingContext2D }
 
 	protected initialized() {
 		this.display = 'none'
@@ -105,13 +105,13 @@ export class Confetti extends Component {
 				position: absolute;
 			}
 
-			#canvParticle {
+			canvas {
 				width: 100%;
 				height: 100%;
 				position: absolute;
 			}
 		</style>
-		<canvas id='canvParticle' width=${this.canvasWidth} height=${this.canvasHeight}></canvas>
+		<canvas width=${this.canvasWidth} height=${this.canvasHeight}></canvas>
 	`
 }
 

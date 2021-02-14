@@ -70,7 +70,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				font-weight: 500;
 			}
 		</style>
-		<mo-dialog actionsJustifyContent='center' isBlocking primaryOnEnter .primaryButtonClicked=${this.authenticate.bind(this)}>
+		<mo-dialog actionsJustifyContent='center' isBlocking primaryOnEnter .primaryButtonClicked=${this.authenticate}>
 			<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
 			<mo-flex alignItems='center' minWidth='350px'>
 				<mo-flex height='100px' alignItems='center' gap='10px'>
@@ -101,7 +101,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return isAuthenticatedServerSide && isAuthenticatedClientSide
 	}
 
-	protected async authenticate() {
+	protected authenticate = async () => {
 		DialogAuthenticator.ShallRemember.value = this.shallRememberPassword
 		if (DialogAuthenticator.ShallRemember.value) {
 			DialogAuthenticator.Username.value = this.username

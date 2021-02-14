@@ -10,20 +10,20 @@ export class DialogHost extends Component {
 
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
-	static get openDialog() { return this.instance.openDialog.bind(this.instance) }
-	static get confirmDialog() { return this.instance.confirmDialog.bind(this.instance) }
-	static get open() { return this.instance.open.bind(this.instance) }
-	static get confirm() { return this.instance.confirm.bind(this.instance) }
-	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary.bind(this.instance) }
+	static get openDialog() { return this.instance.openDialog }
+	static get confirmDialog() { return this.instance.confirmDialog }
+	static get open() { return this.instance.open }
+	static get confirm() { return this.instance.confirm }
+	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary }
 
-	private async confirmDeletionIfNecessary(text: string): Promise<void> {
+	private confirmDeletionIfNecessary = async (text: string) => {
 		if (DialogHost.DeletionConfirmation.value === false)
 			return
 
 		await this.confirm('Confirm Deletion', text)
 	}
 
-	private async open(...parameters: DefaultDialogParameters) {
+	private open = async (...parameters: DefaultDialogParameters) => {
 		return await new DialogDefault({
 			header: parameters[0],
 			content: parameters[1],
@@ -32,7 +32,7 @@ export class DialogHost extends Component {
 		}).open()
 	}
 
-	private async confirm(...parameters: DefaultDialogParameters) {
+	private confirm = async (...parameters: DefaultDialogParameters) => {
 		await new DialogDefault({
 			header: parameters[0],
 			content: parameters[1],
@@ -41,14 +41,14 @@ export class DialogHost extends Component {
 		}).confirm()
 	}
 
-	private async confirmDialog<T extends DialogComponent<TParams>, TParams>(dialog: T) {
+	private confirmDialog = async <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
 		const response = await this.openDialog(dialog)
 		if (response === false) {
 			throw new Error('Dialog canceled')
 		}
 	}
 
-	private async openDialog<T extends DialogComponent<TParams>, TParams>(dialog: T) {
+	private openDialog = async <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
 		if (PermissionHelper.isAuthorized(...dialog.constructor.permissions) === false) {
 			Snackbar.show('🔒 Access denied')
 			return false

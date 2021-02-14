@@ -14,9 +14,9 @@ export const enum NavigationMode {
 export class PageHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-page-host') as PageHost }
 
-	static get navigateToHomePage() { return this.instance.navigateToHomePage.bind(this.instance) }
-	static get navigateToPage() { return this.instance.navigateToPage.bind(this.instance) }
-	static get navigateToPath() { return this.instance.navigateToPath.bind(this.instance) }
+	static get navigateToHomePage() { return this.instance.navigateToHomePage }
+	static get navigateToPage() { return this.instance.navigateToPage }
+	static get navigateToPath() { return this.instance.navigateToPath }
 	static get currentPage() { return this.instance.pageComponent }
 
 	constructor() {
@@ -32,7 +32,7 @@ export class PageHost extends Component {
 		}
 	}
 
-	private navigateToPage<T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) {
+	private navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
 		const relativePath = Router.getPath(page)
 		const url = window.location.origin + relativePath
 
@@ -67,13 +67,13 @@ export class PageHost extends Component {
 		}
 	}
 
-	private navigateToPath(relativePath: string, mode = NavigationMode.Navigate) {
+	private navigateToPath = (relativePath: string, mode = NavigationMode.Navigate) => {
 		const pageComponent = Router.getPage(relativePath)
 		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: '404' })
 		this.navigateToPage(page, mode)
 	}
 
-	private navigateToHomePage() {
+	private navigateToHomePage = () => {
 		if (!Router.HomePageConstructor)
 			return
 

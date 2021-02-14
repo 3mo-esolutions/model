@@ -9,7 +9,7 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 		<mo-dialog
 			header=${this.parameters.header ?? 'Prompt'}
 			primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
-			.primaryButtonClicked=${this.handle.bind(this)}
+			.primaryButtonClicked=${this.handle}
 		>
 			<style>
 				p:empty {
@@ -28,7 +28,7 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 		</mo-dialog>
 	`
 
-	protected handle() {
+	protected handle = () => {
 		this.parameters.handler(this.input)
 	}
 }

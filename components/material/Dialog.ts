@@ -66,8 +66,8 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		this.renderPrimaryButton()
 		this.renderSecondaryButton()
 		this.actionsElement.style.justifyContent = this.actionsJustifyContent
-		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick.bind(this))
-		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick.bind(this))
+		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
+		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
 		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined }>) => {
 			if (e.detail?.action !== 'close') {
 				e.stopImmediatePropagation()
@@ -142,17 +142,17 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		if (!this.primaryButtonText || !this.primaryActionSlotElement)
 			return
 
-		render(html`<mo-button raised @click=${this.handlePrimaryButtonClick.bind(this)}>${this.primaryButtonText}</mo-button>`, this.primaryActionSlotElement)
+		render(html`<mo-button raised @click=${this.handlePrimaryButtonClick}>${this.primaryButtonText}</mo-button>`, this.primaryActionSlotElement)
 	}
 
 	private renderSecondaryButton() {
 		if (!this.secondaryButtonText || !this.secondaryActionSlotElement)
 			return
 
-		render(html`<mo-button @click=${this.handleSecondaryButtonClick.bind(this)}>${this.secondaryButtonText}</mo-button>`, this.secondaryActionSlotElement)
+		render(html`<mo-button @click=${this.handleSecondaryButtonClick}>${this.secondaryButtonText}</mo-button>`, this.secondaryActionSlotElement)
 	}
 
-	private async handlePrimaryButtonClick() {
+	private handlePrimaryButtonClick = async () => {
 		try {
 			await this.primaryButtonClicked()
 			if (this.manualClose !== true) {
@@ -164,7 +164,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private async handleSecondaryButtonClick() {
+	private handleSecondaryButtonClick = async () => {
 		if (!this.secondaryButtonClicked) {
 			this.handleCancellation()
 			return

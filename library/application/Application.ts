@@ -149,7 +149,7 @@ export abstract class Application extends Component {
 
 					<mo-drawer-list open root>
 						${this.renderDrawerExtras()}
-						<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate.bind(this)}>Logout</mo-drawer-item>
+						<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate}>Logout</mo-drawer-item>
 					</mo-drawer-list>
 				</mo-flex>
 
@@ -204,7 +204,7 @@ export abstract class Application extends Component {
 		} else {
 			return html`
 				<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
-					<mo-icon-button icon='account_circle' @click=${this.authenticate.bind(this)}></mo-icon-button>
+					<mo-icon-button icon='account_circle' @click=${this.authenticate}></mo-icon-button>
 				</mo-flex>
 			`
 		}
