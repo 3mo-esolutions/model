@@ -1,17 +1,17 @@
 import { LocalStorageEntry } from '.'
 import { LanguageCode } from '../types'
 
-const localizationHelper = new class LocalizationHelper {
+export class LocalizationHelper {
 	static readonly Language = new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode)
 
-	private readonly languageMap = new Map<LanguageCode, MoDeL.Localization>()
+	private static readonly languageMap = new Map<LanguageCode, MoDeL.Localization>()
 
-	private get currentLanguage() {
+	private static get currentLanguage() {
 		return LocalizationHelper.Language.value
 	}
 
-	localize = <K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]) => {
-		const currentLanguageDictionary = this.languageMap.get(this.currentLanguage)
+	static localize = <K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]) => {
+		const currentLanguageDictionary = LocalizationHelper.languageMap.get(LocalizationHelper.currentLanguage)
 
 		if (!currentLanguageDictionary)
 			return key
@@ -28,20 +28,18 @@ const localizationHelper = new class LocalizationHelper {
 		return translationProvider(...params)
 	}
 
-	provide = (language: LanguageCode, resource: Partial<MoDeL.Localization>) => {
-		const existingResources = this.languageMap.get(language) ?? {}
+	static provide = (language: LanguageCode, resource: Partial<MoDeL.Localization>) => {
+		const existingResources = LocalizationHelper.languageMap.get(language) ?? {}
 		const newResource = { ...existingResources, ...resource } as MoDeL.Localization
-		this.languageMap.set(language, newResource)
+		LocalizationHelper.languageMap.set(language, newResource)
 	}
 }
 
-export default localizationHelper
-
-globalThis._ = localizationHelper.localize
+globalThis._ = LocalizationHelper.localize
 
 declare global {
 	// eslint-disable-next-line no-var
-	var _: typeof localizationHelper.localize
+	var _: typeof LocalizationHelper.localize
 
 	namespace MoDeL {
 		type LocalizationProvider<K extends keyof LocalizationParametersMap> = (...args: MoDeL.LocalizationParametersMap[K]) => string
