@@ -44,3 +44,4 @@ export default class ThemeHelper {
 }
 
 ThemeHelper.Accent.changed.subscribe(value => ThemeHelper.handleAccentChange(value))
+ThemeHelper.handleAccentChange(ThemeHelper.Accent.value)
