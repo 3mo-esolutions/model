@@ -1,12 +1,14 @@
 import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
 import { Themes } from '../../types'
 import { DialogAuthenticator } from './DialogAuthenticator'
-import { DocumentHelper, PwaHelper, StorageContainer } from '../../helpers'
+import { DocumentHelper, PwaHelper, ThemeHelper } from '../../helpers'
+import { Drawer } from '../../components'
 
 export abstract class Application extends Component {
-	abstract get drawerTemplate(): TemplateResult
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
 	static readonly providers = new Set<ApplicationProvider>()
+
+	abstract get drawerTemplate(): TemplateResult
 
 	constructor() {
 		super()
@@ -27,8 +29,8 @@ export abstract class Application extends Component {
 
 	@property({ reflect: true }) theme?: Exclude<Themes, Themes.System>
 	@property() pageTitle?: string
-	@property({ type: Object }) authenticatedUser = StorageContainer.Authentication.AuthenticatedUser.value
-	@property({ type: Boolean }) drawerDocked = StorageContainer.Components.Drawer.IsDocked.value
+	@property({ type: Object }) authenticatedUser = DialogAuthenticator.AuthenticatedUser.value
+	@property({ type: Boolean }) drawerDocked = Drawer.IsDocked.value
 	@property({ type: Boolean }) drawerOpen = this.drawerDocked
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 
@@ -46,12 +48,12 @@ export abstract class Application extends Component {
 			PageHost.navigateToPath(MoDeL.Router.relativePath)
 		}
 
-		StorageContainer.Authentication.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		StorageContainer.Components.Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
+		DialogAuthenticator.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
+		Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 	}
 
 	private handleThemes() {
-		const getTheme = (theme: Themes = StorageContainer.Theme.Background.value) => {
+		const getTheme = (theme: Themes = ThemeHelper.Background.value) => {
 			if (theme === Themes.System) {
 				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 				return isDark ? Themes.Dark : Themes.Light
@@ -59,7 +61,7 @@ export abstract class Application extends Component {
 			return theme
 		}
 		this.theme = getTheme()
-		StorageContainer.Theme.Background.changed.subscribe(theme => this.theme = getTheme(theme))
+		ThemeHelper.Background.changed.subscribe(theme => this.theme = getTheme(theme))
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.theme = getTheme())
 	}
 

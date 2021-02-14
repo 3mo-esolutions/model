@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-syntax
 export enum Accents {
 	Blue = '0,119,200/0,119,200',
 	Teal = '0,128,128/0,128,128',

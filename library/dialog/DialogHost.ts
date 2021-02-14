@@ -1,11 +1,13 @@
 import { Component, component, Snackbar } from '..'
 import { DialogComponent, DialogDefault } from '.'
-import { PermissionHelper, StorageContainer } from '../../helpers'
+import { LocalStorageEntry, PermissionHelper } from '../../helpers'
 
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
+	static readonly DeletionConfirmation = new LocalStorageEntry('MoDeL.DeletionConfirmation', true)
+
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
 	static get openDialog() { return this.instance.openDialog.bind(this.instance) }
@@ -15,7 +17,7 @@ export class DialogHost extends Component {
 	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary.bind(this.instance) }
 
 	private async confirmDeletionIfNecessary(text: string): Promise<void> {
-		if (StorageContainer.DeletionConfirmation.value === false)
+		if (DialogHost.DeletionConfirmation.value === false)
 			return
 
 		await this.confirm('Confirm Deletion', text)

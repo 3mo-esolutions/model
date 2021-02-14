@@ -1,20 +1,22 @@
-import { StorageContainer } from '.'
+import { LocalStorageEntry } from '.'
 
 export default new class PermissionHelper {
+	static readonly Permissions = new LocalStorageEntry('MoDeL.Permissions', new Array<keyof MoDeL.Permissions>())
+
 	isAuthorized(...permissions: Array<keyof MoDeL.Permissions>) {
-		return permissions.every(p => StorageContainer.Permissions.value.includes(p))
+		return permissions.every(p => PermissionHelper.Permissions.value.includes(p))
 	}
 
 	authorize(...permissions: Array<keyof MoDeL.Permissions>) {
-		StorageContainer.Permissions.value = [
+		PermissionHelper.Permissions.value = [
 			...permissions,
-			...StorageContainer.Permissions.value,
+			...PermissionHelper.Permissions.value,
 		]
 	}
 
 	unauthorize(...permissions: Array<keyof MoDeL.Permissions>) {
-		StorageContainer.Permissions.value =
-			StorageContainer.Permissions.value.filter(p => permissions.includes(p) === false)
+		PermissionHelper.Permissions.value =
+			PermissionHelper.Permissions.value.filter(p => permissions.includes(p) === false)
 	}
 }
 

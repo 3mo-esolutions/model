@@ -676,6 +676,7 @@ export type MaterialIcon =
 	| 'print'
 	| 'printer'
 	| 'priority_high'
+	| 'push_pin'
 	| 'public'
 	| 'publish'
 	| 'published_with_changes'

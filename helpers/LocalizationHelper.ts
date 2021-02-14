@@ -1,11 +1,13 @@
-import { StorageContainer } from '.'
+import { LocalStorageEntry } from '.'
 import { LanguageCode } from '../types'
 
 const localizationHelper = new class LocalizationHelper {
+	static readonly Language = new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode)
+
 	private readonly languageMap = new Map<LanguageCode, MoDeL.Localization>()
 
 	private get currentLanguage() {
-		return StorageContainer.Localization.Language.value
+		return LocalizationHelper.Language.value
 	}
 
 	localize = <K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]) => {

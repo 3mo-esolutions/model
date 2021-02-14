@@ -1,4 +1,5 @@
 import { component, property, ComponentMixin, css } from '../../library'
+import { LocalStorageEntry } from '../../helpers'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 /**
@@ -16,6 +17,8 @@ import { Drawer as MwcDrawer } from '@material/mwc-drawer'
  */
 @component('mo-drawer')
 export class Drawer extends ComponentMixin(MwcDrawer) {
+	static readonly IsDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
+
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
 	static get type() { return this.instance.type }
 	static set isOpen(value: boolean) { this.instance.open = value }
