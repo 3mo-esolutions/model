@@ -6,6 +6,26 @@
 		"import",
 		"lit"
 	],
+	"ignorePatterns": [
+		"node_modules",
+		"dist",
+		"coverage"
+	],
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [
+					".js",
+					".jsx",
+					".ts",
+					".tsx"
+				],
+				"paths": [
+					"."
+				]
+			}
+		}
+	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
@@ -28,6 +48,25 @@
 	],
 	"rules": {
 		"lit/no-missing-import": "off",
+		"@typescript-eslint/type-annotation-spacing": [
+			"warn",
+			{
+				"before": false,
+				"after": true,
+				"overrides": {
+					"arrow": {
+						"before": true,
+						"after": true
+					}
+				}
+			}
+		],
+		"@typescript-eslint/explicit-member-accessibility": [
+			"warn",
+			{
+				"accessibility": "no-public"
+			}
+		],
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-this-alias": "off",
 		"@typescript-eslint/no-non-null-assertion": "warn",
@@ -125,6 +164,33 @@
 				"beforeColon": false,
 				"afterColon": true
 			}
+		],
+		"no-restricted-syntax": [
+			"error",
+			{
+				"selector": "TSEnumDeclaration:not([const=true])",
+				"message": "Don't declare non-const enums"
+			}
+		],
+		"template-curly-spacing": [
+			"error",
+			"never"
+		],
+		"object-curly-spacing": [
+			"error",
+			"always"
 		]
 	}
 }
+// TODO: https://eslint.org/docs/rules/curly
+// TODO: https://github.com/typescript-eslint/typescript-eslint/issues/2673
+// TODO: https://eslint.org/docs/rules/no-return-await
+/* TODO: doesn't work properly
+"lines-between-class-members": [
+	"error",
+	"always",
+	{
+		"exceptAfterSingleLine": true
+	}
+]
+*/
