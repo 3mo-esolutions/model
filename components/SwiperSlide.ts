@@ -16,9 +16,8 @@ export class SwiperSlide extends Component {
 			}
 		`
 	}
-	protected render() {
-		return html`<slot></slot>`
-	}
+
+	protected render = () => html`<slot></slot>`
 }
 
 declare global {

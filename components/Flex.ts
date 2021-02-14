@@ -53,18 +53,16 @@ export class Flex extends Component {
 
 	@property({ observer: applyGap }) gap?: string
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: flex;
-					flex-direction: column;
-					flex-wrap: nowrap;
-				}
-			</style>
-			<slot></slot>
-		`
-	}
+	protected render = () => html`
+		<style>
+			:host {
+				display: flex;
+				flex-direction: column;
+				flex-wrap: nowrap;
+			}
+		</style>
+		<slot></slot>
+	`
 }
 
 function applyGap(this: Flex) {

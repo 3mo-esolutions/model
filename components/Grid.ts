@@ -18,16 +18,14 @@ export class Grid extends Component {
 	get columns() { return this.style.gridTemplateColumns.split('fr').join('*') }
 	set columns(value) { this.style.gridTemplateColumns = ` ${value}`.split('*').join('fr').split(' fr').join(' 1fr').substring(1) }
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: grid;
-				}
-			</style>
-			<slot></slot>
-		`
-	}
+	protected render = () => html`
+		<style>
+			:host {
+				display: grid;
+			}
+		</style>
+		<slot></slot>
+	`
 }
 
 declare global {

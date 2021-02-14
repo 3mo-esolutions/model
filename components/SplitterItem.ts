@@ -27,21 +27,19 @@ export class SplitterItem extends Component {
 		}
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: flex;
-					user-select: none;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				display: flex;
+				user-select: none;
+			}
 
-				::slotted(:first-child) {
-					flex: 1;
-				}
-			</style>
-			<slot></slot>
-		`
-	}
+			::slotted(:first-child) {
+				flex: 1;
+			}
+		</style>
+		<slot></slot>
+	`
 }
 
 declare global {

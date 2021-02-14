@@ -36,39 +36,37 @@ export class ContextMenuHost extends Component {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
 
-	protected render() {
-		return html`
-			<style>
-				mo-menu {
-					--mdc-menu-z-index: 10;
-					--mdc-menu-item-height: var(--mo-elm-height-s);
-					--mo-list-item-icon-color: var(--mo-color-gray);
-				}
+	protected render = () => html`
+		<style>
+			mo-menu {
+				--mdc-menu-z-index: 10;
+				--mdc-menu-item-height: var(--mo-elm-height-s);
+				--mo-list-item-icon-color: var(--mo-color-gray);
+			}
 
-				::slotted(mo-context-menu-item) {
-					font-size: var(--mo-font-size-l);
-				}
+			::slotted(mo-context-menu-item) {
+				font-size: var(--mo-font-size-l);
+			}
 
-				/* NOTE: Material Design's Dialog scans the root elements and 'inert's them.
-					This is ok as long as our root-level elements do not need any focus-related behaviours
-					Which is the case here unfortunately. This code snippet overwrites the effect of 'inert' attribute
-					so that the context menu is always focusable.
-					More to inert that MWC uses: https://github.com/WICG/inert
-				*/
-				:host([inert]) {
-					pointer-events: auto !important;
-					cursor: default !important;
-					user-select: auto !important;
-					-webkit-user-select: auto !important;
-					-moz-user-select: auto !important;
-					-ms-user-select: auto !important;
-				}
-			</style>
-			<mo-menu x='0' y='0' fixed quick .anchor=${document.body} ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
-				${this.menu ?? nothing}
-			</mo-menu>
-		`
-	}
+			/* NOTE: Material Design's Dialog scans the root elements and 'inert's them.
+				This is ok as long as our root-level elements do not need any focus-related behaviours
+				Which is the case here unfortunately. This code snippet overwrites the effect of 'inert' attribute
+				so that the context menu is always focusable.
+				More to inert that MWC uses: https://github.com/WICG/inert
+			*/
+			:host([inert]) {
+				pointer-events: auto !important;
+				cursor: default !important;
+				user-select: auto !important;
+				-webkit-user-select: auto !important;
+				-moz-user-select: auto !important;
+				-ms-user-select: auto !important;
+			}
+		</style>
+		<mo-menu x='0' y='0' fixed quick .anchor=${document.body} ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
+			${this.menu ?? nothing}
+		</mo-menu>
+	`
 }
 
 declare global {

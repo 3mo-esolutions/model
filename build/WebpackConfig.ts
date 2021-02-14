@@ -1,4 +1,6 @@
 /* eslint-disable */
+// @ts-nocheck
+
 const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')

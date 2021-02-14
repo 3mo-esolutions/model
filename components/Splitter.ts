@@ -63,30 +63,28 @@ export class Splitter extends Component {
 		this.items = Array.from(this.querySelectorAll('mo-splitter-item')).filter(item => item.parentElement === this)
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: flex;
-					direction: column;
-					flex-wrap: nowrap;
-					flex-grow: 1;
-					flex-basis: auto;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				display: flex;
+				direction: column;
+				flex-wrap: nowrap;
+				flex-grow: 1;
+				flex-basis: auto;
+			}
 
-				::slotted(.splitterResizer) {
-					display: flex;
-					background-color: transparent;
-					user-select: none;
-					align-items: center;
-					justify-content: center;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-				}
-			</style>
-			<slot></slot>
-		`
-	}
+			::slotted(.splitterResizer) {
+				display: flex;
+				background-color: transparent;
+				user-select: none;
+				align-items: center;
+				justify-content: center;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+			}
+		</style>
+		<slot></slot>
+	`
 
 	private attachKnob(divResizer: HTMLDivElement) {
 		divResizer.className = 'splitterResizer'

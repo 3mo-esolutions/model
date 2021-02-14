@@ -64,66 +64,64 @@ export class Swiper extends Component {
 	@element private readonly divPrevious!: HTMLDivElement
 	@element private readonly divNext!: HTMLDivElement
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: block;
-					--swiper-theme-color: var(--mo-accent);
-					--swiper-navigation-color: var(--mo-accent);
-					--swiper-gallery-height: 0px;
-					--swiper-slider-margin-bottom: 0px;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				display: block;
+				--swiper-theme-color: var(--mo-accent);
+				--swiper-navigation-color: var(--mo-accent);
+				--swiper-gallery-height: 0px;
+				--swiper-slider-margin-bottom: 0px;
+			}
 
-				:host([hasThumb]) {
-					--swiper-slider-margin-bottom: 10px;
-					--swiper-gallery-height: calc(100px - var(--swiper-slider-margin-bottom));
-				}
+			:host([hasThumb]) {
+				--swiper-slider-margin-bottom: 10px;
+				--swiper-gallery-height: calc(100px - var(--swiper-slider-margin-bottom));
+			}
 
-				#divContainer {
-					height: calc(100% - calc(var(--swiper-gallery-height)) - var(--swiper-slider-margin-bottom));
-					margin-bottom: var(--swiper-slider-margin-bottom);
-				}
+			#divContainer {
+				height: calc(100% - calc(var(--swiper-gallery-height)) - var(--swiper-slider-margin-bottom));
+				margin-bottom: var(--swiper-slider-margin-bottom);
+			}
 
-				#divGallery {
-					height: var(--swiper-gallery-height);
-				}
+			#divGallery {
+				height: var(--swiper-gallery-height);
+			}
 
-				.gallery-thumbs .swiper-slide {
-					height: 100%;
-					opacity: 0.25;
-					transition: 200ms;
-					cursor: pointer;
-				}
+			.gallery-thumbs .swiper-slide {
+				height: 100%;
+				opacity: 0.25;
+				transition: 200ms;
+				cursor: pointer;
+			}
 
-				.gallery-thumbs .swiper-slide-thumb-active {
-					opacity: 1;
-				}
+			.gallery-thumbs .swiper-slide-thumb-active {
+				opacity: 1;
+			}
 
-				.gallery-thumb {
-					background-position: center !important;
-					background-repeat: no-repeat !important;
-					background-size: cover !important;
-				}
-			</style>
-			<div id='divContainer' class='swiper-container gallery-top'>
-				<div id='divSlides' class='swiper-wrapper'>
-					${this.slides.map(slide => html`<div class='swiper-slide'>${slide}</div>`)}
-				</div>
-
-				<div id='divPagination' class='swiper-pagination'></div>
-				<div id='divPrevious' class='swiper-button-prev'></div>
-				<div id='divNext' class='swiper-button-next'></div>
+			.gallery-thumb {
+				background-position: center !important;
+				background-repeat: no-repeat !important;
+				background-size: cover !important;
+			}
+		</style>
+		<div id='divContainer' class='swiper-container gallery-top'>
+			<div id='divSlides' class='swiper-wrapper'>
+				${this.slides.map(slide => html`<div class='swiper-slide'>${slide}</div>`)}
 			</div>
-			<div id='divGallery' class='swiper-container gallery-thumbs'>
-				<div class='swiper-wrapper'>
-					${this.slides.map((slide, index) => html`
-						<mo-div class='swiper-slide gallery-thumb' background=${slide.background} @click=${() => this.slider?.slideTo(index)}></mo-div>
-					`)}
-				</div>
+
+			<div id='divPagination' class='swiper-pagination'></div>
+			<div id='divPrevious' class='swiper-button-prev'></div>
+			<div id='divNext' class='swiper-button-next'></div>
+		</div>
+		<div id='divGallery' class='swiper-container gallery-thumbs'>
+			<div class='swiper-wrapper'>
+				${this.slides.map((slide, index) => html`
+					<mo-div class='swiper-slide gallery-thumb' background=${slide.background} @click=${() => this.slider?.slideTo(index)}></mo-div>
+				`)}
 			</div>
-		`
-	}
+		</div>
+	`
 }
 
 declare global {

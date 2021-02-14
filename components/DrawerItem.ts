@@ -1,4 +1,4 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost } from '../library'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../library'
 import { Drawer, ListItem } from '.'
 
 @component('mo-drawer-item')
@@ -43,13 +43,11 @@ export class DrawerItem extends ListItem {
 		}
 	}
 
-	protected renderGraphic() {
-		return html`
-			<span class='mdc-list-item__graphic'>
-				<mo-icon icon=${this.icon} opacity='0.75'></mo-icon>
-			</span>
-		`
-	}
+	protected renderGraphic = () => html`
+		<span class='mdc-list-item__graphic'>
+			<mo-icon icon=${ifDefined(this.icon)} opacity='0.75'></mo-icon>
+		</span>
+	`
 }
 
 declare global {

@@ -36,7 +36,7 @@ class ConfettiParticle {
 		const x = this.x + this.tilt
 		this.context.beginPath()
 		this.context.lineWidth = this.diameter
-		this.context.strokeStyle = 'hsl(' + this.color + ', 50%, ' + this.lightness + '%)'
+		this.context.strokeStyle = `hsl(${this.color}, 50%, ${this.lightness}%)`
 		this.context.moveTo(x + this.diameter / 2, this.y)
 		this.context.lineTo(x, this.y + this.tilt + this.diameter / 2)
 		this.context.stroke()
@@ -95,26 +95,24 @@ export class Confetti extends Component {
 		this.display = 'none'
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					z-index: 11;
-					top: 0;
-					width: 100%;
-					height: 100%;
-					position: absolute;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				z-index: 11;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
 
-				#canvParticle {
-					width: 100%;
-					height: 100%;
-					position: absolute;
-				}
-			</style>
-			<canvas id='canvParticle' width=${this.canvasWidth} height=${this.canvasHeight}></canvas>
-		`
-	}
+			#canvParticle {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+		</style>
+		<canvas id='canvParticle' width=${this.canvasWidth} height=${this.canvasHeight}></canvas>
+	`
 }
 
 declare global {

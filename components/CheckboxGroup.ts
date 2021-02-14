@@ -35,25 +35,23 @@ export class CheckboxGroup extends Checkbox {
 		})
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					--mo-checkbox-group-nested-margin: 25px;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				--mo-checkbox-group-nested-margin: 25px;
+			}
 
-				::slotted(*) {
-					margin-left: var(--mo-checkbox-group-nested-margin);
-				}
-			</style>
-			<mo-flex>
-				${super.render()}
-				<mo-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mo-thickness-xl))'>
-					<slot></slot>
-				</mo-flex>
+			::slotted(*) {
+				margin-left: var(--mo-checkbox-group-nested-margin);
+			}
+		</style>
+		<mo-flex>
+			${super.render()}
+			<mo-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mo-thickness-xl))'>
+				<slot></slot>
 			</mo-flex>
-		`
-	}
+		</mo-flex>
+	`
 }
 
 declare global {

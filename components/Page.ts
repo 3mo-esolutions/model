@@ -41,20 +41,18 @@ export class Page extends Component {
 		MoDeL.application.topAppBarProminent = !!topAppBarDetails
 	}
 
-	protected render() {
-		return html`
-			<style>
-				:host {
-					display: inherit;
-				}
+	protected render = () => html`
+		<style>
+			:host {
+				display: inherit;
+			}
 
-				::slotted {
-					height: 100%;
-				}
-			</style>
-			<slot></slot>
-		`
-	}
+			::slotted {
+				height: 100%;
+			}
+		</style>
+		<slot></slot>
+	`
 }
 
 declare global {
