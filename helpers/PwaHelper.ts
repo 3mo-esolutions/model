@@ -29,7 +29,7 @@ class PwaHelper {
 			return
 		}
 
-		await navigator.serviceWorker.register('./ServiceWorker.js', { scope: './' })
+		await navigator.serviceWorker.register('/ServiceWorker.js', { scope: '/' })
 		await this.requestInstallation()
 	}
 
