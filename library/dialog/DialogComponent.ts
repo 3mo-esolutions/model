@@ -14,12 +14,12 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 
 	@eventProperty() readonly closed!: IEvent<boolean>
 
-	async open(): Promise<boolean> {
-		return await DialogHost.openDialog(this)
+	open(): Promise<boolean> {
+		return DialogHost.openDialog(this)
 	}
 
-	async confirm(): Promise<void> {
-		return await DialogHost.confirmDialog(this)
+	confirm(): Promise<void> {
+		return DialogHost.confirmDialog(this)
 	}
 
 	constructor(parameters: T) {

@@ -163,7 +163,7 @@ export abstract class Application extends Component {
 		<mo-confetti></mo-confetti>
 	`
 
-	private authenticate = async () => await this.authenticator?.confirm()
+	private authenticate = () => this.authenticator?.confirm()
 	private unauthenticate = async () => {
 		await this.authenticator?.unauthenticate()
 		this.drawerOpen = false

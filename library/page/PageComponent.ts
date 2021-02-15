@@ -12,15 +12,15 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	static permissions = new Array<keyof MoDeL.Permissions>()
 
-	async navigate() {
+	navigate() {
 		PageHost.navigateToPage(this, NavigationMode.Navigate)
 	}
 
-	async open() {
+	open() {
 		PageHost.navigateToPage(this, NavigationMode.NewTab)
 	}
 
-	async openInNewWindow() {
+	openInNewWindow() {
 		PageHost.navigateToPage(this, NavigationMode.NewWindow)
 	}
 

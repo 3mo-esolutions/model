@@ -161,6 +161,10 @@
 				"message": "MoDeL: Try to declare arrow functions to avoid using context bindings"
 			}
 		],
+		"no-eval": "error",
+		"eqeqeq": "error",
+		"no-return-await": "error",
+		"require-await": "error",
 		"template-curly-spacing": [
 			"error",
 			"never"

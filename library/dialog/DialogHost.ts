@@ -23,8 +23,8 @@ export class DialogHost extends Component {
 		await this.confirm('Confirm Deletion', text)
 	}
 
-	private open = async (...parameters: DefaultDialogParameters) => {
-		return await new DialogDefault({
+	private open = (...parameters: DefaultDialogParameters) => {
+		return new DialogDefault({
 			header: parameters[0],
 			content: parameters[1],
 			primaryButtonText: parameters[2],
@@ -32,8 +32,8 @@ export class DialogHost extends Component {
 		}).open()
 	}
 
-	private confirm = async (...parameters: DefaultDialogParameters) => {
-		await new DialogDefault({
+	private confirm = (...parameters: DefaultDialogParameters) => {
+		return new DialogDefault({
 			header: parameters[0],
 			content: parameters[1],
 			primaryButtonText: parameters[2],
@@ -48,10 +48,10 @@ export class DialogHost extends Component {
 		}
 	}
 
-	private openDialog = async <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
+	private openDialog = <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
 		if (PermissionHelper.isAuthorized(...dialog.constructor.permissions) === false) {
 			Snackbar.show('🔒 Access denied')
-			return false
+			return Promise.reject('🔒 Access denied')
 		}
 
 		this.shadowRoot.append(dialog)
