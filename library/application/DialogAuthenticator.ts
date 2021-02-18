@@ -8,7 +8,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	static readonly Password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
 	static readonly ShallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
 	static readonly Username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
-	static readonly AuthenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.AuthenticatedUser', undefined)
+	static readonly AuthenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
 
 	async unauthenticate() {
 		try {
@@ -56,6 +56,10 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				--mdc-dialog-scrim-color: var(--mo-color-background)
 			}
 
+			mo-dialog::part(actions) {
+				justify-content: 'center';
+			}
+
 			a {
 				font-size: small;
 				opacity: 0.85;
@@ -70,7 +74,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				font-weight: 500;
 			}
 		</style>
-		<mo-dialog actionsJustifyContent='center' isBlocking primaryOnEnter .primaryButtonClicked=${this.authenticate}>
+		<mo-dialog blocking primaryOnEnter .primaryButtonClicked=${this.authenticate}>
 			<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
 			<mo-flex alignItems='center' minWidth='350px'>
 				<mo-flex height='100px' alignItems='center' gap='10px'>

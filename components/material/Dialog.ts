@@ -1,9 +1,7 @@
-import { component, property, query, ComponentMixin, Snackbar, render, html, TemplateResult, css } from '../../library'
+import { component, property, query, ComponentMixin, Snackbar, render, html, nothing, css, renderContainer } from '../../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
-import { IconButton } from '.'
-import * as CSS from 'csstype'
 
-type ClickHandler = (() => Promise<any>) | (() => any)
+type Handler = (() => Promise<any>) | (() => any)
 
 type DialogSize = 'large' | 'medium' | 'small'
 
@@ -25,28 +23,19 @@ type DialogSize = 'large' | 'medium' | 'small'
 export class Dialog extends ComponentMixin(MwcDialog) {
 	@eventProperty() readonly finished!: IEvent<boolean>
 
-	primaryButtonClicked: ClickHandler = () => void 0
-	secondaryButtonClicked?: ClickHandler
+	primaryButtonClicked?: Handler
+	secondaryButtonClicked?: Handler
+	cancellationHandler?: Handler
 
 	@property()
 	get header() { return this.heading }
 	set header(value) { this.heading = value }
-
-	@property({ type: Boolean })
-	get isBlocking() { return this.scrimClickAction !== 'close' }
-	set isBlocking(value) {
-		this.scrimClickAction = value ? '' : 'close'
-		this.escapeKeyAction = value ? '' : 'close'
-		this.icbClose.hidden = value
-	}
-
 	@property({ reflect: true }) size: DialogSize = 'small'
+	@property({ type: Boolean, observer: blockingChanged }) blocking = false
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
 	@property({ type: Boolean }) primaryOnEnter = false
 	@property({ type: Boolean }) manualClose = false
-
-	@property() actionsJustifyContent: CSS.Property.JustifyContent = 'flex-end'
 
 	protected get primaryElement() {
 		return this.querySelector('[slot="primaryAction"]')
@@ -57,15 +46,13 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	}
 
 	@query('.mdc-dialog__surface') private readonly divSurface!: HTMLDivElement
-	@query('#actions') private readonly actionsElement!: HTMLDivElement
-	@query('slot[name="primaryAction"]') private readonly primaryActionSlotElement?: HTMLSlotElement
-	@query('slot[name="secondaryAction"]') private readonly secondaryActionSlotElement?: HTMLSlotElement
+	@query('.mdc-dialog__content') private readonly divContent!: HTMLDivElement
+	@query('#actions') private readonly divActions!: HTMLDivElement
 
 	protected initialized() {
-		this.renderCloseIconButton()
-		this.renderPrimaryButton()
-		this.renderSecondaryButton()
-		this.actionsElement.style.justifyContent = this.actionsJustifyContent
+		this.createHeaderTools()
+		this.divContent.setAttribute('part', 'content')
+		this.divActions.setAttribute('part', 'actions')
 		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
 		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
 		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined }>) => {
@@ -119,42 +106,70 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			#title {
 				padding-right: 48px;
 			}
+
+			#content {
+				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+				scrollbar-width: thin;
+			}
+
+			#content::-webkit-scrollbar {
+				width: 5px;
+				height: 5px;
+			}
+
+			#content::-webkit-scrollbar-thumb {
+				background: var(--mo-scrollbar-foreground-color);
+			}
+
+			:host([size=large]) #actions, :host([size=large]) #title {
+				border-color: var(--mdc-dialog-scroll-divider-color);
+			}
 		`
 	}
 
-	protected render() {
-		this.renderPrimaryButton()
-		this.renderSecondaryButton()
-		return super.render() as TemplateResult
+	private createHeaderTools() {
+		const flex = document.createElement('mo-flex')
+		flex.direction = 'horizontal'
+		flex.style.position = 'absolute'
+		flex.style.right = '8px'
+		flex.style.top = '13px'
+		const template = html`
+			<slot name='headerOptions'></slot>
+			<div id='divCloseButton'></div>
+		`
+		render(template, flex)
+		this.divSurface.appendChild(flex)
 	}
 
-	private icbClose = new IconButton
-	private renderCloseIconButton() {
-		this.icbClose.icon = 'close'
-		this.icbClose.onclick = () => this.handleCancellation()
-		this.icbClose.position = 'absolute'
-		this.icbClose.style.right = '8px'
-		this.icbClose.style.top = '13px'
-		this.divSurface.appendChild(this.icbClose)
+
+	@renderContainer('#divCloseButton')
+	protected get closeIconButton() {
+		return html`
+			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${this.handleCancellation}></mo-icon-button>
+		`
 	}
 
-	private renderPrimaryButton() {
-		if (!this.primaryButtonText || !this.primaryActionSlotElement)
-			return
-
-		render(html`<mo-button raised @click=${this.handlePrimaryButtonClick}>${this.primaryButtonText}</mo-button>`, this.primaryActionSlotElement)
+	@renderContainer('slot[name="primaryAction"]')
+	protected get primaryButtonTemplate() {
+		return !this.primaryButtonText ? nothing : html`
+			<mo-button raised @click=${this.handlePrimaryButtonClick}>
+				${this.primaryButtonText}
+			</mo-button>
+		`
 	}
 
-	private renderSecondaryButton() {
-		if (!this.secondaryButtonText || !this.secondaryActionSlotElement)
-			return
-
-		render(html`<mo-button @click=${this.handleSecondaryButtonClick}>${this.secondaryButtonText}</mo-button>`, this.secondaryActionSlotElement)
+	@renderContainer('slot[name="secondaryAction"]')
+	protected get secondaryButtonTemplate() {
+		return !this.secondaryButtonText ? nothing : html`
+			<mo-button @click=${this.handleSecondaryButtonClick}>
+				${this.secondaryButtonText}
+			</mo-button>
+		`
 	}
 
 	private handlePrimaryButtonClick = async () => {
 		try {
-			await this.primaryButtonClicked()
+			await this.primaryButtonClicked?.()
 			if (this.manualClose !== true) {
 				this.close(true)
 			}
@@ -181,7 +196,8 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private handleCancellation() {
+	private handleCancellation = async () => {
+		await this.cancellationHandler?.()
 		this.close(false)
 	}
 
@@ -189,6 +205,11 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		super.close()
 		this.finished.trigger(isSuccess)
 	}
+}
+
+function blockingChanged(this: Dialog) {
+	this.scrimClickAction = this.blocking ? '' : 'close'
+	this.escapeKeyAction = this.blocking ? '' : 'close'
 }
 
 declare global {

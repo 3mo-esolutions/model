@@ -142,6 +142,8 @@ body {
     --mdc-icon-button-size: calc(var(--mo-icon-size) * 2) !important;
     --mdc-dialog-heading-ink-color: var(--mo-color-foreground) !important;
     --mdc-dialog-content-ink-color: var(--mo-color-foreground-transparent) !important;
+    --mdc-dialog-scroll-divider-color: var(--mo-color-gray-transparent) !important;
+    --mdc-dialog-scrim-color: var(--mo-scrim) !important;
     --mdc-theme-text-hint-on-background: var(--mo-color-foreground-transparent) !important;
     --mdc-theme-text-icon-on-background: var(--mo-color-gray) !important;
     --mdc-tab-color-default: var(--mo-color-foreground-transparent) !important;
@@ -150,7 +152,6 @@ body {
     --mdc-button-disabled-ink-color: var(--mo-color-gray-transparent) !important;
     --mdc-list-item-graphic-margin: 12px !important;
     --mdc-checkbox-disabled-color: var(--mo-color-gray-transparent) !important;
-    --mdc-dialog-scrim-color: var(--mo-scrim) !important;
 }
 
 #application[theme='light'] {

@@ -745,6 +745,7 @@ export type MaterialIcon =
 	| 'search'
 	| 'security'
 	| 'select_all'
+	| 'sell'
 	| 'send'
 	| 'sentiment_dissatisfied'
 	| 'sentiment_neutral'
