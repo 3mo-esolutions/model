@@ -1,6 +1,7 @@
 import { Component, component, Snackbar } from '..'
 import { DialogComponent, DialogDefault } from '.'
 import { LocalStorageEntry, PermissionHelper } from '../../helpers'
+import { KeyboardKey } from '../../types'
 
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
 
@@ -15,6 +16,33 @@ export class DialogHost extends Component {
 	static get open() { return this.instance.open }
 	static get confirm() { return this.instance.confirm }
 	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary }
+
+	get dialogComponents() {
+		return Array.from(this.shadowRoot.querySelectorAll('*'))
+			.filter(element => element instanceof DialogComponent) as Array<DialogComponent>
+	}
+
+	protected initialized() {
+		this.registerKeyListeners()
+	}
+
+	private registerKeyListeners() {
+		// All default behaviors of the MWC Dialogs related to keydown event has been disabled.
+		// So the host is now responsible to make sure those functions still work
+		document.addEventListener('keydown', async (e) => {
+			const lastDialog = this.dialogComponents[this.dialogComponents.length - 1]?.['dialog']
+			if (lastDialog !== undefined) {
+				if (lastDialog?.blocking === false && e.key === KeyboardKey.Escape) {
+					lastDialog.close()
+					e.stopImmediatePropagation()
+				}
+
+				if (lastDialog.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
+					await lastDialog['handlePrimaryButtonClick']()
+				}
+			}
+		})
+	}
 
 	private confirmDeletionIfNecessary = async (text: string) => {
 		if (DialogHost.DeletionConfirmation.value === false)

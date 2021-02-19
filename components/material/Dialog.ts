@@ -1,7 +1,7 @@
-import { component, property, query, ComponentMixin, Snackbar, render, html, nothing, css, renderContainer } from '../../library'
+import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing } from '../../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
-type Handler = (() => Promise<any>) | (() => any)
+type Handler = () => unknown
 
 type DialogSize = 'large' | 'medium' | 'small'
 
@@ -45,31 +45,8 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		return this.querySelector('[slot="secondaryAction"]')
 	}
 
-	@query('.mdc-dialog__surface') private readonly divSurface!: HTMLDivElement
-	@query('.mdc-dialog__content') private readonly divContent!: HTMLDivElement
-	@query('#actions') private readonly divActions!: HTMLDivElement
-
-	protected initialized() {
-		this.createHeaderTools()
-		this.divContent.setAttribute('part', 'content')
-		this.divActions.setAttribute('part', 'actions')
-		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
-		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
-		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined }>) => {
-			if (e.detail?.action !== 'close') {
-				e.stopImmediatePropagation()
-				return
-			}
-
-			this.handleCancellation()
-		})
-
-		this.mdcRoot.onkeydown = e => {
-			if (this.primaryOnEnter === false) {
-				e.stopImmediatePropagation()
-			}
-		}
-	}
+	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
+	@query('footer') private readonly footerElement!: HTMLElement
 
 	static get styles() {
 		return css`
@@ -127,25 +104,60 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	private createHeaderTools() {
+	protected initialized() {
+		this.createHeaderToolsSlot()
+		this.createFooterSlot()
+		this['contentElement'].setAttribute('part', 'content')
+		this.footerElement.setAttribute('part', 'footer')
+		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
+		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
+		this.changeCloseBehavior()
+	}
+
+	private createFooterSlot() {
+		const slot = document.createElement('slot')
+		slot.name = 'footer'
+		slot.style.flex = '1'
+		slot.style.display = 'flex'
+		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
+	}
+
+	private createHeaderToolsSlot() {
 		const flex = document.createElement('mo-flex')
 		flex.direction = 'horizontal'
 		flex.style.position = 'absolute'
 		flex.style.right = '8px'
 		flex.style.top = '13px'
 		const template = html`
-			<slot name='headerOptions'></slot>
+			<slot name='header'></slot>
 			<div id='divCloseButton'></div>
 		`
 		render(template, flex)
-		this.divSurface.appendChild(flex)
+		this.surfaceElement.appendChild(flex)
 	}
 
+	private changeCloseBehavior() {
+		// MoDeL has additional abilities such as cascading dialogs.
+		// Therefore, we need to take control of closing dialogs and disable Material default behaviors
+		// Also, some keydown related actions are handled centrally in `DialogHost.ts`
+		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined } >) => {
+			if (e.detail?.action !== 'close') {
+				e.stopImmediatePropagation()
+				return
+			}
+		})
+
+		// Closing all Dialogs after pressing Escape key is disabled
+		this['mdcFoundation'].handleDocumentKeydown = () => void 0
+
+		// Pressing any key, if the user is focused in the `mdcRoot`, meaning that a element e.g. a text field is focused is not propagated
+		this.mdcRoot.addEventListener('keydown', e => e.stopImmediatePropagation())
+	}
 
 	@renderContainer('#divCloseButton')
 	protected get closeIconButton() {
 		return html`
-			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${this.handleCancellation}></mo-icon-button>
+			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.close(false)}></mo-icon-button>
 		`
 	}
 
@@ -181,7 +193,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 
 	private handleSecondaryButtonClick = async () => {
 		if (!this.secondaryButtonClicked) {
-			this.handleCancellation()
+			this.close(false)
 			return
 		}
 
@@ -196,20 +208,17 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private handleCancellation = async () => {
-		await this.cancellationHandler?.()
-		this.close(false)
-	}
-
-	close(isSuccess = false) {
+	async close(success = false) {
+		if (success === false) {
+			await this.cancellationHandler?.()
+		}
 		super.close()
-		this.finished.trigger(isSuccess)
+		this.finished.trigger(success)
 	}
 }
 
 function blockingChanged(this: Dialog) {
 	this.scrimClickAction = this.blocking ? '' : 'close'
-	this.escapeKeyAction = this.blocking ? '' : 'close'
 }
 
 declare global {

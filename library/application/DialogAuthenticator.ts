@@ -56,7 +56,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				--mdc-dialog-scrim-color: var(--mo-color-background)
 			}
 
-			mo-dialog::part(actions) {
+			mo-dialog::part(footer) {
 				justify-content: 'center';
 			}
 
