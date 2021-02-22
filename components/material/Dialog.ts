@@ -101,6 +101,17 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			:host([size=large]) #actions, :host([size=large]) #title {
 				border-color: var(--mdc-dialog-scroll-divider-color);
 			}
+
+			#flexHeader {
+				flex-direction: row;
+				position: absolute;
+				right: 8px;
+				top: 13px;
+			}
+
+			slot[name=footer] {
+				flex: 1;
+			}
 		`
 	}
 
@@ -117,17 +128,13 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	private createFooterSlot() {
 		const slot = document.createElement('slot')
 		slot.name = 'footer'
-		slot.style.flex = '1'
-		slot.style.display = 'flex'
+		slot.setAttribute('part', 'footerSlot')
 		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
 	}
 
 	private createHeaderToolsSlot() {
 		const flex = document.createElement('mo-flex')
-		flex.direction = 'horizontal'
-		flex.style.position = 'absolute'
-		flex.style.right = '8px'
-		flex.style.top = '13px'
+		flex.id = 'flexHeader'
 		const template = html`
 			<slot name='header'></slot>
 			<div id='divCloseButton'></div>

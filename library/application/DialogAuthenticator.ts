@@ -57,7 +57,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			}
 
 			mo-dialog::part(footer) {
-				justify-content: 'center';
+				justify-content: center;
 			}
 
 			a {

@@ -32,7 +32,7 @@ export class DialogHost extends Component {
 		document.addEventListener('keydown', async (e) => {
 			const lastDialog = this.dialogComponents[this.dialogComponents.length - 1]?.['dialog']
 			if (lastDialog !== undefined) {
-				if (lastDialog?.blocking === false && e.key === KeyboardKey.Escape) {
+				if (lastDialog.blocking === false && e.key === KeyboardKey.Escape) {
 					lastDialog.close()
 					e.stopImmediatePropagation()
 				}
