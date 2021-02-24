@@ -31,11 +31,11 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	get header() { return this.heading }
 	set header(value) { this.heading = value }
 	@property({ reflect: true }) size: DialogSize = 'small'
-	@property({ type: Boolean, observer: blockingChanged }) blocking = false
-	@property() primaryButtonText = 'OK'
-	@property() secondaryButtonText?: string
+	@property({ type: Boolean }) blocking = false
 	@property({ type: Boolean }) primaryOnEnter = false
 	@property({ type: Boolean }) manualClose = false
+	@property() primaryButtonText = 'OK'
+	@property() secondaryButtonText?: string
 
 	protected get primaryElement() {
 		return this.querySelector('[slot="primaryAction"]')
@@ -147,11 +147,21 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		// MoDeL has additional abilities such as cascading dialogs.
 		// Therefore, we need to take control of closing dialogs and disable Material default behaviors
 		// Also, some keydown related actions are handled centrally in `DialogHost.ts`
-		this.addEventListener('closed', (e: CustomEvent<{ action: 'close' | undefined } >) => {
+		this.addEventListener('closed', (e: CustomEvent<undefined | { action: 'close' | undefined }>) => {
 			if (e.detail?.action !== 'close') {
 				e.stopImmediatePropagation()
 				return
 			}
+		})
+
+		const scrimElement = this.shadowRoot.querySelector('.mdc-dialog__scrim') as HTMLDivElement
+		scrimElement?.addEventListener('click', async (e: MouseEvent) => {
+			e.stopImmediatePropagation()
+
+			if (this.blocking)
+				return
+
+			await this.close()
 		})
 
 		// Closing all Dialogs after pressing Escape key is disabled
@@ -222,10 +232,6 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		super.close()
 		this.finished.trigger(success)
 	}
-}
-
-function blockingChanged(this: Dialog) {
-	this.scrimClickAction = this.blocking ? '' : 'close'
 }
 
 declare global {
