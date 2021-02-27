@@ -2,7 +2,8 @@ import { component, property, css } from '../library'
 import { ListItemCheckbox } from './material'
 
 @component('mo-option')
-export class Option<TValue = string> extends ListItemCheckbox {
+export class Option<TValue> extends ListItemCheckbox {
+	@property() value = Array.from(this.parentElement.children).indexOf(this).toString()
 	@property({ type: Object }) data?: TValue
 	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false
 	@property({ type: Boolean, reflect: true }) multiple = false
@@ -38,6 +39,6 @@ function defaultChanged(this: Option<unknown>) {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-option': Option
+		'mo-option': Option<unknown>
 	}
 }
