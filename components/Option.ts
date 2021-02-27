@@ -1,10 +1,22 @@
-import { component, property } from '../library'
-import { ListItem } from './material'
+import { component, property, css } from '../library'
+import { ListItemCheckbox } from './material'
 
 @component('mo-option')
-export class Option<TValue = string> extends ListItem {
+export class Option<TValue = string> extends ListItemCheckbox {
 	@property({ type: Object }) rawValue?: TValue
 	@property({ type: Boolean, reflect: true }) default = false
+	@property({ type: Boolean, reflect: true }) multiple = true
+
+	static get styles() {
+		return [
+			super.styles,
+			css`
+				:host(:not([multiple])) .mdc-list-item__meta {
+					display: none;
+				}
+			`
+		] as any
+	}
 
 	initialized() {
 		super.initialized()
