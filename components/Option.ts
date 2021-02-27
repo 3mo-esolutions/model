@@ -3,8 +3,8 @@ import { ListItemCheckbox } from './material'
 
 @component('mo-option')
 export class Option<TValue = string> extends ListItemCheckbox {
-	@property({ type: Object }) rawValue?: TValue
-	@property({ type: Boolean, reflect: true }) default = false
+	@property({ type: Object }) data?: TValue
+	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false
 	@property({ type: Boolean, reflect: true }) multiple = false
 
 	static get styles() {
@@ -26,13 +26,14 @@ export class Option<TValue = string> extends ListItemCheckbox {
 			}
 		})
 	}
+}
 
-	getValue() {
-		if (this.default)
-			return undefined
+function defaultChanged(this: Option<unknown>) {
+	if (!this.default)
+		return
 
-		return this.rawValue ?? this.value as unknown as TValue
-	}
+	this.data = undefined
+	this.value = undefined!
 }
 
 declare global {
