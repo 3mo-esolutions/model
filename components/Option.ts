@@ -5,7 +5,7 @@ import { ListItemCheckbox } from './material'
 export class Option<TValue = string> extends ListItemCheckbox {
 	@property({ type: Object }) rawValue?: TValue
 	@property({ type: Boolean, reflect: true }) default = false
-	@property({ type: Boolean, reflect: true }) multiple = true
+	@property({ type: Boolean, reflect: true }) multiple = false
 
 	static get styles() {
 		return [

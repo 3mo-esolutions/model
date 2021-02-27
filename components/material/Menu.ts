@@ -1,8 +1,5 @@
 import { component, ComponentMixin, property } from '../../library'
 import { Menu as MwcMenu } from '@material/mwc-menu'
-import { query } from 'lit-element'
-// eslint-disable-next-line import/no-internal-modules
-import { MenuSurface } from '@material/mwc-menu/mwc-menu-surface'
 
 /**
  * @attr open
