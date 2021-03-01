@@ -1,5 +1,5 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../library'
-import { Drawer, ListItem } from '.'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../../library'
+import { Drawer, ListItem } from '..'
 
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {

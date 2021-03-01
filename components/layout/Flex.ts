@@ -1,5 +1,5 @@
-import { component, html, property, Component } from '../library'
-import { CSSDirection } from '../types'
+import { component, html, property, Component } from '../../library'
+import { CSSDirection } from '../../types'
 import * as CSS from 'csstype'
 
 @component('mo-flex')

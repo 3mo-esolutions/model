@@ -1,4 +1,4 @@
-import { Component, css, component, html } from '../library'
+import { Component, css, component, html } from '../../library'
 
 @component('mo-swiper-slide')
 export class SwiperSlide extends Component {

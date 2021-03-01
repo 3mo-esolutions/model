@@ -1,8 +1,8 @@
 import { LitElement, PropertyValues } from 'lit-element'
 import { Observer } from './Observer'
 import { StyleMixin } from './StyleMixin'
-import IComponent from './IComponent'
 import { ComponentConstructor } from './Component'
+import { IComponent } from './IComponent'
 
 export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 	class extends StyleMixin(Constructor) implements IComponent {

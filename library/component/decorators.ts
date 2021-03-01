@@ -2,7 +2,7 @@ import { property as propertyDecorator, internalProperty as internalPropertyDeco
 import { Observer } from './Observer'
 import { Component } from '.'
 import { render } from '..'
-import IComponent from './IComponent'
+import { IComponent } from './IComponent'
 
 export const element = <T extends HTMLElement>(prototype: T, property: string) => {
 	Object.defineProperty(prototype, property, {

@@ -1,6 +1,6 @@
-import { DrawerItem } from '.'
-import { Component, component, html, property, ifDefined } from '../library'
-import { MaterialIcon } from '../types'
+import { DrawerItem } from '..'
+import { Component, component, html, property, ifDefined } from '../../library'
+import { MaterialIcon } from '../../types'
 
 @component('mo-drawer-list')
 export class DrawerList extends Component {

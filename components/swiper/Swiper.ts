@@ -1,4 +1,4 @@
-import { css, component, html, property, Component, element } from '../library'
+import { css, component, html, property, Component, element } from '../../library'
 import * as SwiperLibrary from 'swiper'
 
 @component('mo-swiper')

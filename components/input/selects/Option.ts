@@ -1,5 +1,5 @@
-import { component, property, css } from '../library'
-import { ListItemCheckbox } from './material'
+import { component, property, css } from '../../../library'
+import { ListItemCheckbox } from '../../material'
 
 @component('mo-option')
 export class Option<TValue> extends ListItemCheckbox {

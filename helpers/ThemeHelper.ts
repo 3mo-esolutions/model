@@ -3,7 +3,7 @@ import { Accents, Themes } from '../types'
 
 type Color = [R: number, G: number, B: number]
 
-export default class ThemeHelper {
+export class ThemeHelper {
 	static readonly Accent = new LocalStorageEntry('MoDeL.Theme.Accent', Accents.Blue)
 	static readonly Background = new LocalStorageEntry('MoDeL.Theme.Background', Themes.System)
 

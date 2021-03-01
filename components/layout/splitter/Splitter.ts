@@ -1,7 +1,7 @@
-import { component, html, property, Component } from '../library'
+import { component, html, property, Component } from '../../../library'
+import { CSSDirection } from '../../../types'
+import { SplitterItem } from '../..'
 import * as CSS from 'csstype'
-import { CSSDirection } from '../types'
-import { SplitterItem } from '.'
 
 @component('mo-splitter')
 export class Splitter extends Component {

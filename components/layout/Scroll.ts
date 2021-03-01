@@ -1,4 +1,4 @@
-import { component, html, Component } from '../library'
+import { component, html, Component } from '../../library'
 
 @component('mo-scroll')
 export class Scroll extends Component {

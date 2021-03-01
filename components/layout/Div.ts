@@ -1,4 +1,4 @@
-import { component, html, Component } from '../library'
+import { component, html, Component } from '../../library'
 
 @component('mo-div')
 export class Div extends Component {

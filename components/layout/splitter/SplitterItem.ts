@@ -1,5 +1,5 @@
-import { Component, component, html, property } from '../library'
-import { CSSDirection } from '../types'
+import { Component, component, html, property } from '../../../library'
+import { CSSDirection } from '../../../types'
 
 // REFACTOR: use lit-html for templating
 @component('mo-splitter-item')

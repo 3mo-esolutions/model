@@ -1,4 +1,4 @@
-import { component, html, property, Component } from '../library'
+import { component, html, property, Component } from '../../library'
 
 @component('mo-grid')
 export class Grid extends Component {
