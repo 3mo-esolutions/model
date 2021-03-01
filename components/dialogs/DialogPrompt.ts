@@ -1,5 +1,5 @@
-import { internalProperty, component, DialogComponent, html } from '../library'
-import { TextField } from '../components'
+import { internalProperty, component, DialogComponent, html } from '../../library'
+import { TextField } from '..'
 
 @component('eb-dialog-input')
 export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string, handler: (input: string) => void }> {
