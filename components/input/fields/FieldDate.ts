@@ -94,7 +94,7 @@ export class FieldDate extends Field<Date | undefined> {
 		const lastChar = string.charAt(string.length - 1).toLowerCase()
 		let num: number
 
-		if (!isNaN(parseInt(lastChar))) {
+		if (!isNaN(Number(lastChar))) {
 			num = parseInt(string.substr(0, string.length))
 			return new MoDate().addDay(num)
 		} else {

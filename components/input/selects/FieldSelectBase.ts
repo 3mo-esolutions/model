@@ -35,6 +35,10 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	private programmaticSelection = false
 	get value() { return super.value }
 	set value(value) {
+		value = (value instanceof Array
+			? value.map(v => v.toString())
+			: value?.toString()) as SelectBasePluralize<TMulti, string>
+
 		super.value = value
 		this.programmaticSelection = true
 		this.selectByValue(value).then(() => this.programmaticSelection = false)
@@ -168,6 +172,8 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 			this.resetSelection()
 			this.value = this.defaultValue
 			this.change.trigger(this.value)
+			this.dataChange.trigger(this.data)
+			this.indexChange.trigger(this.index)
 			this.blur()
 			return
 		}
@@ -176,7 +182,12 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		const options = this.options.filter((_, i) => indexes.includes(i))
 
 		this.value = this.toValue(getOptionsText(options)) ?? this.defaultValue
-		this.change.trigger(this.value)
+
+		const toNumberIfPossible = (string: string) => isNaN(Number(string)) ? string : Number(string)
+		const numberValuesIfPossible = (this.value instanceof Array
+			? this.value.map(v => toNumberIfPossible(v))
+			: toNumberIfPossible(this.value as string)) as SelectBasePluralize<TMulti, string>
+		this.change.trigger(numberValuesIfPossible)
 		this.dataChange.trigger(this.data)
 		this.indexChange.trigger(this.index)
 	}
