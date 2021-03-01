@@ -113,7 +113,7 @@ export class Splitter extends Component {
 		divResizer.appendChild(divKnob)
 	}
 
-	private registerDragger(seperator: HTMLDivElement, previousElement: SplitterItem, nextElement: SplitterItem, direction: CSSDirection) {
+	private registerDragger(separator: HTMLDivElement, previousElement: SplitterItem, nextElement: SplitterItem, direction: CSSDirection) {
 		const isVertical = this.direction === 'vertical' || this.direction === 'vertical-reversed'
 
 		let mouseDownInfo: {
@@ -127,8 +127,8 @@ export class Splitter extends Component {
 		const onMouseDown = (e: MouseEvent) => {
 			mouseDownInfo = {
 				e,
-				offsetLeft: seperator.offsetLeft,
-				offsetTop: seperator.offsetTop,
+				offsetLeft: separator.offsetLeft,
+				offsetTop: separator.offsetTop,
 				firstSize: isVertical ? previousElement.offsetHeight : previousElement.offsetWidth,
 				secondSize: isVertical ? nextElement.offsetHeight : nextElement.offsetWidth
 			}
@@ -152,7 +152,7 @@ export class Splitter extends Component {
 				case 'horizontal-reversed':
 					nextElementSize = mouseDownInfo.secondSize - delta.x
 					previousElementSize = mouseDownInfo.firstSize + delta.x
-					seperator.style.left = mouseDownInfo.offsetLeft + delta.x + 'px'
+					separator.style.left = mouseDownInfo.offsetLeft + delta.x + 'px'
 					previousElement.style.width = previousElementSize + 'px'
 					nextElement.style.width = nextElementSize + 'px'
 					break
@@ -160,7 +160,7 @@ export class Splitter extends Component {
 				case 'vertical-reversed':
 					nextElementSize = mouseDownInfo.secondSize - delta.y
 					previousElementSize = mouseDownInfo.firstSize + delta.y
-					seperator.style.top = (mouseDownInfo.offsetTop + delta.y) + 'px'
+					separator.style.top = (mouseDownInfo.offsetTop + delta.y) + 'px'
 					previousElement.style.height = previousElementSize + 'px'
 					nextElement.style.height = nextElementSize + 'px'
 					break
@@ -171,7 +171,7 @@ export class Splitter extends Component {
 			nextElement.style.flex = '1'
 		}
 
-		seperator.onmousedown = onMouseDown
+		separator.onmousedown = onMouseDown
 	}
 }
 
