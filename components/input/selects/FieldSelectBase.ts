@@ -1,4 +1,4 @@
-import { element, html, property, nothing, TemplateResult, internalProperty, renderContainer, css } from '../../../library'
+import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render } from '../../../library'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
 
@@ -30,7 +30,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean, reflect: true }) reflectDefault = false
-	@property() default?: string
+	@property({ observer: defaultChanged }) default?: string
 
 	private programmaticSelection = false
 	get value() { return super.value }
@@ -61,10 +61,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	set data(value) { this.selectByData(value) }
 
 	get options() {
-		return [
-			...Array.from(this.menuOptions?.querySelectorAll<Option<T>>('mo-option') ?? []),
-			...Array.from(this.querySelectorAll<Option<T>>('mo-option'))
-		]
+		return Array.from(this.querySelectorAll<Option<T>>('mo-option'))
 	}
 
 	get defaultOption() {
@@ -122,16 +119,6 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	@element protected readonly menuOptions?: Menu | null
 
 	protected render() {
-		const defaultOption = this.default === undefined ? nothing : html`
-			<mo-option default .rawValue=${this.defaultValue}>
-				${this.default}
-			</mo-option>
-		`
-
-		const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
-			.slice(0, FieldSelectBase.optionsRenderLimit)
-			.map(this.optionsGetter.renderOption)
-
 		return html`
 			${super.render()}
 			<mo-menu
@@ -148,8 +135,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 				@closed=${this.handleMenuClosed}
 				@selected=${this.handleOptionSelection}
 			>
-				${defaultOption}
-				${fetchedOptions ?? html`<slot></slot>`}
+				<slot></slot>
 			</mo-menu>
 		`
 	}
@@ -166,17 +152,6 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	protected handleOptionSelection = (e: CustomEvent<{ index: Set<number> | number }>) => {
 		if (this.programmaticSelection)
 			return
-
-		const isDefaultSelected = this.options.filter(o => o.selected).every(o => o.default)
-		if (this.value !== this.defaultValue && isDefaultSelected) {
-			this.resetSelection()
-			this.value = this.defaultValue
-			this.change.trigger(this.value)
-			this.dataChange.trigger(this.data)
-			this.indexChange.trigger(this.index)
-			this.blur()
-			return
-		}
 
 		const indexes = e.detail.index instanceof Set ? Array.from(e.detail.index) : [e.detail.index]
 		const options = this.options.filter((_, i) => indexes.includes(i))
@@ -257,19 +232,8 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		}
 	}
 
+	fetchedData?: Array<T>
 	@internalProperty({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
-	@internalProperty() private fetchedData?: Array<T>
-
-	async fetchOptions() {
-		const optionsGetter = this.optionsGetter
-
-		if (!optionsGetter)
-			return
-
-		this.fetchedData = await optionsGetter.fetchData()
-		await this.updateComplete
-		this.dataFetch.trigger(this.fetchedData)
-	}
 }
 
 function getOptionsText<T>(options: Array<Option<T>>) {
@@ -280,7 +244,45 @@ function getOptionsText<T>(options: Array<Option<T>>) {
 		?? ''
 }
 
+function defaultChanged<T>(this: FieldSelectBase<T, any>) {
+	Array.from(this.querySelectorAll('mo-option[default]')).forEach(o => o.remove())
+
+	if (!this.default)
+		return
+
+	const defaultOption = new Option<T>()
+	defaultOption.default = true
+	defaultOption.innerText = this.default
+	defaultOption.value = ''
+	defaultOption.onclick = () => this['resetSelection']()
+	this.insertBefore(defaultOption, this.firstElementChild)
+}
+
 async function optionGetterChanged(this: FieldSelectBase<unknown>) {
-	await this.fetchOptions()
+	if (!this.optionsGetter)
+		return
+
+	this.fetchedData = await this.optionsGetter.fetchData()
+	this.dataFetch.trigger(this.fetchedData)
+
+	Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
+
+	const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
+		.slice(0, FieldSelectBase.optionsRenderLimit)
+		.map(this.optionsGetter.renderOption)
+
+	const div = document.createElement('div')
+	render(fetchedOptions, div)
+	const options = Array.from(div.querySelectorAll('mo-option'))
+	options.forEach(o => {
+		o.switchAttribute('fetched', true)
+		if (this.menuOptions?.multi) {
+			o.multiple = true
+		}
+	})
+	div.remove()
+
+	this.append(...options)
+
 	this.value = this['_value']
 }

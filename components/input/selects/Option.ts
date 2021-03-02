@@ -3,7 +3,6 @@ import { ListItemCheckbox } from '../../material'
 
 @component('mo-option')
 export class Option<TValue> extends ListItemCheckbox {
-	@property() value = Array.from(this.parentElement.children).indexOf(this).toString()
 	@property({ type: Object }) data?: TValue
 	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false
 	@property({ type: Boolean, reflect: true }) multiple = false
@@ -15,17 +14,20 @@ export class Option<TValue> extends ListItemCheckbox {
 				:host(:not([multiple])) .mdc-list-item__meta {
 					display: none;
 				}
+
+				:host([default]) {
+					cursor: pointer;
+					pointer-events: auto;
+				}
 			`
 		] as any
 	}
 
 	initialized() {
 		super.initialized()
-		this.selectionChange.subscribe(() => {
-			if (this.default === true) {
-				this.selected = false
-			}
-		})
+		if (!this.value) {
+			this.value = Array.from(this.parentElement.children).indexOf(this).toString()
+		}
 	}
 }
 
@@ -35,6 +37,7 @@ function defaultChanged(this: Option<unknown>) {
 
 	this.data = undefined
 	this.value = undefined!
+	this.disabled = true
 }
 
 declare global {
