@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+type AbstractConstructor<T> = abstract new (...args: Array<any>) => T
 
-// TODO: wait for TypeScript 4.2 release (23rd February)
-// type AbstractConstructor<T> = abstract new (...args: Array<any>) => T
+function AbstractConstructor<T = unknown>(Constructor: Constructor<T>) {
+	return Constructor as AbstractConstructor<T>
+}
 
-// function AbstractConstructor<T = unknown>(Constructor: Constructor<T>) {
-// 	return Constructor as AbstractConstructor<T>
-// }
-
-// globalThis.AbstractConstructor = AbstractConstructor
+globalThis.AbstractConstructor = AbstractConstructor
 
 type Constructor<T> = new (...args: Array<any>) => T
 

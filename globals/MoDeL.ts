@@ -1,8 +1,8 @@
 declare namespace MoDeL {
-	type Environement = 'development' | 'production' | 'test'
+	type Environment = 'development' | 'production' | 'test'
 
 	interface Globals {
-		readonly environment: Environement
+		readonly environment: Environment
 	}
 
 }
