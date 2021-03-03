@@ -234,6 +234,35 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 
 	fetchedData?: Array<T>
 	@internalProperty({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
+
+	async fetchOptions() {
+		if (!this.optionsGetter)
+			return
+
+		this.fetchedData = await this.optionsGetter.fetchData()
+		this.dataFetch.trigger(this.fetchedData)
+
+		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
+
+		const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
+			.slice(0, FieldSelectBase.optionsRenderLimit)
+			.map(this.optionsGetter.renderOption)
+
+		const div = document.createElement('div')
+		render(fetchedOptions, div)
+		const options = Array.from(div.querySelectorAll('mo-option'))
+		options.forEach(o => {
+			o.switchAttribute('fetched', true)
+			if (this.menuOptions?.multi) {
+				o.multiple = true
+			}
+		})
+		div.remove()
+
+		this.append(...options)
+
+		this.value = this['_value']
+	}
 }
 
 function getOptionsText<T>(options: Array<Option<T>>) {
@@ -258,31 +287,6 @@ function defaultChanged<T>(this: FieldSelectBase<T, any>) {
 	this.insertBefore(defaultOption, this.firstElementChild)
 }
 
-async function optionGetterChanged(this: FieldSelectBase<unknown>) {
-	if (!this.optionsGetter)
-		return
-
-	this.fetchedData = await this.optionsGetter.fetchData()
-	this.dataFetch.trigger(this.fetchedData)
-
-	Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
-
-	const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
-		.slice(0, FieldSelectBase.optionsRenderLimit)
-		.map(this.optionsGetter.renderOption)
-
-	const div = document.createElement('div')
-	render(fetchedOptions, div)
-	const options = Array.from(div.querySelectorAll('mo-option'))
-	options.forEach(o => {
-		o.switchAttribute('fetched', true)
-		if (this.menuOptions?.multi) {
-			o.multiple = true
-		}
-	})
-	div.remove()
-
-	this.append(...options)
-
-	this.value = this['_value']
+function optionGetterChanged(this: FieldSelectBase<unknown>) {
+	this.fetchOptions()
 }
