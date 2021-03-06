@@ -20,7 +20,9 @@ export class Page extends Component {
 
 	@property({ type: Boolean })
 	set fullHeight(value: boolean) {
-		PageHost.currentPage.style.flex = value ? '1' : ''
+		if (PageHost.currentPage) {
+			PageHost.currentPage.style.flex = value ? '1' : ''
+		}
 		this.style.height = value ? 'calc(100% - 5px)' : ''
 	}
 

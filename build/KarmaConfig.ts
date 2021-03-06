@@ -1,31 +1,17 @@
 /* eslint-disable */
-// @ts-nocheck
+// const process = require('process')
+// process.env.EDGE_BIN = require('puppeteer').executablePath()
 
-const process = require('process')
-process.env.EDGE_BIN = require('puppeteer').executablePath()
-
-const karmaConfig = {
+module.exports = {
 	basePath: '.',
 	frameworks: ['jasmine'],
-	plugins: [
-		'@chiragrupani/karma-chromium-edge-launcher',
-		'karma-jasmine',
-		'karma-spec-reporter'
-	],
-	files: [
-		'./dist/bundle.js'
-	],
+	plugins: ['karma-*'],
+	files: ['./dist/main.js'],
 	exclude: [],
 	preprocessors: {},
 	reporters: ['spec'],
 	port: 9876,
-	browsers: ['EdgeHeadlessCustom'],
-	customLaunchers: {
-		EdgeHeadlessCustom: {
-			base: 'EdgeHeadless',
-			flags: ['--no-sandbox', '--disable-gpu']
-		}
-	},
+	browsers: ['ChromeHeadless'],
 	colors: true,
 	autoWatch: false,
 	singleRun: true,
@@ -40,5 +26,3 @@ const karmaConfig = {
 		showSpecTiming: false,
 	},
 }
-
-module.exports = karmaConfig

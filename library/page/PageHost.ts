@@ -24,7 +24,7 @@ export class PageHost extends Component {
 		MoDeL.Router.navigated.subscribe(() => this.navigateToPath(MoDeL.Router.relativePath))
 	}
 
-	private get pageComponent() { return this.firstChild as PageComponent<any> }
+	private get pageComponent() { return this.firstChild as PageComponent<any> | null }
 	private set pageComponent(value) {
 		this.removeChildren()
 		if (value) {

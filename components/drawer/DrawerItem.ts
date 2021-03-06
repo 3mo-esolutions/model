@@ -18,7 +18,7 @@ export class DrawerItem extends ListItem {
 
 		MoDeL.Router.navigated.subscribe(pageConstructor => {
 			const arePagesEqual = pageConstructor === this.componentConstructor?.[0]
-			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage['parameters'])
+			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage?.['parameters'])
 			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && arePageParametersEqual)
 		})
 
