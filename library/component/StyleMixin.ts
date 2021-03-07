@@ -121,6 +121,10 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		set textAlign(value) { this.style.textAlign = value }
 
 		@property()
+		get border() { return this.style.border as CSS.Property.Border<string> }
+		set border(value) { this.style.border = value }
+
+		@property()
 		get borderRadius() { return this.style.borderRadius as CSS.Property.BorderRadius<string> }
 		set borderRadius(value) { this.style.borderRadius = value }
 
