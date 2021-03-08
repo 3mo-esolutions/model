@@ -13,16 +13,18 @@ module.exports = {
 	port: 9876,
 	browsers: ['ChromeHeadless'],
 	colors: true,
-	autoWatch: false,
-	singleRun: true,
+	autoWatch: true,
+	singleRun: false,
 	concurrency: Infinity,
 	crossOriginAttribute: false,
 	specReporter: {
-		maxLogLines: 15,
+		maxLogLines: 5,
 		suppressErrorSummary: true,
-		suppressFailed: false,
-		suppressPassed: false,
-		suppressSkipped: true,
-		showSpecTiming: false,
+		showSpecTiming: true,
+		prefixes: {
+			success: '✅ ',
+			failure: '❌ ',
+			skipped: '⚠ '
+		}
 	},
 }
