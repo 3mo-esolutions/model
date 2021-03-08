@@ -34,7 +34,7 @@ export class FieldDate extends Field<Date | undefined> {
 		`
 	}
 
-	@renderContainer('slot[name="trailing"]')
+	@renderContainer('slot[name="trailingInternal"]')
 	protected get dataIconButtonTemplate() {
 		return this.hideDatePicker ? nothing : html`
 			<mo-icon-button
