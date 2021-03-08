@@ -1,6 +1,7 @@
 export { scroll as virtualize } from 'lit-virtualizer'
 export { Page } from './Page'
 export { Confetti } from './Confetti'
+export { Chip } from './Chip'
 export * from './material'
 export * from './input'
 export * from './layout'
