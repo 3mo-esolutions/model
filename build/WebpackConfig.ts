@@ -74,9 +74,11 @@ module.exports = (environment, config, plugins = []) => {
 	const MoDeLConfig = environment !== 'production'
 		? { ...sharedConfigs, ...developmentConfigs }
 		: { ...sharedConfigs, ...productionConfigs }
+
 	if (environment === 'test') {
 		config.entry = [config.entry, ...Global.sync('./**/*.test.ts').filter(path => path.includes('node_modules') === false)]
 		config.devtool = false
 	}
+
 	return Object.assign(MoDeLConfig, config)
 }

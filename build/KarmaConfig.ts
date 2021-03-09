@@ -1,12 +1,9 @@
 /* eslint-disable */
-// const process = require('process')
-// process.env.EDGE_BIN = require('puppeteer').executablePath()
-
 module.exports = {
 	basePath: '.',
 	frameworks: ['jasmine'],
 	plugins: ['karma-*'],
-	files: ['./dist/main.js'],
+	files: ['./test-temp/main.js'],
 	exclude: [],
 	preprocessors: {},
 	reporters: ['spec'],
