@@ -14,14 +14,6 @@ export default new class DocumentHelper {
 		document.head.append(style)
 	}
 
-	linkCSS(uri: string) {
-		const link = document.createElement('link')
-		link.rel = 'stylesheet'
-		link.type = 'text/css'
-		link.href = uri
-		document.head.append(link)
-	}
-
 	disableDefaultContextMenu() {
 		document.body.oncontextmenu = () => false
 	}

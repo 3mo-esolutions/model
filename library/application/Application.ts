@@ -3,6 +3,7 @@ import { Themes } from '../../types'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, ThemeHelper } from '../../helpers'
 import { Drawer } from '../../components'
+import { styles } from './styles.css'
 
 export abstract class Application extends Component {
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
@@ -13,9 +14,7 @@ export abstract class Application extends Component {
 	constructor() {
 		super()
 		this.id = 'application'
-		DocumentHelper.linkCSS('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap')
-		DocumentHelper.linkCSS('https://fonts.googleapis.com/icon?family=Material+Icons+Sharp')
-		DocumentHelper.linkCSS('/styles/theme.css')
+		DocumentHelper.injectCSS(styles)
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
 		this.handleThemes()
