@@ -60,7 +60,6 @@
 		"lit-element": "2.*",
 		"lit-virtualizer": "0.*",
 		"route-parser": "*",
-		"swiper": "6.*",
 		"terser-webpack-plugin": "4.*",
 		"ts-lit-plugin": "1.*",
 		"ts-loader": "8.*",
