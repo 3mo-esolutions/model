@@ -1,6 +1,5 @@
 import { html, property, Snackbar } from '..'
 import { DialogComponent } from '../dialog'
-import { Checkbox, TextField } from '../../components'
 import { LocalStorageEntry } from '../../helpers'
 import { KeyboardKey, User } from '../../types'
 
@@ -82,16 +81,18 @@ export abstract class DialogAuthenticator extends DialogComponent {
 					<h2>${Manifest.short_name ?? 'Welcome'}</h2>
 				</mo-flex>
 				<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
-					<mo-text-field label='Username'
-						@input=${(e: CustomEvent<undefined, TextField>) => this.username = e.source.value}
-						.value=${this.username}></mo-text-field>
+					<mo-field-text label='Username'
+						.value=${this.username}
+						@input=${(e: CustomEvent<string>) => this.username = e.detail}
+					></mo-field-text>
 
-					<mo-text-field label='Password' type='password'
-						@input=${(e: CustomEvent<undefined, TextField>) => this.password = e.source.value}
-						.value=${this.password}></mo-text-field>
+					<mo-field-password label='Password'
+						.value=${this.password}
+						@input=${(e: CustomEvent<string>) => this.password = e.detail}
+					></mo-field-password>
 
 					<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
-						<mo-checkbox @change=${(e: CustomEvent<undefined, Checkbox>) => this.shallRememberPassword = e.source.checked}>Remember Password</mo-checkbox>
+						<mo-checkbox @change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}>Remember Password</mo-checkbox>
 						<a @click=${() => this.resetPassword()}>Reset Password</a>
 					</mo-flex>
 				</mo-flex>

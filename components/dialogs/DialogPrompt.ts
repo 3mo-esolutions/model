@@ -1,5 +1,4 @@
 import { internalProperty, component, DialogComponent, html } from '../../library'
-import { TextField } from '..'
 
 @component('eb-dialog-input')
 export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string, handler: (input: string) => void }> {
@@ -19,11 +18,11 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 
 			<mo-flex width='100%' height='100%'>
 				<p>${this.parameters.text ?? ''}</p>
-				<mo-text-field
+				<mo-field-text
 					label=${this.parameters.inputLabel ?? 'Input'}
 					value=${this.input}
-					@input=${(e: CustomEvent<undefined, TextField>) => this.input = e.source.value}
-				></mo-text-field>
+					@input=${(e: CustomEvent<string>) => this.input = e.detail ?? ''}
+				></mo-field-text>
 			</mo-flex>
 		</mo-dialog>
 	`
