@@ -51,16 +51,16 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 }
 
 function eventProperty(options?: EventInit) {
-	return (prototype: unknown, propertykey: string) => {
-		if (propertykey === undefined)
+	return (prototype: unknown, propertyKey: string) => {
+		if (propertyKey === undefined)
 			return
 
-		const eventFieldName = `__${propertykey}Event`
-		Object.defineProperty(prototype, propertykey, {
+		const eventFieldName = `__${propertyKey}Event`
+		Object.defineProperty(prototype, propertyKey, {
 			get(this) {
 				if (!this[eventFieldName]) {
 					this[eventFieldName] = this instanceof HTMLElement
-						? new HTMLElementEvent(this, propertykey, options)
+						? new HTMLElementEvent(this, propertyKey, options)
 						: new PureEvent()
 				}
 				return this[eventFieldName]

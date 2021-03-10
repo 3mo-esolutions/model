@@ -3,7 +3,7 @@ export default class PromiseTask {
 		return new Promise(resolve => setTimeout(resolve, durationInMilliseconds))
 	}
 
-	static delegateToEventLoop<T = void>(task: () => T): Promise<T> {
+	static delegateToEventLoop<T = void>(task: () => T) {
 		return new Promise<T>(resolve => setTimeout(() => resolve(task()), 1))
 	}
 }
