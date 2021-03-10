@@ -1,9 +1,17 @@
-import { component, css } from '../library'
+import { component, css, html, renderContainer, nothing, property } from '../library'
 import { Button } from '.'
 
+/**
+ * @fires delete
+ */
 @component('mo-chip')
 export class Chip extends Button {
+	@eventProperty() readonly delete!: IEvent
+
+	@property({ type: Boolean }) hasDelete = false
+
 	unelevated = true
+
 	static get styles() {
 		return css`
 			${super.styles}
@@ -24,6 +32,16 @@ export class Chip extends Button {
 				text-transform: auto !important;
 				padding-right: 4px;
 			}
+		`
+	}
+
+	@renderContainer('slot[name="trailingIcon"]')
+	protected get deleteIconButtonTemplate() {
+		return !this.hasDelete ? nothing : html`
+			<mo-icon-button small icon='cancel' size='16px'
+				foreground='rgba(var(--mo-color-foreground-base), 0.5)'
+				@click=${() => this.delete.trigger()}
+			></mo-icon-button>
 		`
 	}
 }
