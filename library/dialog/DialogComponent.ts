@@ -1,4 +1,4 @@
-import { Component, DialogHost, PropertyValues } from '..'
+import { Component, DialogHost, PropertyValues, event } from '..'
 import { ComponentConstructor } from '../component'
 
 export type DialogParameters = void | Record<string, any>
@@ -12,7 +12,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 
 	static permissions = new Array<keyof MoDeL.Permissions>()
 
-	@eventProperty() readonly closed!: IEvent<boolean>
+	@event() readonly closed!: IEvent<boolean>
 
 	open(): Promise<boolean> {
 		return DialogHost.openDialog(this)
@@ -50,7 +50,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
 		this.isOpen = true
-		this.dialog?.finished.subscribe(result => this.closed.trigger(result))
+		this.dialog?.finished.subscribe(result => this.closed.dispatch(result))
 	}
 
 	protected executePrimaryAction = () => this.dialog?.['handlePrimaryButtonClick']()

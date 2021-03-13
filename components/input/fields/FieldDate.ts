@@ -49,7 +49,7 @@ export class FieldDate extends Field<Date | undefined> {
 	private selectDate(date: Date) {
 		this.value = date
 		this.open = false
-		this.change.trigger(date)
+		this.change.dispatch(date)
 	}
 
 	protected fromValue(value: Date | undefined): string {

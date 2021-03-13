@@ -1,4 +1,4 @@
-import { component, css, html, renderContainer, nothing, property } from '../library'
+import { component, css, html, renderContainer, nothing, property, event } from '../library'
 import { Button } from '.'
 
 /**
@@ -6,7 +6,7 @@ import { Button } from '.'
  */
 @component('mo-chip')
 export class Chip extends Button {
-	@eventProperty() readonly delete!: IEvent
+	@event() readonly delete!: IEvent
 
 	@property({ type: Boolean }) hasDelete = false
 
@@ -40,7 +40,7 @@ export class Chip extends Button {
 		return !this.hasDelete ? nothing : html`
 			<mo-icon-button small icon='cancel' size='16px'
 				foreground='rgba(var(--mo-color-foreground-base), 0.5)'
-				@click=${() => this.delete.trigger()}
+				@click=${() => this.delete.dispatch()}
 			></mo-icon-button>
 		`
 	}

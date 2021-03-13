@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, event } from '../../library'
 import { TextArea as MwcTextArea } from '@material/mwc-textarea'
 import { MaterialIcon } from '../../types'
 
@@ -18,8 +18,8 @@ import { MaterialIcon } from '../../types'
  */
 @component('mo-text-area')
 export class TextArea extends ComponentMixin(MwcTextArea) {
-	@eventProperty() readonly change!: IEvent<string>
-	@eventProperty() readonly input!: IEvent<string>
+	@event() readonly change!: IEvent<string>
+	@event() readonly input!: IEvent<string>
 
 	@property() icon!: MaterialIcon
 	@property() iconTrailing!: MaterialIcon
@@ -27,12 +27,12 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 	protected initialized() {
 		this.formElement.addEventListener('change', (e) => {
 			e.stopImmediatePropagation()
-			this.change.trigger(this.value)
+			this.change.dispatch(this.value)
 		})
 
 		this.formElement.addEventListener('input', e => {
 			e.stopImmediatePropagation()
-			this.input.trigger(this.value)
+			this.input.dispatch(this.value)
 		})
 	}
 }

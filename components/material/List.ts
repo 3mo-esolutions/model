@@ -1,4 +1,4 @@
-import { component, ComponentMixin, property } from '../../library'
+import { component, ComponentMixin, property, event } from '../../library'
 import { List as MwcList, MWCListIndex } from '@material/mwc-list'
 
 type ListValue = string | Array<string>
@@ -18,7 +18,7 @@ type ListValue = string | Array<string>
  */
 @component('mo-list')
 export class List extends ComponentMixin(MwcList) {
-	@eventProperty() private readonly change!: IEvent<ListValue | undefined>
+	@event() private readonly change!: IEvent<ListValue | undefined>
 
 	@property({ reflect: true, observer: valueChanged }) value?: ListValue
 
@@ -30,7 +30,7 @@ export class List extends ComponentMixin(MwcList) {
 				? this.items.filter((_, i) => index.has(i)).map(item => item?.value ?? undefined)
 				: this.items[index]?.value ?? undefined
 			this.value = value
-			this.change.trigger(value)
+			this.change.dispatch(value)
 		})
 	}
 }

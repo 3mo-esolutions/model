@@ -1,13 +1,9 @@
 class PwaHelper {
-	@eventProperty() readonly appInstalled!: IEvent
-
 	constructor() {
 		window.addEventListener('beforeinstallprompt', e => {
 			e.preventDefault()
 			this.pwaPrompt = e
 		})
-
-		window.addEventListener('appinstalled', () => this.appInstalled.trigger())
 	}
 
 	private pwaPrompt?: Event

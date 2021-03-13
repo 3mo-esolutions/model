@@ -17,7 +17,7 @@ export class FieldSearch extends FieldTextBase {
 	private inputEventHandler = (e: Event) => {
 		e.stopPropagation()
 		window.clearTimeout(this.timerId)
-		this.timerId = window.setTimeout(() => this.input.trigger(this.toValue(this.inputElement.value)), this.debounce)
+		this.timerId = window.setTimeout(() => this.input.dispatch(this.toValue(this.inputElement.value)), this.debounce)
 		return
 	}
 

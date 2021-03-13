@@ -1,7 +1,8 @@
+import { PureEvent } from '../types'
 import { JsonHelper } from '.'
 
 export class LocalStorageContainer {
-	@eventProperty() static readonly changed: IEvent<any>
+	static readonly changed = new PureEvent<unknown>()
 
 	private static readonly container = new Array<LocalStorageEntry<any>>()
 
@@ -15,7 +16,7 @@ export class LocalStorageContainer {
 }
 
 export default class LocalStorageEntry<T> {
-	@eventProperty() readonly changed!: IEvent<T>
+	readonly changed = new PureEvent<any>()
 
 	constructor(
 		protected readonly name: string,
@@ -34,7 +35,7 @@ export default class LocalStorageEntry<T> {
 
 	set value(obj: T) {
 		window.localStorage.setItem(this.name, JSON.stringify(obj))
-		this.changed.trigger(obj)
-		LocalStorageContainer.changed.trigger(this)
+		this.changed.dispatch(obj)
+		LocalStorageContainer.changed.dispatch(this)
 	}
 }

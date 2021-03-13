@@ -1,4 +1,4 @@
-import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing } from '../../library'
+import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 type Handler = () => unknown
@@ -10,18 +10,10 @@ type DialogSize = 'large' | 'medium' | 'small'
  * @attr defaultAction
  * @attr actionAttribute
  * @attr initialFocusAttribute
- * @cssprop --mdc-dialog-scrim-color
- * @cssprop --mdc-dialog-heading-ink-color
- * @cssprop --mdc-dialog-content-ink-color
- * @cssprop --mdc-dialog-scroll-divider-color
- * @cssprop --mdc-dialog-min-width
- * @cssprop --mdc-dialog-max-width
- * @cssprop --mdc-dialog-max-height
- * @cssprop --mdc-dialog-box-shadow
  */
 @component('mo-dialog')
 export class Dialog extends ComponentMixin(MwcDialog) {
-	@eventProperty() readonly finished!: IEvent<boolean>
+	@event() readonly finished!: IEvent<boolean>
 
 	primaryButtonClicked?: Handler
 	secondaryButtonClicked?: Handler
@@ -230,7 +222,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			await this.cancellationHandler?.()
 		}
 		super.close()
-		this.finished.trigger(success)
+		this.finished.dispatch(success)
 	}
 }
 

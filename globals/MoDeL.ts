@@ -4,7 +4,6 @@ declare namespace MoDeL {
 	interface Globals {
 		readonly environment: Environment
 	}
-
 }
 
 declare const MoDeL: MoDeL.Globals

@@ -1,4 +1,4 @@
 import './types'
+import './dom'
 import './MoDeL'
-import './event'
 import './test'

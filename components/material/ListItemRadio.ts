@@ -26,7 +26,7 @@ class MwcRadioListItemWidthCompatibleLeft extends MwcRadioListItem {
 export class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItemWidthCompatibleLeft)) {
 	constructor() {
 		super()
-		this.addEventListener('request-selected', () => this.selectionChange.trigger(this.radioElement.checked))
+		this.addEventListener('request-selected', () => this.selectionChange.dispatch(this.radioElement.checked))
 		this.addEventListener('click', () => this.radioElement.checked = !this.radioElement.checked)
 	}
 }

@@ -1,11 +1,11 @@
-import { query, css, html, Constructor, property, TemplateResult } from 'lit-element'
-import { render } from 'lit-html'
+import { render, query, css, html, TemplateResult, event } from '../../library'
+import { property } from 'lit-element'
 import { MaterialIcon } from '../../types'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T) => {
 	abstract class ListItemMixinConstructor extends Constructor {
-		@eventProperty() readonly selectionChange!: IEvent<boolean>
+		@event() readonly selectionChange!: IEvent<boolean>
 
 		constructor(...args: Array<any>) {
 			super(...args)

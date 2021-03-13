@@ -1,10 +1,14 @@
-interface IEvent<T = void> {
-	trigger(value: T): void
+interface Event<T = void> {
+	dispatch(value: T): void
 	subscribe(handler: EventHandler<T>): void
 	unsubscribe(handler: EventHandler<T>): void
 }
 
-class PureEvent<T = void> implements IEvent<T> {
+declare global {
+	type IEvent<T = void> = Event<T>
+}
+
+export class PureEvent<T = void> implements Event<T> {
 	private handlers = new Array<EventHandler<T>>()
 
 	subscribe(handler: EventHandler<T>) {
@@ -15,12 +19,12 @@ class PureEvent<T = void> implements IEvent<T> {
 		this.handlers = this.handlers.filter(h => h !== handler)
 	}
 
-	trigger(data: T) {
+	dispatch(data: T) {
 		this.handlers.slice(0).forEach(h => h(data))
 	}
 }
 
-class HTMLElementEvent<T = void> implements IEvent<T> {
+export class HTMLElementEvent<T = void> implements Event<T> {
 	constructor(private target: HTMLElement, private eventName: string, private options?: EventInit) { }
 
 	private handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
@@ -31,7 +35,7 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 			.map(e => e.eventListener)
 	}
 
-	trigger(value: T) {
+	dispatch(value: T) {
 		this.target.dispatchEvent(new CustomEvent<T>(this.eventName, { detail: value, ...this.options }))
 	}
 
@@ -49,24 +53,3 @@ class HTMLElementEvent<T = void> implements IEvent<T> {
 		this.handlersMap.delete(handler)
 	}
 }
-
-function eventProperty(options?: EventInit) {
-	return (prototype: unknown, propertyKey: string) => {
-		if (propertyKey === undefined)
-			return
-
-		const eventFieldName = `__${propertyKey}Event`
-		Object.defineProperty(prototype, propertyKey, {
-			get(this) {
-				if (!this[eventFieldName]) {
-					this[eventFieldName] = this instanceof HTMLElement
-						? new HTMLElementEvent(this, propertyKey, options)
-						: new PureEvent()
-				}
-				return this[eventFieldName]
-			}
-		})
-	}
-}
-
-globalThis.eventProperty = eventProperty

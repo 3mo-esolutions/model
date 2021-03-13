@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, event } from '../../library'
 import { MaterialIcon } from '../../types'
 import { IconButtonToggle as MwcIconButtonToggle } from '@material/mwc-icon-button-toggle'
 
@@ -15,7 +15,7 @@ export class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
 	@property() onIcon!: MaterialIcon
 	@property() offIcon!: MaterialIcon
 
-	@eventProperty() readonly change!: IEvent
+	@event() readonly change!: IEvent
 
 	@property({ type: Boolean })
 	set small(value: boolean) { this.style.setProperty('--mdc-icon-button-size', `calc(var(--mdc-icon-size) * ${value ? '1.5' : '2'})`) }
@@ -25,7 +25,7 @@ export class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
 	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
 
 	protected initialized() {
-		this.addEventListener('MDCIconButtonToggle:change', () => this.change.trigger())
+		this.addEventListener('MDCIconButtonToggle:change', () => this.change.dispatch())
 	}
 }
 

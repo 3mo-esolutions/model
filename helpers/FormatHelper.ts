@@ -1,5 +1,7 @@
 import { LocalizationHelper, LocalStorageEntry } from '.'
 
+// REFACTOR
+
 export class FormatHelper {
 	static readonly Currency = {
 		Symbol: new LocalStorageEntry('MoDeL.Formatter.Currency.Symbol', '€'),

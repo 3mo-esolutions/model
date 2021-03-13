@@ -1,4 +1,4 @@
-import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render } from '../../../library'
+import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render, event } from '../../../library'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
 
@@ -22,9 +22,9 @@ type OptionsGetter<T> = {
 export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends Field<SelectBaseValue<TMulti>> {
 	static readonly optionsRenderLimit = 50
 
-	@eventProperty() protected readonly dataChange!: IEvent<SelectBaseData<T, TMulti>>
-	@eventProperty() protected readonly indexChange!: IEvent<SelectBaseIndex<TMulti>>
-	@eventProperty() protected readonly dataFetch!: IEvent<Array<T>>
+	@event() protected readonly dataChange!: IEvent<SelectBaseData<T, TMulti>>
+	@event() protected readonly indexChange!: IEvent<SelectBaseIndex<TMulti>>
+	@event() protected readonly dataFetch!: IEvent<Array<T>>
 
 	protected abstract defaultValue: SelectBaseValue<TMulti>
 
@@ -162,9 +162,9 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		const numberValuesIfPossible = (this.value instanceof Array
 			? this.value.map(v => toNumberIfPossible(v))
 			: toNumberIfPossible(this.value as string)) as SelectBasePluralize<TMulti, string>
-		this.change.trigger(numberValuesIfPossible)
-		this.dataChange.trigger(this.data)
-		this.indexChange.trigger(this.index)
+		this.change.dispatch(numberValuesIfPossible)
+		this.dataChange.dispatch(this.data)
+		this.indexChange.dispatch(this.index)
 	}
 
 	private async selectByData(data?: SelectBaseData<T, TMulti>) {
@@ -240,7 +240,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 			return
 
 		this.fetchedData = await this.optionsGetter.fetchData()
-		this.dataFetch.trigger(this.fetchedData)
+		this.dataFetch.dispatch(this.fetchedData)
 
 		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
 

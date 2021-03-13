@@ -18,7 +18,7 @@ import { ListItemMixin } from './ListItemMixin'
 export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 	constructor() {
 		super()
-		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.trigger(e.detail.selected))
+		this.addEventListener('request-selected', (e: CustomEvent<{ selected: boolean }>) => this.selectionChange.dispatch(e.detail.selected))
 	}
 }
 

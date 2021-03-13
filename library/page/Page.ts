@@ -1,4 +1,4 @@
-import { component, html, property, Component, PageHost } from '../library'
+import { component, html, property, Component, PageHost } from '..'
 
 @component('mo-page')
 export class Page extends Component {

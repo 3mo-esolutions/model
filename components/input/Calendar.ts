@@ -1,4 +1,4 @@
-import { Component, css, component, html, internalProperty, nothing, property, query } from '../../library'
+import { Component, css, component, html, internalProperty, nothing, property, query, event } from '../../library'
 import { Flex } from '..'
 
 /**
@@ -6,7 +6,7 @@ import { Flex } from '..'
  */
 @component('mo-calendar')
 export class Calendar extends Component {
-	@eventProperty() readonly change!: IEvent<MoDate>
+	@event() readonly change!: IEvent<MoDate>
 
 	private readonly years = new Array(200).fill(0).map((_n, i) => 1901 + i)
 	private readonly weekDays = new Array(7).fill(0).map((_n, i) => i)
@@ -172,7 +172,7 @@ export class Calendar extends Component {
 
 	private selectDate(date: MoDate) {
 		this.value = date
-		this.change.trigger(date)
+		this.change.dispatch(date)
 	}
 
 	private renderYearSelection() {

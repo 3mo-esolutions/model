@@ -1,11 +1,11 @@
-import { Component, property, query } from '../../library'
+import { Component, property, query, event } from '../../library'
 
 /**
  * @fires change
  * @fires input
  */
 export abstract class Input<T> extends Component {
-	@eventProperty() readonly change!: IEvent<T | undefined>
+	@event() readonly change!: IEvent<T | undefined>
 	@query('input') protected readonly inputElement!: HTMLInputElement
 
 	protected _value: T | undefined
@@ -18,7 +18,7 @@ export abstract class Input<T> extends Component {
 
 	protected initialized() {
 		this.inputElement.addEventListener<any>('change', (e: CustomEvent<undefined, HTMLInputElement>) => {
-			this.change.trigger(this.toValue(e.source.value))
+			this.change.dispatch(this.toValue(e.source.value))
 			this.value = this.value
 		})
 	}

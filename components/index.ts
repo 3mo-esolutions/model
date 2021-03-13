@@ -1,5 +1,4 @@
 export { scroll as virtualize } from 'lit-virtualizer'
-export { Page } from './Page'
 export { Confetti } from './Confetti'
 export * from './material'
 export * from './input'

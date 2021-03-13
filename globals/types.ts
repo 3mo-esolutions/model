@@ -16,4 +16,5 @@ globalThis.Constructor = Constructor
 
 type ParameterIndex<T extends (...args: any) => any, I extends number> = Parameters<T>[I]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type FirstParameter<T extends (...args: any) => any> = ParameterIndex<T, 0>

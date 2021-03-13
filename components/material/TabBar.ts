@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, event } from '../../library'
 import { TabBar as MwcTabBar } from '@material/mwc-tab-bar'
 import { Tab } from '.'
 
@@ -8,7 +8,7 @@ import { Tab } from '.'
  */
 @component('mo-tab-bar')
 export class TabBar extends ComponentMixin(MwcTabBar) {
-	@eventProperty() readonly navigate!: IEvent<string | undefined>
+	@event() readonly navigate!: IEvent<string | undefined>
 
 	@property({ observer: valueChanged }) value?: string
 
@@ -37,7 +37,7 @@ export class TabBar extends ComponentMixin(MwcTabBar) {
 				return
 			}
 
-			this.navigate.trigger(this.activeTab?.value)
+			this.navigate.dispatch(this.activeTab?.value)
 		})
 	}
 

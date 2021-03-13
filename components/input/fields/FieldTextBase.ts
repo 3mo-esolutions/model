@@ -1,11 +1,11 @@
-import { property } from '../../../library'
+import { property, event } from '../../../library'
 import { Field } from '../Field'
 
 /**
  * @fires input
  */
 export abstract class FieldTextBase extends Field<string> {
-	@eventProperty() readonly input!: IEvent<string>
+	@event() readonly input!: IEvent<string>
 
 	@property({ reflect: true })
 	get value(): string | undefined { return super.value }
@@ -28,7 +28,7 @@ export abstract class FieldTextBase extends Field<string> {
 	protected registerInputEventListener() {
 		this.inputElement.addEventListener('input', (e: Event) => {
 			e.stopPropagation()
-			this.input.trigger(this.toValue(this.inputElement.value))
+			this.input.dispatch(this.toValue(this.inputElement.value))
 		})
 	}
 }

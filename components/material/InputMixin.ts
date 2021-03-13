@@ -1,10 +1,10 @@
-import { PropertyValues, query } from '../../library'
+import { PropertyValues, query, event } from '../../library'
 import { LitElement } from 'lit-element'
 import '@material/mwc-formfield'
 
 export const InputMixin = <T extends Constructor<LitElement>, TValue>(Constructor: T) => {
 	abstract class InputMixinConstructor extends Constructor {
-		@eventProperty() change!: IEvent<TValue>
+		@event() change!: IEvent<TValue>
 
 		abstract get value(): TValue
 		abstract set value(value: TValue)
@@ -15,7 +15,7 @@ export const InputMixin = <T extends Constructor<LitElement>, TValue>(Constructo
 			super.firstUpdated(changedProperties)
 			this.inputElement.addEventListener('change', (e) => {
 				e.stopImmediatePropagation()
-				this.change.trigger(this.value)
+				this.change.dispatch(this.value)
 			})
 		}
 	}
