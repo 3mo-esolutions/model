@@ -36,8 +36,8 @@ export class FormatHelper {
 	static percent(value: number): string {
 		if (value > 100) value = 100
 		if (value < 0) value = 0
-		if (isNaN(value)) return new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(0)
-		else return new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(value)
+		const formatter = new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 })
+		return formatter.format(isNaN(value) ? 0 : value)
 	}
 
 	static amountWithSymbol(value: number): string {
@@ -54,8 +54,8 @@ export class FormatHelper {
 	}
 
 	static amount(value: number): string {
-		if (isNaN(value)) return new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(0)
-		return new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
+		const formatter = new Intl.NumberFormat(LocalizationHelper.Language.value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 })
+		return formatter.format(isNaN(value) ? 0 : value)
 	}
 
 	static localNumberToNumber(value: string): number {

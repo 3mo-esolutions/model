@@ -1,3 +1,5 @@
+import { LocalizationHelper } from '../helpers'
+
 // eslint-disable-next-line no-restricted-syntax
 enum Month {
 	January,
@@ -37,7 +39,8 @@ export class MoDate extends Date {
 
 	//#region Day
 	static get weekDayNames() {
-		return ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+		const daysNumbers = new Array(7).fill(undefined).map((_, i) => 5 + i)
+		return daysNumbers.map(number => new Date(1970, 1 - 1, number).toLocaleString('de', { weekday: 'long' }))
 	}
 
 	get day() {
@@ -110,8 +113,9 @@ export class MoDate extends Date {
 
 	//#region Month
 	static get monthNames() {
-		// TODO: Localize
-		return ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+		const format = new Intl.DateTimeFormat(LocalizationHelper.Language.value, { month: 'long' })
+		const monthNumbers = new Array(12).fill(undefined).map((_, i) => i)
+		return monthNumbers.map(number => format.format(new Date(Date.UTC(2000, number, 1, 0, 0, 0))))
 	}
 
 	get month() {
