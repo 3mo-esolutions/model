@@ -33,8 +33,8 @@ export class MoDate extends Date {
 	static readonly IsoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 	private readonly weekStartDay: WeekStartDay = WeekDay.Monday
 
-	difference(secDate = new MoDate()): number {
-		return Math.floor((Date.UTC(secDate.year, secDate.month, secDate.day) - Date.UTC(this.year, this.month, this.day)) / (1000 * 60 * 60 * 24))
+	difference(comparisonDate = new MoDate) {
+		return new TimeSpan(this, comparisonDate)
 	}
 
 	//#region Day
@@ -173,10 +173,82 @@ export class MoDate extends Date {
 	//#endregion
 }
 
+class TimeSpan {
+	static get zero() { return new TimeSpan(new MoDate, new MoDate) }
+
+	private static getUTCTime(date: Date) {
+		return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds())
+	}
+
+	constructor(private date1: MoDate, private date2: MoDate) { }
+
+	get milliseconds() {
+		return TimeSpan.getUTCTime(this.date1) - TimeSpan.getUTCTime(this.date2)
+	}
+
+	get seconds() {
+		return this.milliseconds / 1000
+	}
+
+	get minutes() {
+		return this.seconds / 60
+	}
+
+	get hours() {
+		return this.minutes / 60
+	}
+
+	get days() {
+		return this.hours / 24
+	}
+
+	get weeks() {
+		return this.days / 7
+	}
+
+	get months() {
+		return this.days / 30
+	}
+
+	get years() {
+		return this.months / 12
+	}
+
+	get text() {
+		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.Language.value, { style: 'long' })
+		switch (true) {
+			case Math.abs(this.years) >= 1:
+				return formatter.format(Math.floor(this.years), 'years')
+			case Math.abs(this.months) >= 1:
+				return formatter.format(Math.floor(this.months), 'months')
+			case Math.abs(this.weeks) >= 1:
+				return formatter.format(Math.floor(this.weeks), 'weeks')
+			case Math.abs(this.days) >= 1:
+				return formatter.format(Math.floor(this.days), 'days')
+			case Math.abs(this.hours) >= 1:
+				return formatter.format(Math.floor(this.hours), 'hours')
+			case Math.abs(this.minutes) >= 1:
+				return formatter.format(Math.floor(this.minutes), 'minutes')
+			default:
+				return formatter.format(Math.floor(this.seconds), 'seconds')
+		}
+	}
+
+	toString() {
+		return this.text
+	}
+
+	valueOf() {
+		return this.milliseconds
+	}
+}
+
+globalThis.TimeSpan = TimeSpan
 globalThis.MoDate = MoDate
 globalThis.Month = Month
 globalThis.WeekDay = WeekDay
 
+type TimeSpanClass = typeof TimeSpan
 type MoDateClass = typeof MoDate
 type MonthType = Month
 type MonthEnum = typeof Month
@@ -184,6 +256,8 @@ type WeekDayType = WeekDay
 type WeekDayEnum = typeof WeekDay
 
 declare global {
+	// eslint-disable-next-line no-var
+	var TimeSpan: TimeSpanClass
 	// eslint-disable-next-line no-var
 	var MoDate: MoDateClass
 	type MoDate = InstanceType<MoDateClass>

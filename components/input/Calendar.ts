@@ -162,7 +162,7 @@ export class Calendar extends Component {
 				${renderWeeks()}
 
 				${this.navigatingDate.monthRange.map(date => html`
-					<mo-flex gridColumn=${date.weekDayCorrected + 2} class='day${this.value.difference(date) === 0 ? ' selected' : ''}' @click=${() => this.selectDate(date)}>
+					<mo-flex gridColumn=${date.weekDayCorrected + 2} class='day${Math.floor(this.value.difference(date).days) === 0 ? ' selected' : ''}' @click=${() => this.selectDate(date)}>
 						${date.day}
 					</mo-flex>
 				`)}
