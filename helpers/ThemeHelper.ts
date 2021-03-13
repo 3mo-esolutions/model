@@ -7,6 +7,7 @@ export class ThemeHelper {
 	static readonly Accent = new LocalStorageEntry('MoDeL.Theme.Accent', Accents.Blue)
 	static readonly Background = new LocalStorageEntry('MoDeL.Theme.Background', Themes.System)
 
+	// REFACTOR: use css props to generate colors
 	static handleAccentChange(value: Accents) {
 		const colors = value.split('/')
 		const firstColorRgb = colors[0].split(',').map(c => parseInt(c))
