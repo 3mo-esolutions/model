@@ -52,4 +52,8 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 		this.isOpen = true
 		this.dialog?.finished.subscribe(result => this.closed.trigger(result))
 	}
+
+	protected executePrimaryAction = () => this.dialog?.['handlePrimaryButtonClick']()
+
+	protected executeSecondaryAction = () => this.dialog?.['handleSecondaryButtonClick']()
 }
