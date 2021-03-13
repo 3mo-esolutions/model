@@ -24,7 +24,7 @@ const sharedConfigs = {
 		new CopyPlugin({
 			patterns: [
 				{
-					from: 'node_modules/@3mo/model-core/www/',
+					from: 'node_modules/@3mo/model/www/',
 					to: ''
 				},
 				{
