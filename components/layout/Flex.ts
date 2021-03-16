@@ -6,10 +6,7 @@ import * as CSS from 'csstype'
 export class Flex extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
-	set flexDirection(value) {
-		this.style.flexDirection = value
-		this.gap = this.gap
-	}
+	set flexDirection(value) { this.style.flexDirection = value }
 
 	@property()
 	get direction(): CSSDirection {
@@ -49,9 +46,14 @@ export class Flex extends Component {
 	get wrap() { return this.style.flexWrap as CSS.Property.FlexWrap }
 	set wrap(value) { this.style.flexWrap = value }
 
-	@property({ type: Array, observer: applyGap }) gapElements: Array<Element> = Array.from(this.children)
+	@property({ type: Array, observer: applyGap }) gapElements?: Array<Element>
 
 	@property({ observer: applyGap }) gap?: string
+
+	constructor() {
+		super()
+		this.addEventListener('slotchange', () => applyGap.call(this))
+	}
 
 	protected render = () => html`
 		<style>
@@ -69,10 +71,11 @@ function applyGap(this: Flex) {
 	if (!this.gap)
 		return
 
-	for (let i = 0; i < this.gapElements.length; i++) {
-		const child = this.gapElements[i] as HTMLElement
+	const gapElements = this.gapElements ?? Array.from(this.children)
+	for (let i = 0; i < gapElements.length; i++) {
+		const child = gapElements[i] as HTMLElement
 		const marginStart = i !== 0 ? `calc(${this.gap} / 2)` : '0'
-		const marginEnd = i !== this.gapElements.length - 1 ? `calc(${this.gap} / 2)` : '0'
+		const marginEnd = i !== gapElements.length - 1 ? `calc(${this.gap} / 2)` : '0'
 		switch (this.direction) {
 			case 'horizontal':
 				child.style.margin = `0 ${marginEnd} 0 ${marginStart}`
