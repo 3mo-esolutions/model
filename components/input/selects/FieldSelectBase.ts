@@ -158,7 +158,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 
 		this.value = this.toValue(getOptionsText(options)) ?? this.defaultValue
 
-		const toNumberIfPossible = (string: string) => string.charAt(0) === '0' || isNaN(Number(string)) ? string : Number(string)
+		const toNumberIfPossible = (string?: string) => string?.charAt(0) === '0' || isNaN(Number(string)) ? string : Number(string)
 		const numberValuesIfPossible = (this.value instanceof Array
 			? this.value.map(v => toNumberIfPossible(v))
 			: toNumberIfPossible(this.value as string)) as SelectBasePluralize<TMulti, string>
