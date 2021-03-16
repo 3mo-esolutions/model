@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin, event } from '../../library'
+import { component, property, ComponentMixin, event, css } from '../../library'
 import { TextArea as MwcTextArea } from '@material/mwc-textarea'
 import { MaterialIcon } from '../../types'
 
@@ -23,6 +23,18 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 
 	@property() icon!: MaterialIcon
 	@property() iconTrailing!: MaterialIcon
+
+	static get styles() {
+		return [
+			...super.styles,
+			css`
+				.mdc-text-field {
+					border-top-left-radius: var(--mo-field-border-top-left-radius, 4px);
+					border-top-right-radius: var(--mo-field-border-top-right-radius, 4px);
+				}
+			`
+		]
+	}
 
 	protected initialized() {
 		this.formElement.addEventListener('change', (e) => {
