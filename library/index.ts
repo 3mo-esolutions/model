@@ -1,5 +1,5 @@
 /* eslint-disable */
-export { customElement as component, CSSResult, queryAsync, html, css, CSSResultArray, TemplateResult, PropertyValues } from 'lit-element'
+export { customElement as component, CSSResult, queryAsync, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues } from 'lit-element'
 export { render, NodePart, directive } from 'lit-html'
 export { repeat } from 'lit-html/directives/repeat'
 export { cache } from 'lit-html/directives/cache'

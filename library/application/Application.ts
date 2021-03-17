@@ -1,5 +1,4 @@
 import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
-import { Themes } from '../../types'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, ThemeHelper } from '../../helpers'
 import { Drawer } from '../../components'
@@ -17,15 +16,13 @@ export abstract class Application extends Component {
 		DocumentHelper.injectCSS(styles)
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
-		this.handleThemes()
 	}
-
 
 	get authenticator() {
 		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
 	}
 
-	@property({ reflect: true }) theme?: Exclude<Themes, Themes.System>
+	@property({ reflect: true }) theme = ThemeHelper.Background.calculatedValue
 	@property() pageTitle?: string
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.AuthenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.IsDocked.value
@@ -40,27 +37,15 @@ export abstract class Application extends Component {
 		const providers = Array.from(Application.providers.keys())
 		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
+		ThemeHelper.Background.changed.subscribe(() => this.theme = ThemeHelper.Background.calculatedValue)
+		DialogAuthenticator.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
+		Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
+
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()
 		} else {
 			PageHost.navigateToPath(MoDeL.Router.relativePath)
 		}
-
-		DialogAuthenticator.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
-	}
-
-	private handleThemes() {
-		const getTheme = (theme: Themes = ThemeHelper.Background.value) => {
-			if (theme === Themes.System) {
-				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-				return isDark ? Themes.Dark : Themes.Light
-			}
-			return theme
-		}
-		this.theme = getTheme()
-		ThemeHelper.Background.changed.subscribe(theme => this.theme = getTheme(theme))
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.theme = getTheme())
 	}
 
 	static get styles() {

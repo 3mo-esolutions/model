@@ -16,7 +16,7 @@ export class LocalStorageContainer {
 }
 
 export default class LocalStorageEntry<T> {
-	readonly changed = new PureEvent<any>()
+	readonly changed = new PureEvent<T>()
 
 	constructor(
 		protected readonly name: string,

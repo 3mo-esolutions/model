@@ -1,7 +1,7 @@
 export { CSSDirection } from './CSSDirection'
 export { MaterialIcon } from './MaterialIcon'
 export { KeyboardKey } from './KeyboardKey'
-export { Themes } from './Themes'
+export { Background } from './Background'
 export { Accents } from './Accents'
 export { User } from './User'
 export { LanguageCode } from './LanguageCode'

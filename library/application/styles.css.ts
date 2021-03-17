@@ -53,23 +53,6 @@ export const styles = css`
 		--mo-font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		--mo-border-radius: 4px;
 		--mo-top-app-bar-height: 48px;
-		/* Lengths */
-		--mo-length-1: 480px;
-		--mo-length-2: 768px;
-		--mo-length-3: 1024px;
-		--mo-length-4: 1600px;
-		--mo-length-5: 1920px;
-		--mo-length-6: 2560px;
-		--mo-max-width: var(--mo-length-6);
-		--mo-min-width: var(--mo-length-3);
-		--mo-min-height: var(--mo-length-2);
-		--mo-settings-width: var(--mo-length-1);
-		--mo-elm-height-d: 48px;
-		--mo-elm-height-field: calc(var(--mo-elm-height-d) - 2px);
-		--mo-elm-height-s: 36px;
-		--mo-elm-height-xs: 32px;
-		--mo-elm-height-xxs: 24px;
-		--mo-elm-height-xxxs: 20px;
 		/* Duration */
 		--mo-duration-instant: 0ms;
 		--mo-duration-super-quick: 100ms;
@@ -78,7 +61,6 @@ export const styles = css`
 		--mo-duration-slow: 1000ms;
 		--mo-duration-super-slow: 1500ms;
 		/* Shadows */
-		--mo-focus-brightness: brightness(125%);
 		--mo-shadow: rgba(var(--mo-shadow-base), .4) 0 1px 2px 0, rgba(var(--mo-shadow-base), .2) 0 1px 3px 1px !important;
 		--mo-shadow-hover: rgba(var(--mo-shadow-base), .4) 0 5px 40px 0, rgba(var(--mo-shadow-base), .2) 0 5px 40px 1px !important;
 		--mo-shadow-deep: 0px 5px 5px -3px rgba(var(--mo-shadow-base), 0.2), 0px 8px 10px 1px rgba(var(--mo-shadow-base), 0.14), 0px 3px 14px 2px rgba(var(--mo-shadow-base), 0.12);
@@ -117,10 +99,11 @@ export const styles = css`
 		/* TODO: [MD-111] use the CSS trick to determine white/black */
 		--mo-color-accessible: white;
 		--mo-scrim: rgba(0, 0, 0, 0.5);
+		--mo-accent-base: var(--mo-accent-gradient-2);
 		--mo-accent: rgb(var(--mo-accent-base));
 		--mo-accent-transparent: rgba(var(--mo-accent-base), 0.25);
-		--mo-accent-gradient: linear-gradient(135deg, var(--mo-accent-g));
-		--mo-accent-gradient-transparent: linear-gradient(135deg, var(--mo-accent-gt));
+		--mo-accent-gradient: linear-gradient(135deg, rgb(var(--mo-accent-gradient-1)), rgb(var(--mo-accent-gradient-2)), rgb(var(--mo-accent-gradient-3)));
+		--mo-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-accent-gradient-1), 0.25) rgb(var(--mo-accent-gradient-2), 0.25), rgb(var(--mo-accent-gradient-3), 0.25));
 		/* Override Material Web Components variables */
 		--mdc-theme-primary: var(--mo-accent) !important;
 		--mdc-theme-secondary: var(--mo-accent) !important;
@@ -160,7 +143,7 @@ export const styles = css`
 		--mdc-checkbox-disabled-color: var(--mo-color-gray-transparent) !important;
 	}
 
-	#application[theme='light'] {
+	#application[theme=light] {
 		--mo-color-background-base: 255, 255, 255;
 		--mo-color-foreground-base: 0, 0, 0;
 		--mo-color-background: rgb(220, 221, 225) !important;
@@ -177,7 +160,7 @@ export const styles = css`
 		--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
 	}
 
-	#application[theme='dark'] {
+	#application[theme=dark] {
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;
 		--mo-color-background: rgb(16, 17, 20) !important;

@@ -8,10 +8,10 @@ export default new class DocumentHelper {
 		})
 	}
 
-	injectCSS(styles: CSSResult): void {
-		const style = document.createElement('style')
-		style.innerHTML = styles.cssText
-		document.head.append(style)
+	injectCSS(styles: CSSResult, styleElement = document.createElement('style')) {
+		styleElement.innerHTML = styles.cssText
+		document.head.appendChild(styleElement)
+		return styleElement
 	}
 
 	disableDefaultContextMenu() {
