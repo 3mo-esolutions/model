@@ -40,7 +40,7 @@ export class ContextMenuHost extends Component {
 		<style>
 			mo-menu {
 				--mdc-menu-z-index: 10;
-				--mdc-menu-item-height: var(--mo-elm-height-s);
+				--mdc-menu-item-height: 36px;
 				--mo-list-item-icon-color: var(--mo-color-gray);
 			}
 
