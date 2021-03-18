@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from '../library'
 import { DocumentHelper, LocalStorageEntry } from '.'
-import { Accents, Background } from '../types'
+import { Accent, Background } from '../types'
 
 export class ThemeHelper {
 	static readonly Background = new class extends LocalStorageEntry<Background> {
@@ -18,16 +18,17 @@ export class ThemeHelper {
 		}
 	}
 
-	static readonly Accent = new class extends LocalStorageEntry<Accents> {
+	static readonly Accent = new class extends LocalStorageEntry<Accent> {
 		constructor() {
-			super('MoDeL.Theme.Accent', Accents.StrongBlissGradient)
-			this.value = this.defaultValue
+			super('MoDeL.Theme.Accent', Accent.Blue)
+			this.value = this.value ?? this.defaultValue
 		}
 
 		private styleElement?: HTMLStyleElement
 
 		get value() { return super.value }
 		set value(value) {
+			super.value = value
 			const colors = value.split('/')
 			this.styleElement = DocumentHelper.injectCSS(css`
 				#application {

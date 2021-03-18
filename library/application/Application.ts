@@ -48,6 +48,16 @@ export abstract class Application extends Component {
 		}
 	}
 
+	private authenticate = () => this.authenticator?.confirm()
+	private unauthenticate = async () => {
+		await this.authenticator?.unauthenticate()
+		this.drawerOpen = false
+	}
+
+	private get hasDrawerProfile() {
+		return !this.drawerDocked && !!this.authenticator && !!this.authenticatedUser
+	}
+
 	static get styles() {
 		return css`
 			:host {
@@ -59,7 +69,7 @@ export abstract class Application extends Component {
 				min-height: 100%;
 			}
 
-			#spnAppTitle {
+			#spanAppTitle {
 				margin: 2px 0 0 8px;
 				font-size: 23px;
 				font-family: Google Sans;
@@ -94,7 +104,7 @@ export abstract class Application extends Component {
 					display: none;
 				}
 
-				#spnAppTitle {
+				#spanAppTitle {
 					display: none;
 				}
 			}
@@ -106,7 +116,7 @@ export abstract class Application extends Component {
 			<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
 				<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
 				<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-				<span id='spnAppTitle'>${Manifest.short_name}</span>
+				<span id='spanAppTitle'>${Manifest.short_name}</span>
 			</mo-flex>
 
 			<mo-flex slot='title' alignItems='center'>
@@ -114,7 +124,9 @@ export abstract class Application extends Component {
 				<slot name='topAppBarDetails'></slot>
 			</mo-flex>
 
-			${this.topAppBarProfile}
+			<slot slot='actionItems' name='actionItems'>
+				${this.topAppBarActionItemsTemplate}
+			</slot>
 
 			<mo-drawer
 				type=${this.drawerDocked ? 'dismissible' : 'modal'}
@@ -123,7 +135,10 @@ export abstract class Application extends Component {
 				@MDCDrawer:opened=${() => this.drawerOpen = true}
 				@MDCDrawer:closed=${() => this.drawerOpen = false}
 			>
-				${this.drawerProfile}
+				<mo-flex slot='title' ?hidden=${!this.hasDrawerProfile}>
+					<span class='username'>${this.authenticatedUser?.name}</span>
+					<span class='email'>${this.authenticatedUser?.email}</span>
+				</mo-flex>
 
 				<mo-flex height='100%'>
 					<mo-drawer-list height='*' open root>
@@ -131,7 +146,7 @@ export abstract class Application extends Component {
 					</mo-drawer-list>
 
 					<mo-drawer-list open root>
-						${this.renderDrawerExtras()}
+						${this.drawerFooterTemplate}
 						<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate}>Logout</mo-drawer-item>
 					</mo-drawer-list>
 				</mo-flex>
@@ -146,54 +161,13 @@ export abstract class Application extends Component {
 		<mo-confetti></mo-confetti>
 	`
 
-	private authenticate = () => this.authenticator?.confirm()
-	private unauthenticate = async () => {
-		await this.authenticator?.unauthenticate()
-		this.drawerOpen = false
+	protected get topAppBarActionItemsTemplate() {
+		return this.drawerDocked === false || this.authenticator === undefined
+			? nothing
+			: html`<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>`
 	}
 
-	private get hasDrawerProfile() {
-		return !this.drawerDocked && !!this.authenticator && !!this.authenticatedUser
-	}
-
-	private get drawerProfile() {
-		return !this.hasDrawerProfile ? nothing : html`
-			<mo-flex slot='title'>
-				<span class='username'>${this.authenticatedUser?.name}</span>
-				<span class='email'>${this.authenticatedUser?.email}</span>
-			</mo-flex>
-		`
-	}
-
-	private get topAppBarProfile() {
-		if (this.drawerDocked === false || this.authenticator === undefined)
-			return nothing
-
-		if (this.authenticatedUser) {
-			const splittedName = this.authenticatedUser.name.split(' ')
-			const initials = `${splittedName[0].charAt(0)}${splittedName.length > 1 ? splittedName[splittedName.length - 1].charAt(0) : ''}`
-
-			return html`
-				<mo-grid slot='actionItems' rows='auto auto' columns='* 40px' width='auto' padding='0 4px 0 0' columnGap='10px' textAlign='right'>
-					<mo-flex gridColumn='1' gridRow='1' fontSize='var(--mo-font-size-l)' justifyContent='flex-end'>${this.authenticatedUser.name}</mo-flex>
-					<mo-flex gridColumn='1' gridRow='2' fontSize='var(--mo-font-size-m)'>${this.authenticatedUser.email}</mo-flex>
-					<mo-flex gridColumn='2' gridRow='1 / span 2' height='40px' width='40px'
-						alignSelf='center' justifySelf='center' justifyContent='center' alignItems='center'
-						borderRadius='50%' background='rgba(0,0,0,0.3)' fontSize='var(--mo-font-size-l)'>
-						${initials}
-					</mo-flex>
-				</mo-grid>
-			`
-		} else {
-			return html`
-				<mo-flex slot='actionItems' direction='horizontal' alignItems='center' justifyContent='center'>
-					<mo-icon-button icon='account_circle' @click=${this.authenticate}></mo-icon-button>
-				</mo-flex>
-			`
-		}
-	}
-
-	protected renderDrawerExtras() {
+	protected get drawerFooterTemplate() {
 		return nothing
 	}
 }

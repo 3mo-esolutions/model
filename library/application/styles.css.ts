@@ -30,7 +30,6 @@ export const styles = css`
 		scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
 	}
 
-
 	body {
 		height: 100%;
 		width: 100%;
@@ -83,10 +82,6 @@ export const styles = css`
 		--mo-thickness-l: 8px;
 		--mo-thickness-xl: 14px;
 		--mo-thickness-xxl: 18px;
-		/* Selection Colors */
-		--mo-hover-foreground: inherit;
-		--mo-selected-background: var(--mo-accent-gradient-transparent);
-		--mo-selected-foreground: var(--mo-accent);
 		/* zIndex */
 		--mo-z-snackbar: 10;
 		--mo-z-sidebar: 4;
@@ -103,7 +98,7 @@ export const styles = css`
 		--mo-accent: rgb(var(--mo-accent-base));
 		--mo-accent-transparent: rgba(var(--mo-accent-base), 0.25);
 		--mo-accent-gradient: linear-gradient(135deg, rgb(var(--mo-accent-gradient-1)), rgb(var(--mo-accent-gradient-2)), rgb(var(--mo-accent-gradient-3)));
-		--mo-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-accent-gradient-1), 0.25) rgb(var(--mo-accent-gradient-2), 0.25), rgb(var(--mo-accent-gradient-3), 0.25));
+		--mo-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-accent-gradient-1), 0.25), rgba(var(--mo-accent-gradient-2), 0.25), rgba(var(--mo-accent-gradient-3), 0.25));
 		/* Override Material Web Components variables */
 		--mdc-theme-primary: var(--mo-accent) !important;
 		--mdc-theme-secondary: var(--mo-accent) !important;
