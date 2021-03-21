@@ -111,55 +111,57 @@ export abstract class Application extends Component {
 		`
 	}
 
-	protected render = () => html`
-		<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
-			<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
-				<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
-				<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-				<span id='spanAppTitle'>${Manifest.short_name}</span>
-			</mo-flex>
-
-			<mo-flex slot='title' alignItems='center'>
-				<span id='spnPageTitle'>${this.pageTitle}</span>
-				<slot name='topAppBarDetails'></slot>
-			</mo-flex>
-
-			<slot slot='actionItems' name='actionItems'>
-				${this.topAppBarActionItemsTemplate}
-			</slot>
-
-			<mo-drawer
-				type=${this.drawerDocked ? 'dismissible' : 'modal'}
-				?open=${this.drawerOpen}
-				?hasHeader=${this.hasDrawerProfile}
-				@MDCDrawer:opened=${() => this.drawerOpen = true}
-				@MDCDrawer:closed=${() => this.drawerOpen = false}
-			>
-				<mo-flex slot='title' ?hidden=${!this.hasDrawerProfile}>
-					<span class='username'>${this.authenticatedUser?.name}</span>
-					<span class='email'>${this.authenticatedUser?.email}</span>
+	protected render() {
+		return html`
+			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
+				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
+					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+					<span id='spanAppTitle'>${Manifest.short_name}</span>
 				</mo-flex>
 
-				<mo-flex height='100%'>
-					<mo-drawer-list height='*' open root>
-						${this.drawerTemplate}
-					</mo-drawer-list>
-
-					<mo-drawer-list open root>
-						${this.drawerFooterTemplate}
-						<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate}>Logout</mo-drawer-item>
-					</mo-drawer-list>
+				<mo-flex slot='title' alignItems='center'>
+					<span id='spnPageTitle'>${this.pageTitle}</span>
+					<slot name='topAppBarDetails'></slot>
 				</mo-flex>
 
-				<mo-page-host slot='appContent'></mo-page-host>
-			</mo-drawer>
-		</mo-top-app-bar>
+				<slot slot='actionItems' name='actionItems'>
+					${this.topAppBarActionItemsTemplate}
+				</slot>
 
-		<mo-snackbar></mo-snackbar>
-		<mo-dialog-host></mo-dialog-host>
-		<mo-context-menu-host></mo-context-menu-host>
-		<mo-confetti></mo-confetti>
-	`
+				<mo-drawer
+					type=${this.drawerDocked ? 'dismissible' : 'modal'}
+					?open=${this.drawerOpen}
+					?hasHeader=${this.hasDrawerProfile}
+					@MDCDrawer:opened=${() => this.drawerOpen = true}
+					@MDCDrawer:closed=${() => this.drawerOpen = false}
+				>
+					<mo-flex slot='title' ?hidden=${!this.hasDrawerProfile}>
+						<span class='username'>${this.authenticatedUser?.name}</span>
+						<span class='email'>${this.authenticatedUser?.email}</span>
+					</mo-flex>
+
+					<mo-flex height='100%'>
+						<mo-drawer-list height='*' open root>
+							${this.drawerTemplate}
+						</mo-drawer-list>
+
+						<mo-drawer-list open root>
+							${this.drawerFooterTemplate}
+							<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate}>Logout</mo-drawer-item>
+						</mo-drawer-list>
+					</mo-flex>
+
+					<mo-page-host slot='appContent'></mo-page-host>
+				</mo-drawer>
+			</mo-top-app-bar>
+
+			<mo-snackbar></mo-snackbar>
+			<mo-dialog-host></mo-dialog-host>
+			<mo-context-menu-host></mo-context-menu-host>
+			<mo-confetti></mo-confetti>
+		`
+	}
 
 	protected get topAppBarActionItemsTemplate() {
 		return this.drawerDocked === false || this.authenticator === undefined
