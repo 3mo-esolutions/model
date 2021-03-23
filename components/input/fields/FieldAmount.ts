@@ -1,9 +1,11 @@
-import { component, html, renderContainer } from '../../../library'
+import { component, html, property, renderContainer } from '../../../library'
 import { FormatHelper } from '../../../helpers'
 import { FieldNumber } from './FieldNumber'
 
 @component('mo-field-amount')
 export class FieldAmount extends FieldNumber {
+	@property() currency = FormatHelper.Currency.Symbol.value
+
 	protected fromValue(value: number | undefined): string {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
 	}
@@ -11,7 +13,7 @@ export class FieldAmount extends FieldNumber {
 	@renderContainer('slot[name="trailing"]')
 	protected get currencySymbolTemplate() {
 		return html`
-			<mo-div fontSize='var(--mo-font-size-xl)'>${FormatHelper.Currency.Symbol.value}</mo-div>
+			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currency}</mo-div>
 		`
 	}
 }
