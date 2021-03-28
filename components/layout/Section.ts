@@ -48,7 +48,7 @@ export class Section extends Component {
 			</style>
 			<h3>${this.header}</h3>
 			<slot name='actions'></slot>
-			<mo-flex gap=${ifDefined(this.gap)} .gapElements=${this.childElements as Array<Element>}>
+			<mo-flex gap=${ifDefined(this.gap)} .gapElements=${this.childElements.filter(e => !e.slot) as Array<Element>}>
 				<slot></slot>
 			</mo-flex>
 		`

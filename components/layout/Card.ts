@@ -6,7 +6,7 @@ export class Card extends Component {
 	@property() header = ''
 	@property() direction: CSSDirection = 'vertical'
 	@property() gap?: string
-	@property({ type: Array }) gapElements: Array<Element> = Array.from(this.children).filter(c => c.slot === '')
+	@property({ type: Array }) gapElements: Array<Element> = this.childElements.filter(c => !c.slot)
 
 	protected render() {
 		return html`

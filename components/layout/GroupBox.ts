@@ -6,7 +6,7 @@ export class GroupBox extends Component {
 	@property() header = ''
 	@property() gap?: string
 	@property() direction: CSSDirection = 'vertical'
-	@property({ type: Array }) gapElements: Array<Element> = Array.from(this.children)
+	@property({ type: Array }) gapElements: Array<Element> = this.childElements.filter(e => !e.slot)
 
 	protected render = () => html`
 		<style>

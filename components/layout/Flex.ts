@@ -71,7 +71,7 @@ function applyGap(this: Flex) {
 	if (!this.gap)
 		return
 
-	const gapElements = this.gapElements ?? Array.from(this.children)
+	const gapElements = this.gapElements ?? this.childElements.filter(e => !e.slot)
 	for (let i = 0; i < gapElements.length; i++) {
 		const child = gapElements[i] as HTMLElement
 		const marginStart = i !== 0 ? `calc(${this.gap} / 2)` : '0'
