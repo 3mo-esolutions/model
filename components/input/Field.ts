@@ -47,12 +47,12 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-label-scale-value-on-focus: 1;
 			}
 
-			:host([disabled]) {
+			:host([disabled]) div[part=container], :host([disabled]) slot[name=trailingInternal] {
 				pointer-events: none;
 				opacity: 0.5;
 			}
 
-			:host([readonly]) {
+			:host([readonly]) div[part=container], :host([readonly]) slot[name=trailingInternal] {
 				pointer-events: none;
 			}
 
