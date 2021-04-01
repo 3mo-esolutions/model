@@ -77,6 +77,8 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 			${super.styles}
 
 			mo-icon-button[part=dropDownIcon] {
+				display: flex;
+				align-items: center;
 				color: var(--mo-color-gray);
 			}
 
@@ -268,7 +270,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 function getOptionsText<T>(options: Array<Option<T>>) {
 	return options
 		.filter(o => !o.default)
-		?.map(o => o.innerText)
+		?.map(o => o.text)
 		.join(', ')
 		?? ''
 }
