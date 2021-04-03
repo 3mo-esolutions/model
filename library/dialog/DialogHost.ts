@@ -12,7 +12,6 @@ export class DialogHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
 
 	static get openDialog() { return this.instance.openDialog }
-	static get confirmDialog() { return this.instance.confirmDialog }
 	static get open() { return this.instance.open }
 	static get confirm() { return this.instance.confirm }
 	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary }
@@ -67,13 +66,6 @@ export class DialogHost extends Component {
 			primaryButtonText: parameters[2],
 			secondaryButtonText: parameters[3],
 		}).confirm()
-	}
-
-	private confirmDialog = async <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
-		const response = await this.openDialog(dialog)
-		if (response === false) {
-			throw new Error('Dialog canceled')
-		}
 	}
 
 	private openDialog = <T extends DialogComponent<TParams>, TParams>(dialog: T) => {

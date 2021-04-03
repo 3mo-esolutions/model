@@ -18,8 +18,11 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 		return DialogHost.openDialog(this)
 	}
 
-	confirm(): Promise<void> {
-		return DialogHost.confirmDialog(this)
+	async confirm() {
+		const response = await this.open()
+		if (response === false) {
+			throw new Error('Dialog canceled')
+		}
 	}
 
 	constructor(parameters: T) {
