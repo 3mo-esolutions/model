@@ -18,6 +18,14 @@ export class Grid extends Component {
 	get columns() { return this.style.gridTemplateColumns.split('fr').join('*') }
 	set columns(value) { this.style.gridTemplateColumns = ` ${value}`.split('*').join('fr').split(' fr').join(' 1fr').substring(1) }
 
+	@property()
+	get autoRows() { return this.style.gridAutoRows }
+	set autoRows(value) { this.style.gridAutoRows = value }
+
+	@property()
+	get autoColumns() { return this.style.gridAutoColumns }
+	set autoColumns(value) { this.style.gridAutoColumns = value }
+
 	protected render = () => html`
 		<style>
 			:host {
