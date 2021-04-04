@@ -43,7 +43,7 @@ export class FieldSelect<T> extends Field<Value> {
 		defaultOption.default = true
 		defaultOption.innerText = value
 		defaultOption.value = ''
-		this.insertBefore(defaultOption, this.firstElementChild)
+		this.updateComplete.then(() => this.insertBefore(defaultOption, this.firstElementChild))
 	}
 
 	@internalProperty() private manualClose = false
@@ -170,7 +170,7 @@ export class FieldSelect<T> extends Field<Value> {
 			<mo-menu
 				id='menuOptions'
 				style='${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}'
-				.anchor=${this}
+				.anchor=${this as HTMLElement}
 				?multi=${this.multiple}
 				?manualClose=${this.manualClose}
 				fixed
