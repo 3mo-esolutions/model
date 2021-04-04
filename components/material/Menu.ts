@@ -29,19 +29,26 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
  */
 @component('mo-menu')
 export class Menu extends ComponentMixin(MwcMenu) {
-	@property({ type: Boolean, reflect: true, observer: manualCloseChanged }) manualClose = false
-}
+	@property({ type: Boolean, reflect: true }) manualClose = false
 
-function manualCloseChanged(this: Menu) {
-	if (this.manualClose === false)
-		return
+	protected initialized() {
+		this.overrideClosingLogic()
+	}
 
-	const surfaceElement = this.shadowRoot.querySelector('mwc-menu-surface')
-	// Here, the internals of menu and menu surface are manipulated to prevent automatic
-	// closings of the menu. Material team is aware of this problem and the issue is filed in this link:
-	// https://github.com/material-components/material-components-web-components/issues/1353
-	surfaceElement?.['deregisterBodyClick']()
-	this['mdcFoundation']['adapter'].closeSurface = () => void 0
+	private overrideClosingLogic() {
+		// Here, the internals of menu and menu surface are manipulated to prevent automatic
+		// closings of the menu. Material team is aware of this problem and the issue is filed in this link:
+		// https://github.com/material-components/material-components-web-components/issues/1353
+		const surfaceElement = this.shadowRoot.querySelector('mwc-menu-surface')
+		surfaceElement?.['deregisterBodyClick']()
+		const fn = this['mdcFoundation']['adapter'].closeSurface
+		const menu = this
+		this['mdcFoundation']['adapter'].closeSurface = function (this) {
+			if (menu.manualClose === false) {
+				fn.call(this)
+			}
+		}
+	}
 }
 
 declare global {

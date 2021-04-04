@@ -1,8 +1,10 @@
-import { component, property, css } from '../../../library'
-import { ListItemCheckbox } from '../../material'
+import { component, property, css, event } from '../../library'
+import { ListItemCheckbox } from '../material'
 
 @component('mo-option')
 export class Option<TValue> extends ListItemCheckbox {
+	@event({ bubbles: true }) private readonly defaultClick!: IEvent
+
 	@property({ type: Object }) data?: TValue
 	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false
 	@property({ type: Boolean, reflect: true }) multiple = false
@@ -26,7 +28,12 @@ export class Option<TValue> extends ListItemCheckbox {
 	initialized() {
 		super.initialized()
 		if (!this.value) {
-			this.value = Array.from(this.parentElement.children).indexOf(this).toString()
+			this.value = this.innerText ?? Array.from(this.parentElement.children).indexOf(this).toString()
+		}
+		this.onclick = () => {
+			if (this.default) {
+				this.defaultClick.dispatch()
+			}
 		}
 	}
 }

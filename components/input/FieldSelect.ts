@@ -1,12 +1,13 @@
-import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render, event } from '../../../library'
-import { Option, Menu } from '../..'
-import { Field } from '../Field'
+import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render, event, component } from '../../library'
+import { KeyboardKey } from '../../types'
+import { Option, Menu } from '..'
+import { Field } from './Field'
 
-type SelectBasePluralize<TMulti extends boolean, TReturn> = TMulti extends true ? Array<TReturn> : (TReturn | undefined)
+type PluralizeUnion<T> = Array<T> | T | undefined
 
-type SelectBaseValue<TMulti extends boolean> = SelectBasePluralize<TMulti, string>
-type SelectBaseData<T, TMulti extends boolean> = SelectBasePluralize<TMulti, T>
-type SelectBaseIndex<TMulti extends boolean> = SelectBasePluralize<TMulti, number>
+type Value = PluralizeUnion<string>
+type Data<T> = PluralizeUnion<T>
+type Index = PluralizeUnion<number>
 
 
 type OptionsGetter<T> = {
@@ -19,44 +20,59 @@ type OptionsGetter<T> = {
  * @fires indexChange
  * @fires dataFetch
  */
-export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends Field<SelectBaseValue<TMulti>> {
+@component('mo-field-select')
+export class FieldSelect<T> extends Field<Value> {
 	static readonly optionsRenderLimit = 50
 
-	@event() protected readonly dataChange!: IEvent<SelectBaseData<T, TMulti>>
-	@event() protected readonly indexChange!: IEvent<SelectBaseIndex<TMulti>>
+	@event() protected readonly dataChange!: IEvent<Data<T>>
+	@event() protected readonly indexChange!: IEvent<Index>
 	@event() protected readonly dataFetch!: IEvent<Array<T>>
 
-	protected abstract defaultValue: SelectBaseValue<TMulti>
-
 	@property({ type: Boolean, reflect: true }) open = false
+	@property({ type: Boolean }) multiple = false
 	@property({ type: Boolean, reflect: true }) reflectDefault = false
-	@property({ observer: defaultChanged }) default?: string
+	@property()
+	get default() { return this.querySelector<Option<T>>('mo-option[default]')?.text }
+	set default(value) {
+		Array.from(this.querySelectorAll('mo-option[default]')).forEach(o => o.remove())
+
+		if (!value)
+			return
+
+		const defaultOption = new Option<T>()
+		defaultOption.default = true
+		defaultOption.innerText = value
+		defaultOption.value = ''
+		this.insertBefore(defaultOption, this.firstElementChild)
+	}
+
+	@internalProperty() private manualClose = false
 
 	private programmaticSelection = false
 	get value() { return super.value }
 	set value(value) {
 		value = (value instanceof Array
 			? value.map(v => v.toString())
-			: value?.toString()) as SelectBasePluralize<TMulti, string>
+			: value?.toString()) as PluralizeUnion<string>
 
 		super.value = value
 		this.programmaticSelection = true
 		this.selectByValue(value).then(() => this.programmaticSelection = false)
 	}
 
-	@property({ type: Object })
+	@property({ type: Array })
 	get index() {
 		return (this.value instanceof Array
 			? this.value.map(v => this.options.findIndex(o => o.value === v))
-			: this.options.findIndex(o => o.value === this.value)) as SelectBaseIndex<TMulti>
+			: this.options.findIndex(o => o.value === this.value)) as Index
 	}
 	set index(value) { this.selectByIndex(value) }
 
-	@property({ type: Object })
+	@property({ type: Array })
 	get data() {
 		return (this.value instanceof Array
 			? this.value.map(v => this.options.find(o => o.value === v)?.data)
-			: this.options.find(o => o.value === this.value)?.data) as SelectBaseData<T, TMulti>
+			: this.options.find(o => o.value === this.value)?.data) as Data<T>
 	}
 	set data(value) { this.selectByData(value) }
 
@@ -69,12 +85,16 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	}
 
 	get selectedOptions() {
-		return this.menuOptions?.selected as TMulti extends true ? Array<Option<T>> : Option<T>
+		return this.menuOptions?.selected as Array<Option<T>> | Option<T> | undefined
 	}
 
 	static get styles() {
 		return css`
 			${super.styles}
+
+			input:hover {
+				cursor: pointer;
+			}
 
 			mo-icon-button[part=dropDownIcon] {
 				display: flex;
@@ -82,7 +102,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 				color: var(--mo-color-gray);
 			}
 
-			:host([open]) mo-icon-button[part=dropDownIcon] {
+			:host([open]) mo-icon-button[part=dropDownIcon], :host([active]) mo-icon-button[part=dropDownIcon] {
 				color: var(--mo-accent);
 			}
 
@@ -96,13 +116,37 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 				flex-direction: column;
 				align-items: stretch;
 			}
+
+			::slotted(*[mwc-list-item]:not([selected]):focus), ::slotted(*[mwc-list-item]:not([selected]):hover) {
+				background-color: rgba(var(--mo-color-foreground-base), 0.05);
+			}
 		`
 	}
 
 	protected initialized() {
 		super.initialized()
-		this.addEventListener('focus', () => this.open = true)
-		this.addEventListener('blur', () => this.open = false)
+		this.value = this.value
+		this.registerEventListeners()
+		this.inputElement.readOnly = true
+	}
+
+	private registerEventListeners() {
+		this.addEventListener('mouseover', () => this.manualClose = this.multiple)
+		this.addEventListener('mouseout', () => this.manualClose = false)
+		this.divContainer.addEventListener('click', () => this.open = !this.open)
+		this.addEventListener('focus', () => this.inputElement.setSelectionRange(0, 0))
+		this.addEventListener('keydown', (e: KeyboardEvent) => {
+			const openKeys = [KeyboardKey.Enter]
+			const navigationKeys = [KeyboardKey.ArrowDown, KeyboardKey.ArrowUp]
+			if (this.open === false && [...openKeys, ...navigationKeys].includes(e.key as KeyboardKey)) {
+				this.open = true
+			}
+			if (navigationKeys.includes(e.key as KeyboardKey)) {
+				const focusedItem = this.menuOptions!.getFocusedItemIndex()
+				this.menuOptions?.focusItemAtIndex(focusedItem === -1 ? 0 : focusedItem)
+			}
+		})
+		this.addEventListener('defaultClick', () => this.resetSelection())
 	}
 
 	@renderContainer('slot[name="trailingInternal"]')
@@ -127,14 +171,16 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 				id='menuOptions'
 				style='${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}'
 				.anchor=${this}
+				?multi=${this.multiple}
+				?manualClose=${this.manualClose}
 				fixed
-				wrapFocus
-				defaultFocus='FIRST_ITEM'
+				defaultFocus=${this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
 				corner='BOTTOM_START'
+				wrapFocus
 				activatable
 				?open=${this.open}
-				@opened=${this.handleMenuOpened}
-				@closed=${this.handleMenuClosed}
+				@opened=${() => this.open = true}
+				@closed=${() => this.open = false}
 				@selected=${this.handleOptionSelection}
 			>
 				<slot></slot>
@@ -142,13 +188,26 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		`
 	}
 
-	protected abstract getValueOptions(value: SelectBaseValue<TMulti>): Array<Option<T>>
+	protected getValueOptions(value: Value) {
+		const option = this.options.find(option => option.value === value)
+		return value instanceof Array && this.multiple
+			? value ? this.options.filter(o => value.map(v => v).includes(o.value)) : []
+			: option ? [option] : []
+	}
 
-	protected fromValue(value: SelectBaseValue<TMulti>) {
-		if (!value)
+	protected fromValue(value: Value) {
+		if ((value instanceof Array && value.length === 0) || !value)
 			return this.reflectDefault ? this.default ?? '' : ''
 
 		return getOptionsText(this.getValueOptions(value))
+	}
+
+	// TODO: why is this not needed?
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected toValue(_value: string) {
+		return this.selectedOptions instanceof Array
+			? this.selectedOptions?.map(o => o.value).filter(o => !!o)
+			: this.selectedOptions?.value
 	}
 
 	protected handleOptionSelection = (e: CustomEvent<{ index: Set<number> | number }>) => {
@@ -158,28 +217,28 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		const indexes = e.detail.index instanceof Set ? Array.from(e.detail.index) : [e.detail.index]
 		const options = this.options.filter((_, i) => indexes.includes(i))
 
-		this.value = this.toValue(getOptionsText(options)) ?? this.defaultValue
+		this.value = this.toValue(getOptionsText(options)) ?? undefined
 
 		const toNumberIfPossible = (string?: string) => string?.charAt(0) === '0' || isNaN(Number(string)) ? string : Number(string)
-		const numberValuesIfPossible = (this.value instanceof Array
+		const handledValues = (this.value instanceof Array
 			? this.value.map(v => toNumberIfPossible(v))
-			: toNumberIfPossible(this.value as string)) as SelectBasePluralize<TMulti, string>
-		this.change.dispatch(numberValuesIfPossible)
+			: toNumberIfPossible(this.value as string)) as PluralizeUnion<string>
+		this.change.dispatch(handledValues)
 		this.dataChange.dispatch(this.data)
 		this.indexChange.dispatch(this.index)
 	}
 
-	private async selectByData(data?: SelectBaseData<T, TMulti>) {
+	private async selectByData(data?: Data<T>) {
 		await this.updateComplete
 		this.value = (!(data instanceof Array)
 			? this.options.find(o => JSON.stringify(o.data) === JSON.stringify(data))?.value
 			: this.options
 				.filter(o => !!o.data)
 				.filter(o => data.map(v => JSON.stringify(v)).includes(JSON.stringify(o.data)))
-				.map(o => o.value)) as SelectBaseValue<TMulti>
+				.map(o => o.value)) as Value
 	}
 
-	private async selectByIndex(index?: SelectBaseIndex<TMulti>) {
+	private async selectByIndex(index?: Index) {
 		await this.updateComplete
 		this.value = !(index instanceof Array)
 			// @ts-ignore if index is not an Array, it is a number
@@ -190,10 +249,10 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 
 	}
 
-	private async selectByValue(value?: SelectBaseValue<TMulti>) {
+	private async selectByValue(value?: Value) {
 		await this.updateComplete
 
-		if (!value || value === this.defaultValue) {
+		if (!value) {
 			this.resetSelection()
 			return
 		}
@@ -204,7 +263,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 			? this.options.findIndex(o => o.value === value)
 			: this.options
 				.map((o, i) => options.includes(o) ? i : undefined)
-				.filter(b => !!b) as Array<number>
+				.filter(b => b !== undefined) as Array<number>
 
 		const indexesToSelect = indexes instanceof Array
 			? new Set(indexes) as Set<number>
@@ -215,23 +274,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 	}
 
 	private resetSelection() {
-		this.menuOptions?.select(this.defaultValue instanceof Array ? new Set<number>() : -1)
-	}
-
-	// REFACTOR: find a better way for `opening`
-	private opening = false
-	protected handleMenuOpened = async () => {
-		this.opening = true
-		this.open = true
-		await this.updateComplete
-		await PromiseTask.sleep(300)
-		this.opening = false
-	}
-
-	protected handleMenuClosed = () => {
-		if (!this.opening) {
-			this.open = false
-		}
+		this.menuOptions?.select(this.multiple ? new Set<number>() : -1)
 	}
 
 	fetchedData?: Array<T>
@@ -247,7 +290,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
 
 		const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
-			.slice(0, FieldSelectBase.optionsRenderLimit)
+			.slice(0, FieldSelect.optionsRenderLimit)
 			.map(this.optionsGetter.renderOption)
 
 		const div = document.createElement('div')
@@ -255,7 +298,7 @@ export abstract class FieldSelectBase<T, TMulti extends boolean = false> extends
 		const options = Array.from(div.querySelectorAll('mo-option'))
 		options.forEach(o => {
 			o.switchAttribute('fetched', true)
-			if (this.menuOptions?.multi) {
+			if (this.multiple) {
 				o.multiple = true
 			}
 		})
@@ -275,20 +318,12 @@ function getOptionsText<T>(options: Array<Option<T>>) {
 		?? ''
 }
 
-function defaultChanged<T>(this: FieldSelectBase<T, any>) {
-	Array.from(this.querySelectorAll('mo-option[default]')).forEach(o => o.remove())
-
-	if (!this.default)
-		return
-
-	const defaultOption = new Option<T>()
-	defaultOption.default = true
-	defaultOption.innerText = this.default
-	defaultOption.value = ''
-	defaultOption.onclick = () => this['resetSelection']()
-	this.insertBefore(defaultOption, this.firstElementChild)
+function optionGetterChanged(this: FieldSelect<unknown>) {
+	this.fetchOptions()
 }
 
-function optionGetterChanged(this: FieldSelectBase<unknown>) {
-	this.fetchOptions()
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-field-select': FieldSelect<unknown>
+	}
 }

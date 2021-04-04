@@ -49,7 +49,7 @@ export class ContextMenuHost extends Component {
 			}
 
 			/* NOTE: Material Design's Dialog scans the root elements and 'inert's them.
-				This is ok as long as our root-level elements do not need any focus-related behaviours
+				This is ok as long as our root-level elements do not need any focus-related behaviors
 				Which is the case here unfortunately. This code snippet overwrites the effect of 'inert' attribute
 				so that the context menu is always focusable.
 				More to inert that MWC uses: https://github.com/WICG/inert
