@@ -30,11 +30,17 @@ export class ThemeHelper {
 		set value(value) {
 			super.value = value
 			const colors = value.split('/')
+			const accentBase = colors[1] ?? colors[0]
+			const accentBaseRGB = accentBase.split(',')
+			// TODO: MD-111: refactor gradient?
 			this.styleElement = DocumentHelper.injectCSS(css`
 				#application {
 					--mo-accent-gradient-1: ${unsafeCSS(colors[0])};
-					--mo-accent-gradient-2: ${unsafeCSS(colors[1] ?? colors[0])};
+					--mo-accent-gradient-2: ${unsafeCSS(accentBase)};
 					--mo-accent-gradient-3: ${unsafeCSS(colors[2] ?? colors[1] ?? colors[0])};
+					--mo-accent-base-r:${unsafeCSS(accentBaseRGB[0])};
+					--mo-accent-base-g:${unsafeCSS(accentBaseRGB[1])};
+					--mo-accent-base-b:${unsafeCSS(accentBaseRGB[2])};
 				}
 			`, this.styleElement)
 		}
