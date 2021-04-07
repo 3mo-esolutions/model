@@ -1,63 +1,67 @@
-type RGB = [R: number, G: number, B: number]
-type Hex = string
+type Rgb = `rgb(${number}, ${number}, ${number})`
+type Hex = `#${string}`
+type CssProperty = `var(--${string})`
+type RgbColor = [R: number, G: number, B: number]
 
 export class Color {
-	static isHex(color: string) {
+	static isHex(color: string): color is Hex {
 		return color.charAt(0) === '#'
 	}
 
-	static isRGB(color: string) {
-		return color.charAt(0) === '#'
+	static isRGB(color: string): color is Rgb {
+		return color.includes('rgb(')
 	}
 
-	static hexToRgb(hexColor: Hex) {
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
+	static isCssProperty(color: string): color is CssProperty {
+		return color.includes('var')
+	}
+
+	static hexToRgbColor(hexColor: Hex) {
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor)
 
 		if (!result) {
 			throw new Error('Invalid color')
 		}
 
-		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RGB
+		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RgbColor
 	}
 
-	static cssRgbToRgb(cssRgb: string) {
-		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RGB
+	static rgbToRgbColor(cssRgb: Rgb) {
+		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbColor
 	}
 
-	constructor(cssColor: string) {
-		const rgb = this.extractRgb(cssColor)
-		this._r = rgb[0]
-		this._g = rgb[1]
-		this._b = rgb[2]
+	constructor(...colors: Array<Hex | Rgb | CssProperty>) {
+		this.colors = colors.map(color => {
+			if (Color.isHex(color))
+				return Color.hexToRgbColor(color)
+
+			if (Color.isCssProperty(color)) {
+				const rgb = getComputedStyle(MoDeL.application).getPropertyValue(color.split('(')[1].substring(0, color.split('(')[1].length - 1)) as Rgb
+				return Color.rgbToRgbColor(rgb)
+			}
+
+			return Color.rgbToRgbColor(color)
+		})
 	}
 
-	private extractRgb(cssColor: string) {
-		if (Color.isHex(cssColor))
-			return Color.hexToRgb(cssColor)
+	private colors = new Array<RgbColor>()
 
-		if (cssColor.includes('var')) {
-			return Color.cssRgbToRgb(getComputedStyle(MoDeL.application).getPropertyValue(cssColor.split('(')[1].substring(0, cssColor.split('(')[1].length - 1)))
+	private get baseColor() {
+		if (this.colors.length === 0) {
+			throw new Error('No colors found')
 		}
-
-		return Color.cssRgbToRgb(cssColor)
+		return this.colors[Math.floor((this.colors.length - 1) / 2)]
 	}
 
-	private _r = 0
-	private _g = 0
-	private _b = 0
-	get r() { return this._r }
-	get g() { return this._g }
-	get b() { return this._b }
-
-	get cssRgb() {
-		return `rgb(${this._r}, ${this._g}, ${this._b})`
+	get rgb() {
+		return `rgb(${this.baseColor.join(',')})` as Rgb
 	}
 
-	get cssHex() {
+	get hex() {
 		const componentToHex = (c: number) => {
 			const hex = c.toString(16)
 			return hex.length === 1 ? `0${hex}` : hex
 		}
-		return `#${componentToHex(this._r)}${componentToHex(this._g)}${componentToHex(this._b)}`
+		return `#${this.baseColor.map(component => componentToHex(component)).join()}` as Hex
 	}
 }

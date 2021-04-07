@@ -37,7 +37,7 @@ export class ColorPicker extends Input<Color> {
 			</style>
 			<input id='input' part='input' type='color'
 				list=${ifDefined(this.presets ? 'presetColors' : undefined)}
-				value=${ifDefined(this.value?.cssHex)}
+				value=${ifDefined(this.value?.hex)}
 			>
 			${this.datalistTemplate}
 		`
@@ -47,14 +47,14 @@ export class ColorPicker extends Input<Color> {
 		return !this.presets ? nothing : html`
 			<datalist id='presetColors'>
 				${this.presets.map(color => html`
-					<option>${color.cssHex}</option>
+					<option>${color.hex}</option>
 				`)}
 			</datalist>
 		`
 	}
 
 	protected fromValue(value: Color | undefined) {
-		return value?.cssHex ?? ''
+		return value?.hex ?? ''
 	}
 
 	protected toValue(value: string) {
