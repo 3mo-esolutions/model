@@ -51,7 +51,7 @@ export class Color {
 		})
 	}
 
-	private colors = new Array<RgbColor>()
+	readonly colors = new Array<RgbColor>()
 
 	get isGradient() {
 		return this.colors.length > 1
