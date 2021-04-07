@@ -1,3 +1,6 @@
+type RGB = [R: number, G: number, B: number]
+type Hex = string
+
 export class Color {
 	static isHex(color: string) {
 		return color.charAt(0) === '#'
@@ -7,33 +10,36 @@ export class Color {
 		return color.charAt(0) === '#'
 	}
 
-	static hexToRgb(hexColor: string) {
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor)
+	static hexToRgb(hexColor: Hex) {
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
 
 		if (!result) {
 			throw new Error('Invalid color')
 		}
 
-		return `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`
+		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RGB
+	}
+
+	static cssRgbToRgb(cssRgb: string) {
+		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RGB
 	}
 
 	constructor(cssColor: string) {
-		const cssRgb = this.extractRgbTuple(cssColor)
-		const rgbTuple = cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s))
-		this._r = rgbTuple[0]
-		this._g = rgbTuple[1]
-		this._b = rgbTuple[2]
+		const rgb = this.extractRgb(cssColor)
+		this._r = rgb[0]
+		this._g = rgb[1]
+		this._b = rgb[2]
 	}
 
-	private extractRgbTuple(cssColor: string) {
+	private extractRgb(cssColor: string) {
 		if (Color.isHex(cssColor))
 			return Color.hexToRgb(cssColor)
 
 		if (cssColor.includes('var')) {
-			return getComputedStyle(MoDeL.application).getPropertyValue(cssColor.split('(')[1].substring(0, cssColor.split('(')[1].length - 1))
+			return Color.cssRgbToRgb(getComputedStyle(MoDeL.application).getPropertyValue(cssColor.split('(')[1].substring(0, cssColor.split('(')[1].length - 1)))
 		}
 
-		return cssColor
+		return Color.cssRgbToRgb(cssColor)
 	}
 
 	private _r = 0
