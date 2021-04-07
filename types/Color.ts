@@ -1,10 +1,10 @@
 type Rgb = `rgb(${number}, ${number}, ${number})`
 type Hex = `#${string}`
 type CssProperty = `var(--${string})`
-type RgbColor = [R: number, G: number, B: number]
+type RgbTuple = [R: number, G: number, B: number]
 
 export class Color {
-	static isRgbColor(color: Array<number>): color is RgbColor {
+	static isRgbColor(color: Array<number>): color is RgbTuple {
 		return color.length === 3
 	}
 
@@ -27,14 +27,14 @@ export class Color {
 			throw new Error('Invalid color')
 		}
 
-		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RgbColor
+		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RgbTuple
 	}
 
 	static rgbToRgbColor(cssRgb: Rgb) {
-		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbColor
+		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbTuple
 	}
 
-	constructor(...colors: Array<RgbColor | Hex | Rgb | CssProperty>) {
+	constructor(...colors: Array<RgbTuple | Hex | Rgb | CssProperty>) {
 		this.colors = colors.map(color => {
 			if (color instanceof Array)
 				return color
@@ -51,7 +51,7 @@ export class Color {
 		})
 	}
 
-	readonly colors = new Array<RgbColor>()
+	readonly colors = new Array<RgbTuple>()
 
 	get isGradient() {
 		return this.colors.length > 1
