@@ -84,7 +84,7 @@ export abstract class Application extends Component {
 			}
 
 			slot[name=topAppBarDetails] {
-				--mdc-theme-primary: white;
+				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
@@ -114,13 +114,13 @@ export abstract class Application extends Component {
 	protected render() {
 		return html`
 			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
-				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center'>
+				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>
 					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
 					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
 					<span id='spanAppTitle'>${Manifest.short_name}</span>
 				</mo-flex>
 
-				<mo-flex slot='title' alignItems='center'>
+				<mo-flex slot='title' alignItems='center' foreground='var(--mo-color-accessible)'>
 					<span id='spnPageTitle'>${this.pageTitle}</span>
 					<slot name='topAppBarDetails'></slot>
 				</mo-flex>

@@ -91,10 +91,11 @@ export const styles = css`
 		/* Themes */
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;
 		--mo-color-gray-transparent: rgba(var(--mo-color-gray-base), 0.5) !important;
-		/* TODO: [MD-111] use the CSS trick to determine white/black */
-		--mo-color-accessible: white;
+		/* More info: https://css-tricks.com/css-variables-calc-rgb-enforcing-high-contrast-colors/ */
+		--mo-color-accessible-base: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
+		--mo-color-accessible: rgb(var(--mo-color-accessible-base), var(--mo-color-accessible-base), var(--mo-color-accessible-base));
 		--mo-scrim: rgba(0, 0, 0, 0.5);
-		--mo-accent-base: var(--mo-accent-gradient-2);
+		--mo-accent-base: var(--mo-accent-base-r), var(--mo-accent-base-g), var(--mo-accent-base-b);
 		--mo-accent: rgb(var(--mo-accent-base));
 		--mo-accent-transparent: rgba(var(--mo-accent-base), 0.25);
 		--mo-accent-gradient: linear-gradient(135deg, rgb(var(--mo-accent-gradient-1)), rgb(var(--mo-accent-gradient-2)), rgb(var(--mo-accent-gradient-3)));
