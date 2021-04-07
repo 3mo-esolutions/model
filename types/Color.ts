@@ -4,6 +4,10 @@ type CssProperty = `var(--${string})`
 type RgbColor = [R: number, G: number, B: number]
 
 export class Color {
+	static isRgbColor(color: Array<number>): color is RgbColor {
+		return color.length === 3
+	}
+
 	static isHex(color: string): color is Hex {
 		return color.charAt(0) === '#'
 	}
@@ -30,8 +34,11 @@ export class Color {
 		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbColor
 	}
 
-	constructor(...colors: Array<Hex | Rgb | CssProperty>) {
+	constructor(...colors: Array<RgbColor | Hex | Rgb | CssProperty>) {
 		this.colors = colors.map(color => {
+			if (color instanceof Array)
+				return color
+
 			if (Color.isHex(color))
 				return Color.hexToRgbColor(color)
 
@@ -46,22 +53,26 @@ export class Color {
 
 	private colors = new Array<RgbColor>()
 
-	private get baseColor() {
+	get isGradient() {
+		return this.colors.length > 1
+	}
+
+	get baseColor() {
 		if (this.colors.length === 0) {
 			throw new Error('No colors found')
 		}
 		return this.colors[Math.floor((this.colors.length - 1) / 2)]
 	}
 
-	get rgb() {
+	get baseRgb() {
 		return `rgb(${this.baseColor.join(',')})` as Rgb
 	}
 
-	get hex() {
+	get baseHex() {
 		const componentToHex = (c: number) => {
 			const hex = c.toString(16)
 			return hex.length === 1 ? `0${hex}` : hex
 		}
-		return `#${this.baseColor.map(component => componentToHex(component)).join()}` as Hex
+		return `#${this.baseColor.map(component => componentToHex(component)).join('')}` as Hex
 	}
 }
