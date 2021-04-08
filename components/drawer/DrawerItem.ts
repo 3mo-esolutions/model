@@ -1,6 +1,11 @@
 import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../../library'
 import { Drawer, ListItem } from '..'
 
+const enum MatchMode {
+	All = 'all',
+	IgnoreParameters = 'ignore-parameters',
+}
+
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {
 	@property({ type: Object })
@@ -11,6 +16,8 @@ export class DrawerItem extends ListItem {
 		]
 	}
 
+	@property() matchMode = MatchMode.All
+
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
 
 	constructor() {
@@ -19,7 +26,7 @@ export class DrawerItem extends ListItem {
 		MoDeL.Router.navigated.subscribe(pageConstructor => {
 			const arePagesEqual = pageConstructor === this.componentConstructor?.[0]
 			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage?.['parameters'])
-			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && arePageParametersEqual)
+			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
 		})
 
 		this.selectionChange.subscribe(() => {
