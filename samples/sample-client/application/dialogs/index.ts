@@ -1,0 +1,1 @@
+export { DialogAuthenticator } from './DialogAuthenticator'
