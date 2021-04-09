@@ -1,14 +1,15 @@
-import { authenticator, component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/model/library'
+import { component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/model/library'
 
-@authenticator
+// This decorator activated this component as the application-wide authenticator
+// @authenticator
 @component('sample-dialog-authenticator')
 export class DialogAuthenticator extends DialogAuthenticatorBase {
 	protected authenticateProcess() {
 		return Promise.resolve({
 			id: 1,
-			name: 'Max Mustermann',
+			name: 'Full Name',
 			company: '3MO',
-			email: 'max@3mo.de',
+			email: 'name@3mo.de',
 		})
 	}
 
