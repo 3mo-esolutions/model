@@ -1,6 +1,1 @@
-import './globals'
-import './localization'
-import './types'
-import './helpers'
-import './library'
-import './components'
+import './src'

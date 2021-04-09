@@ -1,5 +1,5 @@
 export { authorize, homePage, route } from './decorators'
-export { PageComponent, PageComponentConstructor } from './PageComponent'
+export { PageComponent, PageComponentConstructor, PageParameters } from './PageComponent'
 export { PageError, HttpError } from './PageError'
 export { PageHost } from './PageHost'
 export { default as Router } from './Router'
