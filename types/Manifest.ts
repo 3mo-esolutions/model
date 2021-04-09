@@ -4,6 +4,7 @@ export type Manifest = {
 	description: string
 	start_url: string
 	display: string
+	display_override?: Array<string>
 	background_color: string
 	theme_color: string
 	icons: Array<ManifestIcon>

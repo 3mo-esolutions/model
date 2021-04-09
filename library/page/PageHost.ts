@@ -39,7 +39,7 @@ export class PageHost extends Component {
 		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent?.['parameters']) === JSON.stringify(page['parameters']))
 			return
 
-		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab) {
+		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab && Manifest.display_override?.includes('tabbed') === false) {
 			mode = NavigationMode.NewWindow
 		}
 
