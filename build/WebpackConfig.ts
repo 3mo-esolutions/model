@@ -26,10 +26,6 @@ const sharedConfigs = {
 				{
 					from: 'node_modules/@3mo/model/www/',
 					to: ''
-				},
-				{
-					from: 'manifest.json',
-					to: 'manifest.json'
 				}
 			]
 		})
