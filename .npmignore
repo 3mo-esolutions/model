@@ -1,4 +1,5 @@
-node_modules
+docs
+samples
 out
 *.log
 TODO
