@@ -1,4 +1,4 @@
-# Event Handlers
+# Event Handling
 
 MoDeL uses the native [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) web APIs, but with added tools to improve developer experience.
 
@@ -10,9 +10,9 @@ It accepts a generic parameters which describes the type of CustomEvent's `detai
 Also notice the `@fires` JS-comment. This enables lit-analyzer to identify the event handlers.
 
 ```ts
-	file:"model/samples/sample-client/components/CounterButton.ts"
+	file:"/samples/sample-client/components/CounterButton.ts"
 ```
 
 ```ts
-	file:"model/samples/sample-client/pages/PageHome.ts"
+	file:"/samples/sample-client/pages/PageHome.ts"
 ```

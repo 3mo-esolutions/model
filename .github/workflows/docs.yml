@@ -32,7 +32,7 @@ jobs:
           name: artifact
           path: dist
 
-  release-demo:
+  release:
     runs-on: ubuntu-latest
     defaults:
       run:

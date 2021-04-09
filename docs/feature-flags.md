@@ -9,5 +9,5 @@ Feature flags are defined via `define` method of the `FeatureFlagHelper` and pop
 `FeatureFlagHelper` also provides `isActivated` method which checks if those flags are activated. Other methods are used in MoDeL itself to render the list in the settings page etc.
 
 ```ts
-file:"modelx/helpers/FeatureFlagHelper.ts"
+file:"/helpers/FeatureFlagHelper.ts"
 ```

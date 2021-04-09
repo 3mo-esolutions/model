@@ -17,7 +17,7 @@ To save a reference to an element existing in the template through its **ID** us
 		@element private readonly theButtonElement!: Button
 
 		protected render = () => html`
-			<mo-page>
+			<mo-page header='Element References'>
 				<mo-field-select label='Which one'>
 					<mo-option value='a'>A</mo-option>
 					<mo-option value='b'>B</mo-option>
@@ -30,6 +30,6 @@ To save a reference to an element existing in the template through its **ID** us
 	}
 ```
 
-> ❌ Prevent accessing htmlElement references in the `constructor`.
+> ❌ Prevent accessing element references in the `constructor`.
 >
 > As long as the component isn't done rendering for the first time, element references stay `undefined`.
