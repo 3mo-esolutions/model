@@ -1,0 +1,59 @@
+name: Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "samples/model-docs/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samples/model-docs
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v1
+
+      - name: Setup Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Build the web app
+        run: |
+          npm ci
+          npm run build
+      - name: Upload the artifacts to GitHub
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: artifact
+          path: dist
+
+  release-demo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samples/model-docs
+    needs: [build]
+    steps:
+      - name: Download artifacts from GitHub
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: artifact
+          path: artifact
+      - name: Deploy to server
+        id: deploy
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.SERVER_SSH_KEY}}
+        with:
+          flags: "-avzr --delete"
+          options: ""
+          ssh_options: "-p 2323"
+          src: "artifact/"
+          dest: "deploy@46.16.77.28:/var/www/model-docs"
+      - name: Display status from deploy
+        run: echo "${{ steps.deploy.outputs.status }}"
