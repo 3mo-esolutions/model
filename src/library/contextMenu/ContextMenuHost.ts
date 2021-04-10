@@ -1,4 +1,4 @@
-import { Component, component, html, nothing, property, query, TemplateResult } from '..'
+import { Component, component, html, nothing, property, query, TemplateResult, queryAll, ContextMenuItem } from '..'
 import { Menu } from '../../components'
 
 @component('mo-context-menu-host')
@@ -9,6 +9,8 @@ export class ContextMenuHost extends Component {
 	private readonly lengthBuffer = 16
 
 	@property({ type: Object }) menu?: TemplateResult
+
+	@queryAll('mo-context-menu-item') readonly items!: Array<ContextMenuItem>
 
 	openMenu = async (mouseEvent: MouseEvent, template: TemplateResult) => {
 		this.menu = template
@@ -27,14 +29,16 @@ export class ContextMenuHost extends Component {
 			this.list.style.left = `${x}px`
 			this.list.style.top = `${y}px`
 			this.list.style.opacity = '1'
+
+			await this.updateComplete
 		}
 	}
-
-	@query('mo-menu') private readonly menuContext!: Menu
 
 	get list() {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
+
+	@query('mo-menu') private readonly menuContext!: Menu
 
 	protected render = () => html`
 		<style>
