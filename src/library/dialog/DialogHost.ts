@@ -1,6 +1,6 @@
 import { Component, component, Snackbar } from '..'
 import { DialogComponent, DialogDefault } from '.'
-import { LocalStorageEntry, PermissionHelper } from '../../helpers'
+import { LocalStorageEntry, AuthorizationHelper } from '../../helpers'
 import { KeyboardKey } from '../../types'
 
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
@@ -69,7 +69,7 @@ export class DialogHost extends Component {
 	}
 
 	private openDialog = <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
-		if (PermissionHelper.isAuthorized(...dialog.constructor.permissions) === false) {
+		if (AuthorizationHelper.isAuthorized(...dialog.constructor.authorizations) === false) {
 			Snackbar.show('🔒 Access denied')
 			return Promise.reject('🔒 Access denied')
 		}

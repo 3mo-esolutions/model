@@ -1,7 +1,7 @@
 import { Component, Snackbar, component, html } from '..'
 import { PageComponent, PageError } from '.'
 import { PageParameters } from './PageComponent'
-import { PermissionHelper, PwaHelper } from '../../helpers'
+import { AuthorizationHelper, PwaHelper } from '../../helpers'
 import Router from './Router'
 
 export const enum NavigationMode {
@@ -82,7 +82,7 @@ export class PageHost extends Component {
 
 	private navigate<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
 		this.pageComponent =
-			PermissionHelper.isAuthorized(...page.constructor.permissions) ? page : new PageError({ error: '403' })
+			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: '403' })
 
 		const path = Router.getPath(page)
 		if (path) {

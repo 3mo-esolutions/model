@@ -3,7 +3,7 @@ export { default as LocalStorageEntry, LocalStorageContainer } from './LocalStor
 export { default as JsonHelper } from './JsonHelper'
 export { default as ClientInfoHelper } from './ClientInfoHelper'
 export { default as PwaHelper } from './PwaHelper'
-export { default as PermissionHelper } from './PermissionHelper'
+export { default as AuthorizationHelper } from './AuthorizationHelper'
 export { default as debounce } from './debounce'
 export { default as Downloader } from './Downloader'
 export { default as ManifestProvider } from './ManifestProvider'

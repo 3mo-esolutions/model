@@ -4,13 +4,13 @@ import { NavigationMode } from './PageHost'
 export type PageParameters = void | Record<string, string | number | undefined>
 
 export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
-	permissions: Array<keyof MoDeL.Permissions>
+	authorizations: Array<keyof MoDeL.Authorizations>
 }
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
 	['constructor']: PageComponentConstructor<T>
 
-	static permissions = new Array<keyof MoDeL.Permissions>()
+	static authorizations = new Array<keyof MoDeL.Authorizations>()
 
 	navigate() {
 		PageHost.navigateToPage(this, NavigationMode.Navigate)

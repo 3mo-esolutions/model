@@ -4,13 +4,13 @@ import { ComponentConstructor } from '../component'
 export type DialogParameters = void | Record<string, any>
 
 export interface DialogComponentConstructor<T extends DialogParameters> extends Constructor<DialogComponent<T>>, ComponentConstructor {
-	permissions: Array<keyof MoDeL.Permissions>
+	authorizations: Array<keyof MoDeL.Authorizations>
 }
 
 export abstract class DialogComponent<T extends DialogParameters = void> extends Component {
 	['constructor']: DialogComponentConstructor<T>
 
-	static permissions = new Array<keyof MoDeL.Permissions>()
+	static authorizations = new Array<keyof MoDeL.Authorizations>()
 
 	@event() readonly closed!: IEvent<boolean>
 

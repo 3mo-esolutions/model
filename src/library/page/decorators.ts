@@ -11,8 +11,8 @@ export const homePage = <T extends PageParameters>(pageConstructor: PageComponen
 	Router.HomePageConstructor = pageConstructor
 }
 
-export const authorize = <TConstructor extends { permissions: Array<keyof MoDeL.Permissions> }>(...permissions: Array<keyof MoDeL.Permissions>) => {
+export const authorize = <TConstructor extends { authorizations: Array<keyof MoDeL.Authorizations> }>(...authorizations: Array<keyof MoDeL.Authorizations>) => {
 	return (constructor: TConstructor) => {
-		constructor.permissions = permissions
+		constructor.authorizations = authorizations
 	}
 }
