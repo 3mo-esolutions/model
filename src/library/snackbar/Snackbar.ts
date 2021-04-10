@@ -1,6 +1,8 @@
 import { ComponentMixin, render, component, html } from '..'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
 
+type Action = () => void
+
 /**
  * @attr stacked
  * @attr leading
@@ -14,18 +16,15 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
-	static get show() { return this.instance.createAndShow }
-
-	private createAndShow = (message: string, actionText = '', action: () => void = () => void 0) => {
-		const slots = html`
+	static show(message: string, actionText = '', action: Action = () => void 0) {
+		render(html`
 			<mo-button slot='action' @click=${action} ?hidden=${actionText === ''}>${actionText}</mo-button>
 			<mo-icon-button slot='dismiss' icon='close' size='18px' foreground='white'></mo-icon-button>
-		`
-		render(slots, this)
+		`, this.instance)
 
-		this.timeoutMs = 5000
-		this.labelText = message
-		this.show()
+		this.instance.timeoutMs = 5000
+		this.instance.labelText = message
+		this.instance.show()
 	}
 }
 
