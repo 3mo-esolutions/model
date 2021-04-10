@@ -2,10 +2,10 @@
 	"name": "@3mo/sample-client",
 	"version": "0.0.1",
 	"scripts": {
-		"start": "webpack serve --mode=development",
+		"start": "concurrently \"webpack serve --mode=development\" \"webpack --watch --env=test --mode=development\"",
 		"lint": "eslint **/*.ts",
 		"test": "karma start",
-		"test:ci": "webpack && npm run test",
+		"test:ci": "webpack --env=test --mode=development && karma start --single-run",
 		"build": "webpack --mode=production"
 	},
 	"license": "UNLICENSED",
@@ -13,14 +13,15 @@
 		"@3mo/model": "git+https://github.com/3mo-esolutions/model.git"
 	},
 	"devDependencies": {
+		"concurrently": "6.*",
+		"favicons": "*",
+		"favicons-webpack-plugin": "*",
 		"lit-analyzer": "1.*",
 		"standard-version": "*",
 		"ts-lit-plugin": "1.*",
 		"typescript": "4.*",
 		"webpack": "5.*",
 		"webpack-cli": "4.*",
-		"webpack-dev-server": "3.*",
-		"favicons": "*",
-		"favicons-webpack-plugin": "*"
+		"webpack-dev-server": "3.*"
 	}
 }

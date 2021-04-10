@@ -9,7 +9,7 @@ module.exports = (_, arguments) => MoDeLWebpackConfigFactory(arguments.env.test 
 	context: path.resolve(__dirname),
 	output: {
 		filename: 'main.js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, arguments.env.test ? 'test-temp' : 'dist'),
 		publicPath: '/'
 	},
 	devServer: {
