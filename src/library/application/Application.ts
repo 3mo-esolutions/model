@@ -54,10 +54,6 @@ export abstract class Application extends Component {
 		this.drawerOpen = false
 	}
 
-	private get hasDrawerProfile() {
-		return !this.drawerDocked && !!this.authenticator && !!this.authenticatedUser
-	}
-
 	static get styles() {
 		return css`
 			:host {
@@ -69,17 +65,17 @@ export abstract class Application extends Component {
 				min-height: 100%;
 			}
 
-			#spanAppTitle {
+			.applicationTitle {
 				margin: 2px 0 0 8px;
 				font-size: 23px;
 				font-family: Google Sans;
 			}
 
-			#spnPageTitle {
+			.pageTitle {
 				font-size: var(--mo-font-size-l);
 			}
 
-			:host([isTopAppBarProminent]) #spnPageTitle {
+			:host([isTopAppBarProminent]) .pageTitle {
 				margin-bottom: 9px;
 			}
 
@@ -88,23 +84,12 @@ export abstract class Application extends Component {
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
-			.username {
-				font-size: var(--mo-font-size-xl);
-				font-weight: 500;
-			}
-
-			.email {
-				font-size: var(--mo-font-size-m);
-				font-weight: 400;
-				color: var(--mo-color-gray)
-			}
-
 			@media (max-width: 768px) {
 				mo-logo {
 					display: none;
 				}
 
-				#spanAppTitle {
+				mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
 					display: none;
 				}
 			}
@@ -117,11 +102,11 @@ export abstract class Application extends Component {
 				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>
 					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
 					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-					<span id='spanAppTitle'>${Manifest.short_name}</span>
+					${this.applicationNameTemplate}
 				</mo-flex>
 
 				<mo-flex slot='title' alignItems='center' foreground='var(--mo-color-accessible)'>
-					<span id='spnPageTitle'>${this.pageTitle}</span>
+					<span class='pageTitle'>${this.pageTitle}</span>
 					<slot name='topAppBarDetails'></slot>
 				</mo-flex>
 
@@ -132,13 +117,11 @@ export abstract class Application extends Component {
 				<mo-drawer
 					type=${this.drawerDocked ? 'dismissible' : 'modal'}
 					?open=${this.drawerOpen}
-					?hasHeader=${this.hasDrawerProfile}
 					@MDCDrawer:opened=${() => this.drawerOpen = true}
 					@MDCDrawer:closed=${() => this.drawerOpen = false}
 				>
-					<mo-flex slot='title' ?hidden=${!this.hasDrawerProfile}>
-						<span class='username'>${this.authenticatedUser?.name}</span>
-						<span class='email'>${this.authenticatedUser?.email}</span>
+					<mo-flex slot='title'>
+						${this.drawerTitleTemplate}
 					</mo-flex>
 
 					<mo-flex height='100%'>
@@ -148,7 +131,7 @@ export abstract class Application extends Component {
 
 						<mo-drawer-list open root>
 							${this.drawerFooterTemplate}
-							<mo-drawer-item ?hidden=${!this.authenticator || !this.authenticatedUser} icon='login' @click=${this.unauthenticate}>Logout</mo-drawer-item>
+							<mo-drawer-item icon='logout' ?hidden=${!this.authenticator || !this.authenticatedUser} @click=${this.unauthenticate}>Logout</mo-drawer-item>
 						</mo-drawer-list>
 					</mo-flex>
 
@@ -163,10 +146,20 @@ export abstract class Application extends Component {
 		`
 	}
 
+	protected get applicationNameTemplate() {
+		return html`
+			<span class='applicationTitle'>${Manifest.short_name}</span>
+		`
+	}
+
 	protected get topAppBarActionItemsTemplate() {
-		return this.drawerDocked === false || this.authenticator === undefined
-			? nothing
-			: html`<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>`
+		return !this.authenticator ? nothing : html`
+			<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>
+		`
+	}
+
+	protected get drawerTitleTemplate() {
+		return this.applicationNameTemplate
 	}
 
 	protected get drawerFooterTemplate() {

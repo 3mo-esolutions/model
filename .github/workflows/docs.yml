@@ -51,16 +51,19 @@ jobs:
         with:
           name: artifact
           path: artifact
+
       - name: Deploy to server
         id: deploy
         uses: Pendect/action-rsyncer@v1.1.0
         env:
           DEPLOY_KEY: ${{secrets.SERVER_SSH_KEY}}
+
         with:
           flags: "-avzr --delete"
           options: ""
           ssh_options: "-p 2323"
           src: "artifact/"
           dest: "deploy@46.16.77.28:/var/www/model-docs"
+
       - name: Display status from deploy
         run: echo "${{ steps.deploy.outputs.status }}"

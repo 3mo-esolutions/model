@@ -92,8 +92,9 @@ export const styles = css`
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;
 		--mo-color-gray-transparent: rgba(var(--mo-color-gray-base), 0.5) !important;
 		/* More info: https://css-tricks.com/css-variables-calc-rgb-enforcing-high-contrast-colors/ */
-		--mo-color-accessible-base: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
-		--mo-color-accessible: rgb(var(--mo-color-accessible-base), var(--mo-color-accessible-base), var(--mo-color-accessible-base));
+		--mo-color-accessible-base-value: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
+		--mo-color-accessible-base: var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value);
+		--mo-color-accessible: rgb(var(--mo-color-accessible-base));
 		--mo-scrim: rgba(0, 0, 0, 0.5);
 		--mo-accent-base: var(--mo-accent-base-r), var(--mo-accent-base-g), var(--mo-accent-base-b);
 		--mo-accent: rgb(var(--mo-accent-base));

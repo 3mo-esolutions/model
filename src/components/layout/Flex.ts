@@ -50,11 +50,6 @@ export class Flex extends Component {
 
 	@property({ observer: applyGap }) gap?: string
 
-	constructor() {
-		super()
-		this.addEventListener('slotchange', () => applyGap.call(this))
-	}
-
 	protected render = () => html`
 		<style>
 			:host {
@@ -63,7 +58,7 @@ export class Flex extends Component {
 				flex-wrap: nowrap;
 			}
 		</style>
-		<slot></slot>
+		<slot @slotchange=${() => applyGap.call(this)}></slot>
 	`
 }
 
