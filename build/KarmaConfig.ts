@@ -17,6 +17,7 @@ module.exports = {
 	specReporter: {
 		maxLogLines: 5,
 		suppressErrorSummary: true,
+		suppressSkipped: true,
 		showSpecTiming: true,
 		prefixes: {
 			success: '✅ ',
