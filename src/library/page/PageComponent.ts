@@ -28,6 +28,11 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		PageHost.navigateToPage(this, mode)
 	}
 
+	protected refresh() {
+		this.remove()
+		new this.constructor(this.parameters).navigate()
+	}
+
 	constructor(parameters: T) {
 		super()
 		this.parameters = parameters as T
