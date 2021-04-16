@@ -13,15 +13,19 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 	static authorizations = new Array<keyof MoDeL.Authorizations>()
 
 	navigate() {
-		PageHost.navigateToPage(this, NavigationMode.Navigate)
+		this.handleNavigation(NavigationMode.Navigate)
 	}
 
 	open() {
-		PageHost.navigateToPage(this, NavigationMode.NewTab)
+		this.handleNavigation(NavigationMode.NewTab)
 	}
 
 	openInNewWindow() {
-		PageHost.navigateToPage(this, NavigationMode.NewWindow)
+		this.handleNavigation(NavigationMode.NewWindow)
+	}
+
+	protected handleNavigation(mode: NavigationMode) {
+		PageHost.navigateToPage(this, mode)
 	}
 
 	constructor(parameters: T) {

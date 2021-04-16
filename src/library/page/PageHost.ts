@@ -32,6 +32,12 @@ export class PageHost extends Component {
 		}
 	}
 
+	private navigateToPath = (relativePath: string) => {
+		const pageComponent = Router.getPage(relativePath)
+		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: '404' })
+		page.navigate()
+	}
+
 	private navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
 		const relativePath = Router.getPath(page)
 		const url = window.location.origin + relativePath
@@ -65,12 +71,6 @@ export class PageHost extends Component {
 				newWindow.focus()
 				break
 		}
-	}
-
-	private navigateToPath = (relativePath: string, mode = NavigationMode.Navigate) => {
-		const pageComponent = Router.getPage(relativePath)
-		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: '404' })
-		this.navigateToPage(page, mode)
 	}
 
 	private navigateToHomePage = () => {
