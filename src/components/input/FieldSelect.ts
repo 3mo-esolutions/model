@@ -138,6 +138,9 @@ export class FieldSelect<T> extends Field<Value> {
 		this.addEventListener('keydown', (e: KeyboardEvent) => {
 			const openKeys = [KeyboardKey.Enter]
 			const navigationKeys = [KeyboardKey.ArrowDown, KeyboardKey.ArrowUp]
+			if (openKeys.includes(e.key as KeyboardKey)) {
+				e.stopImmediatePropagation()
+			}
 			if (this.open === false && [...openKeys, ...navigationKeys].includes(e.key as KeyboardKey)) {
 				this.open = true
 			}

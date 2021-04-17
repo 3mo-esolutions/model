@@ -14,8 +14,8 @@ export class Icon extends ComponentMixin(MwcIcon) {
 	set icon(value: MaterialIcon) { this.updateComplete.then(() => this.textContent = value) }
 
 	@property()
-	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
 	get size() { return this.style.getPropertyValue('--mdc-icon-size') }
+	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
 }
 
 declare global {

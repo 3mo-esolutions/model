@@ -158,9 +158,6 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 
 		// Closing all Dialogs after pressing Escape key is disabled
 		this['mdcFoundation'].handleDocumentKeydown = () => void 0
-
-		// Pressing any key, if the user is focused in the `mdcRoot`, meaning that a element e.g. a text field is focused is not propagated
-		this.mdcRoot.addEventListener('keydown', e => e.stopImmediatePropagation())
 	}
 
 	@renderContainer('#divCloseButton')
