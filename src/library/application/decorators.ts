@@ -20,7 +20,3 @@ export const application = <T extends Application>(applicationConstructor: Const
 export const authenticator = <T extends DialogAuthenticator>(authenticatorConstructor: Constructor<T>) => {
 	Application.AuthenticatorConstructor = authenticatorConstructor
 }
-
-export const logo = <T extends HTMLElement>(elementConstructor: Constructor<T>) => {
-	window.customElements.define('mo-logo', elementConstructor)
-}
