@@ -21,7 +21,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
 	static get type() { return this.instance.type }
-	static set isOpen(value: boolean) { this.instance.open = value }
+	static set open(value: boolean) { this.instance.open = value }
 
 	static get styles() {
 		return css`

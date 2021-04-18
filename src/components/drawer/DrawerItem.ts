@@ -44,7 +44,7 @@ export class DrawerItem extends ListItem {
 					component.open()
 				}
 				if (Drawer.type === 'modal') {
-					Drawer.isOpen = false
+					Drawer.open = false
 				}
 			}
 		}
