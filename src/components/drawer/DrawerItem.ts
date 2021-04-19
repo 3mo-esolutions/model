@@ -12,7 +12,7 @@ export class DrawerItem extends ListItem {
 		return [
 			super.styles,
 			css`
-				:host([disabled][dialog]) {
+				:host([disabled][interactive]) {
 					cursor: pointer;
 					pointer-events: auto;
 				}
@@ -32,11 +32,11 @@ export class DrawerItem extends ListItem {
 		this.switchAttribute('dialog', isDialog)
 		if (isDialog) {
 			this.disabled = true
+			this.switchAttribute('interactive', true)
 		}
 	}
 
 	@property() matchMode = MatchMode.All
-
 
 	constructor() {
 		super()
@@ -47,14 +47,8 @@ export class DrawerItem extends ListItem {
 			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
 		})
 
-		this.selectionChange.subscribe(() => {
-			if (!this.componentConstructor) {
-				this.selected = false
-			}
-		})
-
-		this.onclick = () => {
-			if (this.componentConstructor) {
+		this.selectionChange.subscribe(isSelected => {
+			if (this.componentConstructor && isSelected) {
 				const component = new this.componentConstructor[0](this.componentConstructor[1])
 				if (component instanceof PageComponent) {
 					component.navigate()
@@ -65,7 +59,7 @@ export class DrawerItem extends ListItem {
 					Drawer.open = false
 				}
 			}
-		}
+		})
 	}
 
 	protected renderGraphic = () => html`
