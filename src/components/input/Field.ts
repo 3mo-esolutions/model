@@ -1,6 +1,10 @@
 import { css, html, property, ifDefined, query } from '../../library'
 import { Input } from './Input'
 
+/**
+ * @slot leading
+ * @slot trailing
+ */
 export abstract class Field<T> extends Input<T> {
 	@property({ reflect: true }) label = ''
 	@property({ reflect: true }) pattern?: string

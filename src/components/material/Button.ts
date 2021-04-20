@@ -11,6 +11,7 @@ import { MaterialIcon } from '../../types'
  * @attr dense
  * @attr disabled
  * @attr trailingIcon
+ * @slot
  * @slot icon
  * @slot trailingIcon
  */
@@ -20,8 +21,13 @@ export class Button extends ComponentMixin(MwcButton) {
 		return css`
 			${super.styles}
 
+			:host {
+				height: 36px;
+			}
+
 			button {
 				margin: auto;
+				height: 100% !important;
 			}
 		`
 	}
