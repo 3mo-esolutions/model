@@ -157,7 +157,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		})
 
 		// Closing all Dialogs after pressing Escape key is disabled
-		this['mdcFoundation'].handleDocumentKeydown = () => void 0
+		this.mdcFoundation.handleDocumentKeydown = () => void 0
+
+		// Disable MDC clicking on the primary button on Enter to prevent double clicks as DialogHost is now responsible for this
+		this.mdcFoundation['adapter'].clickDefaultButton = () => void 0
 	}
 
 	@renderContainer('#divCloseButton')
