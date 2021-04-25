@@ -56,6 +56,7 @@ export interface IStyledElement {
 	/** @attr */ minHeight: CSS.Property.MinHeight<string>
 	/** @attr */ maxHeight: CSS.Property.MaxHeight<string>
 	/** @attr */ fontSize: CSS.Property.FontSize | MoDeL.Styles.FontSize
+	/** @attr */ fontWeight: CSS.Property.FontWeight
 	/** @attr */ lineHeight: CSS.Property.LineHeight
 	/** @attr */ flexGrow: CSS.Property.FlexGrow | (string | {})
 	/** @attr */ flexBasis: CSS.Property.FlexBasis<string>

@@ -97,6 +97,10 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		set fontSize(value) { this.style.fontSize = value }
 
 		@property()
+		get fontWeight() { return this.style.fontWeight as CSS.Property.FontWeight }
+		set fontWeight(value) { this.style.fontWeight = value.toString() }
+
+		@property()
 		get lineHeight() { return this.style.lineHeight as CSS.Property.LineHeight<string> }
 		set lineHeight(value) { this.style.lineHeight = value.toString() }
 
