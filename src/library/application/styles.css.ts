@@ -139,6 +139,7 @@ export const styles = css`
 		--mdc-tab-text-label-color-default: var(--mo-color-foreground-transparent) !important;
 		--mdc-theme-text-disabled-on-light: var(--mo-color-gray-transparent) !important;
 		--mdc-button-disabled-ink-color: var(--mo-color-gray-transparent) !important;
+		--mdc-button-outline-color: var(--mo-accent) !important;
 		--mdc-list-item-graphic-margin: 12px !important;
 		--mdc-checkbox-disabled-color: var(--mo-color-gray-transparent) !important;
 	}
