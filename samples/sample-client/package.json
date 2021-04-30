@@ -8,9 +8,9 @@
 		"test:ci": "webpack --env=test --mode=development && karma start --single-run",
 		"build": "webpack --mode=production"
 	},
-	"license": "UNLICENSED",
+	"license": "Apache 2.0",
 	"dependencies": {
-		"@3mo/model": "git+https://github.com/3mo-esolutions/model.git"
+		"@3mo/model": "file:../.."
 	},
 	"devDependencies": {
 		"concurrently": "6.*",
