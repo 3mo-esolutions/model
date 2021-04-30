@@ -13,21 +13,30 @@ export abstract class Application extends Component {
 	constructor() {
 		super()
 		this.id = 'application'
+		this.setupViews()
 		DocumentHelper.injectCSS(styles)
 		DocumentHelper.disableDefaultContextMenu()
 		PwaHelper.registerServiceWorker()
+	}
+
+	private setupViews() {
+		const handler = (e: MediaQueryListEvent | MediaQueryList) => this.view = e.matches ? 'tablet' : 'desktop'
+		const mediaQueryList = window.matchMedia('(max-width: 768px)')
+		handler(mediaQueryList)
+		mediaQueryList.addEventListener('change', handler)
 	}
 
 	get authenticator() {
 		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
 	}
 
-	@property({ reflect: true }) theme = ThemeHelper.Background.calculatedValue
 	@property() pageTitle?: string
+	@property({ reflect: true }) theme = ThemeHelper.Background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.AuthenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.IsDocked.value
-	@property({ type: Boolean }) drawerOpen = this.drawerDocked
+	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
+	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
 
 	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
@@ -84,14 +93,12 @@ export abstract class Application extends Component {
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
-			@media (max-width: 768px) {
-				mo-logo {
-					display: none;
-				}
+			:host([view=tablet]) mo-logo {
+				display: none;
+			}
 
-				mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
-					display: none;
-				}
+			:host([view=tablet]) mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
+				display: none;
 			}
 		`
 	}
@@ -115,7 +122,7 @@ export abstract class Application extends Component {
 				</slot>
 
 				<mo-drawer
-					type=${this.drawerDocked ? 'dismissible' : 'modal'}
+					type=${this.drawerDocked && this.view === 'desktop' ? 'dismissible' : 'modal'}
 					?open=${this.drawerOpen}
 					@MDCDrawer:opened=${() => this.drawerOpen = true}
 					@MDCDrawer:closed=${() => this.drawerOpen = false}
