@@ -2,6 +2,11 @@ import { component, property, ComponentMixin, css } from '../../library'
 import { LocalStorageEntry } from '../../helpers'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
+// This is defined by MWC and cannot be renamed
+type DrawerType =
+	| 'dismissible' /* docked */
+	| 'modal'
+
 /**
  * @attr open
  * @attr type
@@ -74,7 +79,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		`
 	}
 
-	@property() type: 'dismissible' | 'modal' = 'modal'
+	@property() type: DrawerType = 'modal'
 
 	constructor() {
 		super()
