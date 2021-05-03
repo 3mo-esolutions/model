@@ -10,6 +10,11 @@ type DialogSize = 'large' | 'medium' | 'small'
  * @attr defaultAction
  * @attr actionAttribute
  * @attr initialFocusAttribute
+ * @slot
+ * @slot primaryAction
+ * @slot secondaryAction
+ * @slot header
+ * @slot footer
  */
 @component('mo-dialog')
 export class Dialog extends ComponentMixin(MwcDialog) {
@@ -18,6 +23,8 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	primaryButtonClicked?: Handler
 	secondaryButtonClicked?: Handler
 	cancellationHandler?: Handler
+
+	initialFocusAttribute = 'data-focus'
 
 	@property()
 	get header() { return this.heading }
