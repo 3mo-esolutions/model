@@ -37,6 +37,7 @@ export class DialogHost extends Component {
 				}
 
 				if (lastDialog.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
+					(document.deepActiveElement as HTMLElement).blur()
 					await lastDialog['handlePrimaryButtonClick']()
 				}
 			}
