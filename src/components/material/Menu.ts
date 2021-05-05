@@ -16,15 +16,14 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
  * @attr innerRole
  * @attr multi
  * @attr activatable
- * @fires opened
- * @fires closed
- * @fires action
- * @fires selected
+ * @fires opened {CustomEvent}
+ * @fires closed {CustomEvent}
+ * @fires action {CustomEvent<{ index: number }>}
+ * @fires selected {CustomEvent<SelectedDetail>}
  * @cssprop --mdc-menu-item-height
  * @cssprop --mdc-menu-min-width
  * @cssprop --mdc-menu-max-width
  * @cssprop --mdc-menu-max-height
- * @cssprop --mdc-menu-z-index
  * @cssprop --mdc-menu-z-index
  */
 @component('mo-menu')

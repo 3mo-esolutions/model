@@ -14,7 +14,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @attr isFadingIndicator
  * @attr stacked
  * @attr active
- * @fires MDCTab:interacted
+ * @fires MDCTab:interacted {CustomEvent<{ tabId: string }>}
  */
 @component('mo-tab')
 export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {

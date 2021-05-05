@@ -16,9 +16,9 @@ type OptionsGetter<T> = {
 }
 
 /**
- * @fires dataChange
- * @fires indexChange
- * @fires dataFetch
+ * @fires dataChange {CustomEvent<Data<T>>}
+ * @fires indexChange {CustomEvent<Index>}
+ * @fires dataFetch {CustomEvent<Array<T>>}
  */
 @component('mo-field-select')
 export class FieldSelect<T> extends Field<Value> {

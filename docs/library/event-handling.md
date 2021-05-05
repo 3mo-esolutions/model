@@ -7,7 +7,7 @@ MoDeL uses the native [CustomEvent](https://developer.mozilla.org/en-US/docs/Web
 
 It accepts a generic parameters which describes the type of CustomEvent's `detail` property, which is used often to pass some data back to the subscriber.
 
-Also notice the `@fires` JS-comment. This enables lit-analyzer to identify the event handlers.
+Also notice the `@event` JS-comment. This enables lit-analyzer to identify the event handlers.
 
 ```ts
 	file:"/samples/sample-client/components/CounterButton.ts"

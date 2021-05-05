@@ -20,7 +20,7 @@ class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
  * @attr hasMeta
  * @attr graphic
  * @attr twoline
- * @fires selectionChange
+ * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item-checkbox')
 export class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItemWidthCompatibleLeft)) {

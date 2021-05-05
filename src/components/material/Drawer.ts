@@ -11,9 +11,9 @@ type DrawerType =
  * @attr open
  * @attr type
  * @attr hasHeader
- * @fires MDCDrawer:opened
- * @fires MDCDrawer:closed
- * @fires MDCDrawer:nav
+ * @fires MDCDrawer:opened {CustomEvent}
+ * @fires MDCDrawer:closed {CustomEvent}
+ * @fires MDCDrawer:nav {CustomEvent}
  * @slot
  * @slot title
  * @slot subtitle

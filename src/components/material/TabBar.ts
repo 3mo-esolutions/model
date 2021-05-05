@@ -4,7 +4,7 @@ import { Tab } from '.'
 
 /**
  * @attr activeIndex
- * @fires navigate
+ * @fires navigate {CustomEvent<string | undefined>}
  */
 @component('mo-tab-bar')
 export class TabBar extends ComponentMixin(MwcTabBar) {

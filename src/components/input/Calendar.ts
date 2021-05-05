@@ -2,7 +2,7 @@ import { Component, css, component, html, internalProperty, nothing, property, q
 import { Flex } from '..'
 
 /**
- * @fires change
+ * @fires change {CustomEvent<MoDate>}
  */
 @component('mo-calendar')
 export class Calendar extends Component {

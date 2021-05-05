@@ -6,7 +6,7 @@ import { IconButtonToggle as MwcIconButtonToggle } from '@material/mwc-icon-butt
  * @attr on
  * @attr label
  * @attr disabled
- * @fires change
+ * @fires change {CustomEvent<{ isOn: boolean }>}
  * @slot onIcon
  * @slot offIcon
  */

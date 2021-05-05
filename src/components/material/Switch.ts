@@ -6,7 +6,7 @@ import { InputMixin } from './InputMixin'
 /**
  * @attr checked
  * @attr disabled
- * @fires change
+ * @fires change {CustomEvent}
  */
 @component('mo-switch')
 export class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {

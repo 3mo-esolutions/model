@@ -6,10 +6,10 @@ type Action = () => void
 /**
  * @attr stacked
  * @attr leading
- * @fires MDCSnackbar:opening
- * @fires MDCSnackbar:opened
- * @fires MDCSnackbar:closing
- * @fires MDCSnackbar:closed
+ * @fires MDCSnackbar:opening {CustomEvent}
+ * @fires MDCSnackbar:opened {CustomEvent}
+ * @fires MDCSnackbar:closing {CustomEvent<{ reason?: string }>}
+ * @fires MDCSnackbar:closed {CustomEvent<{ reason?: string }>}
  * @cssprop --mdc-snackbar-action-color
  */
 @component('mo-snackbar')

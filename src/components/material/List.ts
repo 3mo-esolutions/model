@@ -12,9 +12,9 @@ type ListValue = string | Array<string>
  * @attr innerRole
  * @attr noninteractive
  * @attr innerRole
- * @fires action
- * @fires selected
- * @fires change
+ * @fires action {CustomEvent<{ index: number }>}
+ * @fires selected {CustomEvent<SelectedDetail>}
+ * @fires change {CustomEvent<ListValue | undefined>}
  */
 @component('mo-list')
 export class List extends ComponentMixin(MwcList) {

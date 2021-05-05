@@ -2,7 +2,7 @@ import { component, css, html, renderContainer, nothing, property, event } from 
 import { Button } from '.'
 
 /**
- * @fires delete
+ * @fires delete {CustomEvent}
  */
 @component('mo-chip')
 export class Chip extends Button {

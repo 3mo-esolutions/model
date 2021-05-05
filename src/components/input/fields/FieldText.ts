@@ -2,7 +2,7 @@ import { component, html, nothing, property, renderContainer } from '../../../li
 import { FieldTextBase } from './FieldTextBase'
 
 /**
- * @fires input
+ * @fires input {CustomEvent<string>}
  */
 @component('mo-field-text')
 export class FieldText extends FieldTextBase {

@@ -8,8 +8,8 @@ import { Slider as MwcSlider } from '@material/mwc-slider'
  * @attr step
  * @attr pin
  * @attr markers
- * @fires input
- * @fires change
+ * @fires input {CustomEvent}
+ * @fires change {CustomEvent}
  */
 @component('mo-slider')
 export class Slider extends ComponentMixin(MwcSlider) {

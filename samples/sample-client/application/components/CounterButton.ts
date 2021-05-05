@@ -1,7 +1,7 @@
 import { Component, component, event, html, property } from '@3mo/model/library'
 
 /**
- * @fires countChange
+ * @fires countChange {CustomEvent<number>}
  */
 @component('sample-counter-button')
 export class CounterButton extends Component {

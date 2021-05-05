@@ -12,7 +12,7 @@ import { ListItemMixin } from './ListItemMixin'
  * @attr hasMeta
  * @attr graphic
  * @attr twoline
- * @fires selectionChange
+ * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item')
 export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {

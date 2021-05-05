@@ -6,7 +6,7 @@ import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
  * @attr dense
  * @attr prominent
  * @attr scrollTarget
- * @fires MDCTopAppBar:nav
+ * @fires MDCTopAppBar:nav {CustomEvent}
  * @slot
  * @slot title
  * @slot navigationIcon

@@ -20,7 +20,7 @@ class MwcRadioListItemWidthCompatibleLeft extends MwcRadioListItem {
  * @attr hasMeta
  * @attr graphic
  * @attr twoline
- * @fires selectionChange
+ * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item-radio')
 export class ListItemRadio extends ComponentMixin(ListItemMixin(MwcRadioListItemWidthCompatibleLeft)) {
