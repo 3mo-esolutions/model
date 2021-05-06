@@ -19,7 +19,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static show(message: string, actionText = '', action: Action = () => void 0) {
 		render(html`
 			<mo-button slot='action' @click=${action} ?hidden=${actionText === ''}>${actionText}</mo-button>
-			<mo-icon-button slot='dismiss' icon='close' size='18px' foreground='white'></mo-icon-button>
+			<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='white'></mo-icon-button>
 		`, this.instance)
 
 		this.instance.timeoutMs = 5000

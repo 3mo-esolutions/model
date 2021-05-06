@@ -38,7 +38,7 @@ export class Chip extends Button {
 	@renderContainer('slot[name="trailingIcon"]')
 	protected get deleteIconButtonTemplate() {
 		return !this.hasDelete ? nothing : html`
-			<mo-icon-button small icon='cancel' size='16px'
+			<mo-icon-button small icon='cancel' fontSize='16px'
 				foreground='rgba(var(--mo-color-foreground-base), 0.5)'
 				@click=${() => this.delete.dispatch()}
 			></mo-icon-button>

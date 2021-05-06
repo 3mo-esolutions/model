@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, css } from '../../library'
 import { MaterialIcon } from '../../types'
 import { IconButton as MwcIconButton } from '@material/mwc-icon-button'
 
@@ -11,19 +11,28 @@ import { IconButton as MwcIconButton } from '@material/mwc-icon-button'
 export class IconButton extends ComponentMixin(MwcIconButton) {
 	@property() icon!: MaterialIcon
 
-	@property({ type: Boolean })
-	set small(value: boolean) {
-		this.style.setProperty('--mdc-icon-button-size', `calc(var(--mdc-icon-size) * ${value ? '1.5' : '2'})`)
-	}
+	@property({ type: Boolean, reflect: true }) small = false
 
 	@property()
-	get size() { return this.style.getPropertyValue('--mdc-icon-size') }
-	set size(value: string) { this.style.setProperty('--mdc-icon-size', value) }
+	get fontSize() { return super.fontSize }
+	set fontSize(value) {
+		super.fontSize = value
+		this.style.setProperty('--mdc-icon-size', value)
+	}
 
-	constructor() {
-		super()
-		this.size = 'var(--mo-font-size-icon)'
-		this.small = false
+	static get styles() {
+		return css`
+			${super.styles}
+
+			:host {
+				--mdc-icon-size: var(--mo-font-size-icon);
+				--mdc-icon-button-size: calc(var(--mdc-icon-size) * 2);
+			}
+
+			:host([small]) {
+				--mdc-icon-button-size: calc(var(--mdc-icon-size) * 1.5);
+			}
+		`
 	}
 }
 
