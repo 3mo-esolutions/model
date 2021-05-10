@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, ComponentMixin, css, PropertyValues } from '../../library'
 import { Button as MwcButton } from '@material/mwc-button'
 import { MaterialIcon } from '../../types'
 
@@ -33,6 +33,11 @@ export class Button extends ComponentMixin(MwcButton) {
 	}
 
 	@property() icon!: MaterialIcon
+
+	protected firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
+		this.buttonElement.setAttribute('part', 'button')
+	}
 }
 
 declare global {
