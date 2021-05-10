@@ -3,7 +3,7 @@ import { DialogComponent, DialogDefault } from '.'
 import { LocalStorageEntry, AuthorizationHelper } from '../../helpers'
 import { KeyboardKey } from '../../types'
 
-type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string]
+type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string, blocking?: boolean]
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
@@ -57,6 +57,7 @@ export class DialogHost extends Component {
 			content: parameters[1],
 			primaryButtonText: parameters[2],
 			secondaryButtonText: parameters[3],
+			blocking: parameters[4]
 		}).open()
 	}
 
@@ -66,6 +67,7 @@ export class DialogHost extends Component {
 			content: parameters[1],
 			primaryButtonText: parameters[2],
 			secondaryButtonText: parameters[3],
+			blocking: parameters[4]
 		}).confirm()
 	}
 
