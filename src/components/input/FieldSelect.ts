@@ -1,5 +1,4 @@
 import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render, event, component } from '../../library'
-import { KeyboardKey } from '../../types'
 import { Option, Menu } from '..'
 import { Field } from './Field'
 

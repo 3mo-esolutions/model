@@ -1,7 +1,7 @@
 import { html, property, Snackbar } from '..'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../helpers'
-import { KeyboardKey, User } from '../../types'
+import { User } from '../../types'
 
 export abstract class DialogAuthenticator extends DialogComponent {
 	static readonly Password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)

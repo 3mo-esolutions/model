@@ -1,4 +1,5 @@
-export const enum KeyboardKey {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const enum KeyboardKey {
 	Unidentified = 'Unidentified',
 
 	/** The Alt (Alternative) key. */

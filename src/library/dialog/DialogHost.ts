@@ -1,7 +1,6 @@
 import { Component, component, Snackbar } from '..'
 import { DialogComponent, DialogDefault } from '.'
 import { LocalStorageEntry, AuthorizationHelper } from '../../helpers'
-import { KeyboardKey } from '../../types'
 
 type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string, blocking?: boolean]
 
