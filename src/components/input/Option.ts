@@ -13,7 +13,7 @@ export class Option<TValue> extends ListItemCheckbox {
 		return [
 			super.styles,
 			css`
-				:host(:not([multiple])) .mdc-list-item__meta {
+				:host(:not([multiple])) .mdc-deprecated-list-item__meta {
 					display: none;
 				}
 
