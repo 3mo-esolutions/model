@@ -16,7 +16,9 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
  * @attr innerRole
  * @attr multi
  * @attr activatable
+ * @slot
  * @fires opened {CustomEvent}
+ * @fires closing {CustomEvent}
  * @fires closed {CustomEvent}
  * @fires action {CustomEvent<{ index: number }>}
  * @fires selected {CustomEvent<SelectedDetail>}
