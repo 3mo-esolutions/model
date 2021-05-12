@@ -5,11 +5,13 @@ import { GitHubHelper } from '../helpers'
 @route('*path')
 @component('doc-page-reader')
 export class PageReader extends PageComponent<{ path?: string }> {
+	private static readonly defaultPath = '/introduction'
+
 	@internalProperty() private docs = ''
 
 	protected async initialized() {
-		const path = this.parameters?.path ?? 'introduction'
-		this.docs = await GitHubHelper.fetch(`docs${path}.md`)
+		this.parameters.path = this.parameters.path ?? PageReader.defaultPath
+		this.docs = await GitHubHelper.fetch(`docs${this.parameters.path}.md`)
 	}
 
 	protected render = () => html`

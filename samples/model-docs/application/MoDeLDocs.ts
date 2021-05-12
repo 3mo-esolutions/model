@@ -1,5 +1,5 @@
 import { Application, application, component, html } from '@3mo/model/library'
-import { Drawer } from '@3mo/model/components'
+import { Drawer, Logo } from '@3mo/model/components'
 import { PageReader } from './pages'
 
 @application
@@ -7,6 +7,7 @@ import { PageReader } from './pages'
 export class MoDeLDocs extends Application {
 	constructor() {
 		super()
+		Logo.source = '/assets/3mo.svg'
 		Drawer.IsDocked.value = true
 	}
 

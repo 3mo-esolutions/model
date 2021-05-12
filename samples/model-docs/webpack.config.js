@@ -2,6 +2,7 @@
 const path = require('path')
 // @ts-ignore
 const MoDeLWebpackConfigFactory = require('./node_modules/@3mo/model/build/WebpackConfig.ts')
+const CopyPlugin = require('copy-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = (_, arguments) => MoDeLWebpackConfigFactory(arguments.env.test ? 'test' : arguments.mode, {
@@ -17,6 +18,14 @@ module.exports = (_, arguments) => MoDeLWebpackConfigFactory(arguments.env.test 
 		historyApiFallback: true
 	}
 }, [
+	new CopyPlugin({
+		patterns: [
+			{
+				from: 'assets/3mo.svg',
+				to: 'assets/3mo.svg'
+			}
+		]
+	}),
 	new FaviconsWebpackPlugin({
 		logo: './assets/logo.svg',
 		manifest: './assets/manifest.json'
