@@ -63,7 +63,7 @@ export class DrawerItem extends ListItem {
 	}
 
 	protected renderGraphic = () => html`
-		<span class='mdc-list-item__graphic'>
+		<span class='mdc-deprecated-list-item__graphic'>
 			<mo-icon icon=${ifDefined(this.icon)} opacity='0.75'></mo-icon>
 		</span>
 	`
