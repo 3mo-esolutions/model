@@ -27,7 +27,7 @@ export class Card extends Component {
 					display: block;
 				}
 
-				h3 {
+				h3, ::slotted(h3[slot=header]) {
 					margin: var(--mo-thickness-m) 0 var(--mo-thickness-xl) 0;
 					padding: 0 var(--mo-thickness-s);
 					font-weight: 500;
