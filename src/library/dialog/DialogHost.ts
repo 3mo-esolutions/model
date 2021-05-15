@@ -1,19 +1,10 @@
 import { Component, component, Snackbar } from '..'
-import { DialogComponent, DialogDefault } from '.'
-import { LocalStorageEntry, AuthorizationHelper } from '../../helpers'
-
-type DefaultDialogParameters = [header: string, content: string, primaryButtonText?: string, secondaryButtonText?: string, blocking?: boolean]
+import { DialogComponent } from '.'
+import { AuthorizationHelper } from '../../helpers'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
-	static readonly DeletionConfirmation = new LocalStorageEntry('MoDeL.DeletionConfirmation', true)
-
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
-
-	static get openDialog() { return this.instance.openDialog }
-	static get open() { return this.instance.open }
-	static get confirm() { return this.instance.confirm }
-	static get confirmDeletionIfNecessary() { return this.instance.confirmDeletionIfNecessary }
 
 	get dialogComponents() {
 		return Array.from(this.shadowRoot.querySelectorAll('*'))
@@ -43,34 +34,7 @@ export class DialogHost extends Component {
 		})
 	}
 
-	private confirmDeletionIfNecessary = async (text: string) => {
-		if (DialogHost.DeletionConfirmation.value === false)
-			return
-
-		await this.confirm('Confirm Deletion', text)
-	}
-
-	private open = (...parameters: DefaultDialogParameters) => {
-		return new DialogDefault({
-			header: parameters[0],
-			content: parameters[1],
-			primaryButtonText: parameters[2],
-			secondaryButtonText: parameters[3],
-			blocking: parameters[4]
-		}).open()
-	}
-
-	private confirm = (...parameters: DefaultDialogParameters) => {
-		return new DialogDefault({
-			header: parameters[0],
-			content: parameters[1],
-			primaryButtonText: parameters[2],
-			secondaryButtonText: parameters[3],
-			blocking: parameters[4]
-		}).confirm()
-	}
-
-	private openDialog = <T extends DialogComponent<TParams>, TParams>(dialog: T) => {
+	open<T extends DialogComponent<TParams>, TParams>(dialog: T) {
 		if (AuthorizationHelper.isAuthorized(...dialog.constructor.authorizations) === false) {
 			Snackbar.show('🔒 Access denied')
 			return Promise.reject('🔒 Access denied')

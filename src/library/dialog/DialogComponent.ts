@@ -15,7 +15,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 	@event() readonly closed!: IEvent<boolean>
 
 	open(): Promise<boolean> {
-		return DialogHost.openDialog(this)
+		return DialogHost.instance.open(this)
 	}
 
 	async confirm() {
