@@ -1,6 +1,5 @@
 import { property as propertyDecorator, internalProperty as internalPropertyDecorator, PropertyDeclaration, InternalPropertyDeclaration, LitElement, PropertyValues } from 'lit-element'
 import { Observer } from './Observer'
-import { Component } from '.'
 import { render } from '..'
 import { IComponent } from './IComponent'
 
@@ -76,7 +75,7 @@ export const internalProperty = <T>(options?: InternalPropertyDeclaration & { ob
 	}
 }
 
-export const renderContainer = <T extends Component>(containerQuery: string) => {
+export const renderContainer = <T extends LitElement>(containerQuery: string) => {
 	return (prototype: T, _property: string, descriptor: PropertyDescriptor) => {
 		const renderTemplate = function (this: T) {
 			let template: unknown | undefined
@@ -86,7 +85,7 @@ export const renderContainer = <T extends Component>(containerQuery: string) => 
 				template = descriptor.value.call(this)
 			}
 
-			const container = this.shadowRoot.querySelector(containerQuery)
+			const container = this.shadowRoot?.querySelector(containerQuery)
 			if (container) {
 				render(template, container)
 			}
