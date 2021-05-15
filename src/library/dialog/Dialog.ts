@@ -3,7 +3,7 @@ import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 type Handler = () => unknown
 
-type DialogSize = 'large' | 'medium' | 'small'
+export type DialogSize = 'large' | 'medium' | 'small'
 
 /**
  * @attr hideActions

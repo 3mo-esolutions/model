@@ -1,11 +1,12 @@
-import { component, html, TemplateResult } from '..'
-import { DialogComponent } from '.'
+import { component, html, ifDefined, TemplateResult } from '..'
+import { DialogComponent, DialogSize } from '.'
 
 type Parameters = {
 	readonly header: string
 	readonly content: string | TemplateResult
 	readonly primaryButtonText?: string
 	readonly secondaryButtonText?: string
+	readonly size?: DialogSize
 	readonly blocking?: boolean
 }
 
@@ -15,6 +16,7 @@ export class DialogDefault extends DialogComponent<Parameters> {
 		return html`
 			<mo-dialog
 				header=${this.parameters.header}
+				size=${ifDefined(this.parameters.size)}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
 				secondaryButtonText=${this.parameters.secondaryButtonText ?? 'Abbrechen'}
 				?blocking=${this.parameters.blocking}
