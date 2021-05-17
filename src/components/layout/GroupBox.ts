@@ -1,6 +1,10 @@
 import { Component, component, property, html } from '../../library'
 import { CSSDirection } from '../../types'
 
+/**
+ * @slot
+ * @slot header
+ */
 @component('mo-group-box')
 export class GroupBox extends Component {
 	@property() header = ''
@@ -33,7 +37,7 @@ export class GroupBox extends Component {
 			}
 		</style>
 		<mo-flex height='100%' width='100%'>
-			<h3>${this.header}</h3>
+			<h3 part='header'>${this.header}</h3>
 			<mo-card direction=${this.direction} .gap=${this.gap} .gapElements=${this.gapElements} height='*' part='card'>
 				<slot></slot>
 			</mo-card>
