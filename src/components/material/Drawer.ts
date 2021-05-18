@@ -54,10 +54,6 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 				z-index: 9;
 			}
 
-			.mdc-drawer__header {
-				height: var(--mo-drawer-header-height, 136px);
-			}
-
 			:host([type=dismissible]) .mdc-drawer__header {
 				display: none;
 			}
