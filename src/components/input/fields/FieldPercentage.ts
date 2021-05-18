@@ -1,9 +1,11 @@
-import { component, html, renderContainer } from '../../../library'
+import { component, html, property, renderContainer } from '../../../library'
 import { FormatHelper } from '../../../helpers'
 import { FieldNumber } from './FieldNumber'
 
 @component('mo-field-percentage')
 export class FieldPercentage extends FieldNumber {
+	@property() percentageSign = '%'
+
 	protected initialized() {
 		super.initialized()
 		this.inputElement.min = '0'
@@ -17,7 +19,9 @@ export class FieldPercentage extends FieldNumber {
 	@renderContainer('slot[name="trailing"]')
 	protected get percentageSignTemplate() {
 		return html`
-			<mo-div fontSize='var(--mo-font-size-l)'>%</mo-div>
+			<mo-div fontSize='var(--mo-font-size-l)'>
+				${this.percentageSign}
+			</mo-div>
 		`
 	}
 }
