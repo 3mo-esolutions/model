@@ -66,7 +66,7 @@ export const property = <T>(options?: PropertyDeclaration & { observer?: Observe
 	}
 }
 
-export const internalProperty = <T>(options?: InternalPropertyDeclaration & { observer?: Observer<T> }) => {
+export const state = <T>(options?: InternalPropertyDeclaration & { observer?: Observer<T> }) => {
 	return (prototype: IComponent & LitElement, propertyKey: PropertyKey) => {
 		if (options?.observer) {
 			observer(options.observer)(prototype, propertyKey)

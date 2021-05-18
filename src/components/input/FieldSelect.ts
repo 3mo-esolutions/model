@@ -1,4 +1,4 @@
-import { element, html, property, TemplateResult, internalProperty, renderContainer, css, render, event, component } from '../../library'
+import { element, html, property, TemplateResult, state, renderContainer, css, render, event, component } from '../../library'
 import { Option, Menu } from '..'
 import { Field } from './Field'
 
@@ -45,7 +45,7 @@ export class FieldSelect<T> extends Field<Value> {
 		this.updateComplete.then(() => this.insertBefore(defaultOption, this.firstElementChild))
 	}
 
-	@internalProperty() private manualClose = false
+	@state() private manualClose = false
 
 	private programmaticSelection = false
 	get value() { return super.value }
@@ -280,7 +280,7 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	fetchedData?: Array<T>
-	@internalProperty({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
+	@state({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
 
 	async fetchOptions() {
 		if (!this.optionsGetter)

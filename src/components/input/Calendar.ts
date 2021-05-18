@@ -1,4 +1,4 @@
-import { Component, css, component, html, internalProperty, nothing, property, query, event } from '../../library'
+import { Component, css, component, html, state, nothing, property, query, event } from '../../library'
 import { Flex } from '..'
 
 /**
@@ -20,9 +20,9 @@ export class Calendar extends Component {
 		}
 	}) value = new MoDate()
 
-	@internalProperty() private navigatingYear = this.value.year
-	@internalProperty() private navigatingMonth = this.value.month
-	@internalProperty() private yearSelection = false
+	@state() private navigatingYear = this.value.year
+	@state() private navigatingMonth = this.value.month
+	@state() private yearSelection = false
 
 	private get navigatingDate() {
 		return new MoDate(this.navigatingYear, this.navigatingMonth)

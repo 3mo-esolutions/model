@@ -1,4 +1,4 @@
-import { component, html, Component, internalProperty, query } from '../library'
+import { component, html, Component, state, query } from '../library'
 
 class ConfettiParticle {
 	constructor(
@@ -85,8 +85,8 @@ export class Confetti extends Component {
 		this.display = 'none'
 	}
 
-	@internalProperty() private canvasWidth = 0
-	@internalProperty() private canvasHeight = 0
+	@state() private canvasWidth = 0
+	@state() private canvasHeight = 0
 
 	@query('canvas') private readonly canvasParticle!: HTMLCanvasElement
 	private get canvasParticleContext() { return this.canvasParticle.getContext('2d') as CanvasRenderingContext2D }

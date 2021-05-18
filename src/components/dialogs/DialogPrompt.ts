@@ -1,8 +1,8 @@
-import { internalProperty, component, DialogComponent, html } from '../../library'
+import { state, component, DialogComponent, html } from '../../library'
 
 @component('eb-dialog-input')
 export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string, handler: (input: string) => void }> {
-	@internalProperty() private input = this.parameters.value ?? ''
+	@state() private input = this.parameters.value ?? ''
 
 	protected render = () => html`
 		<mo-dialog
