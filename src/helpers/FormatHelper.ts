@@ -85,7 +85,7 @@ export class FormatHelper {
 		const isNegative = value.charAt(0) === '-'
 		let result = valueArr[0].replace(/\D+/g, '')
 		if (valueArr.length === 2) {
-			result += '.' + valueArr[1]
+			result += `.${valueArr[1]}`
 		}
 		const float = parseFloat(result)
 		if (isNaN(float)) {

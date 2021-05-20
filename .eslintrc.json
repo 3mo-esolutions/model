@@ -165,6 +165,7 @@
 			"error",
 			"single"
 		],
+		"prefer-template": "error",
 		"no-unused-vars": "off",
 		"no-case-declarations": "off",
 		"no-self-assign": "off",

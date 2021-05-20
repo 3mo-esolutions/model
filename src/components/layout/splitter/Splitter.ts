@@ -152,17 +152,17 @@ export class Splitter extends Component {
 				case 'horizontal-reversed':
 					nextElementSize = mouseDownInfo.secondSize - delta.x
 					previousElementSize = mouseDownInfo.firstSize + delta.x
-					separator.style.left = mouseDownInfo.offsetLeft + delta.x + 'px'
-					previousElement.style.width = previousElementSize + 'px'
-					nextElement.style.width = nextElementSize + 'px'
+					separator.style.left = `${mouseDownInfo.offsetLeft + delta.x}px`
+					previousElement.style.width = `${previousElementSize}px`
+					nextElement.style.width = `${nextElementSize}px`
 					break
 				case 'vertical':
 				case 'vertical-reversed':
 					nextElementSize = mouseDownInfo.secondSize - delta.y
 					previousElementSize = mouseDownInfo.firstSize + delta.y
-					separator.style.top = (mouseDownInfo.offsetTop + delta.y) + 'px'
-					previousElement.style.height = previousElementSize + 'px'
-					nextElement.style.height = nextElementSize + 'px'
+					separator.style.top = `${mouseDownInfo.offsetTop + delta.y}px`
+					previousElement.style.height = `${previousElementSize}px`
+					nextElement.style.height = `${nextElementSize}px`
 					break
 			}
 		}
