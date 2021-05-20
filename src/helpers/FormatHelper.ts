@@ -30,6 +30,14 @@ export class FormatHelper {
 		}
 	}
 
+	static dateTime(value: Date) {
+		try {
+			return new Intl.DateTimeFormat(LocalizationHelper.language.value, { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format(value)
+		} catch (error) {
+			return undefined
+		}
+	}
+
 	static localDateToDate(value: string) {
 		if (!value || value.split('-').join('').length === 0) {
 			return undefined
