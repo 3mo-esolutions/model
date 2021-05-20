@@ -2,8 +2,9 @@ import { HTMLElementEvent, PureEvent } from '../../types'
 
 export function event(options?: EventInit) {
 	return (prototype: unknown, propertyKey: string) => {
-		if (propertyKey === undefined)
+		if (propertyKey === undefined) {
 			return
+		}
 
 		const eventFieldName = `__${propertyKey}Event`
 		Object.defineProperty(prototype, propertyKey, {

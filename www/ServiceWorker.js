@@ -1,6 +1,6 @@
 ////#region FIX: REFACTORED does not work
 // TODO [MD-103] research and improve service worker + make an offlineFallbackPage
-// const CACHE = 'pwabuilder-offline'
+// const cache = 'pwabuilder-offline'
 // const offlineFallbackPage = 'index.html'
 
 // self.addEventListener('install', async event => {
@@ -41,7 +41,7 @@
 
 //// #endregion
 
-const CACHE = 'pwabuilder-offline'
+const cache = 'pwabuilder-offline'
 const offlineFallbackPage = 'index.html'
 
 // Install stage sets up the index page (home page) in the cache and opens a new cache
@@ -49,7 +49,7 @@ self.addEventListener('install', (event) => {
 	//console.log("[PWA Builder] Install Event processing")
 
 	event.waitUntil(
-		caches.open(CACHE).then((cache) => {
+		caches.open(cache).then((cache) => {
 			//console.log("[PWA Builder] Cached offline page during install")
 
 			if (offlineFallbackPage === 'index.html') {
@@ -63,7 +63,9 @@ self.addEventListener('install', (event) => {
 
 // If any fetch fails, it will look for the request in the cache and serve it from there first
 self.addEventListener('fetch', (event) => {
-	if (event.request.method !== 'GET') return
+	if (event.request.method !== 'GET') {
+		return
+	}
 
 	event.respondWith(
 		fetch(event.request)
@@ -86,7 +88,7 @@ function fromCache(request) {
 	// Check to see if you have it in the cache
 	// Return response
 	// If not in the cache, then return error page
-	return caches.open(CACHE).then((cache) => {
+	return caches.open(cache).then((cache) => {
 		return cache.match(request).then((matching) => {
 			if (!matching || matching.status === 404) {
 				return Promise.reject('no-match')
@@ -98,7 +100,7 @@ function fromCache(request) {
 }
 
 function updateCache(request, response) {
-	return caches.open(CACHE).then((cache) => {
+	return caches.open(cache).then((cache) => {
 		return cache.put(request, response)
 	})
 }

@@ -22,7 +22,7 @@ type DrawerType =
  */
 @component('mo-drawer')
 export class Drawer extends ComponentMixin(MwcDrawer) {
-	static readonly IsDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
+	static readonly isDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
 
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
 	static get type() { return this.instance.type }

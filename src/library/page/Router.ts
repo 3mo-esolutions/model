@@ -56,8 +56,9 @@ class Router {
 	getParameters(relativePath: string): PageParameters {
 		const routerPath = this.getRouterPath(relativePath)
 
-		if (!routerPath)
+		if (!routerPath) {
 			return {}
+		}
 
 		const params = new Route(routerPath).match(relativePath) as Record<string, string | number>
 		Object.getOwnPropertyNames(params).forEach(paramName => {
@@ -69,15 +70,16 @@ class Router {
 		return params
 	}
 
-	injectParametersToPath(relativePath: string, parameters: PageParameters): string {
+	injectParametersToPath(relativePath: string, parameters: PageParameters) {
 		const routerPath = this.getRouterPath(relativePath)
 		const route = new Route(routerPath).reverse(parameters ? parameters : {})
-		if (!route)
+		if (!route) {
 			return this.relativePath
+		}
 		return route
 	}
 
-	getPath(page: PageComponent<any>): string | undefined {
+	getPath(page: PageComponent<any>) {
 		const path = this.getRouterPaths(page.constructor)
 			.map(p => new Route(p))
 			.find(r => r.reverse(page['parameters']) !== false)
@@ -92,9 +94,10 @@ MoDeL.Router = new Router
 export default MoDeL.Router
 
 declare global {
-	// eslint-disable-next-line @typescript-eslint/no-namespace
+	// eslint-disable-next-line
 	namespace MoDeL {
 		interface Globals {
+			// eslint-disable-next-line
 			readonly Router: Router
 		}
 	}

@@ -12,7 +12,7 @@ export class Logo extends Component {
 		// My guess is that the "computed styles" become available
 		// after delegating to the event loop
 		PromiseTask.delegateToEventLoop(() => this.requestUpdate())
-		ThemeHelper.Accent.changed.subscribe(() => this.requestUpdate())
+		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
 	protected render() {

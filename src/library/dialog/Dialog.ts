@@ -157,8 +157,9 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		scrimElement?.addEventListener('click', async (e: MouseEvent) => {
 			e.stopImmediatePropagation()
 
-			if (this.blocking)
+			if (this.blocking) {
 				return
+			}
 
 			await this.close()
 		})

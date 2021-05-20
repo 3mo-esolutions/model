@@ -1,22 +1,22 @@
 import { LocalStorageEntry } from '.'
 
 export default new class AuthorizationHelper {
-	static readonly Authorizations = new LocalStorageEntry('MoDeL.Authorizations', new Array<keyof MoDeL.Authorizations>())
+	private static readonly storage = new LocalStorageEntry('MoDeL.Authorizations', new Array<keyof MoDeL.Authorizations>())
 
 	isAuthorized(...authorizations: Array<keyof MoDeL.Authorizations>) {
-		return authorizations.every(p => AuthorizationHelper.Authorizations.value.includes(p))
+		return authorizations.every(p => AuthorizationHelper.storage.value.includes(p))
 	}
 
 	authorize(...authorizations: Array<keyof MoDeL.Authorizations>) {
-		AuthorizationHelper.Authorizations.value = [
+		AuthorizationHelper.storage.value = [
 			...authorizations,
-			...AuthorizationHelper.Authorizations.value,
+			...AuthorizationHelper.storage.value,
 		]
 	}
 
 	unauthorize(...authorizations: Array<keyof MoDeL.Authorizations>) {
-		AuthorizationHelper.Authorizations.value =
-			AuthorizationHelper.Authorizations.value.filter(p => authorizations.includes(p) === false)
+		AuthorizationHelper.storage.value =
+			AuthorizationHelper.storage.value.filter(p => authorizations.includes(p) === false)
 	}
 }
 

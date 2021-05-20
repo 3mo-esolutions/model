@@ -59,33 +59,40 @@ export class FieldDate extends Field<Date | undefined> {
 	protected toValue(value: string): Date | undefined {
 		value = value.toLowerCase()
 
-		if (!value)
+		if (!value) {
 			return undefined
+		}
 
-		if (value.includes(FormatHelper.Date.Separator.value))
+		if (value.includes(FormatHelper.storage.date.separator.value)) {
 			return this.calculateDateFromLocalDate(value)
+		}
 
-		if (value.charAt(0) === '+' || value.charAt(0) === '-')
+		if (value.charAt(0) === '+' || value.charAt(0) === '-') {
 			return this.calculateDateFromOperation(value)
+		}
 
-		if ((value.length === 3 || value.length === 4 || value.length === 8) && !isNaN(parseInt(value)))
+		if ((value.length === 3 || value.length === 4 || value.length === 8) && !isNaN(parseInt(value))) {
 			return this.calculateDateFromShortcut(value)
+		}
 
 		const keywordDate = this.calculateDateFromKeyword(value)
-		if (keywordDate)
+		if (keywordDate) {
 			return keywordDate
+		}
 
 		return new Date(value ?? new Date)
 	}
 
 	private calculateDateFromLocalDate(string: string) {
-		const dateArr = string.split(FormatHelper.Date.Separator.value)
+		const dateArr = string.split(FormatHelper.storage.date.separator.value)
 
-		if (dateArr.length === 2)
+		if (dateArr.length === 2) {
 			return new Date(new Date().getFullYear(), parseInt(dateArr[1]) - 1, parseInt(dateArr[0]))
+		}
 
-		if (dateArr.length === 3)
+		if (dateArr.length === 3) {
 			return new Date(parseInt(dateArr[2]), parseInt(dateArr[1]) - 1, parseInt(dateArr[0]))
+		}
 
 		return undefined
 	}
@@ -112,7 +119,9 @@ export class FieldDate extends Field<Date | undefined> {
 		const day = string.substring(0, 2)
 		const month = string.substring(2, string.length >= 4 ? 4 : 3)
 		let year = undefined
-		if (string.length === 8) year = string.substring(4, 8)
+		if (string.length === 8) {
+			year = string.substring(4, 8)
+		}
 		const date = new MoDate(year ? parseInt(year) : new Date().getFullYear(), parseInt(month) - 1, parseInt(day))
 		return date
 	}

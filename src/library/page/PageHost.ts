@@ -42,8 +42,9 @@ export class PageHost extends Component {
 		const relativePath = Router.getPath(page)
 		const url = window.location.origin + relativePath
 
-		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent?.['parameters']) === JSON.stringify(page['parameters']))
+		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent?.['parameters']) === JSON.stringify(page['parameters'])) {
 			return
+		}
 
 		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab && Manifest.display_override?.includes('tabbed') === false) {
 			mode = NavigationMode.NewWindow
@@ -74,8 +75,9 @@ export class PageHost extends Component {
 	}
 
 	private navigateToHomePage = () => {
-		if (!Router.HomePageConstructor)
+		if (!Router.HomePageConstructor) {
 			return
+		}
 
 		this.navigate(new Router.HomePageConstructor())
 	}

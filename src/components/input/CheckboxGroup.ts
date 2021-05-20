@@ -16,16 +16,18 @@ export class CheckboxGroup extends Checkbox {
 	}
 
 	private get childrenValue(): CheckboxValue {
-		if (this.checkboxes.every(e => e.value === 'checked'))
+		if (this.checkboxes.every(e => e.value === 'checked')) {
 			return 'checked'
-		else if (this.checkboxes.every(e => e.value === 'unchecked'))
+		} else if (this.checkboxes.every(e => e.value === 'unchecked')) {
 			return 'unchecked'
-		else
+		} else {
 			return 'indeterminate'
+		}
 	}
 	private set childrenValue(value: CheckboxValue) {
-		if (value === 'indeterminate')
+		if (value === 'indeterminate') {
 			return
+		}
 
 		this.checkboxes.forEach(checkbox => {
 			checkbox.value = value

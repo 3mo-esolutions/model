@@ -45,28 +45,32 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 		@query('slot[name="meta"]') private readonly metaSlot?: HTMLSlotElement
 
 		private async renderIcon() {
-			if (!this.icon)
+			if (!this.icon) {
 				return
+			}
 
 			this.graphic = 'icon'
 			await this.updateComplete
 
-			if (!this.graphicSlot)
+			if (!this.graphicSlot) {
 				return
+			}
 
 			await this.updateComplete
 			render(html`<mo-icon icon=${this.icon} foreground='var(--mo-list-item-icon-color)' opacity='0.75'></mo-icon>`, this.graphicSlot)
 		}
 
 		private async renderMetaIcon() {
-			if (!this.metaIcon)
+			if (!this.metaIcon) {
 				return
+			}
 
 			this.hasMeta = true
 			await this.updateComplete
 
-			if (!this.metaSlot)
+			if (!this.metaSlot) {
 				return
+			}
 
 			render(html`<mo-icon icon=${this.metaIcon} foreground='var(--mo-list-item-meta-icon-color)' opacity='0.75'></mo-icon>`, this.metaSlot)
 		}

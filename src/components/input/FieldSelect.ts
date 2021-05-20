@@ -35,8 +35,9 @@ export class FieldSelect<T> extends Field<Value> {
 	set default(value) {
 		Array.from(this.querySelectorAll('mo-option[default]')).forEach(o => o.remove())
 
-		if (!value)
+		if (!value) {
 			return
+		}
 
 		const defaultOption = new Option<T>()
 		defaultOption.default = true
@@ -171,7 +172,7 @@ export class FieldSelect<T> extends Field<Value> {
 			${super.render()}
 			<mo-menu
 				id='menuOptions'
-				style='${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}'
+				style=${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}
 				.anchor=${this as HTMLElement}
 				?multi=${this.multiple}
 				?manualClose=${this.manualClose}
@@ -198,8 +199,9 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	protected fromValue(value: Value) {
-		if ((value instanceof Array && value.length === 0) || !value)
+		if ((value instanceof Array && value.length === 0) || !value) {
 			return this.reflectDefault ? this.default ?? '' : ''
+		}
 
 		return getOptionsText(this.getValueOptions(value))
 	}
@@ -213,8 +215,9 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	protected handleOptionSelection = (e: CustomEvent<{ index: Set<number> | number }>) => {
-		if (this.programmaticSelection)
+		if (this.programmaticSelection) {
 			return
+		}
 
 		const indexes = e.detail.index instanceof Set ? Array.from(e.detail.index) : [e.detail.index]
 		const options = this.options.filter((_, i) => indexes.includes(i))
@@ -283,8 +286,9 @@ export class FieldSelect<T> extends Field<Value> {
 	@state({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
 
 	async fetchOptions() {
-		if (!this.optionsGetter)
+		if (!this.optionsGetter) {
 			return
+		}
 
 		this.fetchedData = await this.optionsGetter.fetchData()
 		this.dataFetch.dispatch(this.fetchedData)

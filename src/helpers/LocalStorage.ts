@@ -28,8 +28,9 @@ export default class LocalStorageEntry<T> {
 
 	get value(): T {
 		const value = window.localStorage.getItem(this.name) ?? undefined
-		if (value === undefined || value === 'undefined')
+		if (value === undefined || value === 'undefined') {
 			return this.defaultValue
+		}
 		return JsonHelper.isJson(value) ? JSON.parse(value, this.reviver) : value
 	}
 

@@ -174,8 +174,8 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 function isAsteriskSyntax(length: string) {
 	return (length.includes('*') === true && length.includes('calc') === false)
 }
-function getFlexGrowFromAsteriskSyntax(length: string): number {
-	if (length === '*')
-		return 1
-	return parseInt(length.split('*')[0])
+function getFlexGrowFromAsteriskSyntax(length: string) {
+	return length === '*'
+		? 1
+		: parseInt(length.split('*')[0])
 }

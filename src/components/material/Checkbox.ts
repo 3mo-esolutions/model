@@ -14,12 +14,13 @@ export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))
 	@property()
 	// @ts-ignore overriding the value property
 	get value(): CheckboxValue {
-		if (this.indeterminate)
+		if (this.indeterminate) {
 			return 'indeterminate'
-		else if (this.checked)
+		} else if (this.checked) {
 			return 'checked'
-		else
+		} else {
 			return 'unchecked'
+		}
 	}
 
 	set value(value: CheckboxValue) {

@@ -47,6 +47,7 @@ export const observer = <T>(observerFn: Observer<T>) => {
 					}
 				})
 			}
+		// eslint-disable-next-line no-prototype-builtins
 		} else if (!prototype.constructor.hasOwnProperty('observers')) {
 			// clone any existing observers of superclasses
 			const observers = prototype.constructor.observers

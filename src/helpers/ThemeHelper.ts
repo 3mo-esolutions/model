@@ -3,7 +3,7 @@ import { DocumentHelper, LocalStorageEntry } from '.'
 import { Background, Color } from '../types'
 
 export class ThemeHelper {
-	static readonly Background = new class extends LocalStorageEntry<Background> {
+	static readonly background = new class extends LocalStorageEntry<Background> {
 		constructor() {
 			super('MoDeL.Theme.Theme', Background.System)
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.calculatedValue)
@@ -18,7 +18,7 @@ export class ThemeHelper {
 		}
 	}
 
-	static readonly Accent = new class extends LocalStorageEntry<Color> {
+	static readonly accent = new class extends LocalStorageEntry<Color> {
 		constructor() {
 			super(
 				'MoDeL.Theme.Accent',

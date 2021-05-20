@@ -18,6 +18,6 @@ export default class ManifestProvider extends ApplicationProvider {
 }
 
 declare global {
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var Manifest: Manifest
 }

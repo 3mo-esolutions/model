@@ -2,27 +2,30 @@ import { LocalStorageEntry } from '.'
 import { LanguageCode } from '../types'
 
 export class LocalizationHelper {
-	static readonly Language = new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode)
+	static readonly language = new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode)
 
 	private static readonly languageMap = new Map<LanguageCode, MoDeL.Localization>()
 
 	private static get currentLanguage() {
-		return LocalizationHelper.Language.value
+		return LocalizationHelper.language.value
 	}
 
 	static localize = <K extends keyof MoDeL.LocalizationParametersMap>(key: K, ...params: MoDeL.LocalizationParametersMap[K]) => {
 		const currentLanguageDictionary = LocalizationHelper.languageMap.get(LocalizationHelper.currentLanguage)
 
-		if (!currentLanguageDictionary)
+		if (!currentLanguageDictionary) {
 			return key
+		}
 
 		const translation = currentLanguageDictionary[key] as MoDeL.Localization[K] | undefined
 
-		if (translation === undefined)
+		if (translation === undefined) {
 			return key
+		}
 
-		if (typeof translation === 'string')
+		if (typeof translation === 'string') {
 			return translation
+		}
 
 		const translationProvider = translation as MoDeL.LocalizationProvider<K>
 		return translationProvider(...params)

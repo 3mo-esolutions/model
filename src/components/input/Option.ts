@@ -39,8 +39,9 @@ export class Option<TValue> extends ListItemCheckbox {
 }
 
 function defaultChanged(this: Option<unknown>) {
-	if (!this.default)
+	if (!this.default) {
 		return
+	}
 
 	this.data = undefined
 	this.value = undefined!

@@ -13,11 +13,13 @@ class PwaHelper {
 	}
 
 	async registerServiceWorker() {
-		if (!navigator.serviceWorker || navigator.serviceWorker.controller)
+		if (!navigator.serviceWorker?.controller) {
 			return
+		}
 
-		if (MoDeL.environment === 'test')
+		if (MoDeL.environment === 'test') {
 			return
+		}
 
 		if (MoDeL.environment === 'development') {
 			const serviceWorkers = await navigator.serviceWorker.getRegistrations()
@@ -32,8 +34,9 @@ class PwaHelper {
 	private async requestInstallation() {
 		const isRequestPossible = this.pwaPrompt !== undefined
 
-		if (isRequestPossible === false)
+		if (isRequestPossible === false) {
 			return
+		}
 
 		// @ts-ignore TypeScript library doesn't know about this specific event
 		const choiceResult = await this.pwaPrompt?.prompt()

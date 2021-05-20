@@ -26,8 +26,9 @@ export class FieldText extends FieldTextBase {
 }
 
 function counterChanged(this: FieldText) {
-	if (!this.counter)
+	if (!this.counter) {
 		return
+	}
 
 	this.inputElement.maxLength = this.counter
 }

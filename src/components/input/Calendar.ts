@@ -136,8 +136,9 @@ export class Calendar extends Component {
 
 	private renderDaySelection() {
 		const renderWeeks = () => {
-			if (this.includeWeekNumbers === false)
+			if (this.includeWeekNumbers === false) {
 				return nothing
+			}
 
 			return this.navigatingDate.monthWeeks.map((week, i) => html`
 				<mo-flex gridColumn='1' gridRow=${i + 2} class='week'>

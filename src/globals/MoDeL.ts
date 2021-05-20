@@ -6,6 +6,7 @@ declare namespace MoDeL {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const MoDeL: MoDeL.Globals
 declare const environment: string
 
@@ -13,11 +14,13 @@ declare const environment: string
 globalThis.MoDeL = new class {
 	get environment() {
 		const global = window as any
-		if (global.__karma__)
+		if (global.__karma__) {
 			return 'test'
+		}
 
-		if (environment !== 'production')
+		if (environment !== 'production') {
 			return 'development'
+		}
 
 		return 'production'
 	}

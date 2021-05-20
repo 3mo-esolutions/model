@@ -4,17 +4,17 @@ import { LocalStorageEntry } from '../../helpers'
 import { User } from '../../types'
 
 export abstract class DialogAuthenticator extends DialogComponent {
-	static readonly Password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
-	static readonly ShallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
-	static readonly Username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
-	static readonly AuthenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
+	static readonly authenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
+	private static readonly password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
+	private static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
+	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
 
 	async unauthenticate() {
 		try {
 			await this.unauthenticateProcess()
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
-			DialogAuthenticator.AuthenticatedUser.value = undefined
+			DialogAuthenticator.authenticatedUser.value = undefined
 			MoDeL.application.authenticator?.open()
 		}
 	}
@@ -33,21 +33,21 @@ export abstract class DialogAuthenticator extends DialogComponent {
 
 	protected async initialized() {
 		window.addEventListener('keypress', async event => {
-			const isAuthenticated = DialogAuthenticator.AuthenticatedUser !== undefined
+			const isAuthenticated = DialogAuthenticator.authenticatedUser !== undefined
 			if (event.key === KeyboardKey.Enter && isAuthenticated === false) {
 				await this.dialog?.['handlePrimaryButtonClick']()
 			}
 		})
 
-		if (DialogAuthenticator.ShallRemember.value) {
+		if (DialogAuthenticator.shallRemember.value) {
 			await this.authenticate()
 			this.close()
 		}
 	}
 
-	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.ShallRemember.value ?? false
-	@property() username = DialogAuthenticator.ShallRemember.value ? DialogAuthenticator.Username.value ?? '' : ''
-	@property() password = DialogAuthenticator.ShallRemember.value ? DialogAuthenticator.Password.value ?? '' : ''
+	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value ?? false
+	@property() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
+	@property() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
 
 	protected render = () => html`
 		<style>
@@ -102,20 +102,20 @@ export abstract class DialogAuthenticator extends DialogComponent {
 
 	protected async isAuthenticated() {
 		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
-		const isAuthenticatedClientSide = DialogAuthenticator.AuthenticatedUser.value !== undefined
+		const isAuthenticatedClientSide = DialogAuthenticator.authenticatedUser.value !== undefined
 		return isAuthenticatedServerSide && isAuthenticatedClientSide
 	}
 
 	protected authenticate = async () => {
-		DialogAuthenticator.ShallRemember.value = this.shallRememberPassword
-		if (DialogAuthenticator.ShallRemember.value) {
-			DialogAuthenticator.Username.value = this.username
-			DialogAuthenticator.Password.value = this.password
+		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
+		if (DialogAuthenticator.shallRemember.value) {
+			DialogAuthenticator.username.value = this.username
+			DialogAuthenticator.password.value = this.password
 		}
 
 		try {
 			const user = await this.authenticateProcess()
-			DialogAuthenticator.AuthenticatedUser.value = user
+			DialogAuthenticator.authenticatedUser.value = user
 			const isAuthenticated = await this.isAuthenticated()
 			if (isAuthenticated === false) {
 				throw new Error('Something went wrong.\nTry again.')

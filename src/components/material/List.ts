@@ -36,8 +36,9 @@ export class List extends ComponentMixin(MwcList) {
 }
 
 function valueChanged(this: List) {
-	if (!this.value)
+	if (!this.value) {
 		return
+	}
 
 	const index = this.value instanceof Array
 		? new Set(this.value.map(v => this.items.findIndex(item => item.value === v)))

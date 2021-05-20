@@ -9,7 +9,7 @@
 	"ignorePatterns": [
 		"node_modules",
 		"dist",
-		"coverage"
+		"test-temp"
 	],
 	"extends": [
 		"eslint:recommended",
@@ -33,8 +33,11 @@
 	],
 	"rules": {
 		"lit/no-missing-import": "off",
+		"lit/no-template-bind": "error",
+		"lit/no-useless-template-literals": "error",
+		"lit/quoted-expressions": "error",
 		"@typescript-eslint/type-annotation-spacing": [
-			"warn",
+			"error",
 			{
 				"before": false,
 				"after": true,
@@ -59,7 +62,14 @@
 		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-empty-interface": "off",
-		"no-prototype-builtins": "off",
+		// "@typescript-eslint/no-confusing-void-expression": "error",
+		// "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+		// "@typescript-eslint/no-unnecessary-condition": "error",
+		// "@typescript-eslint/prefer-includes": "warn",
+		// "@typescript-eslint/prefer-readonly": "warn",
+		// "@typescript-eslint/prefer-string-starts-ends-with": "warn",
+		"@typescript-eslint/prefer-optional-chain": "error",
+		"@typescript-eslint/prefer-for-of": "warn",
 		"@typescript-eslint/member-delimiter-style": [
 			"error",
 			{
@@ -79,6 +89,62 @@
 			}
 		],
 		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/naming-convention": [
+			"error",
+			{
+				"selector": [
+					"variable",
+					"objectLiteralProperty",
+					"typeProperty",
+					"parameterProperty",
+					"classMethod",
+					"objectLiteralMethod",
+					"typeMethod",
+					"accessor",
+					"function"
+				],
+				"filter": {
+					"regex": "^([A-Z].*Mixin$)|(_$)|(Constructor$)|([A-Z].*Constructor$)",
+					"match": false
+				},
+				"format": [
+					"camelCase"
+				]
+			},
+			{
+				"selector": [
+					"classProperty",
+					"parameter"
+				],
+				"filter": {
+					"regex": "^([A-Z].*Mixin$)|(_$)|(Constructor$)|([A-Z].*Constructor$)",
+					"match": false
+				},
+				"format": [
+					"camelCase"
+				],
+				"leadingUnderscore": "allow"
+			},
+			{
+				"selector": [
+					"enumMember",
+					"class",
+					"interface",
+					"typeAlias",
+					"enum",
+					"typeParameter"
+				],
+				"format": [
+					"PascalCase"
+				]
+			}
+		],
+		"@typescript-eslint/array-type": [
+			"error",
+			{
+				"default": "generic"
+			}
+		],
 		"indent": [
 			"error",
 			"tab",
@@ -155,10 +221,6 @@
 			{
 				"selector": "TSEnumDeclaration:not([const=true])",
 				"message": "MoDeL: Don't declare non-const enums to decrease application size at runtime"
-			},
-			{
-				"selector": "Identifier[name='bind']",
-				"message": "MoDeL: Try to declare arrow functions to avoid using context bindings"
 			}
 		],
 		"no-eval": "error",
@@ -172,18 +234,8 @@
 		"object-curly-spacing": [
 			"error",
 			"always"
-		]
+		],
+		"curly": "error"
 	}
 }
-// TODO: https://eslint.org/docs/rules/curly
 // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/2673
-// TODO: https://eslint.org/docs/rules/no-return-await
-/* TODO: doesn't work properly
-"lines-between-class-members": [
-	"error",
-	"always",
-	{
-		"exceptAfterSingleLine": true
-	}
-]
-*/

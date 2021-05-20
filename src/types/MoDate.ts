@@ -30,7 +30,7 @@ enum WeekDay {
 type WeekStartDay = Extract<WeekDay, WeekDay.Sunday | WeekDay.Monday>
 
 export class MoDate extends Date {
-	static readonly IsoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 	private readonly weekStartDay: WeekStartDay = WeekDay.Monday
 
 	difference(comparisonDate = new MoDate) {
@@ -113,7 +113,7 @@ export class MoDate extends Date {
 
 	//#region Month
 	static get monthNames() {
-		const format = new Intl.DateTimeFormat(LocalizationHelper.Language.value, { month: 'long' })
+		const format = new Intl.DateTimeFormat(LocalizationHelper.language.value, { month: 'long' })
 		const monthNumbers = new Array(12).fill(undefined).map((_, i) => i)
 		return monthNumbers.map(number => format.format(new Date(Date.UTC(2000, number, 1, 0, 0, 0))))
 	}
@@ -215,7 +215,7 @@ class TimeSpan {
 	}
 
 	get text() {
-		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.Language.value, { style: 'long' })
+		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
 		switch (true) {
 			case Math.abs(this.years) >= 1:
 				return formatter.format(Math.floor(this.years), 'years')
@@ -256,15 +256,15 @@ type WeekDayType = WeekDay
 type WeekDayEnum = typeof WeekDay
 
 declare global {
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var TimeSpan: TimeSpanClass
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var MoDate: MoDateClass
 	type MoDate = InstanceType<MoDateClass>
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var Month: MonthEnum
 	type Month = MonthType
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var WeekDay: WeekDayEnum
 	type WeekDay = WeekDayType
 }

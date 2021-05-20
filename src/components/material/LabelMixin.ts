@@ -6,7 +6,7 @@ export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 	class LabelMixinConstructor extends Constructor {
 		@property() label = ''
 
-		constructor(...parameters: any[]) {
+		constructor(...parameters: Array<any>) {
 			super(...parameters)
 			if (this.innerText !== '') {
 				this.label = this.innerText

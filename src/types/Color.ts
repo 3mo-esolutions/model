@@ -36,11 +36,13 @@ export class Color {
 
 	constructor(...colors: Array<RgbTuple | Hex | Rgb | CssProperty>) {
 		this.colors = colors.map(color => {
-			if (color instanceof Array)
+			if (color instanceof Array) {
 				return color
+			}
 
-			if (Color.isHex(color))
+			if (Color.isHex(color)) {
 				return Color.hexToRgbColor(color)
+			}
 
 			if (Color.isCssProperty(color)) {
 				const rgb = getComputedStyle(MoDeL.application).getPropertyValue(color.split('(')[1].substring(0, color.split('(')[1].length - 1)) as Rgb

@@ -13,6 +13,6 @@ globalThis.PromiseTask = PromiseTask
 type PromiseTaskType = typeof PromiseTask
 
 declare global {
-	// eslint-disable-next-line no-var
+	// eslint-disable-next-line
 	var PromiseTask: PromiseTaskType
 }

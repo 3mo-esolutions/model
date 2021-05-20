@@ -31,9 +31,9 @@ export abstract class Application extends Component {
 	}
 
 	@property() pageTitle?: string
-	@property({ reflect: true }) theme = ThemeHelper.Background.calculatedValue
-	@property({ type: Object }) authenticatedUser = DialogAuthenticator.AuthenticatedUser.value
-	@property({ type: Boolean }) drawerDocked = Drawer.IsDocked.value
+	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
+	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
+	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
@@ -46,9 +46,9 @@ export abstract class Application extends Component {
 		const providers = Array.from(Application.providers.keys())
 		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
-		ThemeHelper.Background.changed.subscribe(() => this.theme = ThemeHelper.Background.calculatedValue)
-		DialogAuthenticator.AuthenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		Drawer.IsDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
+		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
+		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
+		Drawer.isDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()

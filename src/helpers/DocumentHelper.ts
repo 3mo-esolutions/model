@@ -23,7 +23,7 @@ export default new class DocumentHelper {
 	}
 
 	private getDeepActiveElement(root: Document | ShadowRoot = document): Element | undefined {
-		if (root.activeElement && root.activeElement.shadowRoot && root.activeElement.shadowRoot.activeElement) {
+		if (root.activeElement?.shadowRoot?.activeElement) {
 			return this.getDeepActiveElement(root.activeElement.shadowRoot)
 		}
 		return root.activeElement ?? undefined

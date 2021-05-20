@@ -178,9 +178,11 @@ export class Markdown extends Component {
 		document.title = `3MO MoDeL | ${pageTitle}`
 
 		this.shadowRoot.querySelectorAll('blockquote').forEach(quote => {
-			// @ts-ignore first character of the text is always one of the quoteMapper keys
-			quote.className = Markdown.quoteMap[quote.firstElementChild.innerHTML.charAt(0)]
-			quote.firstElementChild!.innerHTML = quote.firstElementChild!.innerHTML.slice(1)
+			if (quote.firstElementChild) {
+				// @ts-ignore first character of the text is always one of the quoteMapper keys
+				quote.className = Markdown.quoteMap[quote.firstElementChild.innerHTML.charAt(0)]
+				quote.firstElementChild.innerHTML = quote.firstElementChild.innerHTML.slice(1)
+			}
 		})
 
 		this.shadowRoot.querySelectorAll('pre').forEach(pre => {

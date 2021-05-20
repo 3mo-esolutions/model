@@ -63,8 +63,9 @@ export class Flex extends Component {
 }
 
 function applyGap(this: Flex) {
-	if (!this.gap)
+	if (!this.gap) {
 		return
+	}
 
 	const gapElements = this.gapElements ?? this.childElements.filter(e => !e.slot)
 	for (let i = 0; i < gapElements.length; i++) {

@@ -4,7 +4,7 @@ import { FieldNumber } from './FieldNumber'
 
 @component('mo-field-amount')
 export class FieldAmount extends FieldNumber {
-	@property() currency = FormatHelper.Currency.Symbol.value
+	@property() currency = FormatHelper.storage.currency.symbol.value
 
 	protected fromValue(value: number | undefined): string {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
