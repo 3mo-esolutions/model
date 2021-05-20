@@ -23,6 +23,7 @@
 		"allowSyntheticDefaultImports": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
 		"plugins": [
 			{
 				"name": "ts-lit-plugin",
