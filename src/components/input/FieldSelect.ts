@@ -15,6 +15,7 @@ type OptionsGetter<T> = {
 }
 
 /**
+ * @slot
  * @fires dataChange {CustomEvent<Data<T>>}
  * @fires indexChange {CustomEvent<Index>}
  * @fires dataFetch {CustomEvent<Array<T>>}
