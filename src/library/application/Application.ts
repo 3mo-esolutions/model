@@ -13,6 +13,7 @@ export abstract class Application extends Component {
 	constructor() {
 		super()
 		this.id = 'application'
+		window.dispatchEvent(new Event('MoDeL.instantiate'))
 		this.setupViews()
 		DocumentHelper.injectCSS(styles)
 		DocumentHelper.disableDefaultContextMenu()
@@ -46,6 +47,8 @@ export abstract class Application extends Component {
 		const providers = Array.from(Application.providers.keys())
 		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
+		window.dispatchEvent(new Event('MoDeL.initialize'))
+
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
 		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
 		Drawer.isDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
@@ -57,8 +60,11 @@ export abstract class Application extends Component {
 		}
 	}
 
-	private authenticate = () => this.authenticator?.confirm()
-	private unauthenticate = async () => {
+	protected async authenticate() {
+		await this.authenticator?.confirm()
+	}
+
+	protected async unauthenticate() {
 		await this.authenticator?.unauthenticate()
 		this.drawerOpen = false
 	}
