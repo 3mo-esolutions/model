@@ -6,11 +6,13 @@ export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu }
 
-	private readonly lengthBuffer = 16
-
 	@property({ type: Object }) menu?: TemplateResult
 
 	@queryAll('mo-context-menu-item') readonly items!: Array<ContextMenuItem>
+
+	@query('mo-menu') private readonly menuContext!: Menu
+
+	private readonly lengthBuffer = 16
 
 	openMenu = async (mouseEvent: MouseEvent, template: TemplateResult) => {
 		this.menu = template
@@ -37,8 +39,6 @@ export class ContextMenuHost extends Component {
 	get list() {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
-
-	@query('mo-menu') private readonly menuContext!: Menu
 
 	protected render = () => html`
 		<style>

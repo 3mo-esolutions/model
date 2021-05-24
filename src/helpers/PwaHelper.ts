@@ -1,12 +1,12 @@
 class PwaHelper {
+	private pwaPrompt?: Event
+
 	constructor() {
 		window.addEventListener('beforeinstallprompt', e => {
 			e.preventDefault()
 			this.pwaPrompt = e
 		})
 	}
-
-	private pwaPrompt?: Event
 
 	get isInstalled() {
 		return window.matchMedia('(display-mode: standalone)').matches

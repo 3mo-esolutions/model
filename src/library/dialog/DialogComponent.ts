@@ -8,11 +8,18 @@ export interface DialogComponentConstructor<T extends DialogParameters> extends 
 }
 
 export abstract class DialogComponent<T extends DialogParameters = void> extends Component {
-	['constructor']: DialogComponentConstructor<T>
-
 	static authorizations = new Array<keyof MoDeL.Authorizations>()
 
 	@event() readonly closed!: IEvent<boolean>
+
+	['constructor']: DialogComponentConstructor<T>
+
+	protected readonly parameters = {} as T
+
+	constructor(parameters: T) {
+		super()
+		this.parameters = parameters as T
+	}
 
 	open(): Promise<boolean> {
 		return DialogHost.instance.open(this)
@@ -24,13 +31,6 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 			throw new Error('Dialog canceled')
 		}
 	}
-
-	constructor(parameters: T) {
-		super()
-		this.parameters = parameters as T
-	}
-
-	protected readonly parameters = {} as T
 
 	protected get dialog() {
 		return this.shadowRoot.querySelector('mo-dialog') ?? undefined

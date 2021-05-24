@@ -20,6 +20,8 @@ export class DrawerItem extends ListItem {
 		] as any
 	}
 
+	@property() matchMode = MatchMode.All
+
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
 	@property({ type: Object })
 	set component(value: PageComponent<any> | DialogComponent<any>) {
@@ -35,8 +37,6 @@ export class DrawerItem extends ListItem {
 			this.switchAttribute('interactive', true)
 		}
 	}
-
-	@property() matchMode = MatchMode.All
 
 	constructor() {
 		super()

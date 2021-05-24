@@ -6,6 +6,8 @@ export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 	class LabelMixinConstructor extends Constructor {
 		@property() label = ''
 
+		@query('mwc-formfield') private readonly formFieldElement!: HTMLElement
+
 		constructor(...parameters: Array<any>) {
 			super(...parameters)
 			if (this.innerText !== '') {
@@ -25,8 +27,6 @@ export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 				get: function () { return this.querySelector('input') }
 			})
 		}
-
-		@query('mwc-formfield') private readonly formFieldElement!: HTMLElement
 	}
 	return LabelMixinConstructor
 }

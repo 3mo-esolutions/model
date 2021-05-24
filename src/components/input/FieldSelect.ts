@@ -48,8 +48,14 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	@state() private manualClose = false
+	@state({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
+
+	@element protected readonly menuOptions?: Menu | null
+
+	protected fetchedData?: Array<T>
 
 	private programmaticSelection = false
+
 	get value() { return super.value }
 	set value(value) {
 		value = (value instanceof Array
@@ -166,8 +172,6 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	@element protected readonly menuOptions?: Menu | null
-
 	protected render() {
 		return html`
 			${super.render()}
@@ -282,9 +286,6 @@ export class FieldSelect<T> extends Field<Value> {
 	private resetSelection() {
 		this.menuOptions?.select(this.multiple ? new Set<number>() : -1)
 	}
-
-	fetchedData?: Array<T>
-	@state({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
 
 	async fetchOptions() {
 		if (!this.optionsGetter) {

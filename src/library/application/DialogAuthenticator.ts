@@ -9,6 +9,15 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	private static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
 	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
 
+	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value
+	@property() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
+	@property() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
+
+	protected abstract authenticateProcess(): Promise<User>
+	protected abstract unauthenticateProcess(): Promise<void>
+	protected abstract checkAuthenticationProcess(): Promise<boolean>
+	protected abstract resetPasswordProcess(): Promise<void>
+
 	async unauthenticate() {
 		try {
 			await this.unauthenticateProcess()
@@ -26,11 +35,6 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	protected abstract authenticateProcess(): Promise<User>
-	protected abstract unauthenticateProcess(): Promise<void>
-	protected abstract checkAuthenticationProcess(): Promise<boolean>
-	protected abstract resetPasswordProcess(): Promise<void>
-
 	protected async initialized() {
 		window.addEventListener('keypress', async event => {
 			const isAuthenticated = DialogAuthenticator.authenticatedUser.value !== undefined
@@ -44,10 +48,6 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			this.close()
 		}
 	}
-
-	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value
-	@property() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
-	@property() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
 
 	protected render = () => html`
 		<style>

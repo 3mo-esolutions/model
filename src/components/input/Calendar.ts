@@ -8,9 +8,6 @@ import { Flex } from '..'
 export class Calendar extends Component {
 	@event() readonly change!: IEvent<MoDate>
 
-	private readonly years = new Array(200).fill(0).map((_n, i) => 1901 + i)
-	private readonly weekDays = new Array(7).fill(0).map((_n, i) => i)
-
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
 	@property({
 		type: Object,
@@ -23,6 +20,11 @@ export class Calendar extends Component {
 	@state() private navigatingYear = this.value.year
 	@state() private navigatingMonth = this.value.month
 	@state() private yearSelection = false
+
+	@query('.year.selected') private readonly selectedYearElement!: Flex
+
+	private readonly years = new Array(200).fill(0).map((_n, i) => 1901 + i)
+	private readonly weekDays = new Array(7).fill(0).map((_n, i) => i)
 
 	private get navigatingDate() {
 		return new MoDate(this.navigatingYear, this.navigatingMonth)
@@ -189,8 +191,6 @@ export class Calendar extends Component {
 			</mo-scroll>
 		`
 	}
-
-	@query('.year.selected') private readonly selectedYearElement!: Flex
 
 	private selectYear(year: number) {
 		this.navigatingYear = year

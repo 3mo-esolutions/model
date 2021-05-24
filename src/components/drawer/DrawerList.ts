@@ -4,16 +4,16 @@ import { MaterialIcon } from '../../types'
 
 @component('mo-drawer-list')
 export class DrawerList extends Component {
+	@property({ type: Boolean, reflect: true }) root = false
+	@property({ type: Boolean, reflect: true }) open = false
+	@property() icon?: MaterialIcon
+	@property() label = ''
+
 	constructor() {
 		super()
 		this.root = this.parentElement === null
 		this.open = !!this.root
 	}
-
-	@property({ type: Boolean, reflect: true }) root = false
-	@property({ type: Boolean, reflect: true }) open = false
-	@property() icon?: MaterialIcon
-	@property() label = ''
 
 	private get items() {
 		return this.childElements as Array<DrawerItem | DrawerList>

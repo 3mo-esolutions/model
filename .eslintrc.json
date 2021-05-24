@@ -90,6 +90,23 @@
 			}
 		],
 		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/member-ordering": [
+			"error",
+			{
+				"default": [
+					"signature",
+					"static-field",
+					"static-method",
+					"decorated-field",
+					"abstract-field",
+					"instance-field",
+					"constructor",
+					"decorated-method",
+					"abstract-method",
+					"instance-method"
+				]
+			}
+		],
 		"@typescript-eslint/naming-convention": [
 			"error",
 			{

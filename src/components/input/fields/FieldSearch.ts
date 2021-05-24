@@ -5,6 +5,8 @@ import { FieldTextBase } from './FieldTextBase'
 export class FieldSearch extends FieldTextBase {
 	@property({ type: Number }) debounce = 500
 
+	private timerId = -1
+
 	protected initialized() {
 		super.initialized()
 	}
@@ -13,7 +15,6 @@ export class FieldSearch extends FieldTextBase {
 		this.inputElement.addEventListener('input', this.inputEventHandler)
 	}
 
-	private timerId = -1
 	private readonly inputEventHandler = (e: Event) => {
 		e.stopPropagation()
 		window.clearTimeout(this.timerId)

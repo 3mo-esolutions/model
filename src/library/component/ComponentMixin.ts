@@ -6,9 +6,9 @@ import { IComponent } from './IComponent'
 
 export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 	class extends StyleMixin(Constructor) implements IComponent {
-		['constructor']: ComponentConstructor
-
 		static observers: Map<PropertyKey, Observer<any>>
+
+		['constructor']: ComponentConstructor
 
 		readonly shadowRoot!: ShadowRoot
 

@@ -19,6 +19,8 @@ export class ThemeHelper {
 	}
 
 	static readonly accent = new class extends LocalStorageEntry<Color> {
+		private styleElement?: HTMLStyleElement
+
 		constructor() {
 			super(
 				'MoDeL.Theme.Accent',
@@ -27,8 +29,6 @@ export class ThemeHelper {
 			)
 			this.value = this.value
 		}
-
-		private styleElement?: HTMLStyleElement
 
 		get value() { return super.value }
 		set value(value) {

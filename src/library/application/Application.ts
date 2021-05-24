@@ -10,6 +10,16 @@ export abstract class Application extends Component {
 
 	abstract get drawerTemplate(): TemplateResult
 
+	@property() pageTitle?: string
+	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
+	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
+	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
+	@property({ type: Boolean }) drawerOpen = false
+	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
+	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
+
+	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
+
 	constructor() {
 		super()
 		this.id = 'application'
@@ -30,16 +40,6 @@ export abstract class Application extends Component {
 	get authenticator() {
 		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
 	}
-
-	@property() pageTitle?: string
-	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
-	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
-	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
-	@property({ type: Boolean }) drawerOpen = false
-	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
-	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
-
-	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
 	protected async initialized() {
 		await this.authenticate()

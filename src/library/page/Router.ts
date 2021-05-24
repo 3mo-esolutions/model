@@ -3,9 +3,11 @@ import Route from 'route-parser'
 import { PageComponentConstructor, PageParameters } from './PageComponent'
 
 class Router {
+	@event() readonly navigated!: IEvent<PageComponentConstructor<any> | undefined>
+
 	HomePageConstructor?: PageComponentConstructor<any>
 
-	@event() readonly navigated!: IEvent<PageComponentConstructor<any> | undefined>
+	private readonly routes = new Map<string, PageComponentConstructor<any>>()
 
 	constructor() {
 		window.onpopstate = () => this.triggerNavigationEvent()
@@ -15,8 +17,6 @@ class Router {
 		const currentPage = this.getPage(this.relativePath)
 		this.navigated.dispatch(currentPage)
 	}
-
-	private readonly routes = new Map<string, PageComponentConstructor<any>>()
 
 	private get routesArray() { return Array.from(this.routes.entries()) }
 

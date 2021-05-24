@@ -34,6 +34,8 @@ export class Color {
 		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbTuple
 	}
 
+	readonly colors = new Array<RgbTuple>()
+
 	constructor(...colors: Array<RgbTuple | Hex | Rgb | CssProperty>) {
 		this.colors = colors.map(color => {
 			if (color instanceof Array) {
@@ -52,8 +54,6 @@ export class Color {
 			return Color.rgbToRgbColor(color)
 		})
 	}
-
-	readonly colors = new Array<RgbTuple>()
 
 	get isGradient() {
 		return this.colors.length > 1

@@ -53,6 +53,11 @@ export class Confetti extends Component {
 
 	static get rain() { return this.instance.rain }
 
+	@state() private canvasWidth = 0
+	@state() private canvasHeight = 0
+
+	@query('canvas') private readonly canvasParticle!: HTMLCanvasElement
+
 	rain = async () => {
 		const animate = () => {
 			requestAnimationFrame(animate)
@@ -85,10 +90,6 @@ export class Confetti extends Component {
 		this.display = 'none'
 	}
 
-	@state() private canvasWidth = 0
-	@state() private canvasHeight = 0
-
-	@query('canvas') private readonly canvasParticle!: HTMLCanvasElement
 	private get canvasParticleContext() { return this.canvasParticle.getContext('2d') as CanvasRenderingContext2D }
 
 	protected initialized() {

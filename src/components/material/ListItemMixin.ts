@@ -7,6 +7,12 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 	abstract class ListItemMixinConstructor extends Constructor {
 		@event() readonly selectionChange!: IEvent<boolean>
 
+		@property() icon?: MaterialIcon
+		@property() metaIcon?: MaterialIcon
+
+		@query('slot[name="graphic"]') private readonly graphicSlot?: HTMLSlotElement
+		@query('slot[name="meta"]') private readonly metaSlot?: HTMLSlotElement
+
 		constructor(...args: Array<any>) {
 			super(...args)
 			this.hasMeta = !!Array.from(this.children).find(child => child.slot === 'meta')
@@ -27,9 +33,6 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 			]
 		}
 
-		@property() icon?: MaterialIcon
-		@property() metaIcon?: MaterialIcon
-
 		protected initialized() {
 			this.renderIcon()
 			this.renderMetaIcon()
@@ -40,9 +43,6 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 			this.renderMetaIcon()
 			return super.render() as TemplateResult
 		}
-
-		@query('slot[name="graphic"]') private readonly graphicSlot?: HTMLSlotElement
-		@query('slot[name="meta"]') private readonly metaSlot?: HTMLSlotElement
 
 		private async renderIcon() {
 			if (!this.icon) {

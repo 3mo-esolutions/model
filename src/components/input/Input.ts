@@ -17,13 +17,13 @@ export abstract class Input<T> extends Component {
 		this.updateComplete.then(() => this.inputElement.value = this.fromValue(value))
 	}
 
+	protected abstract fromValue(value: T | undefined): string
+	protected abstract toValue(value: string): T | undefined
+
 	protected initialized() {
 		this.inputElement.addEventListener<any>('change', (e: CustomEvent<undefined, HTMLInputElement>) => {
 			this.change.dispatch(this.toValue(e.source.value))
 			this.value = this.value
 		})
 	}
-
-	protected abstract fromValue(value: T | undefined): string
-	protected abstract toValue(value: string): T | undefined
 }

@@ -20,21 +20,24 @@ export type DialogSize = 'large' | 'medium' | 'small'
 export class Dialog extends ComponentMixin(MwcDialog) {
 	@event() readonly finished!: IEvent<boolean>
 
-	primaryButtonClicked?: Handler
-	secondaryButtonClicked?: Handler
-	cancellationHandler?: Handler
-
-	initialFocusAttribute = 'data-focus'
-
-	@property()
-	get header() { return this.heading }
-	set header(value) { this.heading = value }
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false
 	@property({ type: Boolean }) primaryOnEnter = false
 	@property({ type: Boolean }) manualClose = false
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
+
+	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
+	@query('footer') private readonly footerElement!: HTMLElement
+
+	primaryButtonClicked?: Handler
+	secondaryButtonClicked?: Handler
+	cancellationHandler?: Handler
+	initialFocusAttribute = 'data-focus'
+
+	@property()
+	get header() { return this.heading }
+	set header(value) { this.heading = value }
 
 	protected get primaryElement() {
 		return this.querySelector('[slot="primaryAction"]')
@@ -43,9 +46,6 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	protected get secondaryElement() {
 		return this.querySelector('[slot="secondaryAction"]')
 	}
-
-	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
-	@query('footer') private readonly footerElement!: HTMLElement
 
 	static get styles() {
 		return css`

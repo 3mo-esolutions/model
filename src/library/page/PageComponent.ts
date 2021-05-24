@@ -8,9 +8,16 @@ export interface PageComponentConstructor<T extends PageParameters> extends Cons
 }
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
+	static authorizations = new Array<keyof MoDeL.Authorizations>();
+
 	['constructor']: PageComponentConstructor<T>
 
-	static authorizations = new Array<keyof MoDeL.Authorizations>()
+	protected readonly parameters = {} as T
+
+	constructor(parameters: T) {
+		super()
+		this.parameters = parameters as T
+	}
 
 	navigate() {
 		this.handleNavigation(NavigationMode.Navigate)
@@ -32,13 +39,6 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		this.remove()
 		new this.constructor(this.parameters).navigate()
 	}
-
-	constructor(parameters: T) {
-		super()
-		this.parameters = parameters as T
-	}
-
-	protected readonly parameters = {} as T
 
 	protected firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
