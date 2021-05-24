@@ -180,7 +180,7 @@ class TimeSpan {
 		return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds())
 	}
 
-	constructor(private date1: MoDate, private date2: MoDate) { }
+	constructor(private readonly date1: MoDate, private readonly date2: MoDate) { }
 
 	get milliseconds() {
 		return TimeSpan.getUTCTime(this.date1) - TimeSpan.getUTCTime(this.date2)

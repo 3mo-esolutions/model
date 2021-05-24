@@ -28,7 +28,7 @@ export class Option<TValue> extends ListItemCheckbox {
 	initialized() {
 		super.initialized()
 		if (!this.value) {
-			this.value = this.innerText ?? Array.from(this.parentElement.children).indexOf(this).toString()
+			this.value = this.innerText || Array.from(this.parentElement?.children ?? []).indexOf(this).toString()
 		}
 		this.onclick = () => {
 			if (this.default) {

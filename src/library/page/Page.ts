@@ -35,7 +35,7 @@ export class Page extends Component {
 	}
 
 	private handleTopAppBarDetails() {
-		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]') as HTMLElement
+		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]')
 		if (topAppBarDetails) {
 			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
 			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails)

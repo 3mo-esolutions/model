@@ -146,8 +146,8 @@ export class FieldSelect<T> extends Field<Value> {
 				this.open = true
 			}
 			if (navigationKeys.includes(e.key as KeyboardKey)) {
-				const focusedItem = this.menuOptions!.getFocusedItemIndex()
-				this.menuOptions?.focusItemAtIndex(focusedItem === -1 ? 0 : focusedItem)
+				const focusedItem = this.menuOptions?.getFocusedItemIndex()
+				this.menuOptions?.focusItemAtIndex(!focusedItem || focusedItem === -1 ? 0 : focusedItem)
 			}
 		})
 		this.addEventListener('defaultClick', () => this.resetSelection())
@@ -195,7 +195,7 @@ export class FieldSelect<T> extends Field<Value> {
 	protected getValueOptions(value: Value) {
 		const option = this.options.find(option => option.value === value)
 		return value instanceof Array && this.multiple
-			? value ? this.options.filter(o => value.map(v => v).includes(o.value)) : []
+			? this.options.filter(o => value.includes(o.value))
 			: option ? [option] : []
 	}
 
@@ -211,7 +211,7 @@ export class FieldSelect<T> extends Field<Value> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected toValue(_value: string) {
 		return this.selectedOptions instanceof Array
-			? this.selectedOptions?.map(o => o.value).filter(o => !!o)
+			? this.selectedOptions.map(o => o.value).filter(o => !!o)
 			: this.selectedOptions?.value
 	}
 
@@ -296,7 +296,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
 
-		const fetchedOptions = !this.optionsGetter || !this.fetchedData ? undefined : this.fetchedData
+		const fetchedOptions = this.fetchedData
 			.slice(0, FieldSelect.optionsRenderLimit)
 			.map(this.optionsGetter.renderOption)
 
@@ -320,9 +320,8 @@ export class FieldSelect<T> extends Field<Value> {
 function getOptionsText<T>(options: Array<Option<T>>) {
 	return options
 		.filter(o => !o.default)
-		?.map(o => o.text)
+		.map(o => o.text)
 		.join(', ')
-		?? ''
 }
 
 function optionGetterChanged(this: FieldSelect<unknown>) {

@@ -6,7 +6,7 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 
 	protected render = () => html`
 		<mo-dialog
-			header=${this.parameters.header ?? 'Prompt'}
+			header=${this.parameters.header}
 			primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
 			.primaryButtonClicked=${this.handle}
 		>
@@ -21,7 +21,7 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 				<mo-field-text
 					label=${this.parameters.inputLabel ?? 'Input'}
 					value=${this.input}
-					@input=${(e: CustomEvent<string>) => this.input = e.detail ?? ''}
+					@input=${(e: CustomEvent<string>) => this.input = e.detail}
 				></mo-field-text>
 			</mo-flex>
 		</mo-dialog>

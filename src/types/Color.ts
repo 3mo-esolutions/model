@@ -9,7 +9,7 @@ export class Color {
 	}
 
 	static isHex(color: string): color is Hex {
-		return color.charAt(0) === '#'
+		return color.startsWith('#')
 	}
 
 	static isRGB(color: string): color is Rgb {

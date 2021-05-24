@@ -1,7 +1,7 @@
 import { HTMLElementEvent, PureEvent } from '../../types'
 
 export function event(options?: EventInit) {
-	return (prototype: unknown, propertyKey: string) => {
+	return (prototype: unknown, propertyKey?: string) => {
 		if (propertyKey === undefined) {
 			return
 		}

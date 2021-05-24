@@ -11,7 +11,7 @@ type OperatingSystem =
 	| 'Linux'
 
 export default class ClientInfoHelper {
-	private static bowser = Bowser.getParser(window.navigator.userAgent)
+	private static readonly bowser = Bowser.getParser(window.navigator.userAgent)
 
 	static get browser() {
 		return this.bowser.getBrowserName() as Browser

@@ -12,7 +12,7 @@ export const application = <T extends Application>(applicationConstructor: Const
 		await Promise.all(providers.filter(p => p.afterAuthentication === false).map(p => p.provide()))
 		const application = new applicationConstructor()
 		window.document.body.appendChild(application)
-		window.document.title = Manifest.short_name ?? ''
+		window.document.title = Manifest.short_name || ''
 	}
 	process()
 }

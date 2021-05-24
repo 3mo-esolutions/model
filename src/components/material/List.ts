@@ -27,8 +27,8 @@ export class List extends ComponentMixin(MwcList) {
 		this.addEventListener('selected', (e: CustomEvent<{ index: MWCListIndex }>) => {
 			const index = e.detail.index
 			const value = index instanceof Set
-				? this.items.filter((_, i) => index.has(i)).map(item => item?.value ?? undefined)
-				: this.items[index]?.value ?? undefined
+				? this.items.filter((_, i) => index.has(i)).map(item => item.value)
+				: this.items[index]?.value || undefined
 			this.value = value
 			this.change.dispatch(value)
 		})

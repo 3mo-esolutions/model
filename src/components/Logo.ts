@@ -29,7 +29,7 @@ export class Logo extends Component {
 					height: 100%
 				}
 			</style>
-			<img src=${ifDefined(Logo.source?.replace('{{color}}', color))} />
+			<img src=${ifDefined(Logo.source.replace('{{color}}', color))} />
 		`
 	}
 

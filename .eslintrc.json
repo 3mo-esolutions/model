@@ -1,6 +1,9 @@
 {
 	"root": true,
 	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json"
+	},
 	"plugins": [
 		"@typescript-eslint",
 		"import",
@@ -62,12 +65,10 @@
 		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-empty-interface": "off",
-		// "@typescript-eslint/no-confusing-void-expression": "error",
-		// "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
-		// "@typescript-eslint/no-unnecessary-condition": "error",
-		// "@typescript-eslint/prefer-includes": "warn",
-		// "@typescript-eslint/prefer-readonly": "warn",
-		// "@typescript-eslint/prefer-string-starts-ends-with": "warn",
+		"@typescript-eslint/no-unnecessary-condition": "warn",
+		"@typescript-eslint/prefer-includes": "warn",
+		"@typescript-eslint/prefer-readonly": "warn",
+		"@typescript-eslint/prefer-string-starts-ends-with": "warn",
 		"@typescript-eslint/prefer-optional-chain": "error",
 		"@typescript-eslint/prefer-for-of": "warn",
 		"@typescript-eslint/member-delimiter-style": [

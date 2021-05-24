@@ -13,7 +13,7 @@ export class CounterButton extends Component {
 		<mo-button raised @click=${this.handleClick}>➕ Increase - ${this.count}</mo-button>
 	`
 
-	private handleClick = () => {
+	private readonly handleClick = () => {
 		this.count++
 		this.countChange.dispatch(this.count)
 	}

@@ -82,7 +82,7 @@ export class FormatHelper {
 			return 0
 		}
 		const valueArr = value.split(FormatHelper.storage.number.decimal.value)
-		const isNegative = value.charAt(0) === '-'
+		const isNegative = value.startsWith('-')
 		let result = valueArr[0].replace(/\D+/g, '')
 		if (valueArr.length === 2) {
 			result += `.${valueArr[1]}`

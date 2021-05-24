@@ -153,7 +153,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			}
 		})
 
-		const scrimElement = this.shadowRoot.querySelector('.mdc-dialog__scrim') as HTMLDivElement
+		const scrimElement = this.shadowRoot.querySelector<HTMLElement>('.mdc-dialog__scrim')
 		scrimElement?.addEventListener('click', async (e: MouseEvent) => {
 			e.stopImmediatePropagation()
 
@@ -196,7 +196,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	private handlePrimaryButtonClick = async () => {
+	private readonly handlePrimaryButtonClick = async () => {
 		try {
 			await this.primaryButtonClicked?.()
 			if (this.manualClose !== true) {
@@ -208,7 +208,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private handleSecondaryButtonClick = async () => {
+	private readonly handleSecondaryButtonClick = async () => {
 		if (!this.secondaryButtonClicked) {
 			this.close(false)
 			return

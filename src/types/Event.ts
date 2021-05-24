@@ -25,9 +25,9 @@ export class PureEvent<T = void> implements Event<T> {
 }
 
 export class HTMLElementEvent<T = void> implements Event<T> {
-	constructor(private target: HTMLElement, private eventName: string, private options?: EventInit) { }
+	constructor(private readonly target: HTMLElement, private readonly eventName: string, private readonly options?: EventInit) { }
 
-	private handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
+	private readonly handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
 
 	protected get handlers() {
 		return this.target.eventHandlers

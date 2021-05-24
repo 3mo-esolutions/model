@@ -25,7 +25,7 @@ export class ThemeHelper {
 				new Color('rgb(0, 119, 200)'),
 				(key: string, value: any) => key.length === 0 ? new Color(...value.colors) : value
 			)
-			this.value = this.value ?? this.defaultValue
+			this.value = this.value
 		}
 
 		private styleElement?: HTMLStyleElement

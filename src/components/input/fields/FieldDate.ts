@@ -67,7 +67,7 @@ export class FieldDate extends Field<Date | undefined> {
 			return this.calculateDateFromLocalDate(value)
 		}
 
-		if (value.charAt(0) === '+' || value.charAt(0) === '-') {
+		if (value.startsWith('+') || value.startsWith('-')) {
 			return this.calculateDateFromOperation(value)
 		}
 
@@ -80,7 +80,7 @@ export class FieldDate extends Field<Date | undefined> {
 			return keywordDate
 		}
 
-		return new Date(value ?? new Date)
+		return new Date(value || new Date)
 	}
 
 	private calculateDateFromLocalDate(string: string) {

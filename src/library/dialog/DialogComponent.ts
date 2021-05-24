@@ -53,7 +53,7 @@ export abstract class DialogComponent<T extends DialogParameters = void> extends
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
 		this.isOpen = true
-		this.dialog?.finished.subscribe(result => this.closed.dispatch(result))
+		this.dialog.finished.subscribe(result => this.closed.dispatch(result))
 	}
 
 	protected executePrimaryAction = () => this.dialog?.['handlePrimaryButtonClick']()

@@ -13,7 +13,7 @@ class PwaHelper {
 	}
 
 	async registerServiceWorker() {
-		if (!navigator.serviceWorker?.controller) {
+		if (!navigator.serviceWorker.controller) {
 			return
 		}
 

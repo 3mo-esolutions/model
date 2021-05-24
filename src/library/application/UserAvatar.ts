@@ -27,7 +27,7 @@ export class UserAvatar extends Component {
 		}
 	}
 
-	private authenticate = () => MoDeL.application.authenticator?.confirm()
+	private readonly authenticate = () => MoDeL.application.authenticator?.confirm()
 }
 
 declare global {

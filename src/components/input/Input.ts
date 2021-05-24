@@ -11,7 +11,7 @@ export abstract class Input<T> extends Component {
 
 	protected _value: T | undefined
 	@property()
-	get value(): T | undefined { return this.toValue(this.inputElement?.value ?? '') ?? this._value }
+	get value(): T | undefined { return this.toValue(this.inputElement?.value || '') ?? this._value }
 	set value(value: T | undefined) {
 		this._value = value
 		this.updateComplete.then(() => this.inputElement.value = this.fromValue(value))

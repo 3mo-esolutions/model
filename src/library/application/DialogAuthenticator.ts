@@ -33,7 +33,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 
 	protected async initialized() {
 		window.addEventListener('keypress', async event => {
-			const isAuthenticated = DialogAuthenticator.authenticatedUser !== undefined
+			const isAuthenticated = DialogAuthenticator.authenticatedUser.value !== undefined
 			if (event.key === KeyboardKey.Enter && isAuthenticated === false) {
 				await this.dialog?.['handlePrimaryButtonClick']()
 			}
@@ -45,7 +45,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value ?? false
+	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value
 	@property() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
 	@property() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
 
@@ -78,7 +78,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			<mo-flex alignItems='center' minWidth='350px'>
 				<mo-flex height='100px' alignItems='center' gap='10px'>
 					<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
-					<h2>${Manifest.short_name ?? 'Welcome'}</h2>
+					<h2>${Manifest.short_name || 'Welcome'}</h2>
 				</mo-flex>
 				<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
 					<mo-field-text label='Username'

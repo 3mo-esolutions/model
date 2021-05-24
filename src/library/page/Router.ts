@@ -16,7 +16,7 @@ class Router {
 		this.navigated.dispatch(currentPage)
 	}
 
-	private routes = new Map<string, PageComponentConstructor<any>>()
+	private readonly routes = new Map<string, PageComponentConstructor<any>>()
 
 	private get routesArray() { return Array.from(this.routes.entries()) }
 
@@ -62,8 +62,8 @@ class Router {
 
 		const params = new Route(routerPath).match(relativePath) as Record<string, string | number>
 		Object.getOwnPropertyNames(params).forEach(paramName => {
-			const paramNumber = parseInt(params[paramName]?.toString())
-			if (!isNaN(paramNumber)) {
+			const paramNumber = Number(params[paramName].toString())
+			if (!Number.isNaN(paramNumber)) {
 				params[paramName] = paramNumber
 			}
 		})

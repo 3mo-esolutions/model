@@ -11,7 +11,6 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 		static observers: Map<PropertyKey, Observer<any>>
 
 		readonly shadowRoot!: ShadowRoot
-		readonly parentElement!: HTMLElement
 
 		protected firstUpdated(props: PropertyValues) {
 			super.firstUpdated(props)
@@ -41,7 +40,7 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 		}
 
 		get isFirstChild() {
-			return this.parentElement.firstChild === this
+			return this.parentElement?.firstChild === this
 		}
 
 		removeChildren() {

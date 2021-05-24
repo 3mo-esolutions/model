@@ -32,17 +32,17 @@ export class PageHost extends Component {
 		}
 	}
 
-	private navigateToPath = (relativePath: string) => {
+	private readonly navigateToPath = (relativePath: string) => {
 		const pageComponent = Router.getPage(relativePath)
 		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: '404' })
 		page.navigate()
 	}
 
-	private navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
+	private readonly navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
 		const relativePath = Router.getPath(page)
 		const url = window.location.origin + relativePath
 
-		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent?.['parameters']) === JSON.stringify(page['parameters'])) {
+		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent['parameters']) === JSON.stringify(page['parameters'])) {
 			return
 		}
 
@@ -74,7 +74,7 @@ export class PageHost extends Component {
 		}
 	}
 
-	private navigateToHomePage = () => {
+	private readonly navigateToHomePage = () => {
 		if (!Router.HomePageConstructor) {
 			return
 		}

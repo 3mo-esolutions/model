@@ -5,16 +5,16 @@ class ConfettiParticle {
 		private context: CanvasRenderingContext2D,
 		public width: number,
 		public height: number,
-		private lightness = 50,
-		private diameter = Math.random() * 6 + 4,
+		private readonly lightness = 50,
+		private readonly diameter = Math.random() * 6 + 4,
 		private tilt = 0,
-		private tiltAngleIncrement = Math.random() * 0.1 + 0.04,
+		private readonly tiltAngleIncrement = Math.random() * 0.1 + 0.04,
 		private tiltAngle = 0,
-		private particleSpeed = window.innerHeight * 0.01,
+		private readonly particleSpeed = window.innerHeight * 0.01,
 		private waveAngle = 0,
 		private x = 0,
 		private y = 0,
-		private color = Math.floor(Math.random() * 360)
+		private readonly color = Math.floor(Math.random() * 360)
 	) {
 		this.reset()
 	}
