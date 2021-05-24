@@ -17,6 +17,8 @@ export class Logo extends Component {
 
 	protected render() {
 		const color = this.color.includes('var(') ? getComputedStyle(MoDeL.application).getPropertyValue(this.colorPropertyName) : this.color
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		const source = Logo.source?.replace('{{color}}', color)
 		return html`
 			<style>
 				:host {
@@ -29,7 +31,7 @@ export class Logo extends Component {
 					height: 100%
 				}
 			</style>
-			<img src=${ifDefined(Logo.source.replace('{{color}}', color))} />
+			<img src=${ifDefined(source)} />
 		`
 	}
 

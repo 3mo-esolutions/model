@@ -48,7 +48,11 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	@state() private manualClose = false
-	@state({ observer: optionGetterChanged }) protected optionsGetter: OptionsGetter<T> | undefined
+	@state({
+		observer: function (this: FieldSelect<T>) {
+			this.fetchOptions()
+		}
+	}) protected optionsGetter: OptionsGetter<T> | undefined
 
 	@element protected readonly menuOptions?: Menu | null
 
@@ -292,7 +296,8 @@ export class FieldSelect<T> extends Field<Value> {
 			return
 		}
 
-		this.fetchedData = await this.optionsGetter.fetchData()
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		this.fetchedData = await this.optionsGetter.fetchData() ?? []
 		this.dataFetch.dispatch(this.fetchedData)
 
 		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
@@ -323,10 +328,6 @@ function getOptionsText<T>(options: Array<Option<T>>) {
 		.filter(o => !o.default)
 		.map(o => o.text)
 		.join(', ')
-}
-
-function optionGetterChanged(this: FieldSelect<unknown>) {
-	this.fetchOptions()
 }
 
 declare global {
