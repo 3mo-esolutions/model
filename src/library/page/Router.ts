@@ -62,7 +62,8 @@ class Router {
 
 		const params = new Route(routerPath).match(relativePath) as Record<string, string | number>
 		Object.getOwnPropertyNames(params).forEach(paramName => {
-			const paramNumber = Number(params[paramName].toString())
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			const paramNumber = Number(params[paramName]?.toString())
 			if (!Number.isNaN(paramNumber)) {
 				params[paramName] = paramNumber
 			}
