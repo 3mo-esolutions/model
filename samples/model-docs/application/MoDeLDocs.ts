@@ -8,7 +8,7 @@ export class MoDeLDocs extends Application {
 	constructor() {
 		super()
 		Logo.source = '/assets/3mo.svg'
-		Drawer.IsDocked.value = true
+		Drawer.isDocked.value = true
 	}
 
 	get drawerTemplate() {
