@@ -1,4 +1,4 @@
-import { ComponentMixin, render, component, html } from '..'
+import { ComponentMixin, render, component, html, css } from '..'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
 
 type Action = () => void
@@ -16,10 +16,24 @@ type Action = () => void
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
+	static get styles() {
+		return css`
+			${super.styles}
+
+			.mdc-snackbar__surface {
+				background-color: var(--mo-color-foreground);
+			}
+
+			.mdc-snackbar__label {
+				color: rgba(var(--mo-color-background-base), 0.87)
+			}
+		`
+	}
+
 	static show(message: string, actionText = '', action: Action = () => void 0) {
 		render(html`
 			<mo-button slot='action' @click=${action} ?hidden=${actionText === ''}>${actionText}</mo-button>
-			<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='white'></mo-icon-button>
+			<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='var(--mo-color-background)'></mo-icon-button>
 		`, this.instance)
 
 		this.instance.timeoutMs = 5000
