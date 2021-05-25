@@ -20,6 +20,10 @@ export class IconButton extends ComponentMixin(MwcIconButton) {
 		this.style.setProperty('--mdc-icon-size', value)
 	}
 
+	protected initialized() {
+		this.buttonElement.setAttribute('part', 'button')
+	}
+
 	static get styles() {
 		return css`
 			${super.styles}
