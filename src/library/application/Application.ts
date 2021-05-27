@@ -144,7 +144,7 @@ export abstract class Application extends Component {
 
 						<mo-drawer-list open root>
 							${this.drawerFooterTemplate}
-							<mo-drawer-item icon='logout' ?hidden=${!this.authenticator || !this.authenticatedUser} @click=${this.unauthenticate}>Logout</mo-drawer-item>
+							<mo-drawer-item interactive disabled icon='logout' ?hidden=${!this.authenticator || !this.authenticatedUser} @click=${this.unauthenticate}>Logout</mo-drawer-item>
 						</mo-drawer-list>
 					</mo-flex>
 
