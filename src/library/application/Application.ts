@@ -8,7 +8,7 @@ export abstract class Application extends Component {
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
 	static readonly providers = new Set<ApplicationProvider>()
 
-	abstract get drawerTemplate(): TemplateResult
+	protected abstract get drawerTemplate(): TemplateResult
 
 	@property() pageTitle?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
