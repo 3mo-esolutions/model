@@ -8,7 +8,7 @@ export class Card extends Component {
 	@property() gap?: string
 	@property({ type: Array }) gapElements: Array<Element> = this.childElements.filter(c => !c.slot)
 
-	protected render() {
+	protected override render() {
 		return html`
 			<style>
 				:host {

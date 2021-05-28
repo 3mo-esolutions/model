@@ -7,7 +7,7 @@ export class Logo extends Component {
 
 	@property() color = 'var(--mo-color-accessible)'
 
-	protected initialized() {
+	protected override initialized() {
 		// Without this, the color of the logo isn't computed.
 		// My guess is that the "computed styles" become available
 		// after delegating to the event loop
@@ -15,7 +15,7 @@ export class Logo extends Component {
 		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
-	protected render() {
+	protected override render() {
 		const color = this.color.includes('var(') ? getComputedStyle(MoDeL.application).getPropertyValue(this.colorPropertyName) : this.color
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const source = Logo.source?.replace('{{color}}', color)

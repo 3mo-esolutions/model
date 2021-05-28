@@ -6,8 +6,8 @@ import { Field } from '../Field'
 export class FieldNumber extends Field<number> {
 	// For lit-analyzer to solve generic error
 	@property({ type: Number, reflect: true })
-	get value(): number | undefined { return super.value }
-	set value(value: number | undefined) { super.value = value }
+	override get value(): number | undefined { return super.value }
+	override set value(value: number | undefined) { super.value = value }
 
 	protected fromValue(value: number | undefined): string {
 		return typeof value === 'number' ? FormatHelper.number(value) : ''

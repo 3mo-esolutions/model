@@ -8,11 +8,11 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 	class extends StyleMixin(Constructor) implements IComponent {
 		static observers: Map<PropertyKey, Observer<any>>
 
-		['constructor']: ComponentConstructor
+		override ['constructor']: ComponentConstructor
 
-		readonly shadowRoot!: ShadowRoot
+		override readonly shadowRoot!: ShadowRoot
 
-		protected firstUpdated(props: PropertyValues) {
+		protected override firstUpdated(props: PropertyValues) {
 			super.firstUpdated(props)
 			this.initialized()
 		}
@@ -21,7 +21,7 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 
 		protected uninitialized() { }
 
-		disconnectedCallback() {
+		override disconnectedCallback() {
 			super.disconnectedCallback()
 			this.uninitialized()
 		}

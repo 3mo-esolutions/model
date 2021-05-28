@@ -10,9 +10,9 @@ export class Chip extends Button {
 
 	@property({ type: Boolean }) hasDelete = false
 
-	unelevated = true
+	override unelevated = true
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 

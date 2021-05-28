@@ -12,8 +12,8 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		displayBeforeHidden?: CSS.Property.Display
 
 		@property({ type: Boolean })
-		get hidden() { return this.display === 'none' }
-		set hidden(value) {
+		override get hidden() { return this.display === 'none' }
+		override set hidden(value) {
 			if (value) {
 				this.displayBeforeHidden = this.display
 			}

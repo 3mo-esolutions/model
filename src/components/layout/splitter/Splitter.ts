@@ -59,11 +59,11 @@ export class Splitter extends Component {
 		}
 	}
 
-	initialized() {
+	protected override initialized() {
 		this.items = Array.from(this.querySelectorAll('mo-splitter-item')).filter(item => item.parentElement === this)
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: flex;

@@ -11,7 +11,7 @@ export const InputMixin = <T extends Constructor<LitElement>, TValue>(Constructo
 
 		@query('input') private readonly inputElement!: HTMLElement
 
-		protected firstUpdated(changedProperties: PropertyValues) {
+		protected override firstUpdated(changedProperties: PropertyValues) {
 			super.firstUpdated(changedProperties)
 			this.inputElement.addEventListener('change', (e) => {
 				e.stopImmediatePropagation()

@@ -5,7 +5,7 @@ export class Section extends Component {
 	@property() header = ''
 	@property() gap?: string
 
-	protected render() {
+	protected override render() {
 		return html`
 			<style>
 				:host {

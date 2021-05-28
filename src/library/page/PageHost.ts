@@ -92,7 +92,7 @@ export class PageHost extends Component {
 		}
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				padding-top: var(--mo-top-app-bar-height);

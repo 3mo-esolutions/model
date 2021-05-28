@@ -21,10 +21,10 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 	@event() readonly change!: IEvent<string>
 	@event() readonly input!: IEvent<string>
 
-	@property() icon!: MaterialIcon
-	@property() iconTrailing!: MaterialIcon
+	@property() override icon!: MaterialIcon
+	@property() override iconTrailing!: MaterialIcon
 
-	static get styles() {
+	static override get styles() {
 		return [
 			...super.styles,
 			css`
@@ -36,7 +36,7 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 		]
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.formElement.addEventListener('change', (e) => {
 			e.stopImmediatePropagation()
 			this.change.dispatch(this.value)

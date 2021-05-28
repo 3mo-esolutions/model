@@ -33,7 +33,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	primaryButtonClicked?: Handler
 	secondaryButtonClicked?: Handler
 	cancellationHandler?: Handler
-	initialFocusAttribute = 'data-focus'
+	override initialFocusAttribute = 'data-focus'
 
 	@property()
 	get header() { return this.heading }
@@ -47,7 +47,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		return this.querySelector('[slot="secondaryAction"]')
 	}
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 
@@ -114,7 +114,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.createHeaderToolsSlot()
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
@@ -225,7 +225,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	async close(success = false) {
+	override async close(success = false) {
 		if (success === false) {
 			await this.cancellationHandler?.()
 		}

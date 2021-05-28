@@ -41,7 +41,7 @@ export abstract class Application extends Component {
 		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
 	}
 
-	protected async initialized() {
+	protected override async initialized() {
 		await this.authenticate()
 
 		const providers = Array.from(Application.providers.keys())
@@ -69,7 +69,7 @@ export abstract class Application extends Component {
 		this.drawerOpen = false
 	}
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			:host {
 				display: flex;
@@ -109,7 +109,7 @@ export abstract class Application extends Component {
 		`
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
 				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>

@@ -16,7 +16,7 @@ type Action = () => void
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 

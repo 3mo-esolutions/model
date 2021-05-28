@@ -8,7 +8,7 @@ import { FieldTextBase } from './FieldTextBase'
 export class FieldText extends FieldTextBase {
 	@property({ type: Number, reflect: true, observer: counterChanged }) counter?: number
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.inputElement.addEventListener('input', () => this.requestUpdate())
 	}

@@ -50,7 +50,7 @@ export class Flex extends Component {
 
 	@property({ observer: applyGap }) gap?: string
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: flex;

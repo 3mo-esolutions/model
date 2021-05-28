@@ -8,8 +8,8 @@ export abstract class FieldTextBase extends Field<string> {
 	@event() readonly input!: IEvent<string>
 
 	@property({ reflect: true })
-	get value(): string | undefined { return super.value }
-	set value(value: string | undefined) { super.value = value }
+	override get value(): string | undefined { return super.value }
+	override set value(value: string | undefined) { super.value = value }
 
 
 	protected fromValue(value: string | undefined): string {
@@ -20,7 +20,7 @@ export abstract class FieldTextBase extends Field<string> {
 		return value ?? ''
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.registerInputEventListener()
 	}

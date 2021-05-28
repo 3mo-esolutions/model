@@ -17,7 +17,7 @@ import { MaterialIcon } from '../../types'
  */
 @component('mo-button')
 export class Button extends ComponentMixin(MwcButton) {
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 
@@ -32,7 +32,7 @@ export class Button extends ComponentMixin(MwcButton) {
 		`
 	}
 
-	@property() icon!: MaterialIcon
+	@property() override icon!: MaterialIcon
 
 	protected firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)

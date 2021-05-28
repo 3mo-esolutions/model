@@ -13,11 +13,11 @@ import { Fab as MwcFab } from '@material/mwc-fab'
  */
 @component('mo-fab')
 export class Fab extends ComponentMixin(MwcFab) {
-	@property() icon!: MaterialIcon
+	@property() override icon!: MaterialIcon
 	@property({ type: Boolean, reflect: true }) scrollHide = false
 	lastScrollElementTop = 0
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 
@@ -40,7 +40,7 @@ export class Fab extends ComponentMixin(MwcFab) {
 		}
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.previousElementSibling?.addEventListener('scroll', (e: Event) => {
 			const targetElement = e.composedPath()[0] as HTMLElement
 			const scrollTop = targetElement.scrollTop

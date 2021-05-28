@@ -12,7 +12,7 @@ export class GroupBox extends Component {
 	@property() direction: CSSDirection = 'vertical'
 	@property({ type: Array }) gapElements: Array<Element> = this.childElements.filter(e => !e.slot)
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: block;

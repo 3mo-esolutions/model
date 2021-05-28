@@ -19,9 +19,9 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
 @component('mo-tab')
 export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value!: string
-	@property({ reflect: true }) icon!: MaterialIcon
+	@property({ reflect: true }) override icon!: MaterialIcon
 
-	protected initialized() {
+	protected override initialized() {
 		if (this.textContent) {
 			this.label = this.textContent
 		}

@@ -10,10 +10,10 @@ export class FieldDate extends Field<Date | undefined> {
 
 	// For lit-analyzer to solve generic error
 	@property({ type: Object })
-	get value() { return super.value }
-	set value(value) { super.value = value }
+	override get value() { return super.value }
+	override set value(value) { super.value = value }
 
-	protected render() {
+	protected override render() {
 		return html`
 			${super.render()}
 			<mo-menu

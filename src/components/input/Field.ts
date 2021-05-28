@@ -16,7 +16,7 @@ export abstract class Field<T> extends Input<T> {
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			:host {
 				--mo-field-height: 45px;
@@ -145,7 +145,7 @@ export abstract class Field<T> extends Input<T> {
 		`
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			<slot name='leading'></slot>
 			<div part='container'>
@@ -168,8 +168,8 @@ export abstract class Field<T> extends Input<T> {
 		`
 	}
 
-	blur = () => this.inputElement.blur()
-	focus = () => this.inputElement.focus()
+	override blur = () => this.inputElement.blur()
+	override focus = () => this.inputElement.focus()
 	select = () => this.inputElement.select()
 	setSelectionRange = (...args: Parameters<typeof HTMLInputElement.prototype.setSelectionRange>) => this.inputElement.setSelectionRange(...args)
 	setRangeText = (...args: Parameters<typeof HTMLInputElement.prototype.setRangeText>) => this.inputElement.setRangeText(...args)

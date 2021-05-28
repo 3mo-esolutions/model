@@ -5,7 +5,7 @@ import { User } from '../../types'
 export class UserAvatar extends Component {
 	@property({ type: Object }) user?: User
 
-	protected render = () => {
+	protected override render = () => {
 		if (this.user) {
 			const initials = this.user.name.split(' ').map((s, i, array) => i === array.length - 1 || i === 0 ? s.charAt(0) : '')
 			return html`

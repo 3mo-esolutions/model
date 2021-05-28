@@ -48,7 +48,7 @@ export class TabBar extends ComponentMixin(MwcTabBar) {
 		this.selectedTab?.activate({} as ClientRect)
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.tabsSlot.addEventListener('slotchange', () => {
 			this.value = this.value ?? this.getAttribute('value') ?? undefined
 			valueChanged.call(this)

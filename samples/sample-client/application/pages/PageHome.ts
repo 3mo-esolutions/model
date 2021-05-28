@@ -4,7 +4,7 @@ import { PageComponent, component, html, homePage, route, Snackbar } from '@3mo/
 @route('/home')
 @component('sample-page-home')
 export class PageHome extends PageComponent {
-	render = () => html`
+	protected override render = () => html`
 		<mo-page header='Home' fullHeight>
 			<style>
 				h1 {

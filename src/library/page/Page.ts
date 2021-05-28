@@ -13,7 +13,7 @@ export class Page extends Component {
 		}
 	}
 
-	connectedCallback() {
+	override connectedCallback() {
 		super.connectedCallback()
 		this.header = this.header
 	}
@@ -26,11 +26,11 @@ export class Page extends Component {
 		this.style.height = value ? 'calc(100% - 5px)' : ''
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.handleTopAppBarDetails()
 	}
 
-	protected uninitialized() {
+	protected override uninitialized() {
 		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
 	}
 
@@ -43,7 +43,7 @@ export class Page extends Component {
 		MoDeL.application.topAppBarProminent = !!topAppBarDetails
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: inherit;

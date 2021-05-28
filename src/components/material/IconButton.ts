@@ -9,22 +9,22 @@ import { IconButton as MwcIconButton } from '@material/mwc-icon-button'
  */
 @component('mo-icon-button')
 export class IconButton extends ComponentMixin(MwcIconButton) {
-	@property() icon!: MaterialIcon
+	@property() override icon!: MaterialIcon
 
 	@property({ type: Boolean, reflect: true }) small = false
 
 	@property()
-	get fontSize() { return super.fontSize }
-	set fontSize(value) {
+	override get fontSize() { return super.fontSize }
+	override set fontSize(value) {
 		super.fontSize = value
 		this.style.setProperty('--mdc-icon-size', value)
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.buttonElement.setAttribute('part', 'button')
 	}
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 

@@ -26,7 +26,7 @@ export class Grid extends Component {
 	get autoColumns() { return this.style.gridAutoColumns }
 	set autoColumns(value) { this.style.gridAutoColumns = value }
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: grid;

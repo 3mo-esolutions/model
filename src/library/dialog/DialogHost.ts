@@ -11,7 +11,7 @@ export class DialogHost extends Component {
 			.filter(element => element instanceof DialogComponent) as Array<DialogComponent>
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.registerKeyListeners()
 	}
 

@@ -7,12 +7,12 @@ export class ColorPicker extends Input<Color> {
 	@event() private readonly input!: IEvent<Color>
 
 	@property({ type: Object })
-	get value() { return this._value }
-	set value(value) { this._value = value }
+	override get value() { return this._value }
+	override set value(value) { this._value = value }
 
 	@property({ type: Array }) presets?: Array<Color>
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.inputElement.addEventListener<any>('input', (e: CustomEvent<undefined, HTMLInputElement>) => {
 			e.stopImmediatePropagation()
@@ -20,7 +20,7 @@ export class ColorPicker extends Input<Color> {
 		})
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			<style>
 				:host {

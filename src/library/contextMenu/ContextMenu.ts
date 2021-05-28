@@ -3,7 +3,7 @@ import { ContextMenuHost } from '.'
 
 @component('mo-context-menu')
 export class ContextMenu extends Component {
-	protected initialized() {
+	protected override initialized() {
 		this.parentElement?.addEventListener('contextmenu', (e: MouseEvent) => this.open(e))
 	}
 

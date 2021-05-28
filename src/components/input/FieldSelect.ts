@@ -60,8 +60,8 @@ export class FieldSelect<T> extends Field<Value> {
 
 	private programmaticSelection = false
 
-	get value() { return super.value }
-	set value(value) {
+	override get value() { return super.value }
+	override set value(value) {
 		value = (value instanceof Array
 			? value.map(v => v.toString())
 			: value?.toString()) as PluralizeUnion<string>
@@ -99,7 +99,7 @@ export class FieldSelect<T> extends Field<Value> {
 		return this.menuOptions?.selected as Array<Option<T>> | Option<T> | undefined
 	}
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 
@@ -134,7 +134,7 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.value = this.value
 		this.registerEventListeners()
@@ -176,7 +176,7 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			${super.render()}
 			<mo-menu

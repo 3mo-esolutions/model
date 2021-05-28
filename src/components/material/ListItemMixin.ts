@@ -38,7 +38,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 			this.renderMetaIcon()
 		}
 
-		render() {
+		override render() {
 			this.renderIcon()
 			this.renderMetaIcon()
 			return super.render() as TemplateResult

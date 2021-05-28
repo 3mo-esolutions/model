@@ -30,8 +30,8 @@ export class ThemeHelper {
 			this.value = this.value
 		}
 
-		get value() { return super.value }
-		set value(value) {
+		override get value() { return super.value }
+		override set value(value) {
 			super.value = value
 			this.styleElement = DocumentHelper.injectCSS(css`
 				#application {

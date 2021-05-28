@@ -3,7 +3,7 @@ import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-password')
 export class FieldPassword extends FieldTextBase {
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.inputElement.type = 'password'
 	}

@@ -4,7 +4,7 @@ import { state, component, DialogComponent, html } from '../../library'
 export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string, handler: (input: string) => void }> {
 	@state() private input = this.parameters.value ?? ''
 
-	protected render = () => html`
+	protected override render = () => html`
 		<mo-dialog
 			header=${this.parameters.header}
 			primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}

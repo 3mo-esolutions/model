@@ -15,13 +15,13 @@ export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) =>
 			}
 		}
 
-		protected render = () => html`
+		protected override render = () => html`
 			<mwc-formfield label=${this.label} style='height: 100%;'>
 				${super.render()}
 			</mwc-formfield>
 		`
 
-		protected firstUpdated(changedProperties: PropertyValues) {
+		protected override firstUpdated(changedProperties: PropertyValues) {
 			super.firstUpdated(changedProperties)
 			Object.defineProperty(this.formFieldElement, 'input', {
 				get: function () { return this.querySelector('input') }

@@ -27,7 +27,7 @@ export class SplitterItem extends Component {
 		}
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				display: flex;

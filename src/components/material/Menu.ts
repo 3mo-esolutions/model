@@ -32,7 +32,7 @@ import { Menu as MwcMenu } from '@material/mwc-menu'
 export class Menu extends ComponentMixin(MwcMenu) {
 	@property({ type: Boolean, reflect: true }) manualClose = false
 
-	protected initialized() {
+	protected override initialized() {
 		this.overrideClosingLogic()
 	}
 

@@ -6,7 +6,7 @@ import { FieldNumber } from './FieldNumber'
 export class FieldAmount extends FieldNumber {
 	@property() currency = FormatHelper.storage.currency.symbol.value
 
-	protected fromValue(value: number | undefined): string {
+	protected override fromValue(value: number | undefined): string {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
 	}
 

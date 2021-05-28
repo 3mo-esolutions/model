@@ -40,7 +40,7 @@ export class ContextMenuHost extends Component {
 		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			mo-menu {
 				--mdc-menu-z-index: 10;

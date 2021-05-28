@@ -28,14 +28,14 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	async confirm() {
+	override async confirm() {
 		const isAuthenticated = await this.isAuthenticated()
 		if (isAuthenticated !== true) {
 			await super.confirm()
 		}
 	}
 
-	protected async initialized() {
+	protected override async initialized() {
 		window.addEventListener('keypress', async event => {
 			const isAuthenticated = DialogAuthenticator.authenticatedUser.value !== undefined
 			if (event.key === KeyboardKey.Enter && isAuthenticated === false) {
@@ -49,7 +49,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			mo-dialog {
 				--mdc-dialog-scrim-color: var(--mo-color-background)

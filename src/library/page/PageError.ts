@@ -16,7 +16,7 @@ export class PageError extends PageComponent<{ error: HttpError }> {
 		['403', { emoji: '🔒', message: 'Access Denied' }],
 	])
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			h1 {
 				font-size: 60px;

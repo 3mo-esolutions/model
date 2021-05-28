@@ -92,11 +92,11 @@ export class Confetti extends Component {
 
 	private get canvasParticleContext() { return this.canvasParticle.getContext('2d') as CanvasRenderingContext2D }
 
-	protected initialized() {
+	protected override initialized() {
 		this.display = 'none'
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				z-index: 11;

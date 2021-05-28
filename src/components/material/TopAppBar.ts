@@ -14,7 +14,7 @@ import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
  */
 @component('mo-top-app-bar')
 export class TopAppBar extends ComponentMixin(MwcTopAppBar) {
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 

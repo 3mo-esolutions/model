@@ -2,7 +2,7 @@ import { component, html, Component } from '../../library'
 
 @component('mo-scroll')
 export class Scroll extends Component {
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				/* 'overlay' is not supported in firefox so it fallbacks to auto, otherwise overlay is set */

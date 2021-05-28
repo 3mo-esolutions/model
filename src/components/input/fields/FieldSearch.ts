@@ -7,11 +7,11 @@ export class FieldSearch extends FieldTextBase {
 
 	private timerId = -1
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 	}
 
-	protected registerInputEventListener() {
+	protected override registerInputEventListener() {
 		this.inputElement.addEventListener('input', this.inputEventHandler)
 	}
 

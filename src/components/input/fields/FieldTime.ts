@@ -3,7 +3,7 @@ import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-time')
 export class FieldTime extends FieldTextBase {
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.inputElement.type = 'time'
 	}

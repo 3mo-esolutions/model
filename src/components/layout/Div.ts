@@ -2,7 +2,7 @@ import { component, html, Component } from '../../library'
 
 @component('mo-div')
 export class Div extends Component {
-	protected render = () => html`<slot></slot>`
+	protected override render = () => html`<slot></slot>`
 }
 
 declare global {

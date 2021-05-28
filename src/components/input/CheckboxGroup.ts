@@ -6,7 +6,7 @@ import { CSSDirection } from '../../types'
 export class CheckboxGroup extends Checkbox {
 	@property() direction: CSSDirection = 'vertical'
 
-	protected initialized() {
+	protected override initialized() {
 		this.addEventListener('change', () => this.childrenValue = this.value)
 		this.checkboxes.forEach(checkbox => checkbox.addEventListener('change', () => this.value = this.childrenValue))
 	}

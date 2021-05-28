@@ -6,13 +6,13 @@ import { FieldNumber } from './FieldNumber'
 export class FieldPercentage extends FieldNumber {
 	@property() percentageSign = '%'
 
-	protected initialized() {
+	protected override initialized() {
 		super.initialized()
 		this.inputElement.min = '0'
 		this.inputElement.max = '100'
 	}
 
-	protected fromValue(value: number | undefined): string {
+	protected override fromValue(value: number | undefined): string {
 		return value ? FormatHelper.percent(value) : '0'
 	}
 

@@ -12,7 +12,7 @@ type Parameters = {
 
 @component('mo-dialog-default')
 export class DialogDefault extends DialogComponent<Parameters> {
-	protected render() {
+	protected override render() {
 		return html`
 			<mo-dialog
 				header=${this.parameters.header}

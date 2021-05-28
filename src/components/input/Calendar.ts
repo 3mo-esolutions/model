@@ -48,7 +48,7 @@ export class Calendar extends Component {
 		this.navigatingMonth = Month.January
 	}
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			:host {
 				--mo-calendar-max-width: 325px;
@@ -119,7 +119,7 @@ export class Calendar extends Component {
 		`
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			<mo-flex width='var(--mo-calendar-max-width)' minHeight='var(--mo-calendar-min-height)' alignItems='center' justifyContent='center'>
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' width='100%'>

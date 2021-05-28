@@ -28,7 +28,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 	static get type() { return this.instance.type }
 	static set open(value: boolean) { this.instance.open = value }
 
-	static get styles() {
+	static override get styles() {
 		return css`
 			${super.styles}
 
@@ -75,7 +75,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		`
 	}
 
-	@property() type: DrawerType = 'modal'
+	@property() override type: DrawerType = 'modal'
 
 	constructor() {
 		super()

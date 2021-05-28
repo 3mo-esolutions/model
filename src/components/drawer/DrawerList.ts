@@ -19,7 +19,7 @@ export class DrawerList extends Component {
 		return this.childElements as Array<DrawerItem | DrawerList>
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		for (const item of this.items) {
 			if (item instanceof DrawerItem) {
 				item.selectionChange.subscribe(() => this.open = true)
@@ -27,7 +27,7 @@ export class DrawerList extends Component {
 		}
 	}
 
-	protected render = () => html`
+	protected override render = () => html`
 		<style>
 			:host {
 				--drawer-item-depth-padding: 18px;
