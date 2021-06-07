@@ -81,7 +81,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 					<h2>${Manifest.short_name || 'Welcome'}</h2>
 				</mo-flex>
 				<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
-					<mo-field-text label='Username'
+					<mo-field-text data-focus label='Username'
 						.value=${this.username}
 						@input=${(e: CustomEvent<string>) => this.username = e.detail}
 					></mo-field-text>
