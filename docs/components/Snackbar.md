@@ -7,8 +7,8 @@
 ## MoDeL
 
 ### Usage
-- Use dialogs if a user action is necassary if input validation, e.g a dialog with a header of "Barcode missing", that scans the barcode before the process can be proceed.
-- In forms, inline error validations shall be used. Snackbar could support with either a message such as "Inputs were invalid", "The data could not be processed", "Network error".
+- Use dialogs when a user action is necessary, e.g a dialog with a header of "Barcode missing", that scans the barcode before the process can be proceed.
+- In forms, inline error validations shall be used. Snackbar could support with a message summarizing the input validation, such as "Inputs were invalid", "The data could not be processed" and "Network error".
 
 ### Design
-- As designed in the [Material Dark Theme Guidlines](https://material.io/design/color/dark-theme.html#custom-application) the background and foreground colors and has been overwritten in the dark mode.
+- As designed in the [Material Dark Theme Guidelines](https://material.io/design/color/dark-theme.html#custom-application) the background and foreground colors has been overwritten in the dark mode.
