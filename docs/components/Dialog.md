@@ -16,13 +16,13 @@
 
 ## API
 - The min-width, max-width and min-height of the Dialog can be overwritten via the CSS properties `--mdc-dialog-max-width`, `--mdc-dialog-min-width`, `--mdc-dialog-min-height`
-The `size` (`small` | `medium`| `large`) property act as presets for these CSS properties
+The `size` (`small` | `medium`| `large`) property act as **presets** for these CSS properties
 
 | Type | min-width | max-width | min-height |
 |-|-|-|-|
 | Small | 320px | 480px | auto |
-| Medium | TBD | TBD | TBD |
-| Large | TBD | TBD | TBD |
+| Medium | calc(100% - 32px) | 1024px | 768px |
+| Large | 1680px | calc(100% - 32px) | calc(100% - 32px) |
 
 ### Design
 - The new X icon-button handled the "cancel" action, therefore a "cancel" button is not necessary. This icon-button also reacts to the case in which the dialog is marked as a "blocking" dialog.
@@ -32,13 +32,7 @@ The `size` (`small` | `medium`| `large`) property act as presets for these CSS p
 - The min-width of the small variant has been overwritten
 
 ### [TBD]
-- Linie bilden mit "X"
 - Scroll-Linie in Large?
 - wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind
-- size:
-Dialogs should maintain a minimum 48dp distance from the leading and trailing edges of a screen.
-On small screens, dialogs scale vertically until reaching 48dp from the screen’s top and bottom edge.
-On larger displays, dialogs can increase in size to a maximum width of 560dp.
-When a dialog reaches the maximum width, it expands or contracts vertically to support content, up to a maximum height of 560dp.
 - Default `primaryButtonText` -> "OK" | undefined
 - Clicked vs Handler

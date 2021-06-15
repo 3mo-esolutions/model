@@ -64,7 +64,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			}
 
 			:host([size=large]) {
-				--mdc-dialog-max-width: calc(100% - 32px);
+				--mdc-dialog-max-width: 1680px;
 				--mdc-dialog-min-width: calc(100% - 32px);
 				--mdc-dialog-min-height: calc(100% - 32px);
 			}
