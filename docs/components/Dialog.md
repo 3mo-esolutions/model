@@ -27,13 +27,11 @@ The `size` (`small` | `medium`| `large`) property act as presets for these CSS p
 ### Design
 - The new X icon-button handled the "cancel" action, therefore a "cancel" button is not necessary. This icon-button also reacts to the case in which the dialog is marked as a "blocking" dialog.
 - To distinguish the primary button, this shall be a "raised" button by default.
-
-
+- The Padding of the actions footer has been overwritten to 16px as the convention for the primary-action-button in 3MO is "raised"
 - There are 3 presets of  and `large` with overwrite the CSS variables
 - The min-width of the small variant has been overwritten
 
 ### [TBD]
-- Padding & Footer
 - Linie bilden mit "X"
 - Scroll-Linie in Large?
 - wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind

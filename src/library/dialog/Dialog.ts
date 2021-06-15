@@ -77,6 +77,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 				height: var(--mdc-dialog-min-height);
 			}
 
+			.mdc-dialog__actions {
+				padding: 16px;
+			}
+
 			#actions {
 				gap: var(--mo-thickness-xl);
 			}
