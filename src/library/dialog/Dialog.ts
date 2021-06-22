@@ -5,6 +5,9 @@ type Handler = () => unknown
 
 export type DialogSize = 'large' | 'medium' | 'small'
 
+// FIX MD-181: wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind
+// REFACTOR MD-181 decide on "Clicked" vs "Handler"
+
 /**
  * @attr hideActions
  * @attr defaultAction
@@ -105,6 +108,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 
 			:host([size=large]) #actions, :host([size=large]) #title {
 				border-color: var(--mdc-dialog-scroll-divider-color);
+				/* TODO: MD-181: title does not get a border */
 			}
 
 			#flexHeader {
@@ -121,7 +125,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	}
 
 	protected override initialized() {
-		this.createHeaderToolsSlot()
+		this.createHeaderSlot()
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
@@ -130,14 +134,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		this.changeCloseBehavior()
 	}
 
-	private createFooterSlot() {
-		const slot = document.createElement('slot')
-		slot.name = 'footer'
-		slot.setAttribute('part', 'footerSlot')
-		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
-	}
-
-	private createHeaderToolsSlot() {
+	private createHeaderSlot() {
 		const flex = document.createElement('mo-flex')
 		flex.id = 'flexHeader'
 		const template = html`
@@ -146,6 +143,13 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 		render(template, flex)
 		this.surfaceElement.appendChild(flex)
+	}
+
+	private createFooterSlot() {
+		const slot = document.createElement('slot')
+		slot.name = 'footer'
+		slot.setAttribute('part', 'footerSlot')
+		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
 	}
 
 	private changeCloseBehavior() {
