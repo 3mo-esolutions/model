@@ -5,7 +5,7 @@ type Handler = () => unknown
 
 export type DialogSize = 'large' | 'medium' | 'small'
 
-// FIX MD-181: wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind
+// FIX MD-181: wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind - Test in DialogProduct > Detailsansicht
 // REFACTOR MD-181 decide on "Clicked" vs "Handler"
 
 /**
