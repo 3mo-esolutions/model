@@ -13,7 +13,9 @@ class PwaHelper {
 	}
 
 	async registerServiceWorker() {
-		if (!navigator.serviceWorker.controller) {
+		const serviceWorkerContainer = navigator.serviceWorker as ServiceWorkerContainer | undefined
+
+		if (!serviceWorkerContainer?.controller) {
 			return
 		}
 
@@ -27,7 +29,7 @@ class PwaHelper {
 			return
 		}
 
-		await navigator.serviceWorker.register('/ServiceWorker.js', { scope: '/' })
+		await serviceWorkerContainer.register('/ServiceWorker.js', { scope: '/' })
 		await this.requestInstallation()
 	}
 
