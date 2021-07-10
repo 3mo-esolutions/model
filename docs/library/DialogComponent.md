@@ -11,7 +11,7 @@ Creating dialog are just like [creating components](./component-creation.md) wit
 Dialog components have 3 differences to a regular component.
 
 ### 1. Root Element
-It must contain a `mo-dialog` element in its root. It has relevant properties for a dialog such as `header`, `size`, `..primaryButtonClicked`, etc.
+It must contain a `mo-dialog` element in its root. It has relevant properties for a dialog such as `header`, `size`, `primaryButtonText`, etc.
 
 ### 2. Parameters
 
