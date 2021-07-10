@@ -53,7 +53,7 @@ export class DrawerItem extends ListItem {
 				if (component instanceof PageComponent) {
 					component.navigate()
 				} else {
-					component.open()
+					component.confirm()
 				}
 				if (Drawer.type === 'modal') {
 					Drawer.open = false

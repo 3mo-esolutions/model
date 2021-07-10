@@ -1,12 +1,9 @@
 import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
-type Handler = () => unknown
-
 export type DialogSize = 'large' | 'medium' | 'small'
 
 // FIX MD-181: wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind - Test in DialogProduct > Detailsansicht
-// REFACTOR MD-181 decide on "Clicked" vs "Handler"
 
 /**
  * @attr hideActions
@@ -20,8 +17,8 @@ export type DialogSize = 'large' | 'medium' | 'small'
  * @slot footer
  */
 @component('mo-dialog')
-export class Dialog extends ComponentMixin(MwcDialog) {
-	@event() readonly finished!: IEvent<boolean>
+export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
+	@event() readonly closed!: IEvent<TResult | Error>
 
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false
@@ -33,9 +30,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
 	@query('footer') private readonly footerElement!: HTMLElement
 
-	primaryButtonClicked?: Handler
-	secondaryButtonClicked?: Handler
-	cancellationHandler?: Handler
+	primaryAction!: () => TResult | PromiseLike<TResult>
+	secondaryAction?: () => TResult | PromiseLike<TResult>
+	cancellationAction?: () => TResult | PromiseLike<TResult>
+
 	override initialFocusAttribute = 'data-focus'
 
 	@property()
@@ -184,7 +182,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	@renderContainer('#divCloseButton')
 	protected get closeIconButton() {
 		return html`
-			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.close(false)}></mo-icon-button>
+			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.cancel()}></mo-icon-button>
 		`
 	}
 
@@ -197,6 +195,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
+	override get primaryButton() {
+		return this.shadowRoot.querySelector<HTMLElement>('slot[name=primaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=primaryAction]')
+	}
+
 	@renderContainer('slot[name="secondaryAction"]')
 	protected get secondaryButtonTemplate() {
 		return !this.secondaryButtonText ? nothing : html`
@@ -206,41 +208,41 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	private readonly handlePrimaryButtonClick = async () => {
-		try {
-			await this.primaryButtonClicked?.()
-			if (this.manualClose !== true) {
-				this.close(true)
-			}
-		} catch (e) {
-			Snackbar.show(e.message)
-			throw e
-		}
+	get secondaryButton() {
+		return this.shadowRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=secondaryAction]')
 	}
 
-	private readonly handleSecondaryButtonClick = async () => {
-		if (!this.secondaryButtonClicked) {
-			this.close(false)
+	private readonly cancel = () => this.close(new Error('Dialog cancelled'))
+
+	private readonly handlePrimaryButtonClick = () => this.handleAction(this.primaryAction)
+
+	private readonly handleSecondaryButtonClick = () => this.secondaryAction ? this.handleAction(this.secondaryAction) : this.cancel()
+
+	private readonly handleAction = async (resultAction: () => TResult | PromiseLike<TResult>) => {
+		if (this.manualClose === true) {
 			return
 		}
 
+		// Actions do NOT close the dialog in the case of an error.
 		try {
-			await this.secondaryButtonClicked()
-			if (this.manualClose !== true) {
-				this.close(true)
-			}
+			const result = await resultAction()
+			this.close(result)
 		} catch (e) {
 			Snackbar.show(e.message)
 			throw e
 		}
 	}
 
-	override async close(success = false) {
-		if (success === false) {
-			await this.cancellationHandler?.()
+	override async close(result?: TResult | Error) {
+		if (result instanceof Error) {
+			await this.cancellationAction?.()
 		}
+
 		super.close()
-		this.finished.dispatch(success)
+
+		if (result !== undefined) {
+			this.closed.dispatch(result)
+		}
 	}
 }
 

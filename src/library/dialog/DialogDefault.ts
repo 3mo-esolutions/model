@@ -1,17 +1,19 @@
 import { component, html, ifDefined, TemplateResult } from '..'
 import { DialogComponent, DialogSize } from '.'
 
-type Parameters = {
+type Parameters<TResult> = {
 	readonly header: string
 	readonly content: string | TemplateResult
 	readonly primaryButtonText?: string
+	readonly primaryButtonAction?: () => TResult | PromiseLike<TResult>
 	readonly secondaryButtonText?: string
+	readonly secondaryButtonAction?: () => TResult | PromiseLike<TResult>
 	readonly size?: DialogSize
 	readonly blocking?: boolean
 }
 
 @component('mo-dialog-default')
-export class DialogDefault extends DialogComponent<Parameters> {
+export class DialogDefault<TResult = void> extends DialogComponent<Parameters<TResult>, TResult> {
 	protected override render() {
 		return html`
 			<mo-dialog
@@ -26,10 +28,9 @@ export class DialogDefault extends DialogComponent<Parameters> {
 			</mo-dialog>
 		`
 	}
-}
 
-declare global {
-	interface HTMLElementTagNameMap {
-		'mo-dialog-default': DialogDefault
-	}
+	protected override primaryButtonAction = () => this.parameters.primaryButtonAction?.() ?? super.primaryButtonAction()
+
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	protected override secondaryButtonAction = this.parameters.secondaryButtonAction?.bind(this)
 }

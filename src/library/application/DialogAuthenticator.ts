@@ -18,35 +18,65 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	protected abstract checkAuthenticationProcess(): Promise<boolean>
 	protected abstract resetPasswordProcess(): Promise<void>
 
+	async isAuthenticated() {
+		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
+		const isAuthenticatedClientSide = DialogAuthenticator.authenticatedUser.value !== undefined
+		return isAuthenticatedServerSide && isAuthenticatedClientSide
+	}
+
+	async authenticate() {
+		try {
+			const user = await this.authenticateProcess()
+			DialogAuthenticator.authenticatedUser.value = user
+			const isAuthenticated = await this.isAuthenticated()
+			if (isAuthenticated === false) {
+				throw new Error('Something went wrong.\nTry again.')
+			}
+			Snackbar.show('Authenticated successfully')
+		} catch (error) {
+			throw new Error(error.message ?? 'Incorrect Credentials')
+		}
+	}
+
 	async unauthenticate() {
 		try {
 			await this.unauthenticateProcess()
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
 			DialogAuthenticator.authenticatedUser.value = undefined
-			MoDeL.application.authenticator?.open()
+			MoDeL.application.authenticator?.confirm()
+		}
+	}
+
+	async resetPassword() {
+		try {
+			await this.resetPasswordProcess()
+			Snackbar.show('Password reset instructions have been sent to your email address')
+		} catch (error) {
+			Snackbar.show(error.message ?? 'Password could not be reset')
+			throw error
 		}
 	}
 
 	override async confirm() {
 		const isAuthenticated = await this.isAuthenticated()
-		if (isAuthenticated !== true) {
-			await super.confirm()
-		}
-	}
 
-	protected override async initialized() {
-		window.addEventListener('keypress', async event => {
-			const isAuthenticated = DialogAuthenticator.authenticatedUser.value !== undefined
-			if (event.key === KeyboardKey.Enter && isAuthenticated === false) {
-				await this.dialog?.['handlePrimaryButtonClick']()
+		if (isAuthenticated) {
+			return Promise.resolve()
+		}
+
+		const shouldHaveRemembered = DialogAuthenticator.shallRemember.value
+
+		if (shouldHaveRemembered) {
+			try {
+				await this.authenticate()
+				return Promise.resolve()
+			} catch (error) {
+				return super.confirm()
 			}
-		})
-
-		if (DialogAuthenticator.shallRemember.value) {
-			await this.authenticate()
-			this.close()
 		}
+
+		return super.confirm()
 	}
 
 	protected override render = () => html`
@@ -73,7 +103,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				font-weight: 500;
 			}
 		</style>
-		<mo-dialog blocking primaryOnEnter .primaryButtonClicked=${this.authenticate}>
+		<mo-dialog blocking primaryOnEnter>
 			<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
 			<mo-flex alignItems='center' minWidth='350px'>
 				<mo-flex height='100px' alignItems='center' gap='10px'>
@@ -92,7 +122,11 @@ export abstract class DialogAuthenticator extends DialogComponent {
 					></mo-field-password>
 
 					<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
-						<mo-checkbox @change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}>Remember Password</mo-checkbox>
+						<mo-checkbox
+							?checked=${this.shallRememberPassword}
+							@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
+						>Remember Password</mo-checkbox>
+
 						<a @click=${() => this.resetPassword()}>Reset Password</a>
 					</mo-flex>
 				</mo-flex>
@@ -100,40 +134,12 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		</mo-dialog>
 	`
 
-	protected async isAuthenticated() {
-		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
-		const isAuthenticatedClientSide = DialogAuthenticator.authenticatedUser.value !== undefined
-		return isAuthenticatedServerSide && isAuthenticatedClientSide
-	}
-
-	protected authenticate = async () => {
+	protected override primaryButtonAction = async () => {
 		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
 		if (DialogAuthenticator.shallRemember.value) {
 			DialogAuthenticator.username.value = this.username
 			DialogAuthenticator.password.value = this.password
 		}
-
-		try {
-			const user = await this.authenticateProcess()
-			DialogAuthenticator.authenticatedUser.value = user
-			const isAuthenticated = await this.isAuthenticated()
-			if (isAuthenticated === false) {
-				throw new Error('Something went wrong.\nTry again.')
-			}
-			MoDeL.application.authenticatedUser = user
-			Snackbar.show('Authenticated successfully')
-		} catch (error) {
-			throw new Error(error.message ?? 'Incorrect Credentials')
-		}
-	}
-
-	protected async resetPassword() {
-		try {
-			await this.resetPasswordProcess()
-			Snackbar.show('Password reset instructions have been sent to your email address')
-		} catch (error) {
-			Snackbar.show(error.message ?? 'Password could not be reset')
-			throw error
-		}
+		await this.authenticate()
 	}
 }
