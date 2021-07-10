@@ -1,5 +1,4 @@
-import { component, html, ifDefined, TemplateResult } from '..'
-import { DialogComponent, DialogSize } from '.'
+import { component, html, ifDefined, TemplateResult, DialogComponent, DialogSize } from '../../library'
 
 type Parameters<TResult> = {
 	readonly header: string
