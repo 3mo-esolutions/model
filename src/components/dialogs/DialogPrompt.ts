@@ -1,14 +1,13 @@
 import { state, component, DialogComponent, html } from '../../library'
 
-@component('eb-dialog-input')
-export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string, handler: (input: string) => void }> {
+@component('eb-dialog-prompt')
+export class DialogPrompt extends DialogComponent<{ header: string, value?: string, text?: string, inputLabel?: string, primaryButtonText?: string }, string> {
 	@state() private input = this.parameters.value ?? ''
 
 	protected override render = () => html`
 		<mo-dialog
 			header=${this.parameters.header}
 			primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
-			.primaryButtonClicked=${this.handle}
 		>
 			<style>
 				p:empty {
@@ -27,7 +26,5 @@ export class DialogPrompt extends DialogComponent<{ header: string, value?: stri
 		</mo-dialog>
 	`
 
-	protected handle = () => {
-		this.parameters.handler(this.input)
-	}
+	protected override primaryButtonAction = () => this.input
 }

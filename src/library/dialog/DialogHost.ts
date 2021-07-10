@@ -34,20 +34,26 @@ export class DialogHost extends Component {
 		})
 	}
 
-	open<T extends DialogComponent<TParams>, TParams>(dialog: T) {
+	confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
 		if (AuthorizationHelper.isAuthorized(...dialog.constructor.authorizations) === false) {
 			Snackbar.show('🔒 Access denied')
 			return Promise.reject('🔒 Access denied')
 		}
 
 		this.shadowRoot.append(dialog)
-		return new Promise<boolean>(resolve => dialog.closed.subscribe(result => {
-			resolve(result)
-			dialog.remove()
-			if (Array.from(this.shadowRoot.children).filter(child => child.tagName.toLowerCase() !== 'style').length === 0) {
-				document.body.style.overflow = 'auto'
-			}
-		}))
+		return new Promise<TResult>((resolve, reject) => {
+			dialog.closed.subscribe(result => {
+				if (result instanceof Error) {
+					reject(result)
+				} else {
+					resolve(result)
+				}
+				dialog.remove()
+				if (Array.from(this.shadowRoot.children).filter(child => child.tagName.toLowerCase() !== 'style').length === 0) {
+					document.body.style.overflow = 'auto'
+				}
+			})
+		})
 	}
 }
 

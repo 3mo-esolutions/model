@@ -1,7 +1,5 @@
-import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event } from '..'
+import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event, PropertyValues } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
-
-type Handler = () => unknown
 
 export type DialogSize = 'large' | 'medium' | 'small'
 
@@ -17,8 +15,8 @@ export type DialogSize = 'large' | 'medium' | 'small'
  * @slot footer
  */
 @component('mo-dialog')
-export class Dialog extends ComponentMixin(MwcDialog) {
-	@event() readonly finished!: IEvent<boolean>
+export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
+	@event() readonly closed!: IEvent<TResult | Error>
 
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false
@@ -30,9 +28,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
 	@query('footer') private readonly footerElement!: HTMLElement
 
-	primaryButtonClicked?: Handler
-	secondaryButtonClicked?: Handler
-	cancellationHandler?: Handler
+	primaryAction!: () => TResult | PromiseLike<TResult>
+	secondaryAction?: () => TResult | PromiseLike<TResult>
+	cancellationAction?: () => TResult | PromiseLike<TResult>
+
 	override initialFocusAttribute = 'data-focus'
 
 	@property()
@@ -52,7 +51,9 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			${super.styles}
 
 			:host([size=small]) {
+				--mdc-dialog-min-width: 320px;
 				--mdc-dialog-max-width: 480px;
+				--mdc-dialog-min-height: auto;
 			}
 
 			:host([size=medium]) {
@@ -62,7 +63,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			}
 
 			:host([size=large]) {
-				--mdc-dialog-max-width: calc(100% - 32px);
+				--mdc-dialog-max-width: 1680px;
 				--mdc-dialog-min-width: calc(100% - 32px);
 				--mdc-dialog-min-height: calc(100% - 32px);
 			}
@@ -75,12 +76,26 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 				height: var(--mdc-dialog-min-height);
 			}
 
+			.mdc-dialog__actions {
+				padding: 16px;
+			}
+
 			#actions {
 				gap: var(--mo-thickness-xl);
 			}
 
 			#title {
 				padding-right: 48px;
+			}
+
+			:host([size=large]) #title {
+				padding-bottom: 15px;
+				border-bottom: 1px solid;
+			}
+
+			:host([size=large]) #content {
+				padding-top: 8px;
+				padding-bottom: 8px;
 			}
 
 			#content {
@@ -111,11 +126,15 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 			slot[name=footer] {
 				flex: 1;
 			}
+
+			:host([hideFooter]) footer {
+				display: none;
+			}
 		`
 	}
 
 	protected override initialized() {
-		this.createHeaderToolsSlot()
+		this.createHeaderSlot()
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
@@ -124,14 +143,19 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		this.changeCloseBehavior()
 	}
 
-	private createFooterSlot() {
-		const slot = document.createElement('slot')
-		slot.name = 'footer'
-		slot.setAttribute('part', 'footerSlot')
-		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
+	protected override updated(props: PropertyValues) {
+		super.updated(props)
+		this.decideFooterVisibility()
 	}
 
-	private createHeaderToolsSlot() {
+	private decideFooterVisibility() {
+		const hideFooter = !this.primaryButton
+			&& !this.secondaryButton
+			&& this.shadowRoot.querySelector<HTMLSlotElement>('slot[name=footer]')?.assignedElements().length === 0
+		this.switchAttribute('hideFooter', hideFooter)
+	}
+
+	private createHeaderSlot() {
 		const flex = document.createElement('mo-flex')
 		flex.id = 'flexHeader'
 		const template = html`
@@ -140,6 +164,13 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 		render(template, flex)
 		this.surfaceElement.appendChild(flex)
+	}
+
+	private createFooterSlot() {
+		const slot = document.createElement('slot')
+		slot.name = 'footer'
+		slot.setAttribute('part', 'footerSlot')
+		this.footerElement.insertBefore(slot, this.footerElement.firstChild)
 	}
 
 	private changeCloseBehavior() {
@@ -174,7 +205,7 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 	@renderContainer('#divCloseButton')
 	protected get closeIconButton() {
 		return html`
-			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.close(false)}></mo-icon-button>
+			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.cancel()}></mo-icon-button>
 		`
 	}
 
@@ -187,6 +218,10 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
+	override get primaryButton() {
+		return this.shadowRoot.querySelector<HTMLElement>('slot[name=primaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=primaryAction]')
+	}
+
 	@renderContainer('slot[name="secondaryAction"]')
 	protected get secondaryButtonTemplate() {
 		return !this.secondaryButtonText ? nothing : html`
@@ -196,41 +231,41 @@ export class Dialog extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	private readonly handlePrimaryButtonClick = async () => {
-		try {
-			await this.primaryButtonClicked?.()
-			if (this.manualClose !== true) {
-				this.close(true)
-			}
-		} catch (e) {
-			Snackbar.show(e.message)
-			throw e
-		}
+	get secondaryButton() {
+		return this.shadowRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=secondaryAction]')
 	}
 
-	private readonly handleSecondaryButtonClick = async () => {
-		if (!this.secondaryButtonClicked) {
-			this.close(false)
+	private readonly cancel = () => this.close(new Error('Dialog cancelled'))
+
+	private readonly handlePrimaryButtonClick = () => this.handleAction(this.primaryAction)
+
+	private readonly handleSecondaryButtonClick = () => this.secondaryAction ? this.handleAction(this.secondaryAction) : this.cancel()
+
+	private readonly handleAction = async (resultAction: () => TResult | PromiseLike<TResult>) => {
+		if (this.manualClose === true) {
 			return
 		}
 
+		// Actions do NOT close the dialog in the case of an error.
 		try {
-			await this.secondaryButtonClicked()
-			if (this.manualClose !== true) {
-				this.close(true)
-			}
+			const result = await resultAction()
+			this.close(result)
 		} catch (e) {
 			Snackbar.show(e.message)
 			throw e
 		}
 	}
 
-	override async close(success = false) {
-		if (success === false) {
-			await this.cancellationHandler?.()
+	override async close(result?: TResult | Error) {
+		if (result instanceof Error) {
+			await this.cancellationAction?.()
 		}
+
 		super.close()
-		this.finished.dispatch(success)
+
+		if (result !== undefined) {
+			this.closed.dispatch(result)
+		}
 	}
 }
 
