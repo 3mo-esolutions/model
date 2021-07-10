@@ -68,8 +68,6 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	protected primaryButtonAction(): TResult | PromiseLike<TResult> {
-		// TODO: MD-181: which one
-		return undefined as unknown as TResult
 		throw new Error('Not implemented')
 	}
 
