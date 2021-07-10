@@ -1,9 +1,7 @@
-import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event } from '..'
+import { component, property, query, ComponentMixin, Snackbar, render, html, css, renderContainer, nothing, event, PropertyValues } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
-
-// FIX MD-181: wegen des neuen Elements "Footer" verschwindet der Dialog-Footer nicht mehr, wenn keine Buttons vorhanden sind - Test in DialogProduct > Detailsansicht
 
 /**
  * @attr hideActions
@@ -90,6 +88,16 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 				padding-right: 48px;
 			}
 
+			:host([size=large]) #title {
+				padding-bottom: 15px;
+				border-bottom: 1px solid;
+			}
+
+			:host([size=large]) #content {
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+
 			#content {
 				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
 				scrollbar-width: thin;
@@ -106,7 +114,6 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 
 			:host([size=large]) #actions, :host([size=large]) #title {
 				border-color: var(--mdc-dialog-scroll-divider-color);
-				/* TODO: MD-181: title does not get a border */
 			}
 
 			#flexHeader {
@@ -119,6 +126,10 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 			slot[name=footer] {
 				flex: 1;
 			}
+
+			:host([hideFooter]) footer {
+				display: none;
+			}
 		`
 	}
 
@@ -130,6 +141,18 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
 		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
 		this.changeCloseBehavior()
+	}
+
+	protected override updated(props: PropertyValues) {
+		super.updated(props)
+		this.decideFooterVisibility()
+	}
+
+	private decideFooterVisibility() {
+		const hideFooter = !this.primaryButton
+			&& !this.secondaryButton
+			&& this.shadowRoot.querySelector<HTMLSlotElement>('slot[name=footer]')?.assignedElements().length === 0
+		this.switchAttribute('hideFooter', hideFooter)
 	}
 
 	private createHeaderSlot() {
