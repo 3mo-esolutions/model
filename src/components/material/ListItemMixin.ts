@@ -30,7 +30,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 						height: var(--mdc-list-item-meta-height, var(--mdc-list-item-meta-size, 24px));
 					}
 				`
-			]
+			] as any
 		}
 
 		protected initialized() {
