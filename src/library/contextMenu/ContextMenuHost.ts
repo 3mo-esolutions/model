@@ -1,5 +1,5 @@
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, ContextMenuItem } from '..'
-import { Menu } from '../../components'
+import { ContextMenu } from './ContextMenu'
 
 @component('mo-context-menu-host')
 export class ContextMenuHost extends Component {
@@ -10,7 +10,7 @@ export class ContextMenuHost extends Component {
 
 	@queryAll('mo-context-menu-item') readonly items!: Array<ContextMenuItem>
 
-	@query('mo-menu') private readonly menuContext!: Menu
+	@query('mo-context-menu') private readonly contextMenu!: ContextMenu
 
 	private readonly lengthBuffer = 16
 
@@ -37,12 +37,12 @@ export class ContextMenuHost extends Component {
 	}
 
 	get list() {
-		return this.menuContext.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
+		return this.contextMenu.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
 	}
 
 	protected override render = () => html`
 		<style>
-			mo-menu {
+			mo-context-menu {
 				--mdc-menu-z-index: 10;
 				--mdc-menu-item-height: 36px;
 				--mo-list-item-icon-color: var(--mo-color-gray);
@@ -67,9 +67,9 @@ export class ContextMenuHost extends Component {
 				-ms-user-select: auto !important;
 			}
 		</style>
-		<mo-menu x='0' y='0' fixed quick .anchor=${document.body} ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
+		<mo-context-menu fixed quick ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
 			${this.menu ?? nothing}
-		</mo-menu>
+		</mo-context-menu>
 	`
 }
 
