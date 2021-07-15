@@ -67,23 +67,29 @@ export class ContextMenuItem extends ListItem {
 		this.overrideClickBehavior()
 	}
 
-	private get contextMenu() {
-		return this.parentElement as ContextMenu
-	}
-
-	private overrideClickBehavior() {
-		if (this.detailsMenu) {
-			// this.contextMenu.manualClose = true
-			// this.detailsMenu.manualClose = true
-			// this.addEventListener('closed', e => e.stopPropagation())
-			// this.detailsMenu.addEventListener('opened', () => this.open = true)
-			// this.detailsMenu.addEventListener('closed', () => this.open = false)
+	private initializeDetailsMenuIfExists() {
+		if (!this.detailsMenu) {
+			return
 		}
+		this.detailsMenu.absolute = true
+		this.detailsMenu.open = true
+		this.detailsMenu.anchor = document.body
 	}
 
 	private syncOpenAndMouseOver() {
 		this.addEventListener('mouseover', () => this.open = true)
 		this.addEventListener('mouseout', () => this.open = false)
+	}
+
+	private overrideClickBehavior() {
+		PromiseTask.delegateToEventLoop(() => {
+			if (this.detailsMenu) {
+				const voidHandler = () => void 0
+				this['onClick'] = voidHandler
+				this.contextMenu.mdcRoot.close = voidHandler
+				this.detailsMenu.mdcRoot.close = voidHandler
+			}
+		})
 	}
 
 	render() {
@@ -100,13 +106,8 @@ export class ContextMenuItem extends ListItem {
 		this.metaIcon = this.detailsMenu ? 'arrow_right' : undefined
 	}
 
-	private initializeDetailsMenuIfExists() {
-		if (!this.detailsMenu) {
-			return
-		}
-		this.detailsMenu.absolute = true
-		this.detailsMenu.open = true
-		this.detailsMenu.anchor = document.body
+	private get contextMenu() {
+		return this.parentElement as ContextMenu
 	}
 
 	private get detailsMenu() {
