@@ -1,5 +1,5 @@
 import { query } from 'lit-element'
-import { component, css, property, html, PropertyValues, event } from '..'
+import { component, css, property, html, PropertyValues, event, ContextMenu } from '..'
 import { Flex, ListItem, Menu } from '../../components'
 
 /**
@@ -14,10 +14,14 @@ export class ContextMenuItem extends ListItem {
 		type: Boolean,
 		reflect: true,
 		observer(this: ContextMenuItem) {
+			if (!this.detailsMenu) {
+				return
+			}
+			this.detailsMenu.requestUpdate()
 			const selfBoundingRect = this.getBoundingClientRect()
-			const listBoundingRect = this.detailsMenu?.mdcRoot.mdcRoot.getBoundingClientRect()
-			this.flexDetails.style.width = `${listBoundingRect?.width ?? 0}px`
-			this.flexDetails.style.height = `${listBoundingRect?.height ?? 0}px`
+			const listBoundingRect = this.detailsMenu.mdcRoot.mdcRoot.getBoundingClientRect()
+			this.flexDetails.style.width = `${listBoundingRect.width}px`
+			this.flexDetails.style.height = `${listBoundingRect.height}px`
 			const flexBoundingRect = this.flexDetails.getBoundingClientRect()
 			const totalRightDistance = document.documentElement.scrollWidth - selfBoundingRect.right
 			const totalLeftDistance = selfBoundingRect.left
@@ -29,6 +33,7 @@ export class ContextMenuItem extends ListItem {
 			const shallBeOpenedTop = flexBoundingRect.height > totalBottomDistance && totalTopDistance > totalBottomDistance
 			this.flexDetails.top = shallBeOpenedTop ? '' : '0px'
 			this.flexDetails.bottom = shallBeOpenedTop ? '0px' : ''
+			this.openChange.dispatch(this.open)
 		}
 	}) open = false
 
@@ -46,12 +51,12 @@ export class ContextMenuItem extends ListItem {
 					color: var(--mo-color-gray);
 				}
 
-				:host([open]), :host(:hover) {
+				:host(:hover) {
 					background-color: rgba(var(--mo-color-gray-base), 0.1);
 				}
 
-				:host(:not([open])) ::slotted(mo-context-menu[slot=details]) {
-					visibility: hidden;
+				:host(:not(:hover)) ::slotted(mo-context-menu[slot=details]) {
+					display: none;
 				}
 			`
 		]
@@ -59,28 +64,33 @@ export class ContextMenuItem extends ListItem {
 
 	protected initialized() {
 		this.initializeDetailsMenuIfExists()
-		this.configureMouseBehavior()
+		this.syncOpenAndMouseOver()
 		this.overrideClickBehavior()
 	}
 
+	private get contextMenu() {
+		return this.parentElement as ContextMenu
+	}
+
 	private overrideClickBehavior() {
-		const hasDetailsMenu = !!this.detailsMenu
-		// TODO: MD-171: prevent close on click if hasDetailsMenu
+		if (this.detailsMenu) {
+			// this.contextMenu.manualClose = true
+			// this.detailsMenu.manualClose = true
+			// this.addEventListener('closed', e => e.stopPropagation())
+			// this.detailsMenu.addEventListener('opened', () => this.open = true)
+			// this.detailsMenu.addEventListener('closed', () => this.open = false)
+		}
 	}
 
-	private configureMouseBehavior() {
-		this.addEventListener('mouseover', () => this.detailsMenuOpen = true)
-		this.otherContextMenuItems.forEach(item => item.addEventListener('mouseover', () => this.detailsMenuOpen = false))
-	}
-
-	private get otherContextMenuItems() {
-		return Array.from(this.parentElement?.querySelectorAll('mo-context-menu-item') ?? []).filter(item => item !== this)
+	private syncOpenAndMouseOver() {
+		this.addEventListener('mouseover', () => this.open = true)
+		this.addEventListener('mouseout', () => this.open = false)
 	}
 
 	render() {
 		return html`
 			${super.render()}
-			<mo-flex position='absolute' left='100%' top='0px'>
+			<mo-flex position='absolute'>
 				<slot name='details'></slot>
 			</mo-flex>
 		`
@@ -102,15 +112,6 @@ export class ContextMenuItem extends ListItem {
 
 	private get detailsMenu() {
 		return this.querySelector<Menu>('mo-context-menu[slot=details]')
-	}
-
-	private set detailsMenuOpen(value: boolean) {
-		if (!this.detailsMenu) {
-			return
-		}
-		this.detailsMenu.requestUpdate()
-		this.open = value
-		this.openChange.dispatch(value)
 	}
 }
 
