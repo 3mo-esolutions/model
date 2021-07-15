@@ -12,7 +12,6 @@ export class ContextMenuItem extends ListItem {
 
 	@property({
 		type: Boolean,
-		reflect: true,
 		observer(this: ContextMenuItem) {
 			if (!this.detailsMenu) {
 				return
