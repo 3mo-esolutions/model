@@ -1,14 +1,26 @@
-import { Component, component, html } from '..'
-import { ContextMenuHost } from '.'
+import { component, PropertyValues } from '..'
+import { Menu } from '../../components'
+// eslint-disable-next-line import/no-internal-modules
+import { MenuSurface as MwcMenuSurface } from '@material/mwc-menu/mwc-menu-surface'
 
 @component('mo-context-menu')
-export class ContextMenu extends Component {
+export class ContextMenu extends Menu {
 	protected override initialized() {
-		this.parentElement?.addEventListener('contextmenu', (e: MouseEvent) => this.open(e))
+		super.initialized()
+		this.overrideRootOverflow()
 	}
 
-	open(mouseEvent: MouseEvent) {
-		ContextMenuHost.openMenu(mouseEvent, html`${this.childElements.map(element => element.clone())}`)
+	protected override updated(props: PropertyValues) {
+		super.updated(props)
+		this.overrideRootOverflow()
+	}
+
+	private overrideRootOverflow() {
+		const surface = this.mdcRoot as MwcMenuSurface | null
+		const div = surface?.mdcRoot as HTMLDivElement | null
+		if (div) {
+			div.style.overflow = 'unset'
+		}
 	}
 }
 
