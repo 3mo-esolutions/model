@@ -4,9 +4,9 @@ import { LocalStorageEntry } from '../../helpers'
 import { User } from '../../types'
 
 export abstract class DialogAuthenticator extends DialogComponent {
+	static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
 	static readonly authenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
 	private static readonly password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
-	private static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
 	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
 
 	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value
