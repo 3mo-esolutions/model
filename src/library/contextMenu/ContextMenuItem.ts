@@ -12,27 +12,32 @@ export class ContextMenuItem extends ListItem {
 
 	@property({
 		type: Boolean,
+		reflect: true,
 		observer(this: ContextMenuItem) {
 			if (!this.detailsMenu) {
 				return
 			}
 			this.detailsMenu.requestUpdate()
+
 			const selfBoundingRect = this.getBoundingClientRect()
 			const listBoundingRect = this.detailsMenu.mdcRoot.mdcRoot.getBoundingClientRect()
+
 			this.flexDetails.style.width = `${listBoundingRect.width}px`
 			this.flexDetails.style.height = `${listBoundingRect.height}px`
+
 			const flexBoundingRect = this.flexDetails.getBoundingClientRect()
+
 			const totalRightDistance = document.documentElement.scrollWidth - selfBoundingRect.right
 			const totalLeftDistance = selfBoundingRect.left
 			const shallBeAttachedLeft = flexBoundingRect.width > totalRightDistance && totalLeftDistance > totalRightDistance
 			this.flexDetails.left = shallBeAttachedLeft ? '' : '100%'
 			this.flexDetails.right = shallBeAttachedLeft ? '100%' : ''
+
 			const totalBottomDistance = document.documentElement.scrollHeight - selfBoundingRect.bottom
 			const totalTopDistance = selfBoundingRect.top
 			const shallBeOpenedTop = flexBoundingRect.height > totalBottomDistance && totalTopDistance > totalBottomDistance
 			this.flexDetails.top = shallBeOpenedTop ? '' : '0px'
 			this.flexDetails.bottom = shallBeOpenedTop ? '0px' : ''
-			this.openChange.dispatch(this.open)
 		}
 	}) open = false
 
@@ -50,11 +55,11 @@ export class ContextMenuItem extends ListItem {
 					color: var(--mo-color-gray);
 				}
 
-				:host(:hover) {
+				:host([open]) {
 					background-color: rgba(var(--mo-color-gray-base), 0.1);
 				}
 
-				:host(:not(:hover)) ::slotted(mo-context-menu[slot=details]) {
+				:host(:not([open])) ::slotted(mo-context-menu[slot=details]) {
 					display: none;
 				}
 			`
@@ -77,8 +82,18 @@ export class ContextMenuItem extends ListItem {
 	}
 
 	private syncOpenAndMouseOver() {
-		this.addEventListener('mouseover', () => this.open = true)
-		this.addEventListener('mouseout', () => this.open = false)
+		this.addEventListener('mouseover', () => {
+			this.contextMenu.items
+				.filter(item => item !== this && item instanceof ContextMenuItem)
+				.forEach(item => (item as ContextMenuItem).open = false)
+
+			if (!this.detailsMenu) {
+				return
+			}
+
+			this.open = true
+			this.openChange.dispatch(true)
+		})
 	}
 
 	private overrideClickBehavior() {
