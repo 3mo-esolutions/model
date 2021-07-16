@@ -4,7 +4,7 @@ import { Field } from './Field'
 
 type PluralizeUnion<T> = Array<T> | T | undefined
 
-type Value = PluralizeUnion<string>
+type Value = PluralizeUnion<string | number>
 type Data<T> = PluralizeUnion<T>
 type Index = PluralizeUnion<number>
 
@@ -233,7 +233,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 		this.value = this.toValue(getOptionsText(options)) ?? undefined
 
-		const toNumberIfPossible = (string?: string) => string?.charAt(0) === '0' || isNaN(Number(string)) ? string : Number(string)
+		const toNumberIfPossible = (value?: number | string) => typeof value === 'number' ? value : value?.charAt(0) === '0' || isNaN(Number(value)) ? value : Number(value)
 		const handledValues = (this.value instanceof Array
 			? this.value.map(v => toNumberIfPossible(v))
 			: toNumberIfPossible(this.value as string)) as PluralizeUnion<string>
