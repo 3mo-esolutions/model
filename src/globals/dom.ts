@@ -19,6 +19,12 @@ Object.defineProperty(HTMLElement.prototype, 'eventHandlers', {
 	configurable: false
 })
 
+HTMLElement.prototype.clone = function <T extends HTMLElement>() {
+	const cloned = this.cloneNode(true) as T
+	this.eventHandlers.forEach(ev => cloned.addEventListener(ev.name, ev.eventListener))
+	return cloned as T
+}
+
 HTMLElement.prototype.addEventListenerBase = HTMLElement.prototype.addEventListener
 // @ts-ignore overriding other overload of the addEventListener
 HTMLElement.prototype.addEventListener = function (type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
@@ -48,6 +54,7 @@ interface CustomEvent<T, TElement extends HTMLElement = HTMLElement> extends Eve
 }
 
 interface HTMLElement {
+	clone<T extends HTMLElement>(): T
 	addEventListenerBase(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void
 	removeEventListenerBase(type: string, listener: EventListener, options?: boolean | EventListenerOptions): void
 
