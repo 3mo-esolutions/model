@@ -8,7 +8,7 @@ import { Button } from '.'
 export class Chip extends Button {
 	@event() readonly delete!: IEvent
 
-	@property({ type: Boolean }) hasDelete = false
+	@property({ type: Boolean, reflect: true }) hasDelete = false
 
 	override unelevated = true
 
@@ -24,13 +24,16 @@ export class Chip extends Button {
 				--mdc-typography-button-text-transform: none;
 			}
 
+			:host([hasDelete]) #button {
+				padding-right: 4px;
+			}
+
 			#button {
 				height: 30px;
 				font-weight: auto !important;
 				letter-spacing: normal !important;
 				text-decoration: auto !important;
 				text-transform: auto !important;
-				padding-right: 4px;
 			}
 		`
 	}
