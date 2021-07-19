@@ -25,6 +25,10 @@ export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 		if (this.textContent) {
 			this.label = this.textContent
 		}
+		new MutationObserver(() => this.label = this.textContent ?? '').observe(this, {
+			subtree: true,
+			characterData: true
+		})
 	}
 }
 
