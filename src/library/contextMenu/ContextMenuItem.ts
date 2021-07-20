@@ -14,7 +14,7 @@ export class ContextMenuItem extends ListItem {
 		type: Boolean,
 		reflect: true,
 		observer(this: ContextMenuItem) {
-			if (!this.detailsMenu) {
+			if (!this.detailsMenu || !(this.detailsMenu.mdcRoot as null | Element)) {
 				return
 			}
 			this.detailsMenu.requestUpdate()
