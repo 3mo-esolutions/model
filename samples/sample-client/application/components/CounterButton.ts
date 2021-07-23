@@ -9,9 +9,11 @@ export class CounterButton extends Component {
 
 	@property({ type: Number }) count = 0
 
-	protected override render = () => html`
-		<mo-button raised @click=${this.handleClick}>➕ Increase - ${this.count}</mo-button>
-	`
+	protected override get template() {
+		return html`
+			<mo-button raised @click=${this.handleClick}>➕ Increase - ${this.count}</mo-button>
+		`
+	}
 
 	private readonly handleClick = () => {
 		this.count++

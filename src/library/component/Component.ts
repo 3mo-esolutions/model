@@ -12,7 +12,7 @@ export abstract class Component extends ComponentMixin(LitElement) {
 		return nothing
 	}
 
-	protected render() {
+	protected override render() {
 		return this.template
 	}
 }
