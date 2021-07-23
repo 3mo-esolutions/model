@@ -11,12 +11,39 @@ export class CounterButton extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-button raised @click=${this.handleClick}>➕ Increase - ${this.count}</mo-button>
+			<style>
+				mo-flex * {
+					width: 64px;
+					height: 64px;
+				}
+
+				mo-button {
+					--mdc-shape-small: 0px;
+				}
+
+				mo-flex {
+					background: rgba(0, 0, 0, 0.15);
+				}
+			</style>
+
+			<mo-flex direction='horizontal' alignItems='center'>
+				<mo-button @click=${() => this.handleCountChange(this.count - 1)}>
+					➖
+				</mo-button>
+
+				<mo-flex alignItems='center' justifyContent='center' fontSize='var(--mo-font-size-xl)'>
+					${this.count}
+				</mo-flex>
+
+				<mo-button @click=${() => this.handleCountChange(this.count + 1)}>
+					➕
+				</mo-button>
+			</mo-flex>
 		`
 	}
 
-	private readonly handleClick = () => {
-		this.count++
+	private readonly handleCountChange = (count: number) => {
+		this.count = count
 		this.countChange.dispatch(this.count)
 	}
 }
