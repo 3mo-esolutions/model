@@ -1,6 +1,6 @@
-import { Component } from '../library'
+import { LitElement } from 'lit-element'
 
-async function initialize<TComponent extends Component>(component: TComponent) {
+async function initialize<TComponent extends LitElement>(component: TComponent) {
 	document.body.appendChild(component)
 	await component.updateComplete
 	return component
