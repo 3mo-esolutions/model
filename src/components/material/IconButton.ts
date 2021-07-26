@@ -29,7 +29,7 @@ export class IconButton extends ComponentMixin(MwcIconButton) {
 			${super.styles}
 
 			:host {
-				--mdc-icon-size: var(--mo-font-size-icon);
+				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				--mdc-icon-button-size: calc(var(--mdc-icon-size) * 2);
 			}
 

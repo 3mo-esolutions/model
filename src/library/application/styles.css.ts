@@ -1,7 +1,7 @@
 import { css } from '..'
 
 export const styles = css`
-	@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap';
+	@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';
 	@import 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp';
 
 	@font-face {
@@ -65,7 +65,6 @@ export const styles = css`
 		--mo-shadow-deep: 0px 5px 5px -3px rgba(var(--mo-shadow-base), 0.2), 0px 8px 10px 1px rgba(var(--mo-shadow-base), 0.14), 0px 3px 14px 2px rgba(var(--mo-shadow-base), 0.12);
 		--mo-shadow-deep-hover: 0px 5px 5px -3px rgba(var(--mo-shadow-base), 0.2), 0px 8px 10px 1px rgba(var(--mo-shadow-base), 0.14), 0px 3px 14px 2px rgba(var(--mo-shadow-base), 0.12);
 		/* Font Sizes */
-		--mo-font-size-xxxs: 6px;
 		--mo-font-size-xxs: 8px;
 		--mo-font-size-xs: 10px;
 		--mo-font-size-s: 12px;
@@ -73,8 +72,6 @@ export const styles = css`
 		--mo-font-size-l: 18px;
 		--mo-font-size-xl: 24px;
 		--mo-font-size-xxl: 36px;
-		--mo-font-size-xxxl: 48px;
-		--mo-font-size-icon: 20px;
 		/* Thickness */
 		--mo-thickness-xs: 2px;
 		--mo-thickness-s: 4px;
