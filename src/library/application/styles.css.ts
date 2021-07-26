@@ -1,7 +1,7 @@
 import { css } from '..'
 
 export const styles = css`
-	@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap';
+	@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';
 	@import 'https://fonts.googleapis.com/icon?family=Material+Icons+Sharp';
 
 	@font-face {

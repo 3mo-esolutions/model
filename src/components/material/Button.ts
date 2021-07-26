@@ -23,6 +23,7 @@ export class Button extends ComponentMixin(MwcButton) {
 
 			:host {
 				height: 36px;
+				line-height: normal;
 			}
 
 			button {
