@@ -3,11 +3,11 @@
 <!-- https://material.io/design/typography/understanding-typography.html#type-properties -->
 
 ### Design
-- Default font is "Roboto" with a size of `var(--mo-font-size-m)` (14px). The browser's default line-height is normally 20% larger than the font-size itself.
+- Default font is "Roboto" with a size of `var(--mo-font-size-m)`. The browser's default line-height is normally 20% larger than the font-size itself.
 
 - There are 7 CSS font-size variables according to the list
 
-| Font-Size Variable  | Value | Usage |
+| Font-Size Variable | Value | Usage |
 |-|-|-|
 | `--mo-font-size-xxs` | 8px | |
 | `--mo-font-size-xs` | 10px | |
