@@ -20,11 +20,9 @@ export class DrawerList extends Component {
 	}
 
 	protected override initialized() {
-		for (const item of this.items) {
-			if (item instanceof DrawerItem) {
-				item.selectionChange.subscribe(() => this.open = true)
-			}
-		}
+		this.items
+			.filter((item): item is DrawerItem => item instanceof DrawerItem)
+			.forEach(item => item.selectionChange.subscribe(() => this.open = true))
 	}
 
 	protected override render = () => html`

@@ -12,18 +12,28 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 
 		override readonly shadowRoot!: ShadowRoot
 
+		/** Invoked after first update i.e. render is completed */
+		protected initialized() { }
+
+		/** Invoked every time the component is connected to the Document Object Model (DOM) */
+		protected connected() { }
+
+		/** Invoked every time the component is disconnected from the Document Object Model (DOM) */
+		protected disconnected() { }
+
 		protected override firstUpdated(props: PropertyValues) {
 			super.firstUpdated(props)
 			this.initialized()
 		}
 
-		protected initialized() { }
-
-		protected uninitialized() { }
+		override connectedCallback() {
+			super.connectedCallback()
+			this.connected()
+		}
 
 		override disconnectedCallback() {
 			super.disconnectedCallback()
-			this.uninitialized()
+			this.disconnected()
 		}
 
 		//#region Helpers

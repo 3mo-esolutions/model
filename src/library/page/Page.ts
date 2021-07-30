@@ -26,11 +26,11 @@ export class Page extends Component {
 		this.style.height = value ? 'calc(100% - 5px)' : ''
 	}
 
-	protected override initialized() {
+	protected override connected() {
 		this.handleTopAppBarDetails()
 	}
 
-	protected override uninitialized() {
+	protected override disconnected() {
 		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
 	}
 
