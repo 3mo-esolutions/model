@@ -35,6 +35,9 @@ export class Page extends Component {
 	}
 
 	private handleTopAppBarDetails() {
+		if (MoDeL.environment === 'test') {
+			return
+		}
 		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]')
 		if (topAppBarDetails) {
 			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
