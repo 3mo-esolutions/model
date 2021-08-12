@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { MaterialIcon } from '../../types'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
@@ -14,40 +14,19 @@ import { Fab as MwcFab } from '@material/mwc-fab'
 @component('mo-fab')
 export class Fab extends ComponentMixin(MwcFab) {
 	@property() override icon!: MaterialIcon
-	@property({ type: Boolean, reflect: true }) scrollHide = false
-	lastScrollElementTop = 0
-
-	static override get styles() {
-		return css`
-			${super.styles}
-
-			:host {
-				transition: var(--mo-fab-transition, var(--mo-duration-quick));
-			}
-
-			:host([scrollHide]) {
-				transform: scale(0);
-				opacity: 0;
-			}
-		`
-	}
 
 	constructor() {
 		super()
-		if (this.innerText !== '') {
-			this.label = this.innerText
-			this.extended = true
-		}
-	}
-
-	protected override initialized() {
-		this.previousElementSibling?.addEventListener('scroll', (e: Event) => {
-			const targetElement = e.composedPath()[0] as HTMLElement
-			const scrollTop = targetElement.scrollTop
-			const isUpScroll = scrollTop <= this.lastScrollElementTop
-			this.scrollHide = !isUpScroll
-			this.lastScrollElementTop = scrollTop <= 0 ? 0 : scrollTop
-		}, { passive: true })
+		new MutationObserver(() => {
+			if (this.textContent) {
+				this.label = this.textContent
+				this.extended = true
+			}
+		}).observe(this, {
+			subtree: true,
+			characterData: true,
+			childList: true,
+		})
 	}
 }
 
