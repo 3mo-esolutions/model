@@ -1,6 +1,7 @@
 import './PromiseTask'
 export { default as LocalStorageEntry, LocalStorageContainer } from './LocalStorage'
 export { default as JsonHelper } from './JsonHelper'
+export { default as CssHelper } from './CssHelper'
 export { default as ClientInfoHelper } from './ClientInfoHelper'
 export { default as PwaHelper } from './PwaHelper'
 export { default as AuthorizationHelper } from './AuthorizationHelper'

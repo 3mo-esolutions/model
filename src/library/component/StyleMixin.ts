@@ -2,6 +2,7 @@
 import { property } from 'lit-element'
 import { IStyledElement } from './IStyledElement'
 import * as CSS from 'csstype'
+import { CssHelper } from '../../helpers'
 
 export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) => {
 	abstract class StyleMixinConstructor extends Constructor implements IStyledElement {
@@ -43,8 +44,8 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		@property()
 		get width() { return this.style.width as CSS.Property.Width<string> }
 		set width(value) {
-			if (isAsteriskSyntax(value)) {
-				this.flexGrow = getFlexGrowFromAsteriskSyntax(value).toString()
+			if (CssHelper.isAsteriskSyntax(value)) {
+				this.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
 				return
 			}
 			this.style.width = value
@@ -61,8 +62,8 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		@property()
 		get height() { return this.style.height as CSS.Property.Height<string> }
 		set height(value) {
-			if (isAsteriskSyntax(value)) {
-				this.flexGrow = getFlexGrowFromAsteriskSyntax(value).toString()
+			if (CssHelper.isAsteriskSyntax(value)) {
+				this.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
 				return
 			}
 			this.style.height = value
@@ -169,13 +170,4 @@ export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) =
 		set userSelect(value) { this.style.userSelect = value }
 	}
 	return StyleMixinConstructor
-}
-
-function isAsteriskSyntax(length: string) {
-	return (length.includes('*') === true && length.includes('calc') === false)
-}
-function getFlexGrowFromAsteriskSyntax(length: string) {
-	return length === '*'
-		? 1
-		: parseInt(length.split('*')[0])
 }
