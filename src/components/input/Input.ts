@@ -5,7 +5,7 @@ import { Component, property, query, event } from '../../library'
  * @fires input {CustomEvent<T | undefined>}
  */
 export abstract class Input<T> extends Component {
-	@event() readonly change!: IEvent<T | undefined>
+	@event() readonly change!: EventDispatcher<T | undefined>
 
 	@query('input') protected readonly inputElement!: HTMLInputElement
 

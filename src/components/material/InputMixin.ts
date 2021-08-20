@@ -4,7 +4,7 @@ import '@material/mwc-formfield'
 
 export const InputMixin = <T extends Constructor<LitElement>, TValue>(Constructor: T) => {
 	abstract class InputMixinConstructor extends Constructor {
-		@event() readonly change!: IEvent<TValue>
+		@event() readonly change!: EventDispatcher<TValue>
 
 		abstract get value(): TValue
 		abstract set value(value: TValue)

@@ -5,7 +5,7 @@ import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T) => {
 	abstract class ListItemMixinConstructor extends Constructor {
-		@event() readonly selectionChange!: IEvent<boolean>
+		@event() readonly selectionChange!: EventDispatcher<boolean>
 
 		@property() icon?: MaterialIcon
 		@property() metaIcon?: MaterialIcon

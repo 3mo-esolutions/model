@@ -6,7 +6,7 @@ import { Flex } from '..'
  */
 @component('mo-calendar')
 export class Calendar extends Component {
-	@event() readonly change!: IEvent<MoDate>
+	@event() readonly change!: EventDispatcher<MoDate>
 
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
 	@property({

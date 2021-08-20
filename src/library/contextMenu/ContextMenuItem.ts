@@ -8,7 +8,7 @@ import { Flex, ListItem, Menu } from '../../components'
  */
 @component('mo-context-menu-item')
 export class ContextMenuItem extends ListItem {
-	@event() readonly openChange!: IEvent<boolean>
+	@event() readonly openChange!: EventDispatcher<boolean>
 
 	@property({
 		type: Boolean,

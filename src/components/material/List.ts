@@ -18,7 +18,7 @@ type ListValue = string | Array<string>
  */
 @component('mo-list')
 export class List extends ComponentMixin(MwcList) {
-	@event() private readonly change!: IEvent<ListValue | undefined>
+	@event() private readonly change!: EventDispatcher<ListValue | undefined>
 
 	@property({ reflect: true, observer: valueChanged }) value?: ListValue
 

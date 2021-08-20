@@ -3,7 +3,7 @@ import Route from 'route-parser'
 import { PageComponentConstructor, PageParameters } from './PageComponent'
 
 class Router {
-	@event() readonly navigated!: IEvent<PageComponentConstructor<any> | undefined>
+	@event() readonly navigated!: EventDispatcher<PageComponentConstructor<any> | undefined>
 
 	HomePageConstructor?: PageComponentConstructor<any>
 

@@ -3,7 +3,7 @@ import { ListItemCheckbox } from '../material'
 
 @component('mo-option')
 export class Option<TValue> extends ListItemCheckbox {
-	@event({ bubbles: true }) private readonly defaultClick!: IEvent
+	@event({ bubbles: true }) private readonly defaultClick!: EventDispatcher
 
 	@property({ type: Object }) data?: TValue
 	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false

@@ -16,7 +16,7 @@ export type DialogSize = 'large' | 'medium' | 'small'
  */
 @component('mo-dialog')
 export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
-	@event() readonly closed!: IEvent<TResult | Error>
+	@event() readonly closed!: EventDispatcher<TResult | Error>
 
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false

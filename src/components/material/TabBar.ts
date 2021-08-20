@@ -8,7 +8,7 @@ import { Tab } from '.'
  */
 @component('mo-tab-bar')
 export class TabBar extends ComponentMixin(MwcTabBar) {
-	@event() readonly navigate!: IEvent<string | undefined>
+	@event() readonly navigate!: EventDispatcher<string | undefined>
 
 	@property({ observer: valueChanged }) value?: string
 

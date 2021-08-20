@@ -1,13 +1,10 @@
 {
-	"Authenticated successfully": "Authenticated successfully",
-	"Incorrect Credentials": "Incorrect Credentials",
-	"Password reset instructions have been sent to your email address": "Password reset instructions have been sent to your email address",
-	"Password could not be reset": "Password could not be reset",
-	"Something went wrong": "Something went wrong",
-	"Try again": "Try again",
-	"Username": "Username",
-	"Password": "Password",
-	"Remember Password": "Remember Password",
-	"Welcome": "Welcome",
-	"Login": "Login"
+	"${length:number} Product(s) is/are saved with the name ${name:string}": [
+		"1 product has been saved ${string}",
+		"${length} products have been saved ${string}"
+	],
+	"${length:number} Product(s) is/are saved with the name ${name:string} !": [
+		"1 product has been saved ${string}",
+		"${length} products have been saved ${string}"
+	]
 }

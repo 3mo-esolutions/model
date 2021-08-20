@@ -1,14 +1,12 @@
-interface Event<T = void> {
-	dispatch(value: T): void
-	subscribe(handler: EventHandler<T>): void
-	unsubscribe(handler: EventHandler<T>): void
-}
-
 declare global {
-	type IEvent<T = void> = Event<T>
+	interface EventDispatcher<T = void> {
+		dispatch(value: T): void
+		subscribe(handler: EventHandler<T>): void
+		unsubscribe(handler: EventHandler<T>): void
+	}
 }
 
-export class PureEvent<T = void> implements Event<T> {
+export class PureEvent<T = void> implements EventDispatcher<T> {
 	private handlers = new Array<EventHandler<T>>()
 
 	subscribe(handler: EventHandler<T>) {
@@ -24,7 +22,7 @@ export class PureEvent<T = void> implements Event<T> {
 	}
 }
 
-export class HTMLElementEvent<T = void> implements Event<T> {
+export class HTMLElementEvent<T = void> implements EventDispatcher<T> {
 	private readonly handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
 
 	constructor(private readonly target: HTMLElement, private readonly eventName: string, private readonly options?: EventInit) { }

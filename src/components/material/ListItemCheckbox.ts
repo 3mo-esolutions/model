@@ -24,7 +24,7 @@ class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
  */
 @component('mo-list-item-checkbox')
 export class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItemWidthCompatibleLeft)) {
-	@event() override readonly selectionChange!: IEvent<boolean>
+	@event() override readonly selectionChange!: EventDispatcher<boolean>
 
 	constructor() {
 		super()
