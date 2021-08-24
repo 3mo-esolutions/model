@@ -2,8 +2,10 @@ import Bowser from 'bowser'
 
 type Browser =
 	| 'Chrome'
-	| 'Firefox'
+	| 'Microsoft Edge'
 	| 'Opera'
+	| 'Firefox'
+	| 'Safari'
 
 type OperatingSystem =
 	| 'Windows'
