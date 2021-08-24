@@ -18,35 +18,39 @@ export class PureEvent<T = void> implements EventDispatcher<T> {
 	}
 
 	dispatch(data: T) {
-		this.handlers.slice(0).forEach(h => h(data))
+		[...this.handlers].forEach(h => h(data))
 	}
 }
 
 export class HTMLElementEvent<T = void> implements EventDispatcher<T> {
 	private readonly handlersMap = new Map<EventHandler<T>, CustomEventHandler<T>>()
 
-	constructor(private readonly target: HTMLElement, private readonly eventName: string, private readonly options?: EventInit) { }
+	constructor(
+		private readonly element: HTMLElement,
+		private readonly eventName: string,
+		private readonly options?: EventInit,
+	) { }
 
 	protected get handlers() {
-		return this.target.eventHandlers
+		return this.element.eventHandlers
 			.filter(e => e.name === this.eventName)
 			.map(e => e.eventListener)
 	}
 
 	dispatch(value: T) {
-		this.target.dispatchEvent(new CustomEvent<T>(this.eventName, { detail: value, ...this.options }))
+		this.element.dispatchEvent(new CustomEvent<T>(this.eventName, { detail: value, ...this.options }))
 	}
 
 	subscribe(handler: EventHandler<T>) {
 		const nativeHandler = (event: CustomEvent<T>) => handler(event.detail)
-		this.target.addEventListener(this.eventName, nativeHandler)
+		this.element.addEventListener(this.eventName, nativeHandler)
 		this.handlersMap.set(handler, nativeHandler)
 	}
 
 	unsubscribe(handler: EventHandler<T>) {
 		const nativeHandler = this.handlersMap.get(handler)
 		if (nativeHandler) {
-			this.target.removeEventListener(this.eventName, nativeHandler)
+			this.element.removeEventListener(this.eventName, nativeHandler)
 		}
 		this.handlersMap.delete(handler)
 	}
