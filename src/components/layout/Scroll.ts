@@ -1,9 +1,9 @@
-import { component, html, Component } from '../../library'
+import { component, css, html, Component } from '../../library'
 
 @component('mo-scroll')
 export class Scroll extends Component {
-	protected override render = () => html`
-		<style>
+	static override get styles() {
+		return css`
 			:host {
 				/* 'overlay' is not supported in firefox so it fallbacks to auto, otherwise overlay is set */
 				overflow: auto;
@@ -31,11 +31,16 @@ export class Scroll extends Component {
 				width: 100%;
 				height: 100%;
 			}
-		</style>
-		<div>
-			<slot></slot>
-		</div>
-	`
+		`
+	}
+
+	protected override get template() {
+		return html`
+			<div>
+				<slot></slot>
+			</div>
+		`
+	}
 }
 
 declare global {
