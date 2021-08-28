@@ -52,9 +52,9 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
 		this.open = true
-		this.dialog.primaryAction = this.primaryButtonAction.bind(this.dialog)
-		this.dialog.secondaryAction = this.secondaryButtonAction?.bind(this.dialog)
-		this.dialog.cancellationAction = this.cancellationAction?.bind(this.dialog)
+		this.dialog.primaryAction = this.primaryButtonAction.bind(this)
+		this.dialog.secondaryAction = this.secondaryButtonAction?.bind(this)
+		this.dialog.cancellationAction = this.cancellationAction?.bind(this)
 		this.dialog.addEventListener('closed', (e: CustomEvent<TResult>) => {
 			// Google MWC has events in some of their components
 			// which dispatch a "closed" event with "bubbles" option set to true
