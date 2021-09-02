@@ -28,22 +28,31 @@ export class Page extends Component {
 
 	protected override connected() {
 		this.handleTopAppBarDetails()
+		this.handleHeader()
 	}
 
 	protected override disconnected() {
 		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
+		MoDeL.application.headerSlot.innerHTML = ''
 	}
 
 	private handleTopAppBarDetails() {
+		const elements = this.mountElementsWithinPageToElement('topAppBarDetails', MoDeL.application.topAppBarDetailsSlot)
+		MoDeL.application.topAppBarProminent = elements.length > 0
+	}
+
+	private handleHeader() {
+		this.mountElementsWithinPageToElement('header', MoDeL.application.headerSlot)
+	}
+
+	private mountElementsWithinPageToElement(slotName: string, element: HTMLElement) {
 		if (MoDeL.environment === 'test') {
-			return
+			return []
 		}
-		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]')
-		if (topAppBarDetails) {
-			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
-			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails)
-		}
-		MoDeL.application.topAppBarProminent = !!topAppBarDetails
+		const elements = this.querySelectorAll(`[slot=${slotName}]`)
+		element.innerHTML = ''
+		element.append(...elements)
+		return Array.from(elements)
 	}
 
 	protected override render = () => html`

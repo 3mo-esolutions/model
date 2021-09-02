@@ -18,7 +18,8 @@ export abstract class Application extends Component {
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
 
-	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
+	@query('slot[name=topAppBarDetails]') readonly topAppBarDetailsSlot!: HTMLSlotElement
+	@query('slot[name=header]') readonly headerSlot!: HTMLSlotElement
 
 	constructor() {
 		super()
@@ -86,11 +87,7 @@ export abstract class Application extends Component {
 				font-family: Google Sans;
 			}
 
-			.pageTitle {
-				font-size: var(--mo-font-size-l);
-			}
-
-			:host([isTopAppBarProminent]) .pageTitle {
+			:host([isTopAppBarProminent]) #pageHeader {
 				margin-bottom: 9px;
 			}
 
@@ -113,18 +110,17 @@ export abstract class Application extends Component {
 		return html`
 			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
 				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>
-					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
-					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-					${this.applicationNameTemplate}
+					${this.topAppBarNavigationTemplate}
 				</mo-flex>
 
 				<mo-flex slot='title' alignItems='center' foreground='var(--mo-color-accessible)'>
-					<span class='pageTitle'>${this.pageTitle}</span>
-					<slot name='topAppBarDetails'></slot>
+					${this.topAppBarHeaderTemplate}
 				</mo-flex>
 
 				<slot slot='actionItems' name='actionItems'>
-					${this.topAppBarActionItemsTemplate}
+					<mo-flex height='var(--mo-top-app-bar-height)' alignItems='center' justifyContent='center'>
+						${this.topAppBarActionItemsTemplate}
+					</mo-flex>
 				</slot>
 
 				<mo-drawer
@@ -159,9 +155,51 @@ export abstract class Application extends Component {
 		`
 	}
 
+	protected get topAppBarNavigationTemplate() {
+		return html`
+			${this.menuIconButtonTemplate}
+			${this.logoTemplate}
+			${this.applicationNameTemplate}
+		`
+	}
+
+	protected get menuIconButtonTemplate() {
+		return html`
+			<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+		`
+	}
+
+	protected get logoTemplate() {
+		return html`
+			<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+		`
+	}
+
 	protected get applicationNameTemplate() {
 		return html`
 			<span class='applicationTitle'>${Manifest.short_name}</span>
+		`
+	}
+
+	protected get topAppBarHeaderTemplate() {
+		return html`
+			<mo-flex id='pageHeader' direction='horizontal'>
+				${this.pageHeaderTemplate}
+			</mo-flex>
+			${this.topAppBatDetailsSlotTemplate}
+		`
+	}
+
+	protected get pageHeaderTemplate() {
+		return html`
+			<span style='font-size: var(--mo-font-size-l)'>${this.pageTitle}</span>
+			<slot name='header'></slot>
+		`
+	}
+
+	protected get topAppBatDetailsSlotTemplate() {
+		return html`
+			<slot name='topAppBarDetails'></slot>
 		`
 	}
 
