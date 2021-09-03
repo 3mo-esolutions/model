@@ -9,12 +9,6 @@ export class DrawerList extends Component {
 	@property() icon?: MaterialIcon
 	@property() label = ''
 
-	constructor() {
-		super()
-		this.root = this.parentElement === null
-		this.open = !!this.root
-	}
-
 	private get items() {
 		return this.childElements as Array<DrawerItem | DrawerList>
 	}
