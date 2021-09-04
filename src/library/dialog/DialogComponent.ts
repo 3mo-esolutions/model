@@ -14,7 +14,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 
 	['constructor']: DialogComponentConstructor<T>
 
-	constructor(protected readonly parameters = {} as T) {
+	constructor(protected readonly parameters: T) {
 		super()
 	}
 

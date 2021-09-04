@@ -12,11 +12,8 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	['constructor']: PageComponentConstructor<T>
 
-	protected readonly parameters = {} as T
-
-	constructor(parameters: T) {
+	constructor(protected readonly parameters: T) {
 		super()
-		this.parameters = parameters as T
 	}
 
 	navigate() {
