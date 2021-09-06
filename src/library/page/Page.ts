@@ -32,17 +32,17 @@ export class Page extends Component {
 	}
 
 	protected override disconnected() {
-		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
-		MoDeL.application.headerSlot.innerHTML = ''
+		MoDeL.application.pageHeaderDetailsSlot.innerHTML = ''
+		MoDeL.application.pageHeaderSlot.innerHTML = ''
 	}
 
 	private handleTopAppBarDetails() {
-		const elements = this.mountElementsWithinPageToElement('topAppBarDetails', MoDeL.application.topAppBarDetailsSlot)
+		const elements = this.mountElementsWithinPageToElement('topAppBarDetails', MoDeL.application.pageHeaderDetailsSlot)
 		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
 	private handleHeader() {
-		this.mountElementsWithinPageToElement('header', MoDeL.application.headerSlot)
+		this.mountElementsWithinPageToElement('pageHeader', MoDeL.application.pageHeaderSlot)
 	}
 
 	private mountElementsWithinPageToElement(slotName: string, element: HTMLElement) {

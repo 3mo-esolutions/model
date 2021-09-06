@@ -18,8 +18,8 @@ export abstract class Application extends Component {
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
 
-	@query('slot[name=topAppBarDetails]') readonly topAppBarDetailsSlot!: HTMLSlotElement
-	@query('slot[name=header]') readonly headerSlot!: HTMLSlotElement
+	@query('slot[name=pageHeaderDetails]') readonly pageHeaderDetailsSlot!: HTMLSlotElement
+	@query('slot[name=pageHeader]') readonly pageHeaderSlot!: HTMLSlotElement
 
 	constructor() {
 		super()
@@ -193,13 +193,13 @@ export abstract class Application extends Component {
 	protected get pageHeaderTemplate() {
 		return html`
 			<span style='font-size: var(--mo-font-size-l)'>${this.pageTitle}</span>
-			<slot name='header'></slot>
+			<slot name='pageHeader'></slot>
 		`
 	}
 
 	protected get topAppBatDetailsSlotTemplate() {
 		return html`
-			<slot name='topAppBarDetails'></slot>
+			<slot name='pageHeaderDetails'></slot>
 		`
 	}
 
