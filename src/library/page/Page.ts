@@ -27,8 +27,8 @@ export class Page extends Component {
 	}
 
 	protected override connected() {
-		this.handleTopAppBarDetails()
-		this.handleHeader()
+		this.handlePageHeaderDetails()
+		this.handlePageHeader()
 	}
 
 	protected override disconnected() {
@@ -36,12 +36,12 @@ export class Page extends Component {
 		MoDeL.application.pageHeaderSlot.innerHTML = ''
 	}
 
-	private handleTopAppBarDetails() {
-		const elements = this.mountElementsWithinPageToElement('topAppBarDetails', MoDeL.application.pageHeaderDetailsSlot)
+	private handlePageHeaderDetails() {
+		const elements = this.mountElementsWithinPageToElement('pageHeaderDetails', MoDeL.application.pageHeaderDetailsSlot)
 		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
-	private handleHeader() {
+	private handlePageHeader() {
 		this.mountElementsWithinPageToElement('pageHeader', MoDeL.application.pageHeaderSlot)
 	}
 
