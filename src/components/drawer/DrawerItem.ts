@@ -41,11 +41,7 @@ export class DrawerItem extends ListItem {
 	constructor() {
 		super()
 
-		MoDeL.Router.navigated.subscribe(pageConstructor => {
-			const arePagesEqual = pageConstructor === this.componentConstructor?.[0]
-			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage?.['parameters'])
-			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
-		})
+		MoDeL.Router.navigated.subscribe(pageConstructor => this.checkIfSelected(pageConstructor))
 
 		this.selectionChange.subscribe(isSelected => {
 			if (this.componentConstructor && isSelected) {
@@ -60,6 +56,19 @@ export class DrawerItem extends ListItem {
 				}
 			}
 		})
+	}
+
+	override connected() {
+		this.checkIfSelected()
+	}
+
+	private readonly checkIfSelected = (
+		constructor: PageComponentConstructor<any> | undefined = PageHost.currentPage?.constructor,
+		parameters: Record<string, string | number | undefined> = PageHost.currentPage?.['parameters']
+	) => {
+		const arePagesEqual = constructor === this.componentConstructor?.[0]
+		const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(parameters)
+		PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
 	}
 
 	protected override renderGraphic = () => html`
