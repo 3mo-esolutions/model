@@ -144,7 +144,9 @@ export abstract class Application extends Component {
 						</mo-drawer-list>
 					</mo-flex>
 
-					<mo-page-host slot='appContent'></mo-page-host>
+					<mo-flex slot='appContent' height='100%'>
+						${this.pageHostTemplate}
+					</mo-flex>
 				</mo-drawer>
 			</mo-top-app-bar>
 
@@ -206,6 +208,12 @@ export abstract class Application extends Component {
 	protected get topAppBarActionItemsTemplate() {
 		return !this.authenticator ? nothing : html`
 			<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>
+		`
+	}
+
+	protected get pageHostTemplate() {
+		return html`
+			<mo-page-host height='*'></mo-page-host>
 		`
 	}
 

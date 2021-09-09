@@ -94,11 +94,6 @@ export class PageHost extends Component {
 
 	protected override render = () => html`
 		<style>
-			:host {
-				padding-top: var(--mo-top-app-bar-height);
-				flex: 1;
-			}
-
 			::slotted(:first-child) {
 				--mo-page-padding: var(--mo-thickness-xl);
 				--mo-page-max-width: 2560px;
