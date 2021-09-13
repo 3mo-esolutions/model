@@ -23,7 +23,7 @@ export class Page extends Component {
 		if (PageHost.currentPage) {
 			PageHost.currentPage.style.flex = value ? '1' : ''
 		}
-		this.style.height = value ? 'calc(100% - 5px)' : ''
+		this.style.height = value ? '100%' : ''
 	}
 
 	protected override connected() {
