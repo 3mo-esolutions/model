@@ -91,7 +91,7 @@ export abstract class Application extends Component {
 				margin-bottom: 9px;
 			}
 
-			slot[name=topAppBarDetails] {
+			slot[name=pageHeaderDetails] {
 				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
@@ -188,7 +188,7 @@ export abstract class Application extends Component {
 			<mo-flex id='pageHeader' direction='horizontal'>
 				${this.pageHeaderTemplate}
 			</mo-flex>
-			${this.topAppBatDetailsSlotTemplate}
+			${this.pageHeaderDetailsTemplate}
 		`
 	}
 
@@ -199,7 +199,7 @@ export abstract class Application extends Component {
 		`
 	}
 
-	protected get topAppBatDetailsSlotTemplate() {
+	protected get pageHeaderDetailsTemplate() {
 		return html`
 			<slot name='pageHeaderDetails'></slot>
 		`
