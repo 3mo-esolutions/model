@@ -1,4 +1,4 @@
-import { Component, component, html, ifDefined, property } from '../library'
+import { Component, component, css, html, ifDefined, property } from '../library'
 import { ThemeHelper } from '..'
 
 @component('mo-logo')
@@ -15,23 +15,28 @@ export class Logo extends Component {
 		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
-	protected override render() {
+	static override get styles() {
+		return css`
+			:host {
+				display: flex;
+				justify-content: center;
+				height: 100%
+			}
+
+			img, a {
+				height: 100%
+			}
+		`
+	}
+
+	protected override get template() {
 		const color = this.color.includes('var(') ? getComputedStyle(MoDeL.application).getPropertyValue(this.colorPropertyName) : this.color
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const source = Logo.source?.replace('{{color}}', color)
 		return html`
-			<style>
-				:host {
-					display: flex;
-					justify-content: center;
-					height: 100%
-				}
-
-				img {
-					height: 100%
-				}
-			</style>
-			<img src=${ifDefined(source)} />
+			<a href='/'>
+				<img src=${ifDefined(source)} />
+			</a>
 		`
 	}
 
