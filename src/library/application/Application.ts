@@ -1,4 +1,4 @@
-import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, nothing, ApplicationProvider } from '..'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, ThemeHelper } from '../../helpers'
 import { Drawer } from '../../components'
@@ -17,9 +17,6 @@ export abstract class Application extends Component {
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
-
-	@query('slot[name=pageHeaderDetails]') readonly pageHeaderDetailsSlot!: HTMLSlotElement
-	@query('slot[name=pageHeader]') readonly pageHeaderSlot!: HTMLSlotElement
 
 	constructor() {
 		super()

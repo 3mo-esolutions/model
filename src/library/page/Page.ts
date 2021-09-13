@@ -27,32 +27,28 @@ export class Page extends Component {
 	}
 
 	protected override connected() {
-		this.handlePageHeaderDetails()
-		this.handlePageHeader()
-	}
-
-	protected override disconnected() {
-		MoDeL.application.pageHeaderDetailsSlot.innerHTML = ''
-		MoDeL.application.pageHeaderSlot.innerHTML = ''
-	}
-
-	private handlePageHeaderDetails() {
-		const elements = this.mountElementsWithinPageToElement('pageHeaderDetails', MoDeL.application.pageHeaderDetailsSlot)
+		this.connectElementsWithinPageToElement('pageHeader')
+		const elements = this.connectElementsWithinPageToElement('pageHeaderDetails')
 		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
-	private handlePageHeader() {
-		this.mountElementsWithinPageToElement('pageHeader', MoDeL.application.pageHeaderSlot)
+	protected override disconnected() {
+		this.disconnectElementsWithinPageToElement('pageHeader')
+		this.disconnectElementsWithinPageToElement('pageHeaderDetails')
 	}
 
-	private mountElementsWithinPageToElement(slotName: string, element: HTMLElement) {
+	private connectElementsWithinPageToElement(slotName: string) {
 		if (MoDeL.environment === 'test') {
 			return []
 		}
 		const elements = this.querySelectorAll(`[slot=${slotName}]`)
-		element.innerHTML = ''
-		element.append(...elements)
+		this.disconnectElementsWithinPageToElement(slotName)
+		MoDeL.application.append(...elements)
 		return Array.from(elements)
+	}
+
+	private disconnectElementsWithinPageToElement(slotName: string) {
+		Array.from(MoDeL.application.querySelectorAll(`[slot=${slotName}]`)).forEach(element => element.remove())
 	}
 
 	protected override render = () => html`
