@@ -51,7 +51,7 @@ export class Card extends Component {
 					border-radius: var(--mo-border-radius);
 					justify-content: inherit;
 					align-items: inherit;
-					height: calc(100% - calc(2 * var(--mo-card-margin-vertical)))
+					height: calc(100% - calc(2 * calc(var(--mo-card-margin-vertical) + var(--mo-card-padding-vertical))));
 				}
 			</style>
 			<mo-flex class='card'>
