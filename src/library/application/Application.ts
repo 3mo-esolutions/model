@@ -58,13 +58,13 @@ export abstract class Application extends Component {
 		}
 	}
 
-	protected async authenticate() {
+	async authenticate() {
 		await this.authenticator?.confirm()
 	}
 
-	protected async unauthenticate() {
+
+	async unauthenticate() {
 		await this.authenticator?.unauthenticate()
-		this.drawerOpen = false
 	}
 
 	static override get styles() {
@@ -137,7 +137,6 @@ export abstract class Application extends Component {
 
 						<mo-drawer-list open root>
 							${this.drawerFooterTemplate}
-							<mo-drawer-item interactive disabled icon='logout' ?hidden=${!this.authenticator || !this.authenticatedUser} @click=${this.unauthenticate}>Logout</mo-drawer-item>
 						</mo-drawer-list>
 					</mo-flex>
 
@@ -204,8 +203,14 @@ export abstract class Application extends Component {
 
 	protected get topAppBarActionItemsTemplate() {
 		return !this.authenticator ? nothing : html`
-			<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>
+			<mo-user-avatar .user=${this.authenticatedUser}>
+				${this.userAvatarMenuItemsTemplate}
+			</mo-user-avatar>
 		`
+	}
+
+	protected get userAvatarMenuItemsTemplate() {
+		return nothing
 	}
 
 	protected get pageHostTemplate() {
