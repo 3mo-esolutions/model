@@ -101,7 +101,7 @@ export class ContextMenuItem extends ListItem {
 			if (this.detailsMenu) {
 				const voidHandler = () => void 0
 				this['onClick'] = voidHandler
-				this.contextMenu.mdcRoot.close = voidHandler
+				// this.contextMenu.mdcRoot.close = voidHandler
 				this.detailsMenu.mdcRoot.close = voidHandler
 			}
 		})

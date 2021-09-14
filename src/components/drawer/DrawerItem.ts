@@ -1,4 +1,4 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined, css } from '../../library'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../../library'
 import { Drawer, ListItem } from '..'
 
 const enum MatchMode {
@@ -8,18 +8,6 @@ const enum MatchMode {
 
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {
-	static get styles() {
-		return [
-			super.styles,
-			css`
-				:host([disabled][interactive]) {
-					cursor: pointer;
-					pointer-events: auto;
-				}
-			`
-		] as any
-	}
-
 	@property() matchMode = MatchMode.All
 
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
@@ -33,19 +21,14 @@ export class DrawerItem extends ListItem {
 		const isDialog = value instanceof DialogComponent
 		this.switchAttribute('dialog', isDialog)
 		if (isDialog) {
-			this.disabled = true
-			this.switchAttribute('interactive', true)
+			this.nonActivatable = true
 		}
 	}
 
 	constructor() {
 		super()
 
-		MoDeL.Router.navigated.subscribe(pageConstructor => {
-			const arePagesEqual = pageConstructor === this.componentConstructor?.[0]
-			const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(PageHost.currentPage?.['parameters'])
-			PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
-		})
+		MoDeL.Router.navigated.subscribe(pageConstructor => this.checkIfSelected(pageConstructor))
 
 		this.selectionChange.subscribe(isSelected => {
 			if (this.componentConstructor && isSelected) {
@@ -60,6 +43,19 @@ export class DrawerItem extends ListItem {
 				}
 			}
 		})
+	}
+
+	override connected() {
+		this.checkIfSelected()
+	}
+
+	private readonly checkIfSelected = (
+		constructor: PageComponentConstructor<any> | undefined = PageHost.currentPage?.constructor,
+		parameters: Record<string, string | number | undefined> = PageHost.currentPage?.['parameters']
+	) => {
+		const arePagesEqual = constructor === this.componentConstructor?.[0]
+		const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(parameters)
+		PromiseTask.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
 	}
 
 	protected override renderGraphic = () => html`

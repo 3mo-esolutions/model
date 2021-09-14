@@ -1,4 +1,4 @@
-import { Component, component, html, ifDefined, property } from '../library'
+import { Component, component, css, html, ifDefined, property } from '../library'
 import { ThemeHelper } from '..'
 
 @component('mo-logo')
@@ -6,37 +6,52 @@ export class Logo extends Component {
 	static source = '/assets/favicon.svg'
 
 	@property() color = 'var(--mo-color-accessible)'
+	@property() source = Logo.source
 
 	protected override initialized() {
-		// Without this, the color of the logo isn't computed.
-		// My guess is that the "computed styles" become available
-		// after delegating to the event loop
-		PromiseTask.delegateToEventLoop(() => this.requestUpdate())
 		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
-	protected override render() {
-		const color = this.color.includes('var(') ? getComputedStyle(MoDeL.application).getPropertyValue(this.colorPropertyName) : this.color
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		const source = Logo.source?.replace('{{color}}', color)
-		return html`
-			<style>
-				:host {
-					display: flex;
-					justify-content: center;
-					height: 100%
-				}
+	private async replaceColorVariable() {
+		if (Logo.source.includes('data:image/svg+xml;utf8,') === false) {
+			return
+		}
+		const isColorCssVariable = this.color.includes('var(')
+		const colorPropertyName = isColorCssVariable ? this.color.split('(')[1].substring(0, this.color.split('(')[1].length - 1) : ''
+		let color = ''
+		const tryCount = 10
+		const failWaitTimeInMs = 10
+		for (let i = 0; i < tryCount; i++) {
+			color = isColorCssVariable ? getComputedStyle(MoDeL.application).getPropertyValue(colorPropertyName) : this.color
+			if (color) {
+				break
+			}
+			await PromiseTask.sleep(failWaitTimeInMs)
+		}
+		this.source = Logo.source.replace('{{color}}', color)
+	}
 
-				img {
-					height: 100%
-				}
-			</style>
-			<img src=${ifDefined(source)} />
+	static override get styles() {
+		return css`
+			:host {
+				display: flex;
+				justify-content: center;
+				height: 100%
+			}
+
+			img, a {
+				height: 100%
+			}
 		`
 	}
 
-	private get colorPropertyName() {
-		return this.color.split('(')[1].substring(0, this.color.split('(')[1].length - 1)
+	protected override get template() {
+		this.replaceColorVariable()
+		return html`
+			<a href='/'>
+				<img src=${ifDefined(this.source)} />
+			</a>
+		`
 	}
 }
 

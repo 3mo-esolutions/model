@@ -1,4 +1,4 @@
-import { component, html, property, Component, PageHost } from '..'
+import { component, html, css, property, Component, PageHost } from '..'
 
 @component('mo-page')
 export class Page extends Component {
@@ -23,41 +23,64 @@ export class Page extends Component {
 		if (PageHost.currentPage) {
 			PageHost.currentPage.style.flex = value ? '1' : ''
 		}
-		this.style.height = value ? 'calc(100% - 5px)' : ''
+		this.style.height = value ? '100%' : ''
 	}
 
 	protected override connected() {
-		this.handleTopAppBarDetails()
+		this.connectPageElementsToApplicationSlot('pageHeader')
+		const elements = this.connectPageElementsToApplicationSlot('pageHeaderDetails')
+		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
 	protected override disconnected() {
-		MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
+		this.disconnectElementsFromApplicationSlot('pageHeader')
+		this.disconnectElementsFromApplicationSlot('pageHeaderDetails')
 	}
 
-	private handleTopAppBarDetails() {
+	private connectPageElementsToApplicationSlot(slotName: string) {
 		if (MoDeL.environment === 'test') {
-			return
+			return []
 		}
-		const topAppBarDetails = this.querySelector('[slot="topAppBarDetails"]')
-		if (topAppBarDetails) {
-			MoDeL.application.topAppBarDetailsSlot.innerHTML = ''
-			MoDeL.application.topAppBarDetailsSlot.appendChild(topAppBarDetails)
-		}
-		MoDeL.application.topAppBarProminent = !!topAppBarDetails
+		const elements = this.querySelectorAll(`[slot=${slotName}]`)
+		this.disconnectElementsFromApplicationSlot(slotName)
+		MoDeL.application.append(...elements)
+		return Array.from(elements)
 	}
 
-	protected override render = () => html`
-		<style>
+	private disconnectElementsFromApplicationSlot(slotName: string) {
+		Array.from(MoDeL.application.querySelectorAll(`[slot=${slotName}]`)).forEach(element => element.remove())
+	}
+
+	static override get styles() {
+		return css`
 			:host {
 				display: inherit;
+				animation: transitionIn var(--mo-duration-quick);
 			}
 
 			::slotted {
 				height: 100%;
 			}
-		</style>
-		<slot></slot>
-	`
+
+			@keyframes transitionIn
+			{
+				0% {
+					visibility: hidden;
+					transform: translate3d(0, 100px, 100px);
+					opacity: 0;
+				}
+				100% {
+					visibility: visible;
+					transform: translate3d(0);
+					opacity: 1;
+				}
+			}
+		`
+	}
+
+	protected override get template() {
+		return html`<slot></slot>`
+	}
 }
 
 declare global {

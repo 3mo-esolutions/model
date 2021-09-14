@@ -1,3 +1,4 @@
+import { Corner } from '@material/mwc-menu'
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, ContextMenuItem } from '..'
 import { ContextMenu } from './ContextMenu'
 
@@ -5,8 +6,10 @@ import { ContextMenu } from './ContextMenu'
 export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu }
+	static get openMenuOnElement() { return this.instance.openMenuOnElement }
+	static get contextMenu() { return this.instance.contextMenu }
 
-	@property({ type: Object }) menu?: TemplateResult
+	@property({ type: Object }) menuContent?: TemplateResult
 
 	@queryAll('mo-context-menu-item') readonly items!: Array<ContextMenuItem>
 
@@ -15,7 +18,8 @@ export class ContextMenuHost extends Component {
 	private readonly lengthBuffer = 16
 
 	openMenu = async (mouseEvent: MouseEvent, template: TemplateResult) => {
-		this.menu = template
+		this.contextMenu.anchor = null
+		this.menuContent = template
 
 		if (this.list) {
 			this.list.style.opacity = '0'
@@ -34,6 +38,13 @@ export class ContextMenuHost extends Component {
 
 			await this.updateComplete
 		}
+	}
+
+	openMenuOnElement = async (element: HTMLElement, corner: Corner, template: TemplateResult) => {
+		this.contextMenu.corner = corner
+		this.contextMenu.anchor = element
+		this.menuContent = template
+		await this.updateComplete
 	}
 
 	get list() {
@@ -67,8 +78,8 @@ export class ContextMenuHost extends Component {
 				-ms-user-select: auto !important;
 			}
 		</style>
-		<mo-context-menu fixed quick ?open=${!!this.menu} @closed=${() => this.menu = undefined}>
-			${this.menu ?? nothing}
+		<mo-context-menu fixed quick ?open=${!!this.menuContent} @closed=${() => this.menuContent = undefined}>
+			${this.menuContent ?? nothing}
 		</mo-context-menu>
 	`
 }

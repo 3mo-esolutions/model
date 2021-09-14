@@ -1,4 +1,4 @@
-import { css, html, property, Component, PageHost, TemplateResult, query, nothing, ApplicationProvider } from '..'
+import { css, html, property, Component, PageHost, TemplateResult, nothing, ApplicationProvider } from '..'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper, ThemeHelper } from '../../helpers'
 import { Drawer } from '../../components'
@@ -17,8 +17,6 @@ export abstract class Application extends Component {
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
-
-	@query('slot[name="topAppBarDetails"]') readonly topAppBarDetailsSlot!: HTMLSlotElement
 
 	constructor() {
 		super()
@@ -60,13 +58,13 @@ export abstract class Application extends Component {
 		}
 	}
 
-	protected async authenticate() {
+	async authenticate() {
 		await this.authenticator?.confirm()
 	}
 
-	protected async unauthenticate() {
+
+	async unauthenticate() {
 		await this.authenticator?.unauthenticate()
-		this.drawerOpen = false
 	}
 
 	static override get styles() {
@@ -86,15 +84,11 @@ export abstract class Application extends Component {
 				font-family: Google Sans;
 			}
 
-			.pageTitle {
-				font-size: var(--mo-font-size-l);
-			}
-
-			:host([isTopAppBarProminent]) .pageTitle {
+			:host([isTopAppBarProminent]) #pageHeader {
 				margin-bottom: 9px;
 			}
 
-			slot[name=topAppBarDetails] {
+			slot[name=pageHeaderDetails] {
 				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
@@ -113,18 +107,17 @@ export abstract class Application extends Component {
 		return html`
 			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
 				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>
-					<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
-					<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
-					${this.applicationNameTemplate}
+					${this.topAppBarNavigationTemplate}
 				</mo-flex>
 
 				<mo-flex slot='title' alignItems='center' foreground='var(--mo-color-accessible)'>
-					<span class='pageTitle'>${this.pageTitle}</span>
-					<slot name='topAppBarDetails'></slot>
+					${this.topAppBarHeaderTemplate}
 				</mo-flex>
 
 				<slot slot='actionItems' name='actionItems'>
-					${this.topAppBarActionItemsTemplate}
+					<mo-flex height='var(--mo-top-app-bar-height)' alignItems='center' justifyContent='center'>
+						${this.topAppBarActionItemsTemplate}
+					</mo-flex>
 				</slot>
 
 				<mo-drawer
@@ -144,11 +137,12 @@ export abstract class Application extends Component {
 
 						<mo-drawer-list open root>
 							${this.drawerFooterTemplate}
-							<mo-drawer-item interactive disabled icon='logout' ?hidden=${!this.authenticator || !this.authenticatedUser} @click=${this.unauthenticate}>Logout</mo-drawer-item>
 						</mo-drawer-list>
 					</mo-flex>
 
-					<mo-page-host slot='appContent'></mo-page-host>
+					<mo-flex slot='appContent' height='100%'>
+						${this.pageHostTemplate}
+					</mo-flex>
 				</mo-drawer>
 			</mo-top-app-bar>
 
@@ -159,15 +153,69 @@ export abstract class Application extends Component {
 		`
 	}
 
+	protected get topAppBarNavigationTemplate() {
+		return html`
+			${this.menuIconButtonTemplate}
+			${this.logoTemplate}
+			${this.applicationNameTemplate}
+		`
+	}
+
+	protected get menuIconButtonTemplate() {
+		return html`
+			<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+		`
+	}
+
+	protected get logoTemplate() {
+		return html`
+			<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+		`
+	}
+
 	protected get applicationNameTemplate() {
 		return html`
 			<span class='applicationTitle'>${Manifest.short_name}</span>
 		`
 	}
 
+	protected get topAppBarHeaderTemplate() {
+		return html`
+			<mo-flex id='pageHeader' direction='horizontal'>
+				${this.pageHeaderTemplate}
+			</mo-flex>
+			${this.pageHeaderDetailsTemplate}
+		`
+	}
+
+	protected get pageHeaderTemplate() {
+		return html`
+			<span style='font-size: var(--mo-font-size-l)'>${this.pageTitle}</span>
+			<slot name='pageHeader'></slot>
+		`
+	}
+
+	protected get pageHeaderDetailsTemplate() {
+		return html`
+			<slot name='pageHeaderDetails'></slot>
+		`
+	}
+
 	protected get topAppBarActionItemsTemplate() {
 		return !this.authenticator ? nothing : html`
-			<mo-user-avatar .user=${this.authenticatedUser}></mo-user-avatar>
+			<mo-user-avatar .user=${this.authenticatedUser}>
+				${this.userAvatarMenuItemsTemplate}
+			</mo-user-avatar>
+		`
+	}
+
+	protected get userAvatarMenuItemsTemplate() {
+		return nothing
+	}
+
+	protected get pageHostTemplate() {
+		return html`
+			<mo-page-host height='*'></mo-page-host>
 		`
 	}
 
