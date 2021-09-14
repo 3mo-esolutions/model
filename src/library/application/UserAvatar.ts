@@ -10,12 +10,11 @@ export class UserAvatar extends Component {
 	static override get styles() {
 		return css`
 			:host {
-				height: 100%;
-				width: 100%;
+				padding: 3px 0;
 				display: flex;
 			}
 
-			mo-flex {
+			.avatar {
 				height: 40px;
 				width: 40px;
 				align-self: center;
@@ -23,13 +22,14 @@ export class UserAvatar extends Component {
 				justify-content: center;
 				align-items: center;
 				border-radius: 50%;
+				color: var(--mo-color-foreground);
 				background: rgba(0, 0, 0, 0.25);
 				font-size: var(--mo-font-size-l);
 			}
 
-			mo-flex:hover {
+			.avatar:hover {
 				cursor: pointer;
-				background: rgba(0, 0, 0, 0.5);
+				background: rgba(0, 0, 0, calc(0.25 * 2));
 			}
 		`
 	}
@@ -47,17 +47,21 @@ export class UserAvatar extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex @click=${() => this.menuOpen = !this.menuOpen}>
-				${this.user ? this.initials : html`
-					<mo-icon-button icon='account_circle' @click=${MoDeL.application.authenticate}></mo-icon-button>
-				`}
+			<mo-flex class='avatar' style='color: var(--mo-color-accessible)' @click=${() => this.menuOpen = !this.menuOpen}>
+				${this.avatarContent}
 			</mo-flex>
 
-			<mo-menu .anchor=${this} corner='BOTTOM_START' activatable ?open=${this.menuOpen} @opened=${() => this.menuOpen = true} @closed=${() => this.menuOpen = false}>
+			<mo-menu .anchor=${this} corner='BOTTOM_START' activatable
+				?open=${this.menuOpen}
+				@opened=${() => this.menuOpen = true}
+				@closed=${() => this.menuOpen = false}
+			>
 				<mo-list-item graphic='avatar' twoLine nonInteractive>
 					<span>${this.name}</span>
 					<span slot='secondary'>${this.user?.email}</span>
-					<mo-icon slot='graphic' icon='tag_faces'></mo-icon>
+					<mo-flex class='avatar' slot='graphic'>
+						${this.avatarContent}
+					</mo-flex>
 				</mo-list-item>
 
 				<li divider role='separator'></li>
@@ -68,9 +72,15 @@ export class UserAvatar extends Component {
 
 				<mo-list-item icon='exit_to_app' disabled style='cursor: pointer; pointer-events: auto;'
 					?hidden=${!MoDeL.application.authenticator || !MoDeL.application.authenticatedUser}
-					@click=${MoDeL.application.unauthenticate}
+					@click=${() => MoDeL.application.unauthenticate()}
 				>Sign out</mo-list-item>
 			</mo-menu>
+		`
+	}
+
+	private get avatarContent() {
+		return this.user ? this.initials : html`
+			<mo-icon-button icon='account_circle' @click=${() => MoDeL.application.authenticate()}></mo-icon-button>
 		`
 	}
 }
