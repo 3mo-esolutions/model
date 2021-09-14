@@ -1,4 +1,4 @@
-import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined, css } from '../../library'
+import { component, property, PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, html, PageHost, ifDefined } from '../../library'
 import { Drawer, ListItem } from '..'
 
 const enum MatchMode {
@@ -8,18 +8,6 @@ const enum MatchMode {
 
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {
-	static get styles() {
-		return [
-			super.styles,
-			css`
-				:host([disabled][interactive]) {
-					cursor: pointer;
-					pointer-events: auto;
-				}
-			`
-		] as any
-	}
-
 	@property() matchMode = MatchMode.All
 
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
@@ -33,8 +21,7 @@ export class DrawerItem extends ListItem {
 		const isDialog = value instanceof DialogComponent
 		this.switchAttribute('dialog', isDialog)
 		if (isDialog) {
-			this.disabled = true
-			this.switchAttribute('interactive', true)
+			this.nonActivatable = true
 		}
 	}
 
