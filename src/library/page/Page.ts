@@ -1,5 +1,4 @@
-import { css } from 'lit-element'
-import { component, html, property, Component, PageHost } from '..'
+import { component, html, css, property, Component, PageHost } from '..'
 
 @component('mo-page')
 export class Page extends Component {
@@ -28,27 +27,27 @@ export class Page extends Component {
 	}
 
 	protected override connected() {
-		this.connectElementsWithinPageToElement('pageHeader')
-		const elements = this.connectElementsWithinPageToElement('pageHeaderDetails')
+		this.connectPageElementsToApplicationSlot('pageHeader')
+		const elements = this.connectPageElementsToApplicationSlot('pageHeaderDetails')
 		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
 	protected override disconnected() {
-		this.disconnectElementsWithinPageToElement('pageHeader')
-		this.disconnectElementsWithinPageToElement('pageHeaderDetails')
+		this.disconnectElementsFromApplicationSlot('pageHeader')
+		this.disconnectElementsFromApplicationSlot('pageHeaderDetails')
 	}
 
-	private connectElementsWithinPageToElement(slotName: string) {
+	private connectPageElementsToApplicationSlot(slotName: string) {
 		if (MoDeL.environment === 'test') {
 			return []
 		}
 		const elements = this.querySelectorAll(`[slot=${slotName}]`)
-		this.disconnectElementsWithinPageToElement(slotName)
+		this.disconnectElementsFromApplicationSlot(slotName)
 		MoDeL.application.append(...elements)
 		return Array.from(elements)
 	}
 
-	private disconnectElementsWithinPageToElement(slotName: string) {
+	private disconnectElementsFromApplicationSlot(slotName: string) {
 		Array.from(MoDeL.application.querySelectorAll(`[slot=${slotName}]`)).forEach(element => element.remove())
 	}
 
