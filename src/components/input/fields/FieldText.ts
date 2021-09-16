@@ -8,11 +8,6 @@ import { FieldTextBase } from './FieldTextBase'
 export class FieldText extends FieldTextBase {
 	@property({ type: Number, reflect: true, observer: counterChanged }) counter?: number
 
-	protected override initialized() {
-		super.initialized()
-		this.inputElement.addEventListener('input', () => this.requestUpdate())
-	}
-
 	@renderContainer('slot[name="trailingInternal"]')
 	protected get counterTemplate() {
 		return !this.counter ? nothing : html`

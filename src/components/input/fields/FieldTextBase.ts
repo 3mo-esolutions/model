@@ -22,13 +22,16 @@ export abstract class FieldTextBase extends Field<string> {
 
 	protected override initialized() {
 		super.initialized()
-		this.registerInputEventListener()
+		this.inputElement.addEventListener('input', this.inputEventHandler)
 	}
 
-	protected registerInputEventListener() {
-		this.inputElement.addEventListener('input', (e: Event) => {
-			e.stopPropagation()
-			this.input.dispatch(this.toValue(this.inputElement.value))
-		})
+	private readonly inputEventHandler = (e: Event) => {
+		e.stopPropagation()
+		this.handleInput()
+	}
+
+	protected handleInput() {
+		this.input.dispatch(this.toValue(this.inputElement.value))
+		this.requestUpdate()
 	}
 }
