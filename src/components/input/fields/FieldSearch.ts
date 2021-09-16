@@ -24,6 +24,19 @@ export class FieldSearch extends FieldTextBase {
 			<mo-icon icon='search' foreground=${this.active ? 'var(--mo-accent)' : ''}></mo-icon>
 		`
 	}
+
+	@renderContainer('slot[name="trailing"]')
+	protected get clearIconTemplate() {
+		return html`
+			<mo-icon-button icon='cancel' @click=${() => this.clear()}></mo-icon-button>
+		`
+	}
+
+	protected clear() {
+		this.value = ''
+		this.change.dispatch(this.value)
+		this.input.dispatch(this.value)
+	}
 }
 
 declare global {
