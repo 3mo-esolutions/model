@@ -87,7 +87,6 @@ export const styles = css`
 		--mo-z-surface: 1;
 		/* Colors */
 		--mo-color-on-surface: rgba(var(--mo-color-foreground-base), 0.87) !important;
-		/* TODO: AD: gray alpha in gray umbenennen */
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;
 		--mo-color-gray-transparent: rgba(var(--mo-color-gray-base), 0.5) !important;
 		--mo-color-transparent-gray-alpha: .04;
