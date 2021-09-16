@@ -114,7 +114,7 @@ export class Calendar extends Component {
 
 			.selected {
 				background: var(--mo-accent) !important;
-				color: white !important;
+				color: var(--mo-color-accessible) !important;
 			}
 		`
 	}

@@ -90,10 +90,11 @@ export const styles = css`
 		/* TODO: AD: gray alpha in gray umbenennen */
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;
 		--mo-color-gray-transparent: rgba(var(--mo-color-gray-base), 0.5) !important;
-		--mo-color-gray-alpha-base: .04;
-		--mo-color-gray-alpha-1: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-gray-alpha-base) * 1)); /* 4% */
-		--mo-color-gray-alpha-2: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-gray-alpha-base) * 2)); /* 8% */
-		--mo-color-gray-alpha-3: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-gray-alpha-base) * 3)); /* 12% */
+		--mo-color-transparent-gray-alpha: .04;
+		--mo-color-transparent-gray-1: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-transparent-gray-alpha) * 1)); /* 4% */
+		--mo-color-transparent-gray-2: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-transparent-gray-alpha) * 2)); /* 8% */
+		--mo-color-transparent-gray-3: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-transparent-gray-alpha) * 3)); /* 12% */
+		--mo-color-transparent-gray: var(--mo-color-transparent-gray-1);
 		/* More info: https://css-tricks.com/css-variables-calc-rgb-enforcing-high-contrast-colors/ */
 		--mo-color-accessible-base-value: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
 		--mo-color-accessible-base: var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value);

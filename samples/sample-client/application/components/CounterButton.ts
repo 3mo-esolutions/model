@@ -22,7 +22,7 @@ export class CounterButton extends Component {
 				}
 
 				mo-flex {
-					background: rgba(0, 0, 0, 0.15);
+					background: var(--mo-color-transparent-gray);
 				}
 			</style>
 
