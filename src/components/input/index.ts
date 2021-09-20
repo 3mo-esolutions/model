@@ -1,5 +1,5 @@
 export { Input } from './Input'
-export { Field } from './Field'
+export { Field, FieldInputMode } from './Field'
 export { Calendar } from './Calendar'
 export { CheckboxGroup } from './CheckboxGroup'
 export * from './fields'
