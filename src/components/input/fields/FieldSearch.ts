@@ -1,8 +1,10 @@
 import { component, html, property, renderContainer } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
+import { FieldInputMode } from '..'
 
 @component('mo-field-search')
 export class FieldSearch extends FieldTextBase {
+	@property({ reflect: true }) override inputMode: FieldInputMode = 'search'
 	@property({ type: Number }) debounce = 500
 
 	protected override async handleInput() {

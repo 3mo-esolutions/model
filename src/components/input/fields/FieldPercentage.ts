@@ -1,9 +1,11 @@
 import { component, html, property, renderContainer } from '../../../library'
 import { FormatHelper } from '../../../helpers'
 import { FieldNumber } from './FieldNumber'
+import { FieldInputMode } from '..'
 
 @component('mo-field-percentage')
 export class FieldPercentage extends FieldNumber {
+	@property({ reflect: true }) override inputMode: FieldInputMode = 'numeric'
 	@property() percentageSign = '%'
 
 	protected override initialized() {

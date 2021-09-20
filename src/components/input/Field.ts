@@ -1,6 +1,16 @@
 import { css, html, property, ifDefined, query } from '../../library'
 import { Input } from './Input'
 
+export type FieldInputMode =
+	| 'none'
+	| 'text'
+	| 'decimal'
+	| 'numeric'
+	| 'tel'
+	| 'search'
+	| 'email'
+	| 'url'
+
 /**
  * @slot leading
  * @slot trailing
@@ -8,6 +18,7 @@ import { Input } from './Input'
 export abstract class Field<T> extends Input<T> {
 	@property({ reflect: true }) label = ''
 	@property({ reflect: true }) pattern?: string
+	@property({ reflect: true }) override inputMode: FieldInputMode = 'text'
 	@property({ type: Boolean, reflect: true }) readonly = false
 	@property({ type: Boolean, reflect: true }) disabled = false
 	@property({ type: Boolean, reflect: true }) required = false
@@ -154,6 +165,7 @@ export abstract class Field<T> extends Input<T> {
 					part='input'
 					placeholder=' '
 					type='text'
+					inputmode=${this.inputMode}
 					?readonly=${this.readonly}
 					?required=${this.required}
 					?disabled=${this.disabled}
