@@ -39,12 +39,12 @@ export class PageHost extends Component {
 	}
 
 	private readonly navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
-		const relativePath = Router.getPath(page)
-		const url = window.location.origin + relativePath
-
 		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent['parameters']) === JSON.stringify(page['parameters'])) {
 			return
 		}
+
+		const relativePath = Router.getPath(page)
+		const url = window.location.origin + relativePath
 
 		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab && Manifest.display_override?.includes('tabbed') === false) {
 			mode = NavigationMode.NewWindow

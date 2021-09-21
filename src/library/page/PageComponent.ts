@@ -14,6 +14,10 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	constructor(protected readonly parameters: T) {
 		super()
+		// The router always returns an empty record
+		// whenever no parameters are found in the URL
+		// Not doing this, therefore, leads to 2 page renders.
+		this.parameters = this.parameters || {} as T
 	}
 
 	navigate() {
