@@ -24,6 +24,7 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) required = false
 	@property({ type: Boolean, reflect: true }) dense = false
 	@property({ type: Boolean, reflect: true }) active = false
+	@property({ type: Boolean, reflect: true }) selectOnFocus = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
 
@@ -170,14 +171,25 @@ export abstract class Field<T> extends Input<T> {
 					?required=${this.required}
 					?disabled=${this.disabled}
 					pattern=${ifDefined(this.pattern)}
-					@focus=${() => this.active = true}
-					@blur=${() => this.active = false}
+					@focus=${() => this.handleFocus()}
+					@blur=${() => this.handleBlur()}
 				>
 				<label for='input'>${this.label}</label>
 			</div>
 			<slot name='trailing'></slot>
 			<slot name='trailingInternal'></slot>
 		`
+	}
+
+	protected handleFocus() {
+		this.active = true
+		if (this.selectOnFocus) {
+			this.select()
+		}
+	}
+
+	protected handleBlur() {
+		this.active = false
 	}
 
 	override blur = () => this.inputElement.blur()
