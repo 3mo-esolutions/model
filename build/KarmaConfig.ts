@@ -1,7 +1,7 @@
 /* eslint-disable */
 module.exports = {
 	basePath: '.',
-	frameworks: ['jasmine'],
+	frameworks: ['parallel', 'jasmine'],
 	plugins: ['karma-*'],
 	files: ['./test-temp/main.js'],
 	exclude: [],
