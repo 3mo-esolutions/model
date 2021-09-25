@@ -40,16 +40,16 @@ export abstract class Application extends Component {
 	}
 
 	protected override async initialized() {
+		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
+		Drawer.isDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
+
+		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
 		await this.authenticate()
 
 		const providers = Array.from(Application.providers.keys())
 		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
 		window.dispatchEvent(new Event('MoDeL.initialize'))
-
-		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
-		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		Drawer.isDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
 			PageHost.navigateToHomePage()

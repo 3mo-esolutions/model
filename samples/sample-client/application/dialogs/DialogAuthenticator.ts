@@ -8,7 +8,6 @@ export class DialogAuthenticator extends DialogAuthenticatorBase {
 		return Promise.resolve({
 			id: 1,
 			name: 'Full Name',
-			company: '3MO',
 			email: 'name@3mo.de',
 		})
 	}
