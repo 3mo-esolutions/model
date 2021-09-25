@@ -3,6 +3,7 @@ import { PageComponent, PageError } from '.'
 import { PageParameters } from './PageComponent'
 import { AuthorizationHelper, PwaHelper } from '../../helpers'
 import Router from './Router'
+import { HttpErrorCode } from '../../types'
 
 export const enum NavigationMode {
 	Navigate,
@@ -34,7 +35,7 @@ export class PageHost extends Component {
 
 	private readonly navigateToPath = (relativePath: string) => {
 		const pageComponent = Router.getPage(relativePath)
-		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: '404' })
+		const page = pageComponent ? new pageComponent(Router.getParameters(relativePath)) : new PageError({ error: HttpErrorCode.NotFound })
 		page.navigate()
 	}
 
@@ -84,7 +85,7 @@ export class PageHost extends Component {
 
 	private navigate<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
 		this.pageComponent =
-			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: '403' })
+			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: HttpErrorCode.Forbidden })
 
 		const path = Router.getPath(page)
 		if (path) {
