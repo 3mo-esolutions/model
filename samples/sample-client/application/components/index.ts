@@ -1,1 +1,1 @@
-export { CounterButton } from './CounterButton'
+export * from './Counter'

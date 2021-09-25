@@ -17,10 +17,10 @@ export class PageHome extends PageComponent {
 					<mo-flex alignItems='center' justifyContent='center' height='*' gap='var(--mo-thickness-xl)'>
 						<h1>Welcome to 3MO Design Library</h1>
 						<span>As always there is a counter in a sample project. Get used to it 😀</span>
-						<sample-counter-button
-							count='0'
+						<sample-counter
+							count='1'
 							@countChange=${(e: CustomEvent<number>) => Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)}
-						></sample-counter-button>
+						></sample-counter>
 					</mo-flex>
 				</mo-card>
 			</mo-page>

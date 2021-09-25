@@ -3,8 +3,8 @@ import { Component, component, event, html, property } from '@3mo/model/library'
 /**
  * @fires countChange {CustomEvent<number>}
  */
-@component('sample-counter-button')
-export class CounterButton extends Component {
+@component('sample-counter')
+export class Counter extends Component {
 	@event() readonly countChange!: IEvent<number>
 
 	@property({ type: Number }) count = 0
@@ -31,7 +31,7 @@ export class CounterButton extends Component {
 					➖
 				</mo-button>
 
-				<mo-flex alignItems='center' justifyContent='center' fontSize='var(--mo-font-size-xl)'>
+				<mo-flex data-test-id='count' alignItems='center' justifyContent='center' fontSize='var(--mo-font-size-xl)'>
 					${this.count}
 				</mo-flex>
 
@@ -50,6 +50,6 @@ export class CounterButton extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'sample-counter-button': CounterButton
+		'sample-counter': Counter
 	}
 }
