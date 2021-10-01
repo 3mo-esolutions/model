@@ -193,7 +193,7 @@ export class FieldSelect<T> extends Field<Value> {
 				?open=${this.open}
 				@opened=${() => this.open = true}
 				@closed=${() => this.open = false}
-				@selected=${this.handleOptionSelection}
+				@selected=${(e: CustomEvent<{ index: Set<number> | number }>) => this.handleOptionSelection(e)}
 			>
 				<slot></slot>
 			</mo-menu>
@@ -223,7 +223,7 @@ export class FieldSelect<T> extends Field<Value> {
 			: this.selectedOptions?.value
 	}
 
-	protected handleOptionSelection = (e: CustomEvent<{ index: Set<number> | number }>) => {
+	protected handleOptionSelection(e: CustomEvent<{ index: Set<number> | number }>) {
 		if (this.programmaticSelection) {
 			return
 		}
