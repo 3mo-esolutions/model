@@ -1,0 +1,21 @@
+import { LitElement } from 'lit-element'
+import { nothing, ComponentMixin } from '.'
+
+export interface ComponentConstructor extends Constructor<Component> {
+	observers: Map<PropertyKey, Observer<any>>
+}
+
+// REFACTOR: after https://github.com/microsoft/TypeScript/issues/35822 is solved,
+// both ComponentMixin and StyleMixin can be moved into library.
+// The following line would be then be `export abstract class Component extends ComponentMixin(LitElement)`
+// and the class won't need any implementation.
+
+export abstract class Component extends ComponentMixin(LitElement) {
+	protected get template() {
+		return nothing
+	}
+
+	protected override render() {
+		return this.template
+	}
+}

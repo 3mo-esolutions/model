@@ -1,4 +1,4 @@
-import { PageComponent, component, html, homePage, route, Snackbar } from '@3mo/model/library'
+import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/model'
 
 @homePage
 @route('/home')

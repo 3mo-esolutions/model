@@ -1,5 +1,4 @@
-import { Application, application, component, html } from '@3mo/model/library'
-import { Drawer, Logo } from '@3mo/model/components'
+import { Application, application, component, html, Drawer, Logo } from '@3mo/model'
 import { PageReader } from './pages'
 
 @application
@@ -24,7 +23,6 @@ export class MoDeLDocs extends Application {
 					<mo-drawer-item .component=${new PageReader({ path: '/library/PageComponent' })}>Page Components</mo-drawer-item>
 					<mo-drawer-item .component=${new PageReader({ path: '/library/DialogComponent' })}>Dialog Components</mo-drawer-item>
 					<mo-drawer-item .component=${new PageReader({ path: '/library/event-handling' })}>Event Handling</mo-drawer-item>
-					<mo-drawer-item .component=${new PageReader({ path: '/library/debouncer' })}>Function Debouncer</mo-drawer-item>
 				</mo-drawer-list>
 				<mo-drawer-list icon='category' label='Components'>
 					<mo-drawer-item .component=${new PageReader({ path: '/components/DialogAuthenticator' })}>DialogAuthenticator</mo-drawer-item>

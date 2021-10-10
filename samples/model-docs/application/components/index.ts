@@ -1,2 +1,2 @@
-export { Markdown } from './Markdown'
-export { MonacoEditor, MonacoEditorLanguage as MonacoEditorLanuage } from './MonacoEditor'
+export * from './Markdown'
+export * from './MonacoEditor'

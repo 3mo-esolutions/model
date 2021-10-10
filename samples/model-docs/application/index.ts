@@ -1,5 +1,5 @@
 import '@3mo/model'
-export { MoDeLDocs } from './MoDeLDocs'
+export * from './MoDeLDocs'
 export * from './helpers'
 export * from './components'
 export * from './pages'

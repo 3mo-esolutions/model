@@ -7,8 +7,8 @@ To save a reference to an element existing in the template through its **ID** us
 ## Samples
 
 ```typescript
-	import { Component, component, html, element, query, queryAll } from '@3mo/model/library'
-	import { Button, FieldSelect, Option } from '@3mo/model/components'
+	import { Component, component, html, element, query, queryAll, Button, FieldSelect, Option } from '@3mo/model'
+
 
 	@component('app-page-name')
 	export class PageName extends Component {
@@ -16,17 +16,19 @@ To save a reference to an element existing in the template through its **ID** us
 		@queryAll('mo-option') private readonly optionElements!: Array<Option<string>>
 		@element private readonly theButtonElement!: Button
 
-		protected render = () => html`
-			<mo-page header='Element References'>
-				<mo-field-select label='Which one'>
-					<mo-option value='a'>A</mo-option>
-					<mo-option value='b'>B</mo-option>
-					<mo-option value='c'>C</mo-option>
-				</mo-field-select>
+		protected override get template() {
+			return html`
+				<mo-page header='Element References'>
+					<mo-field-select label='Which one'>
+						<mo-option value='a'>A</mo-option>
+						<mo-option value='b'>B</mo-option>
+						<mo-option value='c'>C</mo-option>
+					</mo-field-select>
 
-				<mo-button id='theButton'>Element with Id</mo-button>
-			</mo-page>
-		`
+					<mo-button id='theButton'>Element with Id</mo-button>
+				</mo-page>
+			`
+		}
 	}
 ```
 

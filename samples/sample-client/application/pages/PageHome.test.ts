@@ -1,4 +1,4 @@
-import { Snackbar } from '@3mo/model/library'
+import { Snackbar } from '@3mo/model'
 import { PageHome } from './PageHome'
 
 describe('PageHome', () => {

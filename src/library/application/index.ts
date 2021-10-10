@@ -1,5 +1,0 @@
-export { Application } from './Application'
-export { ApplicationProvider } from './ApplicationProvider'
-export { DialogAuthenticator } from './DialogAuthenticator'
-export { UserAvatar } from './UserAvatar'
-export { application, applicationProvider, authenticator } from './decorators'

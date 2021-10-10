@@ -1,1 +1,1 @@
-export { GitHubHelper } from './GitHubHelper'
+export * from './GitHubHelper'

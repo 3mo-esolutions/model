@@ -61,7 +61,7 @@
 		"lit-element": "2.4.*",
 		"lit-virtualizer": "0.*",
 		"route-parser": "*",
-		"terser-webpack-plugin": "4.*",
+		"terser-webpack-plugin": "*",
 		"ts-lit-plugin": "1.*",
 		"ts-loader": "9.*",
 		"tsconfig-paths-webpack-plugin": "3.*",

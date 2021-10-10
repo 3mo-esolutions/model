@@ -1,4 +1,4 @@
-import { component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/model/library'
+import { component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/model'
 
 // This decorator activated this component as the application-wide authenticator
 // @authenticator

@@ -1,4 +1,4 @@
-import { Component, component, event, html, property } from '@3mo/model/library'
+import { Component, component, event, html, property } from '@3mo/model'
 
 /**
  * @fires countChange {CustomEvent<number>}

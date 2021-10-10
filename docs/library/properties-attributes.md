@@ -4,13 +4,15 @@ managing the component state can be achieved using properties. Also mapping a pr
 
 ``` ts
 // HelloWorld.ts
-import { Component, component, property } from '@3mo/model/library'
+import { Component, component, property } from '@3mo/model'
 
 @component('app-hello-world')
 export class HelloWorld extends Component {
 	@property() name = 'World'
 
-	render = () => html`<div>Hello ${this.name}</div>`
+	protected override get template() {
+		return html`<div>Hello ${this.name}</div>`
+	}
 }
 ```
 

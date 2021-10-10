@@ -32,19 +32,21 @@ The HTML tag the MoDeL components get registered against its html tag and can be
 
 ```ts
 // HelloWorld.ts
-import { Component, component, html } from '@3mo/model/library'
+import { Component, component, html } from '@3mo/model'
 
 @component('sample-hello-world')
 export class HelloWorld extends Component {
-	protected render = () => html`
-		<style>
-			h1 {
-				color: var(--mo-accent);
-			}
-		</style>
+	protected override get template() {
+		return html`
+			<style>
+				h1 {
+					color: var(--mo-accent);
+				}
+			</style>
 
-		<h1>Hello Fancy World</h1>
-	`
+			<h1>Hello Fancy World</h1>
+		`
+	}
 }
 
 declare global {

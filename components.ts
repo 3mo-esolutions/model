@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
-export * from './src/components'
+/* eslint-disable import/no-internal-modules */
+import './library'
+export * from './packages/components'

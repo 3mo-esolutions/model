@@ -28,10 +28,12 @@ It can check for the authorizations and fallback to a 403 error page if authoriz
 @authorize('authorization1', 'authorization2')
 @component('app-page-name')
 export class PageName extends PageComponent<{ id: number }> {
-	protected render = () => html`
-		<mo-page header='Header'>
-			The passed parameter "id" is: ${this.parameters.id}
-		</mo-page>
-	`
+	protected override get template() {
+		return html`
+			<mo-page header='Header'>
+				The passed parameter "id" is: ${this.parameters.id}
+			</mo-page>
+		`
+	}
 }
 ```

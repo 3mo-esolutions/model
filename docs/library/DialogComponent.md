@@ -24,10 +24,12 @@ It can check for the authorizations and fallback to a 403 error message if autho
 @authorize('authorization1', 'authorization2')
 @component('app-dialog-name')
 export class DialogMember extends DialogComponent<{ member: Member }> {
-	protected render = () => html`
-		<mo-dialog header='Header'>
-			The name of the member is: ${this.parameters.member.name}
-		</mo-dialog>
-	`
+	protected override get template() {
+		return html`
+			<mo-dialog header='Header'>
+				The name of the member is: ${this.parameters.member.name}
+			</mo-dialog>
+		`
+	}
 }
 ```

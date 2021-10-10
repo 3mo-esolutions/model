@@ -1,1 +1,1 @@
-export { DialogAuthenticator } from './DialogAuthenticator'
+export * from './DialogAuthenticator'

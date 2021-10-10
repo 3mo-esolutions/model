@@ -1,4 +1,4 @@
-import { Flex } from '@3mo/model/components'
+import { Flex } from '@3mo/model'
 import { Counter } from './Counter'
 
 describe('CounterButton', () => {

@@ -1,8 +1,7 @@
-import { component, Component, css } from '@3mo/model/library'
-import { TopAppBar } from '@3mo/model/components'
+import { component, Component, css, TopAppBar } from '@3mo/model'
 import { Marked } from '@ts-stack/markdown'
 import { GitHubHelper } from '../helpers'
-import { MonacoEditor, MonacoEditorLanuage } from '.'
+import { MonacoEditor, MonacoEditorLanguage } from '.'
 
 @component('doc-markdown')
 export class Markdown extends Component {
@@ -189,7 +188,7 @@ export class Markdown extends Component {
 			const codeElement = pre.querySelector('code') as HTMLElement
 			codeElement.style.display = 'none'
 			const languageInline = codeElement.className.split('lang-')[1]
-			const language = languageInline === 'ts' ? MonacoEditorLanuage.TypeScript : languageInline as MonacoEditorLanuage
+			const language = languageInline === 'ts' ? MonacoEditorLanguage.TypeScript : languageInline as MonacoEditorLanguage
 			const codeRaw = codeElement.innerText
 			fetchCode(codeRaw, language).then(code => {
 				const monacoEditorElement = new MonacoEditor()
@@ -203,12 +202,12 @@ export class Markdown extends Component {
 	}
 }
 
-async function fetchCode(code: string, language: MonacoEditorLanuage) {
+async function fetchCode(code: string, language: MonacoEditorLanguage) {
 	const firstLine = code.split('\n')[0]
 	if (firstLine.includes('file:')) {
 		const filePath = firstLine.split('"')[1]
 		const fileName = filePath.split('/')[filePath.split('/').length - 1]
-		const comment = language === MonacoEditorLanuage.HTML ? `<!-- ${fileName} -->` : `// ${fileName}`
+		const comment = language === MonacoEditorLanguage.HTML ? `<!-- ${fileName} -->` : `// ${fileName}`
 		code = `${comment}\n${await GitHubHelper.fetch(filePath)}`
 	}
 	return code

@@ -1,1 +1,1 @@
-export { PageReader } from './PageReader'
+export * from './PageReader'
