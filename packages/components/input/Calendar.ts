@@ -137,7 +137,7 @@ export class Calendar extends Component {
 	}
 
 	private get daySelectionTemplate() {
-		const renderWeeks = () => {
+		const getWeeksTemplate = () => {
 			if (this.includeWeekNumbers === false) {
 				return nothing
 			}
@@ -162,7 +162,7 @@ export class Calendar extends Component {
 					</mo-div>
 				`)}
 
-				${renderWeeks()}
+				${getWeeksTemplate()}
 
 				${this.navigatingDate.monthRange.map(date => html`
 					<mo-flex gridColumn=${date.weekDayCorrected + 2} class='day${Math.floor(this.value.difference(date).days) === 0 ? ' selected' : ''}' @click=${() => this.selectDate(date)}>

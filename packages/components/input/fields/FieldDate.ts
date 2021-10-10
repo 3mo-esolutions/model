@@ -25,7 +25,8 @@ export class FieldDate extends Field<Date | undefined> {
 				.anchor=${this as any}
 				corner='BOTTOM_START'
 				@closed=${() => this.open = false}
-				@opened=${() => this.open = true}>
+				@opened=${() => this.open = true}
+			>
 				<mo-calendar
 					.value=${new MoDate(this.value ?? new Date)}
 					@change=${(e: CustomEvent<MoDate>) => this.selectDate(e.detail)}
@@ -35,7 +36,7 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	@renderContainer('slot[name="trailingInternal"]')
-	protected get dataIconButtonTemplate() {
+	protected get calendarIconButtonTemplate() {
 		return this.hideDatePicker ? nothing : html`
 			<mo-icon-button
 				tabindex='-1'
