@@ -1,7 +1,7 @@
-import { PureEvent } from '../library'
+import { PureEventDispatcher } from '../library'
 
 export class LocalStorageContainer {
-	static readonly changed = new PureEvent<unknown>()
+	static readonly changed = new PureEventDispatcher<unknown>()
 
 	private static readonly container = new Array<LocalStorageEntry<any>>()
 
@@ -15,7 +15,7 @@ export class LocalStorageContainer {
 }
 
 export class LocalStorageEntry<T> {
-	readonly changed = new PureEvent<T>()
+	readonly changed = new PureEventDispatcher<T>()
 
 	constructor(
 		protected readonly name: string,

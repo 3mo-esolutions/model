@@ -5,7 +5,7 @@ import { Component, component, event, html, property } from '@3mo/model'
  */
 @component('sample-counter')
 export class Counter extends Component {
-	@event() readonly countChange!: IEvent<number>
+	@event() readonly countChange!: EventDispatcher<number>
 
 	@property({ type: Number }) count = 0
 

@@ -5,7 +5,7 @@ import { Field } from '../Field'
  * @fires input {CustomEvent<string>}
  */
 export abstract class FieldTextBase extends Field<string> {
-	@event() readonly input!: IEvent<string>
+	@event() readonly input!: EventDispatcher<string>
 
 	@property({ reflect: true })
 	override get value(): string | undefined { return super.value }

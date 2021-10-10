@@ -23,9 +23,9 @@ type OptionsGetter<T> = {
 export class FieldSelect<T> extends Field<Value> {
 	static readonly optionsRenderLimit = 50
 
-	@event() readonly dataChange!: IEvent<Data<T>>
-	@event() readonly indexChange!: IEvent<Index>
-	@event() readonly dataFetch!: IEvent<Array<T>>
+	@event() readonly dataChange!: EventDispatcher<Data<T>>
+	@event() readonly indexChange!: EventDispatcher<Index>
+	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) multiple = false

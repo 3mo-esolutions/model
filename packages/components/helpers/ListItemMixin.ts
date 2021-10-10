@@ -10,7 +10,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 	 * @slot secondary
 	 */
 	abstract class ListItemMixinConstructor extends Constructor {
-		@event() readonly selectionChange!: IEvent<boolean>
+		@event() readonly selectionChange!: EventDispatcher<boolean>
 
 		@property() icon?: MaterialIcon
 		@property() metaIcon?: MaterialIcon

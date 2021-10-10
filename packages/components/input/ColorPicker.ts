@@ -4,7 +4,7 @@ import { Color } from '../../utilities'
 
 @component('mo-color-picker')
 export class ColorPicker extends Input<Color> {
-	@event() private readonly input!: IEvent<Color>
+	@event() private readonly input!: EventDispatcher<Color>
 
 	@property({ type: Object })
 	override get value() { return this._value }

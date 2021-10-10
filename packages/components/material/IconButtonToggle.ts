@@ -15,7 +15,7 @@ export class IconButtonToggle extends ComponentMixin(MwcIconButtonToggle) {
 	@property() override onIcon!: MaterialIcon
 	@property() override offIcon!: MaterialIcon
 
-	@event() readonly change!: IEvent
+	@event() readonly change!: EventDispatcher
 
 	@property({ type: Boolean })
 	set small(value: boolean) { this.style.setProperty('--mdc-icon-button-size', `calc(var(--mdc-icon-size) * ${value ? '1.5' : '2'})`) }

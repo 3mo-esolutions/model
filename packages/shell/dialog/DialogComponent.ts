@@ -10,7 +10,7 @@ export interface DialogComponentConstructor<T extends DialogParameters> extends 
 export abstract class DialogComponent<T extends DialogParameters = void, TResult = void> extends Component {
 	static authorizations = new Array<keyof MoDeL.Authorizations>()
 
-	@event() readonly closed!: IEvent<TResult | Error>
+	@event() readonly closed!: EventDispatcher<TResult | Error>
 
 	override ['constructor']: DialogComponentConstructor<T>
 

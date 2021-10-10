@@ -18,8 +18,8 @@ import { MaterialIcon } from '..'
  */
 @component('mo-text-area')
 export class TextArea extends ComponentMixin(MwcTextArea) {
-	@event() readonly change!: IEvent<string>
-	@event() readonly input!: IEvent<string>
+	@event() readonly change!: EventDispatcher<string>
+	@event() readonly input!: EventDispatcher<string>
 
 	@property() override icon!: MaterialIcon
 	@property() override iconTrailing!: MaterialIcon

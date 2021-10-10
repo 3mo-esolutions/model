@@ -6,7 +6,7 @@ import { Button } from '.'
  */
 @component('mo-chip')
 export class Chip extends Button {
-	@event() readonly delete!: IEvent
+	@event() readonly delete!: EventDispatcher
 
 	@property({ type: Boolean, reflect: true }) hasDelete = false
 
