@@ -1,5 +1,6 @@
 import './Promise'
 import './KeyboardKey'
+import './CurrencyCode'
 import './MoDate'
 export * from './LocalStorage'
 export * from './ClientInfoHelper'

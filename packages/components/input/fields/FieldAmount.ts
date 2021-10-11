@@ -4,7 +4,8 @@ import { FieldNumber } from './FieldNumber'
 
 @component('mo-field-amount')
 export class FieldAmount extends FieldNumber {
-	@property() currency = FormatHelper.storage.currency.symbol.value
+	@property() currency = CurrencyCode.EUR
+	@property() currencySymbol?: string
 
 	protected override fromValue(value: number | undefined): string {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
@@ -13,7 +14,7 @@ export class FieldAmount extends FieldNumber {
 	@renderContainer('slot[name="trailing"]')
 	protected get currencySymbolTemplate() {
 		return html`
-			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currency}</mo-div>
+			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)}</mo-div>
 		`
 	}
 }

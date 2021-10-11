@@ -1,96 +1,81 @@
-import { LocalizationHelper, LocalStorageEntry } from '.'
-
-// REFACTOR
+import { LocalizationHelper } from '.'
 
 export class FormatHelper {
-	static readonly storage = {
-		currency: {
-			symbol: new LocalStorageEntry('MoDeL.Formatter.Currency.Symbol', '€'),
-			code: new LocalStorageEntry('MoDeL.Formatter.Currency.Code', 'EUR'),
-			name: new LocalStorageEntry('MoDeL.Formatter.Currency.Name', 'euro'),
-		},
-		date: {
-			separator: new LocalStorageEntry('MoDeL.Formatter.Date.Separator', '.')
-		},
-		number: {
-			decimal: new LocalStorageEntry('MoDeL.Formatter.Number.Decimal', ','),
-			separator: new LocalStorageEntry('MoDeL.Formatter.Number.Separator', '.'),
-		}
+	static getDateSeparator(language = LocalizationHelper.language.value) {
+		return Intl.DateTimeFormat(language).format(new Date).replace(/\p{Number}/gu, '')[0]
 	}
 
-	static number(value: number, useSeparator = false) {
-		return new Intl.NumberFormat(LocalizationHelper.language.value, { maximumFractionDigits: 16, minimumFractionDigits: 0, useGrouping: useSeparator }).format(value)
+	static getDecimalSeparator(language = LocalizationHelper.language.value) {
+		return Intl.NumberFormat(language).format(1.1).replace(/\p{Number}/gu, '')
 	}
 
-	static date(value: Date) {
+	static getThousandSeparator(language = LocalizationHelper.language.value) {
+		return Intl.NumberFormat(language).format(11111).replace(/\p{Number}/gu, '')
+	}
+
+	static getCurrencySymbol(currency: CurrencyCode) {
 		try {
-			return new Intl.DateTimeFormat(LocalizationHelper.language.value, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(value)
-		} catch (error) {
-			return undefined
+			return Intl.NumberFormat('de-DE', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(1).replace(/\p{Number}/gu, '').trim()
+		} catch {
+			return ''
 		}
 	}
 
-	static dateTime(value: Date) {
+	static number(value: number, options: Intl.NumberFormatOptions = { maximumFractionDigits: 16, minimumFractionDigits: 0, useGrouping: false }): string {
 		try {
-			return new Intl.DateTimeFormat(LocalizationHelper.language.value, { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format(value)
-		} catch (error) {
-			return undefined
+			return Intl.NumberFormat(LocalizationHelper.language.value, options).format(value || 0)
+		} catch {
+			return this.number(0, options)
 		}
-	}
-
-	static localDateToDate(value: string) {
-		if (!value || value.split('-').join('').length === 0) {
-			return undefined
-		}
-		const arr = value.split(FormatHelper.storage.date.separator.value)
-		return new Date(parseInt(arr[2]), parseInt(arr[1]) - 1, parseInt(arr[0]))
 	}
 
 	static percent(value: number) {
-		if (value > 100) {
-			value = 100
-		}
-		if (value < 0) {
-			value = 0
-		}
-		const formatter = new Intl.NumberFormat(LocalizationHelper.language.value, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 })
-		return formatter.format(isNaN(value) ? 0 : value)
-	}
-
-	static amountWithSymbol(value: number) {
-		return new Intl.NumberFormat(LocalizationHelper.language.value, { style: 'currency', currency: FormatHelper.storage.currency.code.value, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)
-	}
-
-	static localAmountWithSymbolToNumber(value: string) {
-		if (!value) {
-			return 0
-		}
-		if (typeof value === 'number') {
-			return value
-		}
-		value = value.replace('  ', ' ')
-		return this.localNumberToNumber(value.substring(0, value.length - 2))
+		const percentage = value > 100 ? 100
+			: value < 0 ? 0
+				: value
+		return this.number(percentage, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 })
 	}
 
 	static amount(value: number) {
-		const formatter = new Intl.NumberFormat(LocalizationHelper.language.value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 })
-		return formatter.format(isNaN(value) ? 0 : value)
+		return this.number(value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 })
 	}
 
-	static localNumberToNumber(value: string) {
-		if (!value) {
-			return 0
+	static amountWithSymbol(value: number, currency = CurrencyCode.EUR) {
+		return this.number(value, { style: 'currency', currency: currency, minimumFractionDigits: 2, maximumFractionDigits: 2 })
+	}
+
+	static localNumberToNumber(value: string, language = LocalizationHelper.language.value) {
+		const numberString = String(value || '0').replace(/ /g, '')
+
+		const thousandSeparator = this.getThousandSeparator(language)
+		const decimalSeparator = this.getDecimalSeparator(language)
+
+		return parseFloat(numberString
+			.replace(new RegExp(`\\${thousandSeparator}`, 'g'), '')
+			.replace(new RegExp(`\\${decimalSeparator}`), '.')
+		)
+	}
+
+	static localAmountWithSymbolToNumber(value: string, language = LocalizationHelper.language.value) {
+		const amountString = String(value || '0').replace(/ /g, '')
+		return this.localNumberToNumber(amountString.substring(0, amountString.length - 1), language)
+	}
+
+	static dateTime(value: Date, options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric' }) {
+		try {
+			return Intl.DateTimeFormat(LocalizationHelper.language.value, options).format(value)
+		} catch {
+			return undefined
 		}
-		const valueArr = value.split(FormatHelper.storage.number.decimal.value)
-		const isNegative = value.startsWith('-')
-		let result = valueArr[0].replace(/\D+/g, '')
-		if (valueArr.length === 2) {
-			result += `.${valueArr[1]}`
-		}
-		const float = parseFloat(result)
-		if (isNaN(float)) {
-			return 0
-		}
-		return isNegative ? float * -1 : float
+	}
+
+	static date(value: Date) {
+		return this.dateTime(value, { year: 'numeric', month: '2-digit', day: '2-digit' })
+	}
+
+	static localDateToDate(value: string, language = LocalizationHelper.language.value) {
+		language // No need for now. Will be needed for non-latin langauges.
+		const date = new Date(value)
+		return String(date) === 'Invalid Date' ? undefined : date
 	}
 }

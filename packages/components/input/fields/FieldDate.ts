@@ -64,7 +64,7 @@ export class FieldDate extends Field<Date | undefined> {
 			return undefined
 		}
 
-		if (value.includes(FormatHelper.storage.date.separator.value)) {
+		if (value.includes(FormatHelper.getDateSeparator())) {
 			return this.calculateDateFromLocalDate(value)
 		}
 
@@ -85,14 +85,14 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	private calculateDateFromLocalDate(string: string) {
-		const dateArr = string.split(FormatHelper.storage.date.separator.value)
+		const dateParts = string.split(FormatHelper.getDateSeparator())
 
-		if (dateArr.length === 2) {
-			return new Date(new Date().getFullYear(), parseInt(dateArr[1]) - 1, parseInt(dateArr[0]))
+		if (dateParts.length === 2) {
+			return new Date(new Date().getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
 		}
 
-		if (dateArr.length === 3) {
-			return new Date(parseInt(dateArr[2]), parseInt(dateArr[1]) - 1, parseInt(dateArr[0]))
+		if (dateParts.length === 3) {
+			return new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
 		}
 
 		return undefined
@@ -142,8 +142,8 @@ export class FieldDate extends Field<Date | undefined> {
 			case 'edm': return new MoDate().monthEnd
 			case 'adj': return new MoDate().yearStart
 			case 'edj': return new MoDate().yearEnd
+			default: return undefined
 		}
-		return undefined
 	}
 }
 
