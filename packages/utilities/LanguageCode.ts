@@ -1,4 +1,5 @@
-export type LanguageCode =
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type LanguageCode =
 	| 'aa' // Afar
 	| 'ab' // Abkhazian
 	| 'af' // Afrikaans

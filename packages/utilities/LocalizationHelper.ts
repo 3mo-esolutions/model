@@ -1,4 +1,4 @@
-import { LocalStorageEntry, LanguageCode } from '.'
+import { LocalStorageEntry } from '.'
 
 export class LocalizationHelper {
 	static readonly language = new LocalStorageEntry<LanguageCode>('MoDeL.Localization.Language', navigator.language.split('-')[0] as LanguageCode)
