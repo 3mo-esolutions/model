@@ -9,7 +9,7 @@ function getDeepActiveElement(root: Document | ShadowRoot = document): Element |
 
 Object.defineProperty(document, 'deepActiveElement', {
 	get() {
-		return this.getDeepActiveElement()
+		return getDeepActiveElement()
 	},
 	configurable: false
 })
