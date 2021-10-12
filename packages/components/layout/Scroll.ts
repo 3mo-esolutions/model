@@ -28,7 +28,7 @@ export class Scroll extends Component {
 
 			div {
 				position: absolute;
-				width: 100%;
+				width: var(--mo-scroll-width, 100%);
 				height: 100%;
 			}
 		`
