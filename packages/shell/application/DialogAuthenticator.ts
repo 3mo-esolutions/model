@@ -124,7 +124,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		`
 	}
 
-	private get headerTemplate() {
+	protected get headerTemplate() {
 		return html`
 			<mo-flex height='100px' alignItems='center' gap='10px'>
 				<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
@@ -133,7 +133,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		`
 	}
 
-	private get contentTemplate() {
+	protected get contentTemplate() {
 		return html`
 			<mo-field-text data-focus label='Username'
 				.value=${this.username}
