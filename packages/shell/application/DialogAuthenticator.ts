@@ -1,4 +1,4 @@
-import { html, css, property } from '../../library'
+import { html, css, state } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
 import { Snackbar, User } from '..'
@@ -9,9 +9,10 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	private static readonly password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
 	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
 
-	@property({ type: Boolean }) shallRememberPassword = DialogAuthenticator.shallRemember.value
-	@property() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
-	@property() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
+	@state() shallRememberPassword = DialogAuthenticator.shallRemember.value
+	@state() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
+	@state() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
+	@state() primaryButtonText = 'Login'
 
 	protected abstract authenticateProcess(): Promise<User>
 	protected abstract unauthenticateProcess(): Promise<void>
@@ -44,7 +45,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
 			DialogAuthenticator.authenticatedUser.value = undefined
-			MoDeL.application.authenticator?.confirm()
+			MoDeL.application.authenticator?.confirm(true)
 		}
 	}
 
@@ -58,7 +59,11 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	override async confirm() {
+	override async confirm(preventAuthentication = false) {
+		if (preventAuthentication) {
+			return super.confirm()
+		}
+
 		const isAuthenticated = await this.isAuthenticated()
 
 		if (isAuthenticated) {
@@ -108,38 +113,50 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	protected override get template() {
 		return html`
 			<mo-dialog blocking primaryOnEnter>
-				<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
+				<mo-button slot='primaryAction' justifyContent='center' raised>${this.primaryButtonText}</mo-button>
 				<mo-flex alignItems='center' minWidth='350px'>
-					<mo-flex height='100px' alignItems='center' gap='10px'>
-						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
-						<h2>${Manifest.short_name || 'Welcome'}</h2>
-					</mo-flex>
+					${this.headerTemplate}
 					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
-						<mo-field-text data-focus label='Username'
-							.value=${this.username}
-							@input=${(e: CustomEvent<string>) => this.username = e.detail}
-						></mo-field-text>
-
-						<mo-field-password label='Password'
-							.value=${this.password}
-							@input=${(e: CustomEvent<string>) => this.password = e.detail}
-						></mo-field-password>
-
-						<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
-							<mo-checkbox
-								?checked=${this.shallRememberPassword}
-								@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
-							>Remember Password</mo-checkbox>
-
-							<a @click=${() => this.resetPassword()}>Reset Password</a>
-						</mo-flex>
+						${this.contentTemplate}
 					</mo-flex>
 				</mo-flex>
 			</mo-dialog>
 		`
 	}
 
-	protected override primaryButtonAction = async () => {
+	private get headerTemplate() {
+		return html`
+			<mo-flex height='100px' alignItems='center' gap='10px'>
+				<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
+				<mo-headline typography='headline3'>${Manifest.short_name || 'Welcome'}</mo-headline>
+			</mo-flex>
+		`
+	}
+
+	private get contentTemplate() {
+		return html`
+			<mo-field-text data-focus label='Username'
+				.value=${this.username}
+				@input=${(e: CustomEvent<string>) => this.username = e.detail}
+			></mo-field-text>
+
+			<mo-field-password label='Password'
+				.value=${this.password}
+				@input=${(e: CustomEvent<string>) => this.password = e.detail}
+			></mo-field-password>
+
+			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
+				<mo-checkbox
+					?checked=${this.shallRememberPassword}
+					@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
+				>Remember Password</mo-checkbox>
+
+				<a @click=${() => this.resetPassword()}>Reset Password</a>
+			</mo-flex>
+		`
+	}
+
+	protected override async primaryButtonAction() {
 		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
 		if (DialogAuthenticator.shallRemember.value) {
 			DialogAuthenticator.username.value = this.username
