@@ -1,5 +1,11 @@
 import { component, html, property, Component, css, nothing } from '../../library'
 
+/**
+ * @slot headerAction - Actions in the header bar
+ * @slot media - Embedded media
+ * @slot - Body / Content
+ * @slot action - Actions in the footer bar
+ */
 @component('mo-card')
 export class Card extends Component {
 	@property() header?: string

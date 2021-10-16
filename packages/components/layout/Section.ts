@@ -3,6 +3,11 @@ import { CSSDirection } from '../helpers'
 import { IFlex } from './IFlex'
 import * as CSS from 'csstype'
 
+/**
+ * @slot - Content
+ * @slot header - The Header which has a default template rendering a mo-headline element.
+ * @slot action - Actions in the header bar
+ */
 @component('mo-section')
 export class Section extends Component implements IFlex {
 	@property() header = ''
@@ -26,7 +31,7 @@ export class Section extends Component implements IFlex {
 					<slot name='header'>
 						${this.headlineTemplate}
 					</slot>
-					<slot name='headerAction'></slot>
+					<slot name='action'></slot>
 				</mo-flex>
 
 				${this.contentTemplate}
