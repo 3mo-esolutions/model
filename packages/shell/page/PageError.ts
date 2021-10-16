@@ -75,7 +75,7 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 				}
 			</style>
 
-			<mo-page title='Error' fullHeight>
+			<mo-page fullHeight>
 				<mo-flex alignItems='center' justifyContent='center' height='100%' width='100%'>
 					<mo-div>
 						<h1>
