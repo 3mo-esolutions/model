@@ -1,16 +1,17 @@
 import { Component, component, property, html, css } from '../../library'
-import { CSSDirection } from '..'
+import { CSSDirection, IFlex } from '..'
+import * as CSS from 'csstype'
 
 /**
  * @slot
  * @slot header
  */
 @component('mo-group-box')
-export class GroupBox extends Component {
+export class GroupBox extends Component implements IFlex {
 	@property() header = ''
-	@property() gap?: string
 	@property() direction: CSSDirection = 'vertical'
-	@property({ type: Array }) gapElements: Array<Element> = Array.from(this.children).filter(e => !e.slot)
+	@property() wrap: CSS.Property.FlexWrap = 'unset'
+	@property() gap: CSS.Property.Gap<string> = 'unset'
 
 	static override get styles() {
 		return css`
@@ -42,7 +43,7 @@ export class GroupBox extends Component {
 		return html`
 			<mo-flex height='100%' width='100%'>
 				<h3 part='header'>${this.header}</h3>
-				<mo-card direction=${this.direction} .gap=${this.gap} .gapElements=${this.gapElements} height='*' part='card'>
+				<mo-card part='card' height='*' direction=${this.direction} wrap=${this.wrap} gap=${this.gap}>
 					<slot></slot>
 				</mo-card>
 			</mo-flex>

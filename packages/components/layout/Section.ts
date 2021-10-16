@@ -1,9 +1,14 @@
-import { Component, component, css, html, ifDefined, property } from '../../library'
+import { Component, component, css, html, property } from '../../library'
+import { CSSDirection } from '../helpers'
+import { IFlex } from './IFlex'
+import * as CSS from 'csstype'
 
 @component('mo-section')
-export class Section extends Component {
+export class Section extends Component implements IFlex {
 	@property() header = ''
-	@property() gap?: string
+	@property() direction: CSSDirection = 'vertical'
+	@property() gap: CSS.Property.Gap<string> = 'unset'
+	@property() wrap: CSS.Property.FlexWrap = 'unset'
 
 	static override get styles() {
 		return css`
@@ -51,7 +56,7 @@ export class Section extends Component {
 		return html`
 			<h3>${this.header}</h3>
 			<slot name='actions'></slot>
-			<mo-flex gap=${ifDefined(this.gap)} .gapElements=${Array.from(this.children).filter(e => !e.slot) as Array<Element>}>
+			<mo-flex direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
 				<slot></slot>
 			</mo-flex>
 		`

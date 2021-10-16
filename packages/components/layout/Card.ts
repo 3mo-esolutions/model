@@ -1,14 +1,15 @@
 import { component, html, property, Component, css } from '../../library'
-import { CSSDirection } from '..'
+import { CSSDirection, IFlex } from '..'
+import * as CSS from 'csstype'
 
 // TODO: redesign
 
 @component('mo-card')
-export class Card extends Component {
+export class Card extends Component implements IFlex {
 	@property() header = ''
 	@property() direction: CSSDirection = 'vertical'
-	@property() gap?: string
-	@property({ type: Array }) gapElements: Array<Element> = Array.from(this.children).filter(c => !c.slot)
+	@property() gap: CSS.Property.Gap<string> = 'unset'
+	@property() wrap: CSS.Property.FlexWrap = 'unset'
 
 	static override get styles() {
 		return css`
@@ -64,7 +65,7 @@ export class Card extends Component {
 					<h3 part='header'>${this.header}</h3>
 				</slot>
 
-				<mo-flex height='*' direction=${this.direction} .gap=${this.gap} .gapElements=${this.gapElements} alignSelf='stretch'>
+				<mo-flex height='*' alignSelf='stretch' direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
 					<slot></slot>
 				</mo-flex>
 
