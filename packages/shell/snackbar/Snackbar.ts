@@ -44,17 +44,18 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 		const toast = new Promise<void>(resolve => {
 			Promise.all(this.toasts).then(() => {
 				const close = () => {
-					resolve()
 					this.toasts.delete(toast)
+					this.instance.close()
+					resolve()
 				}
 
-				const processAndClose = async () => {
+				const handleAction = async () => {
 					await action?.handler()
 					close()
 				}
 
 				render(html`
-					${!action ? nothing : html`<mo-button slot='action' @click=${processAndClose}>${action.text}</mo-button>`}
+					${!action ? nothing : html`<mo-button slot='action' @click=${handleAction}>${action.text}</mo-button>`}
 					<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='var(--mo-color-background)' @click=${close}></mo-icon-button>
 				`, this.instance)
 
@@ -63,7 +64,9 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 				setTimeout(() => close(), timeoutInMilliseconds)
 			})
 		})
+
 		this.toasts.add(toast)
+
 		return toast
 	}
 
