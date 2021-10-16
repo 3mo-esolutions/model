@@ -9,6 +9,7 @@ export class Avatar extends Component {
 				width: 40px;
 				aspect-ratio: 1 / 1;
 				display: flex;
+				user-select: none;
 				justify-content: center;
 				align-items: center;
 				border-radius: 50%;
