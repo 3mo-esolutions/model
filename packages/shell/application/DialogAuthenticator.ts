@@ -109,11 +109,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return html`
 			<mo-dialog blocking primaryOnEnter>
 				<mo-button slot='primaryAction' justifyContent='center' raised>Login</mo-button>
+
 				<mo-flex alignItems='center' minWidth='350px'>
-					<mo-flex height='100px' alignItems='center' gap='10px'>
-						<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
-						<h2>${Manifest.short_name || 'Welcome'}</h2>
-					</mo-flex>
+					${this.headerTemplate}
 					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
 						<mo-field-text data-focus label='Username'
 							.value=${this.username}
@@ -136,6 +134,15 @@ export abstract class DialogAuthenticator extends DialogComponent {
 					</mo-flex>
 				</mo-flex>
 			</mo-dialog>
+		`
+	}
+
+	private get headerTemplate() {
+		return html`
+			<mo-flex height='100px' alignItems='center' gap='10px'>
+				<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
+				<mo-headline typography='headline3'>${Manifest.short_name || 'Welcome'}</mo-headline>
+			</mo-flex>
 		`
 	}
 
