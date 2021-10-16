@@ -7,6 +7,7 @@ export class Avatar extends Component {
 			:host {
 				height: 40px;
 				width: 40px;
+				aspect-ratio: 1 / 1;
 				display: flex;
 				justify-content: center;
 				align-items: center;
