@@ -1,9 +1,9 @@
 import { component, html, property, Component, css } from '../../library'
-import { CSSDirection, IFlex } from '..'
+import { CSSDirection } from '..'
 import * as CSS from 'csstype'
 
 @component('mo-flex')
-export class Flex extends Component implements IFlex {
+export class Flex extends Component {
 	@property()
 	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
 	set flexDirection(value) { this.style.flexDirection = value }

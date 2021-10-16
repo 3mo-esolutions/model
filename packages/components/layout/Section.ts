@@ -1,6 +1,5 @@
 import { Component, component, css, html, property } from '../../library'
 import { CSSDirection } from '../helpers'
-import { IFlex } from './IFlex'
 import * as CSS from 'csstype'
 
 /**
@@ -9,7 +8,7 @@ import * as CSS from 'csstype'
  * @slot action - Actions in the header bar
  */
 @component('mo-section')
-export class Section extends Component implements IFlex {
+export class Section extends Component {
 	@property() header = ''
 	@property() direction: CSSDirection = 'vertical'
 	@property() gap: CSS.Property.Gap<string> = 'unset'
