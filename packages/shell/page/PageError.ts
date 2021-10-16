@@ -49,43 +49,24 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 	protected override get template() {
 		return html`
 			<style>
-				h1 {
+				.code {
 					font-size: 60px;
 					text-align: center;
-					margin: 0 0 20px 0;
 					font-weight: 400;
 				}
 
-				span {
+				.code span {
 					color: var(--mo-accent);
-				}
-
-				h2 {
-					font-size: xx-large;
-					text-align: center;
-					margin: 0;
-					font-weight: 400;
-				}
-
-				h3 {
-					font-size: x-large;
-					text-align: center;
-					margin: 0;
-					font-weight: 400;
 				}
 			</style>
 
-			<mo-page title='Error' fullHeight>
-				<mo-flex alignItems='center' justifyContent='center' height='100%' width='100%'>
-					<mo-div>
-						<h1>
-							${this.errorTemplate}
-						</h1>
-					</mo-div>
-					<mo-div>
-						<h2>${this.parameters.message ?? this.errors.get(this.parameters.error)?.defaultMessage}</h2>
-						<h3>Open the menu and navigate to a page</h3>
-					</mo-div>
+			<mo-page header=${`Error ${this.parameters.error}`} fullHeight>
+				<mo-flex height='100%' width='100%' gap='var(--mo-thickness-xl)' alignItems='center' justifyContent='center'>
+					<mo-div class='code'>${this.errorTemplate}</mo-div>
+					<mo-flex gap='var(--mo-thickness-m)'>
+						<mo-headline typography='headline1' textAlign='center'>${this.parameters.message ?? this.errors.get(this.parameters.error)?.defaultMessage}</mo-headline>
+						<mo-headline typography='headline3' textAlign='center'>Open the menu and navigate to a page</mo-headline>
+					</mo-flex>
 				</mo-flex>
 			</mo-page>
 		`

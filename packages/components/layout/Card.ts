@@ -1,76 +1,100 @@
-import { component, html, property, Component, css } from '../../library'
-import { CSSDirection } from '..'
+import { component, html, property, Component, css, nothing } from '../../library'
 
-// TODO: redesign
-
+/**
+ * @slot headerAction - Actions in the header bar
+ * @slot media - Embedded media
+ * @slot - Body / Content
+ * @slot action - Actions in the footer bar
+ */
 @component('mo-card')
 export class Card extends Component {
-	@property() header = ''
-	@property() direction: CSSDirection = 'vertical'
-	@property() gap?: string
-	@property({ type: Array }) gapElements: Array<Element> = Array.from(this.children).filter(c => !c.slot)
+	@property() header?: string
+	@property() avatar?: string
+	@property() subHeader?: string
+	@property() image?: string
 
 	static override get styles() {
 		return css`
 			:host {
-				--mo-card-padding-vertical: var(--mo-thickness-m);
-				--mo-card-padding-horizontal: var(--mo-thickness-m);
-				--mo-card-margin-vertical: var(--mo-thickness-m);
-				--mo-card-margin-horizontal: var(--mo-thickness-s);
 				display: block;
-			}
-
-			:host(:empty) {
-				display: none !important;
-			}
-
-			slot[name] {
-				display: block;
-			}
-
-			h3, ::slotted(h3[slot=header]) {
-				margin: var(--mo-thickness-m) 0 var(--mo-thickness-xl) 0;
-				padding: 0 var(--mo-thickness-s);
-				font-weight: 500;
-				transition: var(--mo-duration-quick);
-				font-size: var(--mo-font-size-l);
-				place-self: flex-start;
-				color: var(--mo-accent);
-			}
-
-			h3:empty {
-				display: none !important;
-			}
-
-			.card {
-				flex: 1;
-				align-self: stretch;
-				padding: var(--mo-card-padding-vertical) var(--mo-card-padding-horizontal);
-				margin: var(--mo-card-margin-vertical) var(--mo-card-margin-horizontal);
 				background-color: var(--mo-color-surface);
 				box-shadow: var(--mo-shadow);
 				border-radius: var(--mo-border-radius);
-				justify-content: inherit;
-				align-items: inherit;
-				height: calc(100% - calc(2 * calc(var(--mo-card-margin-vertical) + var(--mo-card-padding-vertical))));
+			}
+
+			slot[name=header] {
+				display: block;
+				flex: 1;
+			}
+
+			slot[name=media] img, slot[name=media]::slotted(img) {
+				display: block;
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: center center;
+				width: 100%;
+				object-fit: cover;
+			}
+
+			slot:not([name]) {
+				display: block;
+				padding: var(--mo-card-body-padding, 16px);
+				flex: 1;
+			}
+
+			slot[name=action] {
+				display: block;
+				padding: 8px;
 			}
 		`
 	}
 
 	protected override get template() {
 		return html`
-			<mo-flex class='card'>
-				<slot name='header'>
-					<h3 part='header'>${this.header}</h3>
-				</slot>
-
-				<mo-flex height='*' direction=${this.direction} .gap=${this.gap} .gapElements=${this.gapElements} alignSelf='stretch'>
-					<slot></slot>
-				</mo-flex>
-
-				<slot name='actions'></slot>
+			<mo-flex height='100%' width='100%'>
+				${this.headerTemplate}
+				${this.mediaTemplate}
+				${this.bodyTemplate}
+				${this.actionsTemplate}
 			</mo-flex>
 		`
+	}
+
+	private get headerTemplate() {
+		const hasHeader = this.avatar || this.header || this.subHeader
+			|| this.hasSlottedChildren('header') || this.hasSlottedChildren('headerAction')
+
+		return !hasHeader ? nothing : html`
+			<mo-flex id='header' direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
+				${!this.avatar ? nothing : html`<mo-avatar margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
+				<mo-flex justifyContent='space-around' width='*'>
+					${!this.header ? nothing : html`<mo-headline part='header' typography='headline4'>${this.header}</mo-headline>`}
+					${!this.subHeader ? nothing : html`<mo-headline part='subHeader' typography='headline6' foreground='var(--mo-color-gray)'>${this.subHeader}</mo-headline>`}
+				</mo-flex>
+				<slot name='headerAction'></slot>
+			</mo-flex>
+		`
+	}
+
+	private get mediaTemplate() {
+		const hasMedia = this.image || this.hasSlottedChildren('media')
+		return !hasMedia ? nothing : html`
+			<slot name='media'>
+				${!this.image ? nothing : html`<img id='media' src=${this.image} />`}
+			</slot>
+		`
+	}
+
+	private get bodyTemplate() {
+		return html`<slot></slot>`
+	}
+
+	private get actionsTemplate() {
+		return !this.hasSlottedChildren('action') ? nothing : html`<slot name='action'></slot>`
+	}
+
+	private hasSlottedChildren(slot: string) {
+		return Array.from(this.children).some(child => child.slot === slot)
 	}
 }
 

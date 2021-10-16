@@ -14,20 +14,14 @@ export class UserAvatar extends Component {
 				display: flex;
 			}
 
-			.avatar {
-				height: 40px;
-				width: 40px;
+			mo-avatar {
 				align-self: center;
 				justify-self: center;
-				justify-content: center;
-				align-items: center;
-				border-radius: 50%;
 				color: var(--mo-color-foreground);
 				background: rgba(0, 0, 0, 0.25);
-				font-size: var(--mo-font-size-l);
 			}
 
-			.avatar:hover {
+			mo-avatar:hover {
 				cursor: pointer;
 				background: rgba(0, 0, 0, calc(0.25 * 2));
 			}
@@ -47,9 +41,9 @@ export class UserAvatar extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex class='avatar' style='color: var(--mo-color-accessible)' @click=${() => this.menuOpen = !this.menuOpen}>
+			<mo-avatar @click=${() => this.menuOpen = !this.menuOpen}>
 				${this.avatarContent}
-			</mo-flex>
+			</mo-avatar>
 
 			<mo-menu .anchor=${this} corner='BOTTOM_START' activatable
 				?open=${this.menuOpen}
@@ -59,9 +53,9 @@ export class UserAvatar extends Component {
 				<mo-list-item graphic='avatar' twoLine nonInteractive>
 					<span>${this.name}</span>
 					<span slot='secondary'>${this.user?.email}</span>
-					<mo-flex class='avatar' slot='graphic'>
+					<mo-avatar slot='graphic'>
 						${this.avatarContent}
-					</mo-flex>
+					</mo-avatar>
 				</mo-list-item>
 
 				<li divider role='separator'></li>

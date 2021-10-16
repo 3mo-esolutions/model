@@ -39,16 +39,12 @@ export class Flex extends Component {
 	}
 
 	@property()
-	get basis() { return this.style.flexBasis }
-	set basis(value) { this.style.flexBasis = value }
-
-	@property()
 	get wrap() { return this.style.flexWrap as CSS.Property.FlexWrap }
 	set wrap(value) { this.style.flexWrap = value }
 
-	@property({ type: Array, observer: applyGap }) gapElements?: Array<Element>
-
-	@property({ observer: applyGap }) gap?: string
+	@property()
+	get gap() { return this.style.gap as CSS.Property.Gap<string> }
+	set gap(value) { this.style.gap = value }
 
 	static override get styles() {
 		return css`
@@ -62,35 +58,8 @@ export class Flex extends Component {
 
 	protected override get template() {
 		return html`
-			<slot @slotchange=${() => applyGap.call(this)}></slot>
+			<slot></slot>
 		`
-	}
-}
-
-function applyGap(this: Flex) {
-	if (!this.gap) {
-		return
-	}
-
-	const gapElements = this.gapElements ?? Array.from(this.children).filter(e => !e.slot)
-	for (let i = 0; i < gapElements.length; i++) {
-		const child = gapElements[i] as HTMLElement
-		const marginStart = i !== 0 ? `calc(${this.gap} / 2)` : '0'
-		const marginEnd = i !== gapElements.length - 1 ? `calc(${this.gap} / 2)` : '0'
-		switch (this.direction) {
-			case 'horizontal':
-				child.style.margin = `0 ${marginEnd} 0 ${marginStart}`
-				break
-			case 'horizontal-reversed':
-				child.style.margin = `0 ${marginStart} 0 ${marginEnd}`
-				break
-			case 'vertical':
-				child.style.margin = `${marginStart} 0 ${marginEnd} 0`
-				break
-			case 'vertical-reversed':
-				child.style.margin = `${marginEnd} 0 ${marginStart} 0`
-				break
-		}
 	}
 }
 

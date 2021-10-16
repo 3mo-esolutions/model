@@ -1,57 +1,54 @@
-import { Component, component, css, html, ifDefined, property } from '../../library'
+import { Component, component, css, html, property } from '../../library'
+import { CSSDirection } from '../helpers'
+import * as CSS from 'csstype'
 
+/**
+ * @slot - Content
+ * @slot header - The Header which has a default template rendering a mo-headline element.
+ * @slot action - Actions in the header bar
+ */
 @component('mo-section')
 export class Section extends Component {
 	@property() header = ''
-	@property() gap?: string
+	@property() direction: CSSDirection = 'vertical'
+	@property() gap: CSS.Property.Gap<string> = 'unset'
+	@property() wrap: CSS.Property.FlexWrap = 'unset'
 
 	static override get styles() {
 		return css`
-			:host {
-				position: relative;
-				transition: var(--mo-duration-quick);
-				background-color: transparent;
-				display: flex;
-				flex-direction: column;
-			}
-
-			:host(:empty) {
-				display: none !important;
-			}
-
-			h3 {
-				place-self: flex-start;
-				margin: var(--mo-thickness-xxl) 0 var(--mo-thickness-s) 0;
-				padding: 0 var(--mo-thickness-xs);
-				color: var(--mo-accent);
-				text-transform: uppercase;
-				font-size: var(--mo-font-size-s);
-				font-weight: 500;
-			}
-
-			h3:empty {
-				display: none !important;
-			}
-
-			mo-flex {
+			slot[name=header] {
+				display: block;
 				flex: 1;
-				align-self: stretch;
-			}
-
-			slot[name=actions] {
-				display: inline;
-				position: absolute;
-				top: 0px;
-				right: 0px;
 			}
 		`
 	}
 
 	protected override get template() {
 		return html`
-			<h3>${this.header}</h3>
-			<slot name='actions'></slot>
-			<mo-flex gap=${ifDefined(this.gap)} .gapElements=${Array.from(this.children).filter(e => !e.slot) as Array<Element>}>
+			<mo-flex width='100%' height='100%'>
+				<mo-flex minHeight='35px' direction='horizontal' alignItems='center'>
+					<slot name='header'>
+						${this.headlineTemplate}
+					</slot>
+					<slot name='action'></slot>
+				</mo-flex>
+
+				${this.contentTemplate}
+			</mo-flex>
+		`
+	}
+
+	protected get headlineTemplate() {
+		return html`
+			<mo-headline part='header' typography='headline5' foreground='var(--mo-accent)' style='text-transform: uppercase'>
+				${this.header}
+			</mo-headline>
+		`
+	}
+
+	protected get contentTemplate() {
+		return html`
+			<mo-flex height='*' direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
 				<slot></slot>
 			</mo-flex>
 		`
