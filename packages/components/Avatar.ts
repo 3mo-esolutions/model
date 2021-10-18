@@ -14,7 +14,6 @@ export class Avatar extends Component {
 				align-items: center;
 				border-radius: 50%;
 				font-size: var(--mo-font-size-l);
-				color: var(--mo-color-accessible);
 				background: var(--mo-accent);
 			}
 		`

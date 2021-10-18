@@ -15,9 +15,8 @@ export class UserAvatar extends Component {
 			}
 
 			mo-avatar {
-				align-self: center;
-				justify-self: center;
-				color: var(--mo-color-foreground);
+				place-self: center;
+				color: var(--mo-color-accessible);
 				background: rgba(0, 0, 0, 0.25);
 			}
 
