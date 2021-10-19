@@ -174,7 +174,7 @@ export abstract class Field<T> extends Input<T> {
 					@focus=${() => this.handleFocus()}
 					@blur=${() => this.handleBlur()}
 				>
-				<label for='input'>${this.label}</label>
+				<label for='input'>${this.label} ${this.required ? '*' : ''}</label>
 			</div>
 			<slot name='trailing'></slot>
 			<slot name='trailingInternal'></slot>
