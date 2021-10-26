@@ -1,13 +1,14 @@
 import { component, html, property, Component, css, nothing } from '../../library'
 
 /**
- * @slot headerAction - Actions in the header bar
+ * @slot action - Actions in the header
  * @slot heading - Custom heading in the header
  * @slot subHeading - Custom subHeading in the header
  * @slot avatar - Custom avatar in the header
+ * @slot header - The header. Using this will lead to slots 'heading', 'subHeading', 'avatar' and 'action's not working.
  * @slot media - Embedded media
  * @slot - Body / Content
- * @slot action - Actions in the footer bar
+ * @slot footer - Actions in the footer
  */
 @component('mo-card')
 export class Card extends Component {
@@ -23,6 +24,14 @@ export class Card extends Component {
 				background-color: var(--mo-color-surface);
 				box-shadow: var(--mo-shadow);
 				border-radius: var(--mo-border-radius);
+			}
+
+			slot[name=header] {
+				display: flex;
+				gap: var(--mo-thickness-m);
+				padding: var(--mo-card-header-padding, 16px);
+				max-height: var(--mo-card-header-max-height, 30px);
+				align-items: center;
 			}
 
 			slot[name=heading] {
@@ -45,9 +54,9 @@ export class Card extends Component {
 				flex: 1;
 			}
 
-			slot[name=action] {
+			slot[name=footer] {
 				display: block;
-				padding: 8px;
+				padding: var(--mo-card-footer-padding, 8px);
 			}
 		`
 	}
@@ -58,18 +67,19 @@ export class Card extends Component {
 				${this.headerTemplate}
 				${this.mediaTemplate}
 				${this.bodyTemplate}
-				${this.actionsTemplate}
+				${this.footerTemplate}
 			</mo-flex>
 		`
 	}
 
 	protected get headerTemplate() {
-		const hasHeader = this.avatar || this.heading || this.subHeading
-			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading') || this.hasSlottedChildren('subHeading')
-			|| this.hasSlottedChildren('header') || this.hasSlottedChildren('headerAction')
+		const hasHeader = this.hasSlottedChildren('header')
+			|| this.avatar || this.heading || this.subHeading
+			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading')
+			|| this.hasSlottedChildren('subHeading') || this.hasSlottedChildren('action')
 
 		return !hasHeader ? nothing : html`
-			<mo-flex direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
+			<slot name='header'>
 				<slot name='avatar'>
 					${!this.avatar ? nothing : html`<mo-avatar part='avatar' margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
 				</slot>
@@ -83,8 +93,8 @@ export class Card extends Component {
 						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' foreground='var(--mo-color-gray)'>${this.subHeading}</mo-heading>`}
 					</slot>
 				</mo-flex>
-				<slot name='headerAction'></slot>
-			</mo-flex>
+				<slot name='action'></slot>
+			</slot>
 		`
 	}
 
@@ -101,8 +111,8 @@ export class Card extends Component {
 		return html`<slot></slot>`
 	}
 
-	protected get actionsTemplate() {
-		return !this.hasSlottedChildren('action') ? nothing : html`<slot name='action'></slot>`
+	protected get footerTemplate() {
+		return !this.hasSlottedChildren('footer') ? nothing : html`<slot name='footer'></slot>`
 	}
 
 	private hasSlottedChildren(slot: string) {
