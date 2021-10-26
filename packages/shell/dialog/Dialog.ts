@@ -14,7 +14,6 @@ export type DialogSize = 'large' | 'medium' | 'small'
  * @slot
  * @slot primaryAction
  * @slot secondaryAction
- * @slot heading
  * @slot header
  * @slot footer
  */
@@ -133,13 +132,20 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	protected override renderHeading() {
-		return html`
-			<slot name='heading'>
-				${super.renderHeading()}
-			</slot>
-		`
-	}
+	// TODO:
+	//
+	// MWC styles the heading using CSS '+' operator which forces us
+	// not to wrap their heading with an slot element, as the heading
+	// won't be a sibling of the content
+	// search for '.mdc-dialog__title + .mdc-dialog__content, .mdc-dialog__header + .mdc-dialog__content'
+	//
+	// protected override renderHeading() {
+	// 	return html`
+	// 		<slot name='heading'>
+	// 			${super.renderHeading()}
+	// 		</slot>
+	// 	`
+	// }
 
 	protected override initialized() {
 		this.createHeaderSlot()
