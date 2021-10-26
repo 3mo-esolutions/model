@@ -60,7 +60,7 @@ export class Card extends Component {
 		`
 	}
 
-	private get headerTemplate() {
+	protected get headerTemplate() {
 		const hasHeader = this.avatar || this.header || this.subHeader
 			|| this.hasSlottedChildren('header') || this.hasSlottedChildren('headerAction')
 
@@ -76,7 +76,7 @@ export class Card extends Component {
 		`
 	}
 
-	private get mediaTemplate() {
+	protected get mediaTemplate() {
 		const hasMedia = this.image || this.hasSlottedChildren('media')
 		return !hasMedia ? nothing : html`
 			<slot name='media'>
@@ -85,11 +85,11 @@ export class Card extends Component {
 		`
 	}
 
-	private get bodyTemplate() {
+	protected get bodyTemplate() {
 		return html`<slot></slot>`
 	}
 
-	private get actionsTemplate() {
+	protected get actionsTemplate() {
 		return !this.hasSlottedChildren('action') ? nothing : html`<slot name='action'></slot>`
 	}
 
