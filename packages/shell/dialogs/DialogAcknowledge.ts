@@ -1,20 +1,15 @@
-import { component, html, TemplateResult } from '../../library'
+import { component, html } from '../../library'
 import { DialogComponent } from '..'
+import { BaseDialogParameters } from './BaseDialogParameters'
 
-type Parameters = {
-	readonly header: string
-	readonly content: string | TemplateResult
-	readonly primaryButtonText?: string
-	readonly secondaryButtonText?: string
-	readonly blocking?: boolean
-}
+type Parameters = BaseDialogParameters & { readonly secondaryButtonText?: string }
 
 @component('eb-dialog-acknowledge')
 export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 	protected override get template() {
 		return html`
 			<mo-dialog
-				header=${this.parameters.header}
+				heading=${this.parameters.heading}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
 				secondaryButtonText=${this.parameters.secondaryButtonText ?? 'Abbrechen'}
 				?blocking=${this.parameters.blocking}

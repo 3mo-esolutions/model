@@ -1,11 +1,8 @@
-import { state, component, html, TemplateResult } from '../../library'
+import { state, component, html } from '../../library'
 import { DialogComponent } from '..'
+import { BaseDialogParameters } from './BaseDialogParameters'
 
-type Parameters = {
-	readonly header: string
-	readonly content?: string | TemplateResult
-	readonly primaryButtonText?: string
-	readonly blocking?: boolean
+type Parameters = BaseDialogParameters & {
 	readonly inputLabel?: string
 	readonly value?: string
 }
@@ -17,13 +14,13 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 	protected override get template() {
 		return html`
 			<mo-dialog
-				header=${this.parameters.header}
+				heading=${this.parameters.heading}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
 				?blocking=${this.parameters.blocking}
 				primaryOnEnter
 			>
 				<mo-flex width='100%' height='100%' gap='var(--mo-thickness-m)'>
-					${this.parameters.content ?? ''}
+					${this.parameters.content}
 
 					<mo-field-text label=${this.parameters.inputLabel ?? 'Input'}
 						value=${this.value}

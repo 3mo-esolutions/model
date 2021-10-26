@@ -34,7 +34,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				throw new Error('Something went wrong.\nTry again.')
 			}
 			Snackbar.show('Authenticated successfully')
-		} catch (error) {
+		} catch (error: any) {
 			throw new Error(error.message ?? 'Incorrect Credentials')
 		}
 	}
@@ -53,7 +53,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		try {
 			await this.resetPasswordProcess()
 			Snackbar.show('Password reset instructions have been sent to your email address')
-		} catch (error) {
+		} catch (error: any) {
 			Snackbar.show(error.message ?? 'Password could not be reset')
 			throw error
 		}
@@ -128,7 +128,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return html`
 			<mo-flex height='100px' alignItems='center' gap='10px'>
 				<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
-				<mo-headline typography='headline3'>${Manifest.short_name || 'Welcome'}</mo-headline>
+				<mo-heading typography='heading3'>${Manifest.short_name || 'Welcome'}</mo-heading>
 			</mo-flex>
 		`
 	}

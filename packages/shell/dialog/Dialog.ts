@@ -6,6 +6,7 @@ import { Dialog as MwcDialog } from '@material/mwc-dialog'
 export type DialogSize = 'large' | 'medium' | 'small'
 
 /**
+ * @attr heading
  * @attr hideActions
  * @attr defaultAction
  * @attr actionAttribute
@@ -13,6 +14,7 @@ export type DialogSize = 'large' | 'medium' | 'small'
  * @slot
  * @slot primaryAction
  * @slot secondaryAction
+ * @slot heading
  * @slot header
  * @slot footer
  */
@@ -35,10 +37,6 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	cancellationAction?: () => TResult | PromiseLike<TResult>
 
 	override initialFocusAttribute = 'data-focus'
-
-	@property()
-	get header() { return this.heading }
-	set header(value) { this.heading = value }
 
 	protected get primaryElement() {
 		return this.querySelector('[slot="primaryAction"]')
@@ -132,6 +130,14 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 			:host([hideFooter]) footer {
 				display: none;
 			}
+		`
+	}
+
+	protected override renderHeading() {
+		return html`
+			<slot name='heading'>
+				${super.renderHeading()}
+			</slot>
 		`
 	}
 
@@ -252,7 +258,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		try {
 			const result = await resultAction()
 			this.close(result)
-		} catch (e) {
+		} catch (e: any) {
 			Snackbar.show(e.message)
 			throw e
 		}

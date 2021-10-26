@@ -11,7 +11,7 @@ Creating pages are just like [creating components](./component-creation.md) with
 Page components have 3 differences to a regular component.
 
 ### 1. Root Element
-It must contain a `mo-page` element in its root. It has relevant properties for a page such as `header` and `fullHeight`
+It must contain a `mo-page` element in its root. It has relevant properties for a page such as `heading` and `fullHeight`
 
 ### 2. Routing and Parameters
 It accepts routes to make the page accessible through an URL, and URL parameters can be intercepted.
@@ -30,7 +30,7 @@ It can check for the authorizations and fallback to a 403 error page if authoriz
 export class PageName extends PageComponent<{ id: number }> {
 	protected override get template() {
 		return html`
-			<mo-page header='Header'>
+			<mo-page heading='Heading'>
 				The passed parameter "id" is: ${this.parameters.id}
 			</mo-page>
 		`

@@ -11,7 +11,7 @@ export abstract class Application extends Component {
 
 	protected abstract get drawerTemplate(): TemplateResult
 
-	@property() pageTitle?: string
+	@property() pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
@@ -85,11 +85,11 @@ export abstract class Application extends Component {
 				font-family: Google Sans;
 			}
 
-			:host([isTopAppBarProminent]) #pageHeader {
+			:host([isTopAppBarProminent]) #pageHeading {
 				margin-bottom: 9px;
 			}
 
-			slot[name=pageHeaderDetails] {
+			slot[name=pageHeadingDetails] {
 				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
@@ -182,23 +182,23 @@ export abstract class Application extends Component {
 
 	protected get topAppBarHeaderTemplate() {
 		return html`
-			<mo-flex id='pageHeader' direction='horizontal'>
-				${this.pageHeaderTemplate}
+			<mo-flex id='pageHeading' direction='horizontal'>
+				${this.pageHeadingTemplate}
 			</mo-flex>
-			${this.pageHeaderDetailsTemplate}
+			${this.pageHeadingDetailsTemplate}
 		`
 	}
 
-	protected get pageHeaderTemplate() {
+	protected get pageHeadingTemplate() {
 		return html`
-			<span style='font-size: var(--mo-font-size-l)'>${this.pageTitle}</span>
-			<slot name='pageHeader'></slot>
+			<span style='font-size: var(--mo-font-size-l)'>${this.pageHeading}</span>
+			<slot name='pageHeading'></slot>
 		`
 	}
 
-	protected get pageHeaderDetailsTemplate() {
+	protected get pageHeadingDetailsTemplate() {
 		return html`
-			<slot name='pageHeaderDetails'></slot>
+			<slot name='pageHeadingDetails'></slot>
 		`
 	}
 

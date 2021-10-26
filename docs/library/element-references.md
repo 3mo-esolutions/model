@@ -18,7 +18,7 @@ To save a reference to an element existing in the template through its **ID** us
 
 		protected override get template() {
 			return html`
-				<mo-page header='Element References'>
+				<mo-page heading='Element References'>
 					<mo-field-select label='Which one'>
 						<mo-option value='a'>A</mo-option>
 						<mo-option value='b'>B</mo-option>

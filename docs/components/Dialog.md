@@ -8,9 +8,9 @@
 
 ### Usage
 - Dialogs shall not be obscured by other elements, with the exception of "context menu" and "snackbar"
-- The verbal actions shall be formulated in the action buttons. These, in most cases, build a sentence or a statement with the header. If not possible, especially in dialogs with [acknowledgement actions](https://material.io/components/dialogs#actions) try to formulate a more generic but context-related statement, or in extreme cases, default to the term "Notice" as removing the header is not allowed because of existence of the "X" icon-button.
+- The verbal actions shall be formulated in the action buttons. These, in most cases, build a sentence or a statement with the heading. If not possible, especially in dialogs with [acknowledgement actions](https://material.io/components/dialogs#actions) try to formulate a more generic but context-related statement, or in extreme cases, default to the term "Notice" as removing the heading is not allowed because of existence of the "X" icon-button.
 
-| Dialog Actions Type | Header | Primary Button | Formulated Statement |
+| Dialog Actions Type | Heading | Primary Button | Formulated Statement |
 |-|-|-|-|
 | Confirming | Product "Foo" | Save | Save the Product "Foo" |
 | Confirming | Rebate "Bar" | Delete | Delete the rebate "Bar" |

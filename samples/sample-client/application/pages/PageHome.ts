@@ -6,10 +6,10 @@ import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/
 export class PageHome extends PageComponent {
 	protected override get template() {
 		return html`
-			<mo-page header='Home' fullHeight>
-				<mo-card height='100%' width='100%'>
+			<mo-page heading='Home' fullHeight>
+				<mo-card>
 					<mo-flex height='100%' alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)'>
-						<mo-headline foreground='var(--mo-accent)'>Welcome to 3MO Design Library</mo-headline>
+						<mo-heading foreground='var(--mo-accent)'>Welcome to 3MO Design Library</mo-heading>
 						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
 						<sample-counter
 							count='1'

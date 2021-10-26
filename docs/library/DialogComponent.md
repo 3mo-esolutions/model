@@ -11,7 +11,7 @@ Creating dialog are just like [creating components](./component-creation.md) wit
 Dialog components have 3 differences to a regular component.
 
 ### 1. Root Element
-It must contain a `mo-dialog` element in its root. It has relevant properties for a dialog such as `header`, `size`, `primaryButtonText`, etc.
+It must contain a `mo-dialog` element in its root. It has relevant properties for a dialog such as `heading`, `size`, `primaryButtonText`, etc.
 
 ### 2. Parameters
 
@@ -26,7 +26,7 @@ It can check for the authorizations and fallback to a 403 error message if autho
 export class DialogMember extends DialogComponent<{ member: Member }> {
 	protected override get template() {
 		return html`
-			<mo-dialog header='Header'>
+			<mo-dialog heading='Heading'>
 				The name of the member is: ${this.parameters.member.name}
 			</mo-dialog>
 		`

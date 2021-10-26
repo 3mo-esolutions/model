@@ -60,12 +60,12 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 				}
 			</style>
 
-			<mo-page header=${`Error ${this.parameters.error}`} fullHeight>
-				<mo-flex height='100%' width='100%' gap='var(--mo-thickness-xl)' alignItems='center' justifyContent='center'>
+			<mo-page heading=${`Error ${this.parameters.error}`} fullHeight>
+				<mo-flex gap='var(--mo-thickness-xl)' alignItems='center' justifyContent='center'>
 					<mo-div class='code'>${this.errorTemplate}</mo-div>
 					<mo-flex gap='var(--mo-thickness-m)'>
-						<mo-headline typography='headline1' textAlign='center'>${this.parameters.message ?? this.errors.get(this.parameters.error)?.defaultMessage}</mo-headline>
-						<mo-headline typography='headline3' textAlign='center'>Open the menu and navigate to a page</mo-headline>
+						<mo-heading typography='heading1' textAlign='center'>${this.parameters.message ?? this.errors.get(this.parameters.error)?.defaultMessage}</mo-heading>
+						<mo-heading typography='heading3' textAlign='center'>Open the menu and navigate to a page</mo-heading>
 					</mo-flex>
 				</mo-flex>
 			</mo-page>

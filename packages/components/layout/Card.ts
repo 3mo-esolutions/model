@@ -2,17 +2,17 @@ import { component, html, property, Component, css, nothing } from '../../librar
 
 /**
  * @slot headerAction - Actions in the header bar
- * @slot headline - Custom headline in the header bar
- * @slot subHeadline - Custom subHeadline in the header bar
- * @slot avatar - Custom avatar in the header bar
+ * @slot heading - Custom heading in the header
+ * @slot subHeading - Custom subHeading in the header
+ * @slot avatar - Custom avatar in the header
  * @slot media - Embedded media
  * @slot - Body / Content
  * @slot action - Actions in the footer bar
  */
 @component('mo-card')
 export class Card extends Component {
-	@property() headline?: string
-	@property() subHeadline?: string
+	@property() heading?: string
+	@property() subHeading?: string
 	@property() avatar?: string
 	@property() image?: string
 
@@ -25,7 +25,7 @@ export class Card extends Component {
 				border-radius: var(--mo-border-radius);
 			}
 
-			slot[name=header] {
+			slot[name=heading] {
 				display: block;
 				flex: 1;
 			}
@@ -64,23 +64,23 @@ export class Card extends Component {
 	}
 
 	protected get headerTemplate() {
-		const hasHeader = this.avatar || this.headline || this.subHeadline
-			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('headline') || this.hasSlottedChildren('subHeadline')
+		const hasHeader = this.avatar || this.heading || this.subHeading
+			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading') || this.hasSlottedChildren('subHeading')
 			|| this.hasSlottedChildren('header') || this.hasSlottedChildren('headerAction')
 
 		return !hasHeader ? nothing : html`
-			<mo-flex part='header' direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
+			<mo-flex direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
 				<slot name='avatar'>
 					${!this.avatar ? nothing : html`<mo-avatar part='avatar' margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
 				</slot>
 
 				<mo-flex justifyContent='space-around' width='*'>
-					<slot name='headline'>
-						${!this.headline ? nothing : html`<mo-headline part='headline' typography='headline4'>${this.headline}</mo-headline>`}
+					<slot name='heading'>
+						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4'>${this.heading}</mo-heading>`}
 					</slot>
 
-					<slot name='subHeadline'>
-						${!this.subHeadline ? nothing : html`<mo-headline part='subHeadline' typography='headline6' foreground='var(--mo-color-gray)'>${this.subHeadline}</mo-headline>`}
+					<slot name='subHeading'>
+						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' foreground='var(--mo-color-gray)'>${this.subHeading}</mo-heading>`}
 					</slot>
 				</mo-flex>
 				<slot name='headerAction'></slot>

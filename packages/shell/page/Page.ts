@@ -3,20 +3,20 @@ import { PageHost } from '.'
 
 @component('mo-page')
 export class Page extends Component {
-	private _header = ''
+	private _heading = ''
 	@property()
-	get header() { return this._header }
-	set header(value) {
-		this._header = value
+	get heading() { return this._heading }
+	set heading(value) {
+		this._heading = value
 		if (this.isConnected) {
-			MoDeL.application.pageTitle = value
-			document.title = `${MoDeL.application.pageTitle} | ${Manifest.short_name}`
+			MoDeL.application.pageHeading = value
+			document.title = `${MoDeL.application.pageHeading} | ${Manifest.short_name}`
 		}
 	}
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.header = this.header
+		this.heading = this.heading
 	}
 
 	@property({ type: Boolean })
@@ -28,14 +28,14 @@ export class Page extends Component {
 	}
 
 	protected override connected() {
-		this.connectPageElementsToApplicationSlot('pageHeader')
-		const elements = this.connectPageElementsToApplicationSlot('pageHeaderDetails')
+		this.connectPageElementsToApplicationSlot('pageHeading')
+		const elements = this.connectPageElementsToApplicationSlot('pageHeadingDetails')
 		MoDeL.application.topAppBarProminent = elements.length > 0
 	}
 
 	protected override disconnected() {
-		this.disconnectElementsFromApplicationSlot('pageHeader')
-		this.disconnectElementsFromApplicationSlot('pageHeaderDetails')
+		this.disconnectElementsFromApplicationSlot('pageHeading')
+		this.disconnectElementsFromApplicationSlot('pageHeadingDetails')
 	}
 
 	private connectPageElementsToApplicationSlot(slotName: string) {
@@ -59,8 +59,9 @@ export class Page extends Component {
 				animation: transitionIn var(--mo-duration-quick);
 			}
 
-			::slotted {
+			:host([fullHeight]) ::slotted(*) {
 				height: 100%;
+				width: 100%;
 			}
 
 			@keyframes transitionIn

@@ -4,19 +4,19 @@ import * as CSS from 'csstype'
 
 /**
  * @slot - Content
- * @slot header - The Header which has a default template rendering a mo-headline element.
- * @slot action - Actions in the header bar
+ * @slot heading - The heading which has a default template rendering a mo-heading element
+ * @slot action - Actions in the header
  */
 @component('mo-section')
 export class Section extends Component {
-	@property() header = ''
+	@property() heading = ''
 	@property() direction: CSSDirection = 'vertical'
 	@property() gap: CSS.Property.Gap<string> = 'unset'
 	@property() wrap: CSS.Property.FlexWrap = 'unset'
 
 	static override get styles() {
 		return css`
-			slot[name=header] {
+			slot[name=heading] {
 				display: block;
 				flex: 1;
 			}
@@ -27,8 +27,8 @@ export class Section extends Component {
 		return html`
 			<mo-flex width='100%' height='100%'>
 				<mo-flex minHeight='35px' direction='horizontal' alignItems='center'>
-					<slot name='header'>
-						${this.headlineTemplate}
+					<slot name='heading'>
+						${this.headingTemplate}
 					</slot>
 					<slot name='action'></slot>
 				</mo-flex>
@@ -38,11 +38,11 @@ export class Section extends Component {
 		`
 	}
 
-	protected get headlineTemplate() {
+	protected get headingTemplate() {
 		return html`
-			<mo-headline part='header' typography='headline5' foreground='var(--mo-accent)' style='text-transform: uppercase'>
-				${this.header}
-			</mo-headline>
+			<mo-heading part='heading' typography='heading5' foreground='var(--mo-accent)' style='text-transform: uppercase'>
+				${this.heading}
+			</mo-heading>
 		`
 	}
 
