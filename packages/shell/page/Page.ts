@@ -1,6 +1,11 @@
 import { component, html, css, property, Component } from '../../library'
 import { PageHost } from '.'
 
+/**
+ * @slot
+ * @slot pageHeading
+ * @slot pageHeadingDetails
+ */
 @component('mo-page')
 export class Page extends Component {
 	private _heading = ''
