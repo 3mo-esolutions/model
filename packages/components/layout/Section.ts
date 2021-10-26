@@ -16,6 +16,10 @@ export class Section extends Component {
 
 	static override get styles() {
 		return css`
+			:host {
+				display: block;
+			}
+
 			slot[name=heading] {
 				display: block;
 				flex: 1;
