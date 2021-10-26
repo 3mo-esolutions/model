@@ -2,15 +2,18 @@ import { component, html, property, Component, css, nothing } from '../../librar
 
 /**
  * @slot headerAction - Actions in the header bar
+ * @slot headline - Custom headline in the header bar
+ * @slot subHeadline - Custom subHeadline in the header bar
+ * @slot avatar - Custom avatar in the header bar
  * @slot media - Embedded media
  * @slot - Body / Content
  * @slot action - Actions in the footer bar
  */
 @component('mo-card')
 export class Card extends Component {
-	@property() header?: string
+	@property() headline?: string
+	@property() subHeadline?: string
 	@property() avatar?: string
-	@property() subHeader?: string
 	@property() image?: string
 
 	static override get styles() {
@@ -61,15 +64,24 @@ export class Card extends Component {
 	}
 
 	protected get headerTemplate() {
-		const hasHeader = this.avatar || this.header || this.subHeader
+		const hasHeader = this.avatar || this.headline || this.subHeadline
+			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('headline') || this.hasSlottedChildren('subHeadline')
 			|| this.hasSlottedChildren('header') || this.hasSlottedChildren('headerAction')
 
 		return !hasHeader ? nothing : html`
-			<mo-flex id='header' direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
-				${!this.avatar ? nothing : html`<mo-avatar margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
+			<mo-flex part='header' direction='horizontal' padding='16px' gap='var(--mo-thickness-m)'>
+				<slot name='avatar'>
+					${!this.avatar ? nothing : html`<mo-avatar part='avatar' margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
+				</slot>
+
 				<mo-flex justifyContent='space-around' width='*'>
-					${!this.header ? nothing : html`<mo-headline part='header' typography='headline4'>${this.header}</mo-headline>`}
-					${!this.subHeader ? nothing : html`<mo-headline part='subHeader' typography='headline6' foreground='var(--mo-color-gray)'>${this.subHeader}</mo-headline>`}
+					<slot name='headline'>
+						${!this.headline ? nothing : html`<mo-headline part='headline' typography='headline4'>${this.headline}</mo-headline>`}
+					</slot>
+
+					<slot name='subHeadline'>
+						${!this.subHeadline ? nothing : html`<mo-headline part='subHeadline' typography='headline6' foreground='var(--mo-color-gray)'>${this.subHeadline}</mo-headline>`}
+					</slot>
 				</mo-flex>
 				<slot name='headerAction'></slot>
 			</mo-flex>
@@ -80,7 +92,7 @@ export class Card extends Component {
 		const hasMedia = this.image || this.hasSlottedChildren('media')
 		return !hasMedia ? nothing : html`
 			<slot name='media'>
-				${!this.image ? nothing : html`<img id='media' src=${this.image} />`}
+				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
 			</slot>
 		`
 	}
