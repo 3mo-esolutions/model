@@ -64,7 +64,7 @@ export class Page extends Component {
 				animation: transitionIn var(--mo-duration-quick);
 			}
 
-			:host([fullHeight]) ::slotted(*) {
+			:host([fullHeight]) ::slotted(*:not([slot])) {
 				height: 100%;
 				width: 100%;
 			}

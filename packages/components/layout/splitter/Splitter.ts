@@ -80,6 +80,7 @@ export class Splitter extends Component {
 				justify-content: center;
 				-webkit-user-select: none;
 				-moz-user-select: none;
+				padding: 5px 0;
 			}
 		`
 	}
