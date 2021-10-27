@@ -1,15 +1,19 @@
 import { Component, component, css, html, property } from '../../../library'
-import { CSSDirection } from '../..'
+import { Splitter } from './Splitter'
 
 // REFACTOR: use lit-html for templating
 @component('mo-splitter-item')
 export class SplitterItem extends Component {
-	@property({ reflect: true }) size = ''
-	@property({ reflect: true }) min = '50px'
-	@property({ reflect: true }) max = ''
+	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) size = ''
+	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) min = '50px'
+	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) max = ''
 
-	calculateStyles(direction: CSSDirection) {
-		switch (direction) {
+	private get splitter() {
+		return this.parentElement as Splitter
+	}
+
+	calculateStyles() {
+		switch (this.splitter.direction ?? 'vertical') {
 			case 'horizontal':
 			case 'horizontal-reversed':
 				this.style.width = this.size

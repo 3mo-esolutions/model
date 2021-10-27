@@ -47,7 +47,7 @@ export class Splitter extends Component {
 		for (let i = 0; i < value.length; i++) {
 			const item = value[i]
 
-			item.calculateStyles(this.direction ?? 'vertical')
+			item.calculateStyles()
 
 			if (i !== 0) {
 				const divResizer = document.createElement('div')
