@@ -13,6 +13,6 @@
 | `--mo-font-size-xs` | 10px | |
 | `--mo-font-size-s` | 12px | |
 | `--mo-font-size-m` | 14px | |
-| `--mo-font-size-l` | 18px | |
+| `--mo-font-size-l` | 16px | |
 | `--mo-font-size-xl` | 24px | |
 | `--mo-font-size-xxl` | 36px | |
