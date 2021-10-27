@@ -79,7 +79,7 @@ export class Card extends Component {
 			|| this.hasSlottedChildren('subHeading') || this.hasSlottedChildren('action')
 
 		return !hasHeader ? nothing : html`
-			<slot name='header'>
+			<slot part='header' name='header'>
 				<slot name='avatar'>
 					${!this.avatar ? nothing : html`<mo-avatar part='avatar' margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
 				</slot>
@@ -101,7 +101,7 @@ export class Card extends Component {
 	protected get mediaTemplate() {
 		const hasMedia = this.image || this.hasSlottedChildren('media')
 		return !hasMedia ? nothing : html`
-			<slot name='media'>
+			<slot part='media' name='media'>
 				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
 			</slot>
 		`
@@ -112,7 +112,7 @@ export class Card extends Component {
 	}
 
 	protected get footerTemplate() {
-		return !this.hasSlottedChildren('footer') ? nothing : html`<slot name='footer'></slot>`
+		return !this.hasSlottedChildren('footer') ? nothing : html`<slot part='footer' name='footer'></slot>`
 	}
 
 	private hasSlottedChildren(slot: string) {
