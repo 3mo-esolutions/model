@@ -80,7 +80,7 @@ export class Splitter extends Component {
 				justify-content: center;
 				-webkit-user-select: none;
 				-moz-user-select: none;
-				padding: 5px 0;
+				padding: 5px;
 			}
 		`
 	}
@@ -100,14 +100,12 @@ export class Splitter extends Component {
 			case 'horizontal-reversed':
 				divResizer.style.cursor = 'col-resize'
 				divResizer.style.width = '5px'
-				divResizer.style.height = '100%'
 				divKnob.style.width = '4px'
 				divKnob.style.height = '32px'
 				break
 			case 'vertical':
 			case 'vertical-reversed':
 				divResizer.style.cursor = 'row-resize'
-				divResizer.style.width = '100%'
 				divResizer.style.height = '5px'
 				divKnob.style.width = '32px'
 				divKnob.style.height = '4px'
