@@ -1,6 +1,9 @@
 import { component, css, html } from '../../library'
 import { Section } from './Section'
 
+/**
+ * @slot footer
+ */
 @component('mo-group-box')
 export class GroupBox extends Section {
 	static override get styles() {
@@ -23,6 +26,7 @@ export class GroupBox extends Section {
 		return html`
 			<mo-card part='card' height='*'>
 				${super.contentTemplate}
+				<slot slot='footer' name='footer'></slot>
 			</mo-card>
 		`
 	}

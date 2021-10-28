@@ -74,7 +74,7 @@ export class Card extends Component {
 
 	protected get headerTemplate() {
 		const hasHeader = this.hasSlottedChildren('header')
-			|| this.avatar || this.heading || this.subHeading
+			|| !!this.avatar || !!this.heading || !!this.subHeading
 			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading')
 			|| this.hasSlottedChildren('subHeading') || this.hasSlottedChildren('action')
 
@@ -116,7 +116,9 @@ export class Card extends Component {
 	}
 
 	private hasSlottedChildren(slot: string) {
-		return Array.from(this.children).some(child => child.slot === slot)
+		return Array.from(this.children)
+			.flatMap(child => child instanceof HTMLSlotElement ? child.assignedElements() : [child])
+			.some(child => child.slot === slot)
 	}
 }
 
