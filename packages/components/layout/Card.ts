@@ -94,11 +94,11 @@ export class Card extends Component {
 
 				<mo-flex justifyContent='space-around' width='*'>
 					<slot name='heading'>
-						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4'>${this.heading}</mo-heading>`}
+						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4' fontWeight='500'>${this.heading}</mo-heading>`}
 					</slot>
 
 					<slot name='subHeading'>
-						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' foreground='var(--mo-color-gray)'>${this.subHeading}</mo-heading>`}
+						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' fontWeight='400' foreground='var(--mo-color-gray)'>${this.subHeading}</mo-heading>`}
 					</slot>
 				</mo-flex>
 				<slot name='action'></slot>
