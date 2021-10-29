@@ -30,7 +30,6 @@ export class Card extends Component {
 				display: flex;
 				gap: var(--mo-thickness-m);
 				padding: var(--mo-card-header-padding, 16px);
-				max-height: var(--mo-card-header-max-height, 30px);
 				align-items: center;
 			}
 
@@ -40,6 +39,7 @@ export class Card extends Component {
 			}
 
 			slot[name=media] img, slot[name=media]::slotted(img) {
+				border-radius: var(--mo-border-radius) var(--mo-border-radius) 0 0;
 				display: block;
 				background-size: cover;
 				background-repeat: no-repeat;
@@ -50,8 +50,15 @@ export class Card extends Component {
 
 			slot:not([name]) {
 				display: block;
-				padding: var(--mo-card-body-padding, 16px);
 				flex: 1;
+			}
+
+			:host([hasBody]) slot:not([name]) {
+				padding: var(--mo-card-body-padding, 16px);
+			}
+
+			:host([hasBody][hasHeader]) slot:not([name]) {
+				padding: var(--mo-card-body-padding, 0px 16px 16px 16px);
 			}
 
 			slot[name=footer] {
@@ -64,8 +71,8 @@ export class Card extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex height='100%' width='100%'>
-				${this.headerTemplate}
 				${this.mediaTemplate}
+				${this.headerTemplate}
 				${this.bodyTemplate}
 				${this.footerTemplate}
 			</mo-flex>
@@ -77,6 +84,7 @@ export class Card extends Component {
 			|| !!this.avatar || !!this.heading || !!this.subHeading
 			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading')
 			|| this.hasSlottedChildren('subHeading') || this.hasSlottedChildren('action')
+		this.switchAttribute('hasHeader', hasHeader)
 
 		return !hasHeader ? nothing : html`
 			<slot part='header' name='header'>
@@ -99,7 +107,7 @@ export class Card extends Component {
 	}
 
 	protected get mediaTemplate() {
-		const hasMedia = this.image || this.hasSlottedChildren('media')
+		const hasMedia = !!this.image || this.hasSlottedChildren('media')
 		return !hasMedia ? nothing : html`
 			<slot part='media' name='media'>
 				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
@@ -108,6 +116,7 @@ export class Card extends Component {
 	}
 
 	protected get bodyTemplate() {
+		this.switchAttribute('hasBody', this.hasSlottedChildren(''))
 		return html`<slot></slot>`
 	}
 
@@ -116,9 +125,10 @@ export class Card extends Component {
 	}
 
 	private hasSlottedChildren(slot: string) {
-		return Array.from(this.children)
+		return Array.from(this.childNodes)
+			.filter(node => node.nodeType <= 2 || (node.nodeType === 3 && !!node.textContent?.trim()))
 			.flatMap(child => child instanceof HTMLSlotElement ? child.assignedElements() : [child])
-			.some(child => child.slot === slot)
+			.some(child => (child instanceof HTMLElement && child.slot === slot) || (!slot && (child instanceof HTMLElement) === false))
 	}
 }
 
