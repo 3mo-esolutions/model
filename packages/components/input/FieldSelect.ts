@@ -133,8 +133,8 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	protected override initialized() {
-		super.initialized()
+	protected override firstUpdated() {
+		super.firstUpdated()
 		this.value = this.value
 		this.registerEventListeners()
 		this.inputElement.readOnly = true

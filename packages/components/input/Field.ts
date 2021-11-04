@@ -1,4 +1,4 @@
-import { css, html, property, ifDefined, query } from '../../library'
+import { css, html, property, ifDefined, query, event } from '../../library'
 import { Input } from './Input'
 
 export type FieldInputMode =
@@ -14,8 +14,11 @@ export type FieldInputMode =
 /**
  * @slot leading
  * @slot trailing
+ * @fires input {CustomEvent<T | undefined>}
  */
 export abstract class Field<T> extends Input<T> {
+	@event() readonly input!: EventDispatcher<T | undefined>
+
 	@property({ reflect: true }) label = ''
 	@property({ reflect: true }) pattern?: string
 	@property({ reflect: true }) override inputMode: FieldInputMode = 'text'
@@ -27,6 +30,23 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
+
+	protected override firstUpdated() {
+		super.firstUpdated()
+		this.registerInputElementEvents()
+	}
+
+	protected registerInputElementEvents() {
+		this.inputElement.addEventListener('input', (e: Event) => {
+			e.stopPropagation()
+			this.handleInput()
+		})
+	}
+
+	protected handleInput() {
+		this.input.dispatch(this.toValue(this.inputElement.value))
+		this.requestUpdate()
+	}
 
 	static override get styles() {
 		return css`

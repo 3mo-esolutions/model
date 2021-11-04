@@ -1,9 +1,6 @@
 import { component, html, nothing, property, renderContainer } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
-/**
- * @fires input {CustomEvent<string>}
- */
 @component('mo-field-text')
 export class FieldText extends FieldTextBase {
 	@property({ type: Number, reflect: true, observer: counterChanged }) counter?: number

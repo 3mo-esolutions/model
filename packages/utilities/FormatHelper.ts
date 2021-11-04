@@ -50,10 +50,11 @@ export class FormatHelper {
 		const thousandSeparator = this.getThousandSeparator(language)
 		const decimalSeparator = this.getDecimalSeparator(language)
 
-		return parseFloat(numberString
+		const number = parseFloat(numberString
 			.replace(new RegExp(`\\${thousandSeparator}`, 'g'), '')
 			.replace(new RegExp(`\\${decimalSeparator}`), '.')
 		)
+		return Number.isNaN(number) ? undefined : number
 	}
 
 	static localAmountWithSymbolToNumber(value: string, language = LocalizationHelper.language.value) {

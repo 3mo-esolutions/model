@@ -12,11 +12,11 @@ export class ColorPicker extends Input<Color> {
 
 	@property({ type: Array }) presets?: Array<Color>
 
-	protected override initialized() {
-		super.initialized()
-		this.inputElement.addEventListener<any>('input', (e: CustomEvent<undefined, HTMLInputElement>) => {
+	protected override firstUpdated() {
+		super.firstUpdated()
+		this.inputElement.addEventListener('input', e => {
 			e.stopImmediatePropagation()
-			this.input.dispatch(this.toValue(e.source.value))
+			this.input.dispatch(this.toValue(this.inputElement.value))
 		})
 	}
 

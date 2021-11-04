@@ -81,7 +81,8 @@ export class FieldDate extends Field<Date | undefined> {
 			return keywordDate
 		}
 
-		return new Date(value || new Date)
+		const date = new Date(value || new Date)
+		return String(date) !== 'Invalid Date' ? date : undefined
 	}
 
 	private calculateDateFromLocalDate(string: string) {
