@@ -38,7 +38,7 @@ export class Card extends Component {
 				flex: 1;
 			}
 
-			slot[name=media] img, slot[name=media]::slotted(img) {
+			slot[name=media]:first-child, slot[name=media]::slotted(:first-child) {
 				border-radius: var(--mo-border-radius) var(--mo-border-radius) 0 0;
 				display: block;
 				background-size: cover;
