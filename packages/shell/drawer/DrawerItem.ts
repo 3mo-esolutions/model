@@ -1,5 +1,5 @@
 import { component, property, html, ifDefined } from '../../library'
-import { PageComponent, DialogComponentConstructor, PageComponentConstructor, PageHost, DialogComponent } from '..'
+import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent } from '..'
 import { Drawer, ListItem } from '../../components'
 
 const enum MatchMode {
@@ -26,11 +26,9 @@ export class DrawerItem extends ListItem {
 		}
 	}
 
-	constructor() {
-		super()
-
-		MoDeL.Router.navigated.subscribe(pageConstructor => this.checkIfSelected(pageConstructor))
-
+	override connected() {
+		this.checkIfSelected()
+		MoDeL.application.pageHost.navigated.subscribe(page => this.checkIfSelected(page.constructor))
 		this.selectionChange.subscribe(isSelected => {
 			if (this.componentConstructor && isSelected) {
 				const component = new this.componentConstructor[0](this.componentConstructor[1])
@@ -46,13 +44,9 @@ export class DrawerItem extends ListItem {
 		})
 	}
 
-	override connected() {
-		this.checkIfSelected()
-	}
-
 	private readonly checkIfSelected = (
-		constructor: PageComponentConstructor<any> | undefined = PageHost.currentPage?.constructor,
-		parameters: Record<string, string | number | undefined> = PageHost.currentPage?.['parameters']
+		constructor: PageComponentConstructor<any> | undefined = MoDeL.application.pageHost.currentPage?.constructor,
+		parameters: Record<string, string | number | undefined> = MoDeL.application.pageHost.currentPage?.['parameters']
 	) => {
 		const arePagesEqual = constructor === this.componentConstructor?.[0]
 		const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(parameters)

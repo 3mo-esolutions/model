@@ -1,4 +1,4 @@
-import { css, html, property, Component, TemplateResult, nothing, } from '../../library'
+import { css, html, property, Component, TemplateResult, nothing, query, } from '../../library'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
@@ -18,6 +18,8 @@ export abstract class Application extends Component {
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
+
+	@query('mo-page-host') readonly pageHost!: PageHost
 
 	constructor() {
 		super()
@@ -53,9 +55,9 @@ export abstract class Application extends Component {
 		window.dispatchEvent(new Event('MoDeL.initialize'))
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
-			PageHost.navigateToHomePage()
+			this.pageHost.navigateToHomePage()
 		} else {
-			PageHost.navigateToPath(MoDeL.Router.relativePath)
+			this.pageHost.navigateToPath(MoDeL.Router.relativePath)
 		}
 	}
 

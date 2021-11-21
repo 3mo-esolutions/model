@@ -1,5 +1,5 @@
 import { component, html, css, property, Component } from '../../library'
-import { PageHost } from '.'
+import { PageComponent } from './PageComponent'
 
 /**
  * @slot
@@ -8,28 +8,31 @@ import { PageHost } from '.'
  */
 @component('mo-page')
 export class Page extends Component {
-	private _heading = ''
-	@property()
-	get heading() { return this._heading }
-	set heading(value) {
-		this._heading = value
-		if (this.isConnected) {
-			MoDeL.application.pageHeading = value
-			document.title = `${MoDeL.application.pageHeading} | ${Manifest.short_name}`
+	@property({
+		async observer(this: Page) {
+			const pageComponent = await this.getPageComponent()
+			const pageHost = await pageComponent.getHost()
+			if (pageHost.isRoot) {
+				MoDeL.application.pageHeading = this.heading
+				document.title = `${MoDeL.application.pageHeading} | ${Manifest.short_name}`
+			}
 		}
-	}
-
-	override connectedCallback() {
-		super.connectedCallback()
-		this.heading = this.heading
-	}
+	}) heading = ''
 
 	@property({ type: Boolean })
 	set fullHeight(value: boolean) {
-		if (PageHost.currentPage) {
-			PageHost.currentPage.style.flex = value ? '1' : ''
-		}
 		this.style.height = value ? '100%' : ''
+		this.setPageComponentFlex(value)
+	}
+
+	private async setPageComponentFlex(value: boolean) {
+		const pageComponent = await this.getPageComponent()
+		pageComponent.style.flex = value ? '1' : ''
+	}
+
+	private async getPageComponent() {
+		await this.updateComplete
+		return (this.parentNode as ShadowRoot).host as PageComponent<any>
 	}
 
 	protected override connected() {

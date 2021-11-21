@@ -1,4 +1,4 @@
-import { Component, component, css, html } from '../../library'
+import { Component, component, css, html, event } from '../../library'
 import { HttpErrorCode, PwaHelper } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper, Snackbar } from '..'
@@ -7,39 +7,36 @@ import { PageParameters } from './PageComponent'
 export const enum NavigationMode {
 	Navigate,
 	NewTab,
-	NewWindow
+	NewWindow,
 }
 
 @component('mo-page-host')
 export class PageHost extends Component {
-	static get instance() { return MoDeL.application.shadowRoot!.querySelector('mo-page-host') as PageHost }
-
-	static get navigateToHomePage() { return this.instance.navigateToHomePage }
-	static get navigateToPage() { return this.instance.navigateToPage }
-	static get navigateToPath() { return this.instance.navigateToPath }
-	static get currentPage() { return this.instance.pageComponent }
+	@event() readonly navigated!: EventDispatcher<PageComponent<any>>
 
 	constructor() {
 		super()
 		MoDeL.Router.navigated.subscribe(() => this.navigateToPath(MoDeL.Router.relativePath))
 	}
 
-	private get pageComponent() { return this.firstChild as PageComponent<any> | null }
-	private set pageComponent(value) {
+	get isRoot() { return MoDeL.application.pageHost === this }
+
+	get currentPage() { return this.firstChild as PageComponent<any> | null }
+	private set currentPage(value) {
 		this.removeChildren()
 		if (value) {
 			this.append(value)
 		}
 	}
 
-	private readonly navigateToPath = (relativePath: string) => {
+	readonly navigateToPath = (relativePath: string) => {
 		const pageComponent = MoDeL.Router.getPage(relativePath)
 		const page = pageComponent ? new pageComponent(MoDeL.Router.getParameters(relativePath)) : new PageError({ error: HttpErrorCode.NotFound })
 		page.navigate()
 	}
 
-	private readonly navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
-		if (this.pageComponent?.tagName === page.tagName && JSON.stringify(this.pageComponent['parameters']) === JSON.stringify(page['parameters'])) {
+	readonly navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
+		if (this.currentPage?.tagName === page.tagName && JSON.stringify(this.currentPage['parameters']) === JSON.stringify(page['parameters'])) {
 			return
 		}
 
@@ -74,7 +71,7 @@ export class PageHost extends Component {
 		}
 	}
 
-	private readonly navigateToHomePage = () => {
+	readonly navigateToHomePage = () => {
 		if (!MoDeL.Router.HomePageConstructor) {
 			return
 		}
@@ -83,13 +80,14 @@ export class PageHost extends Component {
 	}
 
 	private navigate<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
-		this.pageComponent =
+		this.currentPage =
 			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: HttpErrorCode.Forbidden })
 
 		const path = MoDeL.Router.getPath(page)
 		if (path) {
 			MoDeL.Router.relativePath = path
 		}
+		this.navigated.dispatch(page)
 	}
 
 	static override get styles() {
