@@ -101,7 +101,7 @@ export const styles = css`
 		color-scheme: light;
 		--mo-color-background-base: 255, 255, 255;
 		--mo-color-foreground-base: 0, 0, 0;
-		--mo-color-background: rgb(220, 221, 225) !important;
+		--mo-color-background: rgb(234, 234, 234) !important;
 		--mo-color-foreground: black !important;
 		--mo-color-foreground-transparent: rgb(48, 48, 48) !important;
 		--mo-color-surface: rgb(255, 255, 255) !important;
@@ -109,7 +109,6 @@ export const styles = css`
 		--mo-shadow-base: 95, 81, 78;
 		--mo-color-error-base: 176, 0, 32;
 		--mo-hover-background: rgba(0, 0, 0, .05);
-		--mo-field-background: rgba(var(--mo-color-foreground-base), 0.09);
 		--mo-field-menu-background: var(--mo-color-surface);
 		--mo-field-menu-filter: brightness(0.91);
 		--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
@@ -119,15 +118,14 @@ export const styles = css`
 		color-scheme: dark;
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;
-		--mo-color-background: rgb(16, 17, 20) !important;
-		--mo-color-surface: rgb(42, 43, 47) !important;
+		--mo-color-background: rgb(18, 18, 18) !important;
+		--mo-color-surface: rgb(38, 38, 38) !important;
 		--mo-color-foreground: white !important;
 		--mo-color-foreground-transparent: rgb(220, 220, 220) !important;
 		--mo-color-gray-base: 165, 165, 165;
 		--mo-shadow-base: 0, 1, 3;
 		--mo-color-error-base: 255, 61, 96;
 		--mo-hover-background: rgba(255, 255, 255, .05);
-		--mo-field-background: rgba(var(--mo-color-background-base), 0.5);
 		--mo-field-menu-background: var(--mo-color-background);
 		--mo-field-menu-filter: unset;
 		--mo-alternating-background: rgba(var(--mo-color-background-base), 0.2);

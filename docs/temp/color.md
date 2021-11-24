@@ -1,0 +1,9 @@
+- --mo-color-background
+- --mo-color-foreground
+- --mo-color-background-base
+- --mo-color-foreground-base
+- --mo-color-surface
+- TODO: MD-184: --mo-color-on-surface
+- --mo-color-gray -> Untransparente Grautöne
+- --mo-color-gray-alpha-base: .04; -> Transparente Grautöne definieren -> Faktor-Limit [1..3] ([0.04..0.12])
+- TODO: MD-184: naming (transparnet gray <-> transparnet gray)

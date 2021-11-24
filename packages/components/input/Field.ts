@@ -162,7 +162,7 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-height: 40px;
 				--mo-field-label-scale-value-on-focus: 0.75;
 				--mo-field-label-scale-on-focus: scale(var(--mo-field-label-scale-value-on-focus));
-				--mo-field-label-translate-value-on-focus: -50%;
+				--mo-field-label-translate-value-on-focus: -52.5%;
 				--mo-field-label-translate-on-focus: translateY(var(--mo-field-label-translate-value-on-focus));
 				--mo-field-label-transform-on-focus: var(--mo-field-label-translate-on-focus) var(--mo-field-label-scale-on-focus);
 				--mo-field-label-top-on-focus: 14px;
@@ -185,7 +185,15 @@ export abstract class Field<T> extends Input<T> {
 				align-items: center;
 			}
 
+			:host(:hover) {
+				/* TODO: MD-184: overriding these has problems for exposing the variables */
+				--mo-field-background: var(--mo-field-background-hover);
+				--mo-field-line-color: var(--mdc-text-field-hover-line-color);
+				border-bottom-color: var(--mdc-text-field-hover-line-color);
+			}
+
 			:host(:focus) {
+				--mo-field-background: var(--mo-field-background-hover);
 				outline: none;
 			}
 
@@ -234,7 +242,7 @@ export abstract class Field<T> extends Input<T> {
 				font-size: var(--mo-field-font-size);
 				top: calc(var(--mo-field-label-translate-value-on-focus) * -1);
 				transform: var(--mo-field-label-translate-on-focus);
-				color: var(--mo-color-gray);
+				color: var(--mo-field-label-foreground);
 				transition: .1s ease-out;
 				transform-origin: var(--mo-field-label-transform-origin);
 				pointer-events: none;

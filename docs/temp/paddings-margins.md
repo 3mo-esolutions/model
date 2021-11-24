@@ -1,0 +1,1 @@
+- CSS properties of `mo-thickness-X` shall be revisited
