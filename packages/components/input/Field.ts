@@ -105,7 +105,7 @@ export abstract class Field<T> extends Input<T> {
 
 			label {
 				position: absolute;
-				font-size: var(--mo-font-size-field);
+				font-size: var(--mo-field-font-size, 0.78rem);
 				left: 0;
 				top: calc(var(--mo-field-label-translate-value-on-focus) * -1);
 				transform: var(--mo-field-label-translate-on-focus);
@@ -119,10 +119,29 @@ export abstract class Field<T> extends Input<T> {
 				max-width: 100%;
 			}
 
-			input {
-				border: 0;
+			:host:after {
+				--mo-field-initial-outline-width: 10px;
+				content: '';
+				position: absolute;
+				bottom: -1px;
+				height: 2px;
+				left: calc(calc(100% - var(--mo-field-initial-outline-width)) / 2);
+				width: var(--mo-field-initial-outline-width);
+				visibility: hidden;
+				background-color: var(--mo-accent);
+				transition: 0.2s ease all;
+			}
+
+			:host([active]):after, :host([open]):after {
+				visibility: visible;
 				width: 100%;
-				font-size: var(--mo-font-size-field);
+				left: 0px;
+			}
+
+			input {
+				border: 0px;
+				width: 100%;
+				font-size: var(--mo-field-font-size, 0.78rem);
 				outline: none;
 				padding: 0.7rem 0 0 0;
 				height: calc(100% - 0.7rem);
