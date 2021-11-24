@@ -4,7 +4,7 @@ import { BaseDialogParameters } from './BaseDialogParameters'
 
 type Parameters = BaseDialogParameters & { readonly secondaryButtonText?: string }
 
-@component('eb-dialog-acknowledge')
+@component('mo-dialog-acknowledge')
 export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 	protected override get template() {
 		return html`

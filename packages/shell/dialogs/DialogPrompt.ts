@@ -7,7 +7,7 @@ type Parameters = BaseDialogParameters & {
 	readonly value?: string
 }
 
-@component('eb-dialog-prompt')
+@component('mo-dialog-prompt')
 export class DialogPrompt extends DialogComponent<Parameters, string> {
 	@state() private value = this.parameters.value ?? ''
 

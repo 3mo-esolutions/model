@@ -2,7 +2,7 @@ import { component, html } from '../../library'
 import { DialogComponent } from '..'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
-@component('eb-dialog-alert')
+@component('mo-dialog-alert')
 export class DialogAlert extends DialogComponent<BaseDialogParameters> {
 	protected override get template() {
 		return html`
