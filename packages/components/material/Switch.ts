@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, ComponentMixin, css } from '../../library'
 import { LabelMixin, InputMixin } from '..'
 import { Switch as MwcSwitch } from '@material/mwc-switch'
 
@@ -10,18 +10,27 @@ import { Switch as MwcSwitch } from '@material/mwc-switch'
 @component('mo-switch')
 export class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				.mdc-switch:enabled .mdc-switch__track::before {
+					background: var(--mo-color-foreground-transparent);
+				}
 
-			.mdc-switch {
-				margin-right: 6px;
-			}
-		`
+				.mdc-switch:enabled:not(:focus):not(:active) .mdc-switch__track::after {
+					background: var(--mo-accent-gradient-transparent);
+				}
+
+				.mdc-switch:enabled:hover:not(:focus):not(:active) .mdc-switch__track::after {
+					background: var(--mo-accent-gradient-transparent);
+				}
+
+				.mdc-switch {
+					margin-right: 6px;
+				}
+			`
+		]
 	}
-
-	@property({ type: Boolean })
-	get value() { return this.checked === true }
-	set value(value) { this.checked = value }
 }
 
 declare global {

@@ -4,8 +4,8 @@ import { ListItemMixin } from '..'
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
 class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
-	// @ts-ignore It is actually a boolean
-	left: string
+	// @ts-expect-error 'left' shall be overwritten 'MwcCheckListItem'.
+	override left: string
 }
 
 /**

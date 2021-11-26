@@ -1,13 +1,14 @@
 /* eslint-disable import/no-internal-modules */
-export { customElement as component, CSSResult, queryAsync, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues } from 'lit-element'
-export { render, NodePart, directive } from 'lit-html'
-export { repeat } from 'lit-html/directives/repeat'
-export { cache } from 'lit-html/directives/cache'
-export { ifDefined } from 'lit-html/directives/if-defined'
-export { until } from 'lit-html/directives/until'
-export { live } from 'lit-html/directives/live'
-export { styleMap } from 'lit-html/directives/style-map'
-export { classMap } from 'lit-html/directives/class-map'
+export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues } from 'lit'
+export { customElement as component, queryAsync } from 'lit/decorators.js'
+export { render } from 'lit-html'
+export { repeat } from 'lit-html/directives/repeat.js'
+export { cache } from 'lit-html/directives/cache.js'
+export { ifDefined } from 'lit-html/directives/if-defined.js'
+export { until } from 'lit-html/directives/until.js'
+export { live } from 'lit-html/directives/live.js'
+export { styleMap } from 'lit-html/directives/style-map.js'
+export { classMap } from 'lit-html/directives/class-map.js'
 export * from './helpers'
 export * from './decorators'
 export * from './StyleMixin'
@@ -16,5 +17,5 @@ export * from './Component'
 import './global'
 
 import { TemplateResult, nothing as nothingTemplate } from 'lit-html'
-const nothing = nothingTemplate as TemplateResult
+const nothing = nothingTemplate as unknown as TemplateResult<1>
 export { nothing }

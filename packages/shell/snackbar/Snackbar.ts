@@ -18,17 +18,18 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
 
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				.mdc-snackbar__surface {
+					background-color: var(--mo-color-foreground);
+				}
 
-			.mdc-snackbar__surface {
-				background-color: var(--mo-color-foreground);
-			}
-
-			.mdc-snackbar__label {
-				color: rgba(var(--mo-color-background-base), 0.87)
-			}
-		`
+				.mdc-snackbar__label {
+					color: rgba(var(--mo-color-background-base), 0.87)
+				}
+			`
+		]
 	}
 
 	private static readonly toasts = new Set<Promise<void>>()

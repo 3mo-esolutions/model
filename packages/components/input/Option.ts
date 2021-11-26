@@ -6,12 +6,24 @@ export class Option<TValue> extends ListItemCheckbox {
 	@event({ bubbles: true }) private readonly defaultClick!: EventDispatcher
 
 	@property({ type: Object }) data?: TValue
-	@property({ type: Boolean, reflect: true, observer: defaultChanged }) default = false
 	@property({ type: Boolean, reflect: true }) multiple = false
+	@property({
+		type: Boolean,
+		reflect: true,
+		observer(this: Option<TValue>) {
+			if (!this.default) {
+				return
+			}
 
-	static get styles() {
+			this.data = undefined
+			this.value = undefined!
+			this.disabled = true
+		}
+	}) default = false
+
+	static override get styles() {
 		return [
-			super.styles,
+			...super.styles,
 			css`
 				:host(:not([multiple])) .mdc-deprecated-list-item__meta {
 					display: none;
@@ -25,7 +37,7 @@ export class Option<TValue> extends ListItemCheckbox {
 		] as any
 	}
 
-	initialized() {
+	protected override initialized() {
 		super.initialized()
 		if (!this.value) {
 			this.value = this.innerText || Array.from(this.parentElement?.children ?? []).indexOf(this).toString()
@@ -36,16 +48,6 @@ export class Option<TValue> extends ListItemCheckbox {
 			}
 		}
 	}
-}
-
-function defaultChanged(this: Option<unknown>) {
-	if (!this.default) {
-		return
-	}
-
-	this.data = undefined
-	this.value = undefined!
-	this.disabled = true
 }
 
 declare global {

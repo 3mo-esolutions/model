@@ -13,29 +13,30 @@ export class Chip extends Button {
 	override unelevated = true
 
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				:host {
+					--mdc-theme-primary: rgba(var(--mo-color-foreground-base), 0.15);
+					--mdc-theme-on-primary: rgba(var(--mo-color-foreground-base), 0.8);
+					--mdc-shape-small: 100px;
+					--mdc-button-horizontal-padding: 8px;
+					--mdc-typography-button-text-transform: none;
+				}
 
-			:host {
-				--mdc-theme-primary: rgba(var(--mo-color-foreground-base), 0.15);
-				--mdc-theme-on-primary: rgba(var(--mo-color-foreground-base), 0.8);
-				--mdc-shape-small: 100px;
-				--mdc-button-horizontal-padding: 8px;
-				--mdc-typography-button-text-transform: none;
-			}
+				:host([hasDelete]) #button {
+					padding-right: 4px;
+				}
 
-			:host([hasDelete]) #button {
-				padding-right: 4px;
-			}
-
-			#button {
-				height: 30px;
-				font-weight: auto !important;
-				letter-spacing: normal !important;
-				text-decoration: auto !important;
-				text-transform: auto !important;
-			}
-		`
+				#button {
+					height: 30px;
+					font-weight: auto !important;
+					letter-spacing: normal !important;
+					text-decoration: auto !important;
+					text-transform: auto !important;
+				}
+			`
+		]
 	}
 
 	@renderContainer('slot[name="trailingIcon"]')

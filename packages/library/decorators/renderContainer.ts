@@ -11,7 +11,7 @@ export const renderContainer = <T extends LitElement>(containerQuery: string) =>
 				template = descriptor.value.call(this)
 			}
 
-			const container = this.shadowRoot?.querySelector(containerQuery)
+			const container = this.shadowRoot?.querySelector<HTMLElement>(containerQuery)
 			if (container) {
 				render(template, container)
 			}

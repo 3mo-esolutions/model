@@ -1,4 +1,4 @@
-import { render, query, css, html, TemplateResult, event } from '../../library'
+import { render, query, css, html, event, CSSResult } from '../../library'
 import { property } from 'lit-element'
 import { MaterialIcon } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
@@ -27,15 +27,15 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 
 		static get styles() {
 			return [
-				/* @ts-ignore Material components do have styles, but it is compiled from SASS, therefore not recognized AoT */
-				super.styles,
+				/* @ts-expect-error Material components do have styles, but it is compiled from SASS, therefore not recognized AoT */
+				...super.styles,
 				css`
 					.mdc-deprecated-list-item__meta {
 						width: var(--mdc-list-item-meta-width, var(--mdc-list-item-meta-size, 24px));
 						height: var(--mdc-list-item-meta-height, var(--mdc-list-item-meta-size, 24px));
 					}
 				`
-			] as any
+			] as Array<CSSResult>
 		}
 
 		protected initialized() {
@@ -46,7 +46,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 		override render() {
 			this.renderIcon()
 			this.renderMetaIcon()
-			return super.render() as TemplateResult
+			return super.render()
 		}
 
 		private async renderIcon() {

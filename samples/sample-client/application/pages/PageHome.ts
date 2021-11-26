@@ -11,6 +11,8 @@ export class PageHome extends PageComponent {
 					<mo-flex height='100%' alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)'>
 						<mo-heading foreground='var(--mo-accent)'>Welcome to 3MO Design Library</mo-heading>
 						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
+						<mo-checkbox label='Checkbox'>Checkbox</mo-checkbox>
+						<mo-switch label='Checkbox'>Checkbox</mo-switch>
 						<sample-counter
 							count='1'
 							@countChange=${(e: CustomEvent<number>) => Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)}
