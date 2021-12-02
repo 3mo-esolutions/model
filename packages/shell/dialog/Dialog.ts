@@ -171,6 +171,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 
 	private createHeaderSlot() {
 		const flex = document.createElement('mo-flex')
+		flex.alignItems = 'center'
 		flex.id = 'flexHeader'
 		const template = html`
 			<slot name='header'></slot>
