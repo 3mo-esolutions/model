@@ -36,9 +36,9 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		PageHost.navigateToPage(this, mode)
 	}
 
-	protected refresh() {
+	protected refresh(parameters = this.parameters) {
 		this.remove()
-		new this.constructor(this.parameters).navigate()
+		new this.constructor(parameters).navigate()
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
