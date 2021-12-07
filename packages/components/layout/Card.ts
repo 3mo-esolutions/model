@@ -116,8 +116,9 @@ export class Card extends Component {
 	}
 
 	protected get bodyTemplate() {
-		this.switchAttribute('hasBody', this.hasSlottedChildren(''))
-		return html`<slot></slot>`
+		const handler = () => this.switchAttribute('hasBody', this.hasSlottedChildren(''))
+		handler()
+		return html`<slot @slotchange=${handler}></slot>`
 	}
 
 	protected get footerTemplate() {
