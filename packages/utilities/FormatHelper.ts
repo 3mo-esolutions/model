@@ -36,8 +36,8 @@ export class FormatHelper {
 		return this.number(percentage, { style: 'decimal', useGrouping: false, minimumFractionDigits: 0, maximumFractionDigits: 2 })
 	}
 
-	static amount(value: number) {
-		return this.number(value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2 })
+	static amount(value: number, additionalOptions?: Intl.NumberFormatOptions) {
+		return this.number(value, { style: 'decimal', useGrouping: true, minimumFractionDigits: 2, maximumFractionDigits: 2, ...(additionalOptions ?? {}) })
 	}
 
 	static amountWithSymbol(value: number, currency = CurrencyCode.EUR) {
