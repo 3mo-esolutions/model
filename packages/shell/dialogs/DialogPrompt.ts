@@ -5,6 +5,7 @@ import { BaseDialogParameters } from './BaseDialogParameters'
 type Parameters = BaseDialogParameters & {
 	readonly inputLabel?: string
 	readonly value?: string
+	readonly isTextArea?: boolean
 }
 
 @component('mo-dialog-prompt')
@@ -22,12 +23,25 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 				<mo-flex width='100%' height='100%' gap='var(--mo-thickness-m)'>
 					${this.parameters.content}
 
-					<mo-field-text label=${this.parameters.inputLabel ?? 'Input'}
-						value=${this.value}
-						@input=${(e: CustomEvent<string>) => this.value = e.detail}
-					></mo-field-text>
+					${this.textFieldTemplate}
 				</mo-flex>
 			</mo-dialog>
+		`
+	}
+
+	private get textFieldTemplate() {
+		return this.parameters.isTextArea ? html`
+			<mo-field-text-area data-focus
+				label=${this.parameters.inputLabel ?? 'Input'}
+				value=${this.value}
+				@input=${(e: CustomEvent<string>) => this.value = e.detail}
+			></mo-field-text-area>
+		` : html`
+			<mo-field-text data-focus
+				label=${this.parameters.inputLabel ?? 'Input'}
+				value=${this.value}
+				@input=${(e: CustomEvent<string>) => this.value = e.detail}
+			></mo-field-text>
 		`
 	}
 
