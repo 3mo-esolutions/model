@@ -273,14 +273,13 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 
 	override async close(result?: TResult | Error) {
 		if (result instanceof Error) {
-			await this.cancellationAction?.()
+			if (this.cancellationAction) {
+				result = await this.cancellationAction()
+			}
 		}
 
 		super.close()
-
-		if (result !== undefined) {
-			this.closed.dispatch(result)
-		}
+		this.closed.dispatch(result!)
 	}
 }
 
