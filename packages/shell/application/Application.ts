@@ -1,4 +1,4 @@
-import { css, html, property, Component, TemplateResult, nothing, } from '../../library'
+import { css, html, property, Component, TemplateResult, nothing, query, } from '../../library'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
@@ -11,13 +11,15 @@ export abstract class Application extends Component {
 
 	protected abstract get drawerTemplate(): TemplateResult
 
-	@property() pageHeading?: string
+	@property({ observer: (value) => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
+
+	@query('mo-page-host') readonly pageHost!: PageHost
 
 	constructor() {
 		super()
@@ -53,9 +55,9 @@ export abstract class Application extends Component {
 		window.dispatchEvent(new Event('MoDeL.initialize'))
 
 		if (window.location.pathname === '/' || window.location.pathname === '') {
-			PageHost.navigateToHomePage()
+			this.pageHost.navigateToHomePage()
 		} else {
-			PageHost.navigateToPath(MoDeL.Router.relativePath)
+			this.pageHost.navigateToPath(MoDeL.Router.relativePath)
 		}
 	}
 
@@ -216,7 +218,10 @@ export abstract class Application extends Component {
 
 	protected get pageHostTemplate() {
 		return html`
-			<mo-page-host height='*'></mo-page-host>
+			<mo-page-host overflowScrolling height='100%' width='100%'
+				style='--mo-page-host-max-width: 2560px; --mo-page-host-page-padding: var(--mo-thickness-xxl);'
+				@headingChange=${(e: CustomEvent<string>) => this.pageHeading = e.detail}
+			></mo-page-host>
 		`
 	}
 

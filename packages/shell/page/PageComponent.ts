@@ -5,10 +5,15 @@ export type PageParameters = void | Record<string, string | number | undefined>
 
 export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
 	authorizations: Array<keyof MoDeL.Authorizations>
+	getHost(): Promise<PageHost>
 }
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
-	static authorizations = new Array<keyof MoDeL.Authorizations>();
+	static authorizations = new Array<keyof MoDeL.Authorizations>()
+
+	static getHost() {
+		return Promise.resolve(MoDeL.application.pageHost)
+	}
 
 	override ['constructor']: PageComponentConstructor<T>
 
@@ -20,20 +25,25 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		this.parameters = this.parameters || {} as T
 	}
 
+	getHost() {
+		return this.constructor.getHost()
+	}
+
 	navigate() {
-		this.handleNavigation(NavigationMode.Navigate)
+		return this.handleNavigation(NavigationMode.Navigate)
 	}
 
 	open() {
-		this.handleNavigation(NavigationMode.NewTab)
+		return this.handleNavigation(NavigationMode.NewTab)
 	}
 
 	openInNewWindow() {
-		this.handleNavigation(NavigationMode.NewWindow)
+		return this.handleNavigation(NavigationMode.NewWindow)
 	}
 
-	protected handleNavigation(mode: NavigationMode) {
-		PageHost.navigateToPage(this, mode)
+	protected async handleNavigation(mode: NavigationMode) {
+		const host = await this.getHost()
+		host.navigateToPage(this, mode)
 	}
 
 	protected refresh(parameters = this.parameters) {
