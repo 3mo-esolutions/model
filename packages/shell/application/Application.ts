@@ -11,7 +11,7 @@ export abstract class Application extends Component {
 
 	protected abstract get drawerTemplate(): TemplateResult
 
-	@property() pageHeading?: string
+	@property({ observer: (value) => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
@@ -218,7 +218,10 @@ export abstract class Application extends Component {
 
 	protected get pageHostTemplate() {
 		return html`
-			<mo-page-host height='*'></mo-page-host>
+			<mo-page-host overflowScrolling height='100%' width='100%'
+				style='--mo-page-host-max-width: 2560px; --mo-page-host-page-padding: var(--mo-thickness-xxl);'
+				@headingChange=${(e: CustomEvent<string>) => this.pageHeading = e.detail}
+			></mo-page-host>
 		`
 	}
 

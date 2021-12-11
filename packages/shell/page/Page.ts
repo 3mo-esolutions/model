@@ -1,5 +1,4 @@
 import { component, html, css, property, Component } from '../../library'
-import { PageComponent } from './PageComponent'
 
 /**
  * @slot
@@ -8,32 +7,10 @@ import { PageComponent } from './PageComponent'
  */
 @component('mo-page')
 export class Page extends Component {
-	@property({
-		async observer(this: Page) {
-			const pageComponent = await this.getPageComponent()
-			const pageHost = await pageComponent.getHost()
-			if (pageHost.isRoot) {
-				MoDeL.application.pageHeading = this.heading
-				document.title = `${MoDeL.application.pageHeading} | ${Manifest.short_name}`
-			}
-		}
-	}) heading = ''
+	@property() heading = ''
 
 	@property({ type: Boolean })
-	set fullHeight(value: boolean) {
-		this.style.height = value ? '100%' : ''
-		this.setPageComponentFlex(value)
-	}
-
-	private async setPageComponentFlex(value: boolean) {
-		const pageComponent = await this.getPageComponent()
-		pageComponent.style.flex = value ? '1' : ''
-	}
-
-	private async getPageComponent() {
-		await this.updateComplete
-		return (this.parentNode as ShadowRoot).host as PageComponent<any>
-	}
+	set fullHeight(value: boolean) { this.height = value ? '100%' : 'auto' }
 
 	protected override connected() {
 		this.connectPageElementsToApplicationSlot('pageHeading')

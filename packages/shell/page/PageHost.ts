@@ -1,4 +1,4 @@
-import { Component, component, css, html, event } from '../../library'
+import { Component, component, css, html, event, property } from '../../library'
 import { HttpErrorCode, PwaHelper } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper, Snackbar } from '..'
@@ -10,16 +10,21 @@ export const enum NavigationMode {
 	NewWindow,
 }
 
+/**
+ * @fires navigate {CustomEvent<PageComponent<any>}
+ * @fires headingChange {CustomEvent<string>}
+ */
 @component('mo-page-host')
 export class PageHost extends Component {
-	@event() readonly navigated!: EventDispatcher<PageComponent<any>>
+	@event() readonly navigate!: EventDispatcher<PageComponent<any>>
+	@event() readonly headingChange!: EventDispatcher<string>
+
+	@property({ type: Boolean, reflect: true }) overflowScrolling = false
 
 	constructor() {
 		super()
 		MoDeL.Router.navigated.subscribe(() => this.navigateToPath(MoDeL.Router.relativePath))
 	}
-
-	get isRoot() { return MoDeL.application.pageHost === this }
 
 	get currentPage() { return this.firstChild as PageComponent<any> | null }
 	private set currentPage(value) {
@@ -49,7 +54,7 @@ export class PageHost extends Component {
 
 		switch (mode) {
 			case NavigationMode.Navigate:
-				this.navigate(page)
+				this.navigateTo(page)
 				break
 			case NavigationMode.NewTab:
 				const newTab = window.open(url, '_blank')
@@ -76,10 +81,10 @@ export class PageHost extends Component {
 			return
 		}
 
-		this.navigate(new MoDeL.Router.HomePageConstructor())
+		this.navigateTo(new MoDeL.Router.HomePageConstructor())
 	}
 
-	private navigate<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
+	private async navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
 		this.currentPage =
 			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: HttpErrorCode.Forbidden })
 
@@ -87,25 +92,46 @@ export class PageHost extends Component {
 		if (path) {
 			MoDeL.Router.relativePath = path
 		}
-		this.navigated.dispatch(page)
+
+		this.navigate.dispatch(this.currentPage)
+		await this.currentPage.updateComplete
+		this.headingChange.dispatch(this.currentPage['page']?.heading ?? '')
 	}
 
 	static override get styles() {
 		return css`
-			::slotted(:first-child) {
-				width: calc(100% - calc(2 * var(--mo-page-padding, var(--mo-thickness-xxl))));
-				max-width: var(--mo-page-max-width, 2560px);
-				padding: var(--mo-page-padding, var(--mo-thickness-xxl));
+			:host([overflowScrolling]) mo-grid {
+				max-width: var(--mo-page-host-max-width, unset);
+			}
+
+			:host(:not([overflowScrolling])) {
+				max-width: var(--mo-page-host-max-width, unset);
+			}
+
+			mo-grid {
+				/*
+					Correction padding for elements with outer box shadows and borders
+					that get clipped by the scroller's relative position.
+				*/
+				--mo-page-host-correction-padding: 1px;
+				--mo-page-host-padding: calc(var(--mo-page-host-correction-padding) + var(--mo-page-host-page-padding, 0px));
+				margin: auto;
+				justify-content: stretch;
+				width: calc(100% - calc(var(--mo-page-host-padding)) * 2);
+				height: calc(100% - calc(var(--mo-page-host-padding)) * 2);
+				padding: var(--mo-page-host-padding);
 			}
 		`
 	}
 
 	protected override get template() {
-		return html`
+		return this.overflowScrolling === false ? html`
+			<slot></slot>
+		` : html`
 			<mo-scroll>
-				<mo-flex alignItems='center' height='100%'>
+				<mo-grid>
 					<slot></slot>
-				</mo-flex>
+				</mo-grid>
 			</mo-scroll>
 		`
 	}
