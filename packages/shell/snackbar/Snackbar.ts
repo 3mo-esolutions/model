@@ -63,8 +63,20 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 				`, this.instance)
 
 				this.instance.labelText = message
+
+				let timerId: number
+				const mouseOverHandler = () => window.clearTimeout(timerId)
+				const mouseOutHandler = () => attachTimer()
+				const attachTimer = () => {
+					this.instance.removeEventListener('mouseover', mouseOverHandler)
+					this.instance.removeEventListener('mouseout', mouseOutHandler)
+					timerId = window.setTimeout(() => close(), timeoutInMilliseconds)
+					this.instance.addEventListener('mouseover', mouseOverHandler)
+					this.instance.addEventListener('mouseout', mouseOutHandler)
+				}
+				attachTimer()
+
 				this.instance.show()
-				setTimeout(() => close(), timeoutInMilliseconds)
 			})
 		})
 

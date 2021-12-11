@@ -13,11 +13,16 @@ export class PageHome extends PageComponent {
 						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
 						<sample-counter
 							count='1'
-							@countChange=${(e: CustomEvent<number>) => Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)}
+							@countChange=${this.handleCountChange}
 						></sample-counter>
 					</mo-flex>
 				</mo-card>
 			</mo-page>
 		`
+	}
+
+	private readonly handleCountChange = async (e: CustomEvent<number>) => {
+		await Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)
+		console.log(`DONE for number ${e.detail}`)
 	}
 }
