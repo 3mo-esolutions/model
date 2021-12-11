@@ -28,7 +28,7 @@ export class DrawerItem extends ListItem {
 
 	override connected() {
 		this.checkIfSelected()
-		MoDeL.application.pageHost.navigate.subscribe(page => this.checkIfSelected(page.constructor))
+		MoDeL.Router.navigated.subscribe(pageConstructor => this.checkIfSelected(pageConstructor))
 		this.selectionChange.subscribe(isSelected => {
 			if (this.componentConstructor && isSelected) {
 				const component = new this.componentConstructor[0](this.componentConstructor[1])
