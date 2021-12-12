@@ -21,11 +21,6 @@ export class PageHost extends Component {
 
 	@property({ type: Boolean, reflect: true }) overflowScrolling = false
 
-	constructor() {
-		super()
-		MoDeL.Router.navigated.subscribe(() => this.navigateToPath(MoDeL.Router.relativePath))
-	}
-
 	get currentPage() { return this.firstChild as PageComponent<any> | null }
 	private set currentPage(value) {
 		this.removeChildren()
@@ -34,19 +29,16 @@ export class PageHost extends Component {
 		}
 	}
 
-	readonly navigateToPath = (relativePath: string) => {
-		const pageComponent = MoDeL.Router.getPage(relativePath)
-		const page = pageComponent ? new pageComponent(MoDeL.Router.getParameters(relativePath)) : new PageError({ error: HttpErrorCode.NotFound })
-		page.navigate()
-	}
-
-	readonly navigateToPage = <T extends PageComponent<any>>(page: T, mode = NavigationMode.Navigate) => {
-		if (this.currentPage?.tagName === page.tagName && JSON.stringify(this.currentPage['parameters']) === JSON.stringify(page['parameters'])) {
+	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate) => {
+		if (this.currentPage && MoDeL.Router.arePagesEqual(this.currentPage, page)) {
 			return
 		}
 
-		const relativePath = MoDeL.Router.getPath(page)
-		const url = window.location.origin + relativePath
+		if (AuthorizationHelper.isAuthorized(...page.constructor.authorizations) === false) {
+			page = new PageError({ error: HttpErrorCode.Forbidden })
+		}
+
+		const url = window.location.origin + MoDeL.Router.getRouteByPage(page)
 
 		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab && Manifest.display_override?.includes('tabbed') === false) {
 			mode = NavigationMode.NewWindow
@@ -57,42 +49,23 @@ export class PageHost extends Component {
 				this.navigateTo(page)
 				break
 			case NavigationMode.NewTab:
-				const newTab = window.open(url, '_blank')
-				newTab?.focus()
+				window.open(url, '_blank')?.focus()
 				break
 			case NavigationMode.NewWindow:
-				const windowWidth = window.outerWidth // 1360
-				const windowHeight = window.outerHeight // 728
-				const xPos = 0 // (screen.width / 2) - (windowWidth / 2)
-				const yPos = 0 // (screen.height / 2) - (windowHeight / 2)
-				const newWindow = window.open(url, undefined, `width=${windowWidth},height=${windowHeight}`)
+				const newWindow = window.open(url, undefined, `width=${window.outerWidth},height=${window.outerHeight}`)
 				if (!newWindow) {
 					Snackbar.show('Allow to open a window')
 					return
 				}
-				newWindow.moveTo(xPos, yPos)
+				newWindow.moveTo(0, 0)
 				newWindow.focus()
 				break
 		}
 	}
 
-	readonly navigateToHomePage = () => {
-		if (!MoDeL.Router.HomePageConstructor) {
-			return
-		}
-
-		this.navigateTo(new MoDeL.Router.HomePageConstructor())
-	}
-
 	private async navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
-		this.currentPage =
-			AuthorizationHelper.isAuthorized(...page.constructor.authorizations) ? page : new PageError({ error: HttpErrorCode.Forbidden })
-
-		const path = MoDeL.Router.getPath(page)
-		if (path) {
-			MoDeL.Router.relativePath = path
-		}
-
+		this.currentPage = page
+		MoDeL.Router.setPathByPage(page)
 		this.navigate.dispatch(this.currentPage)
 		await this.currentPage.updateComplete
 		this.headingChange.dispatch(this.currentPage['page']?.heading ?? '')

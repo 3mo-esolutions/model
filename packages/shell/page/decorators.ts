@@ -3,7 +3,7 @@ import { PageHost } from './PageHost'
 
 export const route = (...routes: Array<string>) => {
 	return <T extends PageParameters>(pageConstructor: PageComponentConstructor<T>) => {
-		routes.forEach(route => MoDeL.Router.addRoute(route, pageConstructor))
+		routes.forEach(route => MoDeL.Router.register(route, pageConstructor))
 	}
 }
 
@@ -25,7 +25,7 @@ export const routeContext = (routePageConstructor: PageComponentConstructor<any>
 }
 
 export const homePage = <T extends PageParameters>(pageConstructor: PageComponentConstructor<T>) => {
-	MoDeL.Router.HomePageConstructor = pageConstructor
+	MoDeL.Router.homePageConstructor = pageConstructor
 }
 
 export const authorize = <TConstructor extends { authorizations: Array<keyof MoDeL.Authorizations> }>(...authorizations: Array<keyof MoDeL.Authorizations>) => {

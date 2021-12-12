@@ -1,17 +1,24 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { component, property, html, ifDefined } from '../../library'
-import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent } from '..'
+import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, RouteMatchMode, PageHost } from '..'
 import { Drawer, ListItem } from '../../components'
-
-const enum MatchMode {
-	All = 'all',
-	IgnoreParameters = 'ignore-parameters',
-}
 
 @component('mo-drawer-item')
 export class DrawerItem extends ListItem {
-	@property() matchMode = MatchMode.All
+	@property() matchMode = RouteMatchMode.All
+
+	@property({
+		type: Object,
+		observer(this: DrawerItem, value: () => PageHost, oldValue?: () => PageHost) {
+			oldValue?.().navigate.unsubscribe(this.handlePageHostNavigation)
+			value().navigate.subscribe(this.handlePageHostNavigation)
+		}
+	}) pageHostGetter = () => MoDeL.application.pageHost
+
+	private readonly handlePageHostNavigation = () => this.checkIfSelected()
 
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
+
 	@property({ type: Object })
 	set component(value: PageComponent<any> | DialogComponent<any>) {
 		this.componentConstructor = [
@@ -27,8 +34,6 @@ export class DrawerItem extends ListItem {
 	}
 
 	override connected() {
-		this.checkIfSelected()
-		MoDeL.Router.navigated.subscribe(pageConstructor => this.checkIfSelected(pageConstructor))
 		this.selectionChange.subscribe(isSelected => {
 			if (this.componentConstructor && isSelected) {
 				const component = new this.componentConstructor[0](this.componentConstructor[1])
@@ -44,13 +49,13 @@ export class DrawerItem extends ListItem {
 		})
 	}
 
-	private readonly checkIfSelected = (
-		constructor: PageComponentConstructor<any> | undefined = MoDeL.application.pageHost.currentPage?.constructor,
-		parameters: Record<string, string | number | undefined> = MoDeL.application.pageHost.currentPage?.['parameters']
-	) => {
-		const arePagesEqual = constructor === this.componentConstructor?.[0]
-		const arePageParametersEqual = JSON.stringify(this.componentConstructor?.[1]) === JSON.stringify(parameters)
-		Promise.delegateToEventLoop(() => this.selected = arePagesEqual && (arePageParametersEqual || this.matchMode === MatchMode.IgnoreParameters))
+	private readonly checkIfSelected = () => {
+		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
+		const pageHost = this.pageHostGetter()
+		const isSelected = pageOrDialog instanceof PageComponent
+			? pageHost.currentPage ? MoDeL.Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
+			: pageOrDialog.constructor === this.componentConstructor?.[0]
+		this.selected = isSelected
 	}
 
 	protected override renderGraphic = () => html`

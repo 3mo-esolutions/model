@@ -1,4 +1,4 @@
-import './Router'
+export * from './Router'
 export * from './decorators'
 export * from './PageComponent'
 export * from './PageError'

@@ -53,12 +53,6 @@ export abstract class Application extends Component {
 		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
 		window.dispatchEvent(new Event('MoDeL.initialize'))
-
-		if (window.location.pathname === '/' || window.location.pathname === '') {
-			this.pageHost.navigateToHomePage()
-		} else {
-			this.pageHost.navigateToPath(MoDeL.Router.relativePath)
-		}
 	}
 
 	async authenticate() {

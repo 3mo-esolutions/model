@@ -1,5 +1,5 @@
 import { component, html } from '../../library'
-import { PageComponent } from '.'
+import { PageComponent } from './PageComponent'
 import { HttpErrorCode } from '../..'
 
 @component('mo-page-error')

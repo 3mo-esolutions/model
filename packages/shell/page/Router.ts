@@ -1,92 +1,113 @@
-import { event } from '../../library'
+/* eslint-disable @typescript-eslint/member-ordering */
+import { HttpErrorCode } from '../../utilities'
+import { PageError } from './PageError'
 import { PageComponentConstructor, PageParameters, PageComponent } from './PageComponent'
-import Route from 'route-parser'
+import RouteParser from 'route-parser'
+
+type Page = PageComponent<any>
+type PageConstructor = PageComponentConstructor<any>
+
+export const enum RouteMatchMode {
+	All = 'all',
+	IgnoreParameters = 'ignore-parameters',
+}
 
 class Router {
-	@event() readonly navigated!: EventDispatcher<PageComponentConstructor<any> | undefined>
-
-	HomePageConstructor?: PageComponentConstructor<any>
-
-	private readonly routes = new Map<string, PageComponentConstructor<any>>()
+	private static readonly notFoundPage = new PageError({ error: HttpErrorCode.NotFound })
 
 	constructor() {
-		window.onpopstate = () => this.triggerNavigationEvent()
+		window.addEventListener('MoDeL.initialize', () => {
+			const isHomePage = ['/', ''].includes(window.location.pathname)
+			if (isHomePage && this._homePageConstructor) {
+				this.navigateToPage(new this._homePageConstructor())
+			} else {
+				this.navigateToCurrentPage()
+			}
+
+			window.onpopstate = () => this.navigateToCurrentPage()
+		})
 	}
 
-	private triggerNavigationEvent() {
-		const currentPage = this.getPage(this.relativePath)
-		this.navigated.dispatch(currentPage)
+	private _homePageConstructor?: PageConstructor
+	set homePageConstructor(page: PageConstructor) { this._homePageConstructor = page }
+
+	private readonly pageByRoute = new Map<string, PageConstructor>()
+
+	register(route: string, page: PageConstructor) {
+		this.pageByRoute.set(route, page)
 	}
 
-	private get routesArray() { return Array.from(this.routes.entries()) }
+	navigateToCurrentPage() {
+		const currentPageConstructor = this.getPageByPath()
+		const parameters = this.getPageParametersByPath()
+		const page = currentPageConstructor ? new currentPageConstructor(parameters) : Router.notFoundPage
+		this.navigateToPage(page)
+	}
 
-	get relativePath() {
+	navigateToPage(page: Page) {
+		this.setPathByPage(page)
+		page.navigate()
+	}
+
+	setPathByPage(page: Page) {
+		const path = this.getRouteByPage(page)
+		if (path) {
+			this.path = path
+		}
+	}
+
+	get path() {
 		return window.location.pathname + window.location.search
 	}
 
-	set relativePath(value: string) {
-		if (window.location.pathname !== value) {
+	set path(value) {
+		if (this.path !== value) {
 			history.pushState(null, '', value)
 		}
-		this.triggerNavigationEvent()
 	}
 
-	addRoute(route: string, pageType: PageComponentConstructor<any>) {
-		this.routes.set(route, pageType)
+	getRouteByPath(path = this.path) {
+		return this.getRoutePagePairByPath(path)?.[0] ?? path
 	}
 
-	getPage(relativePath: string): PageComponentConstructor<any> | undefined {
-		return this.routesArray.find(routePair => new Route(routePair[0]).match(relativePath))?.[1] ?? undefined
+	getPageByPath(path = this.path) {
+		return this.getRoutePagePairByPath(path)?.[1]
 	}
 
-	getRouterPath(relativePath: string): string {
-		return this.routesArray.find(routePair => new Route(routePair[0]).match(relativePath))?.[0] ?? relativePath
+	private getRoutePagePairByPath(path = this.path) {
+		return Array.from(this.pageByRoute)
+			.find(([route]) => this.getPageParametersByRoute(route, path) !== undefined)
 	}
 
-	doesPathMatchPage(path: string, page: PageComponentConstructor<any>): boolean {
-		return this.getPage(path) === page
+	getRouteByPage(page: Page) {
+		return Array.from(this.pageByRoute)
+			.filter(([, pageConstructor]) => pageConstructor === page.constructor)
+			.map(([route]) => this.getRouteByParameters(route, page['parameters']))
+			.find((route): route is string => route !== undefined)
 	}
 
-	getRouterPaths(page: PageComponentConstructor<any>): Array<string> {
-		return this.routesArray
-			.filter(routePair => this.routes.get(routePair[0]) === page)
-			.map(routePair => routePair[0])
+	arePagesEqual(page1: Page, page2: Page, mode = RouteMatchMode.All) {
+		return page1.constructor === page2.constructor
+			&& (this.getRouteByPage(page1) === this.getRouteByPage(page2) || mode === RouteMatchMode.IgnoreParameters)
 	}
 
-	getParameters(relativePath: string): PageParameters {
-		const routerPath = this.getRouterPath(relativePath)
-
-		if (!routerPath) {
-			return {}
-		}
-
-		const params = new Route(routerPath).match(relativePath) as Record<string, string | number>
-		Object.getOwnPropertyNames(params).forEach(paramName => {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			const paramNumber = Number(params[paramName]?.toString())
-			if (!Number.isNaN(paramNumber)) {
-				params[paramName] = paramNumber
-			}
-		})
-		return params
+	getPageParametersByPath(path = this.path) {
+		const route = this.getRouteByPath(path)
+		const parameters = !route ? {} : this.getPageParametersByRoute(route, path) ?? {}
+		return Object.fromEntries(
+			Object.entries(parameters).map(([key, value]) => {
+				const numberValue = Number(value)
+				return [key, isNaN(numberValue) ? value : numberValue]
+			})
+		)
 	}
 
-	injectParametersToPath(relativePath: string, parameters: PageParameters) {
-		const routerPath = this.getRouterPath(relativePath)
-		const route = new Route(routerPath).reverse(parameters ? parameters : {})
-		if (!route) {
-			return this.relativePath
-		}
-		return route
+	private getPageParametersByRoute(route: string, path: string) {
+		return new RouteParser(route).match(path) as PageParameters || undefined
 	}
 
-	getPath(page: PageComponent<any>) {
-		const path = this.getRouterPaths(page.constructor)
-			.map(p => new Route(p))
-			.find(r => r.reverse(page['parameters']) !== false)
-			?.reverse(page['parameters'])
-
-		return path ? path : undefined
+	private getRouteByParameters(route: string, parameters: PageParameters) {
+		return new RouteParser(route).reverse(parameters || {}) || undefined
 	}
 }
 
