@@ -8,9 +8,7 @@ import { component, html, css, property, Component } from '../../library'
 @component('mo-page')
 export class Page extends Component {
 	@property() heading = ''
-
-	@property({ type: Boolean })
-	set fullHeight(value: boolean) { this.height = value ? '100%' : 'auto' }
+	@property({ type: Boolean, reflect: true }) fullHeight = false
 
 	protected override connected() {
 		this.connectPageElementsToApplicationSlot('pageHeading')
@@ -40,8 +38,14 @@ export class Page extends Component {
 	static override get styles() {
 		return css`
 			:host {
+				margin: var(--mo-page-margin, var(--mo-thickness-xxl));
 				display: inherit;
 				animation: transitionIn var(--mo-duration-quick);
+			}
+
+			:host([fullHeight]) {
+				height: calc(100% - 2 * var(--mo-page-margin, var(--mo-thickness-xxl)));
+				width: calc(100% - 2 * var(--mo-page-margin, var(--mo-thickness-xxl)));
 			}
 
 			:host([fullHeight]) ::slotted(*:not([slot])) {

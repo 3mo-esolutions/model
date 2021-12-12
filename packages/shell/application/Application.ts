@@ -212,8 +212,7 @@ export abstract class Application extends Component {
 
 	protected get pageHostTemplate() {
 		return html`
-			<mo-page-host overflowScrolling height='100%' width='100%'
-				style='--mo-page-host-max-width: 2560px; --mo-page-host-page-padding: var(--mo-thickness-xxl);'
+			<mo-page-host height='100%' width='100%'
 				@headingChange=${(e: CustomEvent<string>) => this.pageHeading = e.detail}
 			></mo-page-host>
 		`

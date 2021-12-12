@@ -19,15 +19,7 @@ export class PageHost extends Component {
 	@event() readonly navigate!: EventDispatcher<PageComponent<any>>
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@property({ type: Boolean, reflect: true }) overflowScrolling = false
-
-	get currentPage() { return this.firstChild as PageComponent<any> | null }
-	private set currentPage(value) {
-		this.removeChildren()
-		if (value) {
-			this.append(value)
-		}
-	}
+	@property({ type: Object }) currentPage?: PageComponent<any>
 
 	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate) => {
 		if (this.currentPage && MoDeL.Router.arePagesEqual(this.currentPage, page)) {
@@ -73,37 +65,20 @@ export class PageHost extends Component {
 
 	static override get styles() {
 		return css`
-			:host([overflowScrolling]) mo-grid {
-				max-width: var(--mo-page-host-max-width, unset);
-			}
-
-			:host(:not([overflowScrolling])) {
-				max-width: var(--mo-page-host-max-width, unset);
-			}
-
 			mo-grid {
-				/*
-					Correction padding for elements with outer box shadows and borders
-					that get clipped by the scroller's relative position.
-				*/
-				--mo-page-host-correction-padding: 1px;
-				--mo-page-host-padding: calc(var(--mo-page-host-correction-padding) + var(--mo-page-host-page-padding, 0px));
+				max-width: var(--mo-page-host-max-width, 2560px);
 				margin: auto;
 				justify-content: stretch;
-				width: calc(100% - calc(var(--mo-page-host-padding)) * 2);
-				height: calc(100% - calc(var(--mo-page-host-padding)) * 2);
-				padding: var(--mo-page-host-padding);
+				height: 100%;
 			}
 		`
 	}
 
 	protected override get template() {
-		return this.overflowScrolling === false ? html`
-			<slot></slot>
-		` : html`
+		return html`
 			<mo-scroll>
-				<mo-grid>
-					<slot></slot>
+				<mo-grid part='pageHolder'>
+					${this.currentPage}
 				</mo-grid>
 			</mo-scroll>
 		`
