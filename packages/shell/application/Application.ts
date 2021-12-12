@@ -128,13 +128,13 @@ export abstract class Application extends Component {
 					</mo-flex>
 
 					<mo-flex height='100%'>
-						<mo-drawer-list height='*' open root>
+						<mo-navigation-list height='*' open root>
 							${this.drawerTemplate}
-						</mo-drawer-list>
+						</mo-navigation-list>
 
-						<mo-drawer-list open root>
+						<mo-navigation-list open root>
 							${this.drawerFooterTemplate}
-						</mo-drawer-list>
+						</mo-navigation-list>
 					</mo-flex>
 
 					<mo-flex slot='appContent' height='100%'>

@@ -1,21 +1,20 @@
-import { Component, component, html, property, ifDefined } from '../../library'
-import { DrawerItem } from '..'
-import { css, MaterialIcon } from '../..'
+import { Component, component, html, property, ifDefined, css } from '../../library'
+import { MaterialIcon, NavigationListItem } from '../..'
 
-@component('mo-drawer-list')
-export class DrawerList extends Component {
+@component('mo-navigation-list')
+export class NavigationList extends Component {
 	@property({ type: Boolean, reflect: true }) root = false
 	@property({ type: Boolean, reflect: true }) open = false
 	@property() icon?: MaterialIcon
 	@property() label = ''
 
 	private get items() {
-		return Array.from(this.children) as Array<DrawerItem | DrawerList>
+		return Array.from(this.children) as Array<NavigationListItem | NavigationList>
 	}
 
 	protected override initialized() {
 		this.items
-			.filter((item): item is DrawerItem => item instanceof DrawerItem)
+			.filter((item): item is NavigationListItem => item instanceof NavigationListItem)
 			.forEach(item => item.selectionChange.subscribe(() => this.open = true))
 	}
 
@@ -47,7 +46,7 @@ export class DrawerList extends Component {
 				z-index: -1;
 			}
 
-			:host(:not([root])) ::slotted(mo-drawer-item)::before, :host(:not([root])) ::slotted(mo-drawer-list)::before {
+			:host(:not([root])) ::slotted([mwc-list-item])::before, :host(:not([root])) ::slotted(mo-navigation-list)::before {
 				content: ' ';
 				position: absolute;
 				top: calc(var(--drawer-item-height) / 2);
@@ -58,7 +57,7 @@ export class DrawerList extends Component {
 				z-index: -1;
 			}
 
-			mo-list-item, mo-drawer-item, ::slotted(mo-drawer-item) {
+			[mwc-list-item], ::slotted([mwc-list-item]) {
 				margin-bottom: var(--drawer-item-vertical-margin);
 				margin-top: var(--drawer-item-vertical-margin);
 				border-radius: var(--mo-border-radius);
@@ -66,15 +65,15 @@ export class DrawerList extends Component {
 				--mdc-list-side-padding: 6px;
 			}
 
-			:host(:not([root])) mo-list-item, :host(:not([root])) mo-drawer-item, :host(:not([root])) ::slotted(mo-drawer-item) {
+			:host(:not([root])) [mwc-list-item], :host(:not([root])) ::slotted([mwc-list-item]) {
 				padding-left: calc(var(--drawer-item-depth-padding) * 1.5);
 			}
 
-			:host([icon]:not([root])) mo-list-item, :host(:not([root])) mo-list-item[icon], :host(:not([root])) ::slotted(mo-drawer-item[icon]) {
+			:host([icon]:not([root])) [mwc-list-item], :host(:not([root])) [mwc-list-item][icon], :host(:not([root])) ::slotted([mwc-list-item][icon]) {
 				padding-left: calc(var(--drawer-item-depth-padding) * 1.5 - 20px);
 			}
 
-			mo-list, mo-drawer-list, ::slotted(mo-drawer-list) {
+			mo-list, mo-navigation-list, ::slotted(mo-navigation-list) {
 				--mdc-list-vertical-padding: 0px;
 				--mdc-typography-subtitle1-font-size: var(--mo-font-size-m);
 			}
@@ -97,6 +96,6 @@ export class DrawerList extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-drawer-list': DrawerList
+		'mo-navigation-list': NavigationList
 	}
 }

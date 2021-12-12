@@ -8,7 +8,7 @@ Logo.source = 'data:image/svg+xml;utf8,<svg width="247" height="123" xmlns="http
 export class Sample extends Application {
 	protected get drawerTemplate() {
 		return html`
-			<mo-drawer-item icon='home' .component=${new PageHome}>Home</mo-drawer-item>
+			<mo-navigation-list-item icon='home' .component=${new PageHome}>Home</mo-navigation-list-item>
 		`
 	}
 }

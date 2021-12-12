@@ -3,13 +3,13 @@ import { component, property, html, ifDefined } from '../../library'
 import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, RouteMatchMode, PageHost } from '..'
 import { Drawer, ListItem } from '../../components'
 
-@component('mo-drawer-item')
-export class DrawerItem extends ListItem {
+@component('mo-navigation-list-item')
+export class NavigationListItem extends ListItem {
 	@property() matchMode = RouteMatchMode.All
 
 	@property({
 		type: Object,
-		observer(this: DrawerItem, value: () => PageHost, oldValue?: () => PageHost) {
+		observer(this: NavigationListItem, value: () => PageHost, oldValue?: () => PageHost) {
 			oldValue?.().navigate.unsubscribe(this.handlePageHostNavigation)
 			value().navigate.subscribe(this.handlePageHostNavigation)
 		}
@@ -67,6 +67,6 @@ export class DrawerItem extends ListItem {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-drawer-item': DrawerItem
+		'mo-navigation-list-item': NavigationListItem
 	}
 }
