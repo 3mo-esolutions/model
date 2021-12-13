@@ -7,7 +7,7 @@ export const route = (...routes: Array<string>) => {
 	}
 }
 
-export const routeContext = (routePageConstructor: PageComponentConstructor<any>, pageHostQuery = 'mo-page-host') => {
+export const routeHost = (routePageConstructor: PageComponentConstructor<any>, pageHostQuery = 'mo-page-host') => {
 	const getPageHost = async () => {
 		const pageHost = await routePageConstructor.getHost()
 		if ((pageHost.currentPage instanceof routePageConstructor) === false) {
