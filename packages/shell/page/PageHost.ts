@@ -1,4 +1,4 @@
-import { Component, component, css, html, event, property } from '../../library'
+import { Component, component, css, html, event, state } from '../../library'
 import { HttpErrorCode, PwaHelper } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper, Snackbar } from '..'
@@ -19,10 +19,10 @@ export class PageHost extends Component {
 	@event() readonly navigate!: EventDispatcher<PageComponent<any>>
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@property({ type: Object }) currentPage?: PageComponent<any>
+	@state() currentPage?: PageComponent<any>
 
-	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate) => {
-		if (this.currentPage && MoDeL.Router.arePagesEqual(this.currentPage, page)) {
+	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate, force = false) => {
+		if (this.currentPage && MoDeL.Router.arePagesEqual(this.currentPage, page) && force === false) {
 			return
 		}
 

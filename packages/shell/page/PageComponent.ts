@@ -41,14 +41,13 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		return this.handleNavigation(NavigationMode.NewWindow)
 	}
 
-	protected async handleNavigation(mode: NavigationMode) {
+	protected async handleNavigation(mode: NavigationMode, force = false) {
 		const host = await this.getHost()
-		host.navigateToPage(this, mode)
+		host.navigateToPage(this, mode, force)
 	}
 
 	protected refresh(parameters = this.parameters) {
-		this.remove()
-		new this.constructor(parameters).navigate()
+		return new this.constructor(parameters).handleNavigation(NavigationMode.Navigate, true)
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
