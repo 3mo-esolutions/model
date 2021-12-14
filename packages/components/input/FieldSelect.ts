@@ -241,7 +241,7 @@ export class FieldSelect<T> extends Field<Value> {
 		this.indexChange.dispatch(this.index)
 	}
 
-	private async selectByData(data?: Data<T>) {
+	protected async selectByData(data?: Data<T>) {
 		await this.updateComplete
 		this.value = (!(data instanceof Array)
 			? this.options.find(o => JSON.stringify(o.data) === JSON.stringify(data))?.value
@@ -251,7 +251,7 @@ export class FieldSelect<T> extends Field<Value> {
 				.map(o => o.value)) as Value
 	}
 
-	private async selectByIndex(index?: Index) {
+	protected async selectByIndex(index?: Index) {
 		await this.updateComplete
 		this.value = !(index instanceof Array)
 			// @ts-ignore if index is not an Array, it is a number
@@ -262,7 +262,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 	}
 
-	private async selectByValue(value?: Value) {
+	protected async selectByValue(value?: Value) {
 		await this.updateComplete
 
 		if (!value) {
