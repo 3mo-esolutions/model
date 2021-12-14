@@ -15,7 +15,14 @@ export class NavigationListItem extends ListItem {
 		}
 	}) pageHostGetter = () => MoDeL.application.pageHost
 
-	private readonly handlePageHostNavigation = () => this.checkIfSelected()
+	private readonly handlePageHostNavigation = () => {
+		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
+		const pageHost = this.pageHostGetter()
+		const isSelected = pageOrDialog instanceof PageComponent
+			? pageHost.currentPage ? MoDeL.Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
+			: pageOrDialog.constructor === this.componentConstructor?.[0]
+		this.selected = isSelected
+	}
 
 	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
 
@@ -33,29 +40,25 @@ export class NavigationListItem extends ListItem {
 		}
 	}
 
-	override connected() {
+	protected override initialized() {
 		this.selectionChange.subscribe(isSelected => {
-			if (this.componentConstructor && isSelected) {
-				const component = new this.componentConstructor[0](this.componentConstructor[1])
-				if (component instanceof PageComponent) {
-					component.navigate()
-				} else {
-					component.confirm()
+			if (!this.componentConstructor) {
+				return
+			}
+			const component = new this.componentConstructor[0](this.componentConstructor[1])
+			if (component instanceof DialogComponent) {
+				// Dialog shall be confirmed even is isSelected is reported as false
+				component.confirm()
+			} else {
+				if (isSelected === false) {
+					return
 				}
-				if (Drawer.type === 'modal') {
-					Drawer.open = false
-				}
+				component.navigate()
+			}
+			if (Drawer.type === 'modal') {
+				Drawer.open = false
 			}
 		})
-	}
-
-	private readonly checkIfSelected = () => {
-		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
-		const pageHost = this.pageHostGetter()
-		const isSelected = pageOrDialog instanceof PageComponent
-			? pageHost.currentPage ? MoDeL.Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
-			: pageOrDialog.constructor === this.componentConstructor?.[0]
-		this.selected = isSelected
 	}
 
 	protected override renderGraphic = () => html`
