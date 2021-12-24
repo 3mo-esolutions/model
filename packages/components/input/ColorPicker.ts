@@ -1,4 +1,4 @@
-import { component, html, event, ifDefined, nothing, property, css } from '../../library'
+import { component, html, event, ifDefined, nothing, property, css, PropertyValues } from '../../library'
 import { Input } from '.'
 import { Color } from '../../utilities'
 
@@ -12,8 +12,8 @@ export class ColorPicker extends Input<Color> {
 
 	@property({ type: Array }) presets?: Array<Color>
 
-	protected override firstUpdated() {
-		super.firstUpdated()
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
 		this.inputElement.addEventListener('input', e => {
 			e.stopImmediatePropagation()
 			this.input.dispatch(this.toValue(this.inputElement.value))

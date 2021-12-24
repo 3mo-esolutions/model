@@ -1,10 +1,10 @@
-import { component } from '../../../library'
+import { component, PropertyValues } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-password')
 export class FieldPassword extends FieldTextBase {
-	protected override firstUpdated() {
-		super.firstUpdated()
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
 		this.inputElement.type = 'password'
 	}
 }

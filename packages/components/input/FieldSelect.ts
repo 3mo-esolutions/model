@@ -1,4 +1,4 @@
-import { element, html, property, TemplateResult, state, renderContainer, css, render, event, component } from '../../library'
+import { element, html, property, TemplateResult, state, renderContainer, css, render, event, component, PropertyValues } from '../../library'
 import { Option, Menu } from '..'
 import { Field } from './Field'
 
@@ -133,8 +133,8 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	protected override firstUpdated() {
-		super.firstUpdated()
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
 		this.value = this.value
 		this.registerEventListeners()
 		this.inputElement.readOnly = true

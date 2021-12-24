@@ -1,4 +1,4 @@
-import { Component, property, query, event } from '../../library'
+import { Component, property, query, event, PropertyValues } from '../../library'
 
 /**
  * @fires change {CustomEvent<T | undefined>}
@@ -19,7 +19,8 @@ export abstract class Input<T> extends Component {
 	protected abstract fromValue(value: T | undefined): string
 	protected abstract toValue(value: string): T | undefined
 
-	protected override firstUpdated() {
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
 		this.inputElement.addEventListener('change', () => this.handleChange())
 	}
 

@@ -1,4 +1,4 @@
-import { css, html, property, ifDefined, query, event } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues } from '../../library'
 import { Input } from './Input'
 
 export type FieldInputMode =
@@ -31,8 +31,8 @@ export abstract class Field<T> extends Input<T> {
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
 
-	protected override firstUpdated() {
-		super.firstUpdated()
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
 		this.registerInputElementEvents()
 	}
 
@@ -105,7 +105,7 @@ export abstract class Field<T> extends Input<T> {
 
 			label {
 				position: absolute;
-				font-size: var(--mo-field-font-size, 0.78rem);
+				font-size: var(--mo-field-font-size);
 				left: 0;
 				top: calc(var(--mo-field-label-translate-value-on-focus) * -1);
 				transform: var(--mo-field-label-translate-on-focus);
@@ -141,7 +141,7 @@ export abstract class Field<T> extends Input<T> {
 			input {
 				border: 0px;
 				width: 100%;
-				font-size: var(--mo-field-font-size, 0.78rem);
+				font-size: var(--mo-field-font-size);
 				outline: none;
 				padding: 0.7rem 0 0 0;
 				height: calc(100% - 0.7rem);
