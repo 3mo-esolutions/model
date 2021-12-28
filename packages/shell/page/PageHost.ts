@@ -38,7 +38,7 @@ export class PageHost extends Component {
 
 		switch (mode) {
 			case NavigationMode.Navigate:
-				this.navigateTo(page)
+				await this.navigateTo(page)
 				break
 			case NavigationMode.NewTab:
 				window.open(url, '_blank')?.focus()
@@ -56,6 +56,7 @@ export class PageHost extends Component {
 	}
 
 	private async navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
+		MoDeL.application.closeDrawerIfDismissible()
 		this.currentPage = page
 		MoDeL.Router.setPathByPage(page)
 		this.navigate.dispatch(this.currentPage)

@@ -1,9 +1,11 @@
-import { css, html, property, Component, TemplateResult, nothing, query, } from '../../library'
+import { css, html, property, Component, TemplateResult, nothing, query, event } from '../../library'
 import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
 import { ApplicationProvider, PageHost, ThemeHelper } from '..'
+
+type View = 'desktop' | 'tablet'
 
 export abstract class Application extends Component {
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
@@ -11,15 +13,18 @@ export abstract class Application extends Component {
 
 	protected abstract get drawerTemplate(): TemplateResult
 
-	@property({ observer: (value) => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
+	@event() readonly viewChange!: EventDispatcher<View>
+
+	@property({ observer: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
 	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
-	@property({ reflect: true }) view: 'desktop' | 'tablet' = 'desktop'
+	@property({ reflect: true }) view: View = 'desktop'
 
 	@query('mo-page-host') readonly pageHost!: PageHost
+	@query('mo-drawer') readonly drawer!: Drawer
 
 	constructor() {
 		super()
@@ -31,8 +36,18 @@ export abstract class Application extends Component {
 		PwaHelper.registerServiceWorker()
 	}
 
+	closeDrawerIfDismissible() {
+		if (this.drawerOpen && this.drawer.type === 'modal') {
+			this.drawerOpen = false
+		}
+	}
+
 	private setupViews() {
-		const handler = (e: MediaQueryListEvent | MediaQueryList) => this.view = e.matches ? 'tablet' : 'desktop'
+		const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+			const view = e.matches ? 'tablet' : 'desktop'
+			this.view = view
+			this.viewChange.dispatch(view)
+		}
 		const mediaQueryList = window.matchMedia('(max-width: 768px)')
 		handler(mediaQueryList)
 		mediaQueryList.addEventListener('change', handler)
@@ -118,7 +133,6 @@ export abstract class Application extends Component {
 				</slot>
 
 				<mo-drawer
-					type=${this.drawerDocked && this.view === 'desktop' ? 'dismissible' : 'modal'}
 					?open=${this.drawerOpen}
 					@MDCDrawer:opened=${() => this.drawerOpen = true}
 					@MDCDrawer:closed=${() => this.drawerOpen = false}

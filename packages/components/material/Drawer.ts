@@ -24,10 +24,6 @@ type DrawerType =
 export class Drawer extends ComponentMixin(MwcDrawer) {
 	static readonly isDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
 
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-drawer') as Drawer }
-	static get type() { return this.instance.type }
-	static set open(value: boolean) { this.instance.open = value }
-
 	static override get styles() {
 		return css`
 			${super.styles}
@@ -75,12 +71,20 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		`
 	}
 
-	@property() override type: DrawerType = 'modal'
+	@property({ reflect: true }) override type: DrawerType = 'modal'
 
 	constructor() {
 		super()
 		this.hasHeader = !!Array.from(this.children).find(child => child.slot === 'title')
 		this.addEventListener('MDCTopAppBar:nav', () => this.open = !this.open)
+		this.setupType()
+	}
+
+	private setupType() {
+		const changeHandler = () => this.type = Drawer.isDocked.value && MoDeL.application.view === 'desktop' ? 'dismissible' : 'modal'
+		Drawer.isDocked.changed.subscribe(() => changeHandler())
+		MoDeL.application.viewChange.subscribe(() => changeHandler())
+		changeHandler()
 	}
 }
 

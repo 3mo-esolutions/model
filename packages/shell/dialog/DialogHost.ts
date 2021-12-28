@@ -34,9 +34,12 @@ export class DialogHost extends Component {
 	}
 
 	confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
+		MoDeL.application.closeDrawerIfDismissible()
+
 		if (AuthorizationHelper.isAuthorized(...dialog.constructor.authorizations) === false) {
-			Snackbar.show('🔒 Access denied')
-			return Promise.reject('🔒 Access denied')
+			const errorMessage = '🔒 Access denied'
+			Snackbar.show(errorMessage)
+			return Promise.reject(new Error(errorMessage))
 		}
 
 		this.shadowRoot.append(dialog)
@@ -48,7 +51,7 @@ export class DialogHost extends Component {
 					resolve(result)
 				}
 				dialog.remove()
-				if (Array.from(this.shadowRoot.children).filter(child => child.tagName.toLowerCase() !== 'style').length === 0) {
+				if (this.dialogComponents.length === 0) {
 					document.body.style.overflow = 'auto'
 				}
 			})

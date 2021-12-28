@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, property, html, ifDefined } from '../../library'
 import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, RouteMatchMode, PageHost } from '..'
-import { Drawer, ListItem } from '../../components'
+import { ListItem } from '../../components'
 
 @component('mo-navigation-list-item')
 export class NavigationListItem extends ListItem {
@@ -54,9 +54,6 @@ export class NavigationListItem extends ListItem {
 					return
 				}
 				component.navigate()
-			}
-			if (Drawer.type === 'modal') {
-				Drawer.open = false
 			}
 		})
 	}
