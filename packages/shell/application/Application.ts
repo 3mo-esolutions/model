@@ -3,11 +3,20 @@ import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProvider, PageHost, ThemeHelper } from '..'
+import { ApplicationProvider, PageHost, ThemeHelper, DialogHost } from '..'
 
 type View = 'desktop' | 'tablet'
 
 export abstract class Application extends Component {
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	private static initializeResolver?: () => void
+	static get initialize() {
+		// eslint-disable-next-line
+		return !!MoDeL.application
+			? Promise.resolve()
+			: new Promise<void>(resolve => Application.initializeResolver = resolve)
+	}
+
 	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
 	static readonly providers = new Set<ApplicationProvider>()
 
@@ -18,18 +27,17 @@ export abstract class Application extends Component {
 	@property({ observer: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
-	@property({ type: Boolean }) drawerDocked = Drawer.isDocked.value
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: View = 'desktop'
 
 	@query('mo-page-host') readonly pageHost!: PageHost
+	@query('mo-dialog-host') readonly dialogHost!: DialogHost
 	@query('mo-drawer') readonly drawer!: Drawer
 
 	constructor() {
 		super()
-		this.id = 'application'
-		window.dispatchEvent(new Event('MoDeL.instantiate'))
+		this.switchAttribute('application', true)
 		this.setupViews()
 		DocumentHelper.injectCSS(styles)
 		DocumentHelper.disableDefaultContextMenu()
@@ -53,27 +61,35 @@ export abstract class Application extends Component {
 		mediaQueryList.addEventListener('change', handler)
 	}
 
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	private _authenticator?: DialogAuthenticator
 	get authenticator() {
-		return Application.AuthenticatorConstructor ? new Application.AuthenticatorConstructor() : undefined
+		if (!this._authenticator && Application.AuthenticatorConstructor) {
+			this._authenticator = new Application.AuthenticatorConstructor()
+		}
+		return this._authenticator
+	}
+
+	override async connectedCallback() {
+		await Promise.all(Array.from(Application.providers).filter(p => p.afterAuthentication === false).map(p => p.provide()))
+		window.document.title = Manifest.short_name || ''
+		super.connectedCallback()
 	}
 
 	protected override async initialized() {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
-		Drawer.isDocked.changed.subscribe(isDocked => this.drawerDocked = isDocked)
 
 		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
 		await this.authenticate()
 
-		const providers = Array.from(Application.providers.keys())
-		await Promise.all(providers.filter(p => p.afterAuthentication === true).map(p => p.provide()))
+		await Promise.all(Array.from(Application.providers).filter(p => p.afterAuthentication === true).map(p => p.provide()))
 
-		window.dispatchEvent(new Event('MoDeL.initialize'))
+		Application.initializeResolver?.()
 	}
 
 	async authenticate() {
 		await this.authenticator?.confirm()
 	}
-
 
 	async unauthenticate() {
 		await this.authenticator?.unauthenticate()

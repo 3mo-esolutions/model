@@ -48,7 +48,7 @@ export const styles = css`
 		background: var(--mo-scrollbar-foreground-color);
 	}
 
-	#application {
+	[application] {
 		--mo-font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		--mo-border-radius: 4px;
 		--mo-top-app-bar-height: 48px;
@@ -147,7 +147,7 @@ export const styles = css`
 		--mdc-checkbox-disabled-color: var(--mo-color-gray-transparent) !important;
 	}
 
-	#application[theme=light] {
+	[application][theme=light] {
 		--mo-color-background-base: 255, 255, 255;
 		--mo-color-foreground-base: 0, 0, 0;
 		--mo-color-background: rgb(220, 221, 225) !important;
@@ -164,7 +164,7 @@ export const styles = css`
 		--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
 	}
 
-	#application[theme=dark] {
+	[application][theme=dark] {
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;
 		--mo-color-background: rgb(16, 17, 20) !important;

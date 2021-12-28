@@ -5,16 +5,16 @@ import { Background } from '.'
 export class ThemeHelper {
 	static readonly background = new class extends LocalStorageEntry<Background> {
 		constructor() {
-			super('MoDeL.Theme.Theme', Background.System)
+			super('MoDeL.Theme.Background', Background.System)
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.calculatedValue)
 		}
 
 		get calculatedValue() {
-			return this.value === Background.System
-				? window.matchMedia('(prefers-color-scheme: dark)').matches
+			return this.value !== Background.System
+				? this.value
+				: window.matchMedia('(prefers-color-scheme: dark)').matches
 					? Background.Dark
 					: Background.Light
-				: this.value
 		}
 	}
 
@@ -34,7 +34,7 @@ export class ThemeHelper {
 		override set value(value) {
 			super.value = value
 			this.styleElement = DocumentHelper.injectCSS(css`
-				#application {
+				[application] {
 					--mo-accent-base-r:${unsafeCSS(value.baseColor[0])};
 					--mo-accent-base-g:${unsafeCSS(value.baseColor[1])};
 					--mo-accent-base-b:${unsafeCSS(value.baseColor[2])};

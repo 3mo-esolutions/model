@@ -5,6 +5,10 @@ import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
 
+export type DialogActionKey = '' | 'primary' | 'secondary' | 'cancellation'
+
+type DialogAction<TResult = void> = TResult | PromiseLike<TResult>
+
 /**
  * @attr heading
  * @attr hideActions
@@ -27,22 +31,27 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@property({ type: Boolean }) manualClose = false
 	@property() primaryButtonText = 'OK'
 	@property() secondaryButtonText?: string
+	@property() override initialFocusAttribute = 'data-focus'
+	@property() override scrimClickAction: DialogActionKey = ''
+	@property() override escapeKeyAction: DialogActionKey = 'cancellation'
 
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
 	@query('footer') private readonly footerElement!: HTMLElement
 
-	primaryAction!: () => TResult | PromiseLike<TResult>
-	secondaryAction?: () => TResult | PromiseLike<TResult>
-	cancellationAction?: () => TResult | PromiseLike<TResult>
+	primaryAction!: () => DialogAction<TResult>
+	secondaryAction?: () => DialogAction<TResult>
+	cancellationAction?: () => DialogAction<TResult>
 
-	override initialFocusAttribute = 'data-focus'
-
-	protected get primaryElement() {
-		return this.querySelector('[slot="primaryAction"]')
+	get isActiveDialog(): boolean {
+		return MoDeL.application.dialogHost.focusedDialogComponent?.['dialog'] === this
 	}
 
-	protected get secondaryElement() {
-		return this.querySelector('[slot="secondaryAction"]')
+	override get primaryButton() {
+		return this.querySelector<HTMLElement>('[slot=primaryAction]') ?? this.shadowRoot.querySelector<HTMLElement>('slot[name=primaryAction] > *')
+	}
+
+	get secondaryButton() {
+		return this.querySelector<HTMLElement>('[slot=secondaryAction]') ?? this.shadowRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > *')
 	}
 
 	static override get styles() {
@@ -132,8 +141,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		`
 	}
 
-	// TODO:
-	//
+	// TODO: Dynamic heading slot
 	// MWC styles the heading using CSS '+' operator which forces us
 	// not to wrap their heading with an slot element, as the heading
 	// won't be a sibling of the content
@@ -147,13 +155,34 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	// 	`
 	// }
 
+	override connectedCallback() {
+		super.connectedCallback()
+		document.addEventListener('keydown', this.handleKeyDown)
+	}
+
+	override disconnectedCallback() {
+		super.disconnectedCallback()
+		document.removeEventListener('keydown', this.handleKeyDown)
+	}
+
+	private readonly handleKeyDown = async (e: KeyboardEvent) => {
+		if (this.isActiveDialog) {
+			if (this.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
+				(document.deepActiveElement as HTMLElement).blur()
+				await this.handleAction('primary')
+			}
+		}
+	}
+
 	protected override initialized() {
 		this.createHeaderSlot()
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
-		this.primaryElement?.addEventListener('click', this.handlePrimaryButtonClick)
-		this.secondaryElement?.addEventListener('click', this.handleSecondaryButtonClick)
+		this.primaryButton?.addEventListener('click', () => this.handleAction('primary'))
+		this.primarySlot.addEventListener('slotchange', () => this.primaryButton?.addEventListener('click', () => this.handleAction('primary')))
+		this.secondaryButton?.addEventListener('click', () => this.handleAction('secondary'))
+		this.secondarySlot.addEventListener('slotchange', () => this.secondaryButton?.addEventListener('click', () => this.handleAction('secondary')))
 		this.changeCloseBehavior()
 	}
 
@@ -189,97 +218,71 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	}
 
 	private changeCloseBehavior() {
-		// MoDeL has additional abilities such as cascading dialogs.
-		// Therefore, we need to take control of closing dialogs and disable Material default behaviors
-		// Also, some keydown related actions are handled centrally in `DialogHost.ts`
-		this.addEventListener('closed', (e: CustomEvent<undefined | { action: 'close' | undefined }>) => {
-			if (e.detail?.action !== 'close') {
-				e.stopImmediatePropagation()
-				return
+		const closeBase = this.mdcFoundation.close
+		this.mdcFoundation.close = (action?: DialogActionKey) => {
+			if (this.isActiveDialog) {
+				closeBase.call(this.mdcFoundation, action)
+				this.handleAction(action)
 			}
-		})
-
-		const scrimElement = this.shadowRoot.querySelector<HTMLElement>('.mdc-dialog__scrim')
-		scrimElement?.addEventListener('click', async (e: MouseEvent) => {
-			e.stopImmediatePropagation()
-
-			if (this.blocking) {
-				return
-			}
-
-			await this.close()
-		})
-
-		// Closing all Dialogs after pressing Escape key is disabled
-		this.mdcFoundation.handleDocumentKeydown = () => void 0
-
-		// Disable MDC clicking on the primary button on Enter to prevent double clicks as DialogHost is now responsible for this
-		this.mdcFoundation['adapter'].clickDefaultButton = () => void 0
+		}
 	}
 
 	@renderContainer('#divCloseButton')
 	protected get closeIconButton() {
-		return html`
-			<mo-icon-button ?hidden=${this.blocking} icon='close' @click=${() => this.cancel()}></mo-icon-button>
+		return this.blocking ? nothing : html`
+			<mo-icon-button icon='close' @click=${() => this.handleAction('cancellation')}></mo-icon-button>
 		`
 	}
 
 	@renderContainer('slot[name="primaryAction"]')
 	protected get primaryButtonTemplate() {
 		return !this.primaryButtonText ? nothing : html`
-			<mo-button raised @click=${this.handlePrimaryButtonClick}>
+			<mo-button raised @click=${() => this.handleAction('primary')}>
 				${this.primaryButtonText}
 			</mo-button>
 		`
 	}
 
-	override get primaryButton() {
-		return this.shadowRoot.querySelector<HTMLElement>('slot[name=primaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=primaryAction]')
-	}
-
 	@renderContainer('slot[name="secondaryAction"]')
 	protected get secondaryButtonTemplate() {
 		return !this.secondaryButtonText ? nothing : html`
-			<mo-button @click=${this.handleSecondaryButtonClick}>
+			<mo-button @click=${() => this.handleAction('secondary')}>
 				${this.secondaryButtonText}
 			</mo-button>
 		`
 	}
 
-	get secondaryButton() {
-		return this.shadowRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > mo-button') ?? this.querySelector<HTMLElement>('mo-button[slot=secondaryAction]')
-	}
-
-	private readonly cancel = () => this.close(new Error('Dialog cancelled'))
-
-	private readonly handlePrimaryButtonClick = () => this.handleAction(this.primaryAction)
-
-	private readonly handleSecondaryButtonClick = () => this.secondaryAction ? this.handleAction(this.secondaryAction) : this.cancel()
-
-	private readonly handleAction = async (resultAction: () => TResult | PromiseLike<TResult>) => {
-		if (this.manualClose === true) {
-			return
-		}
-
-		// Actions do NOT close the dialog in the case of an error.
-		try {
-			const result = await resultAction()
-			this.close(result)
-		} catch (e: any) {
-			Snackbar.show(e.message)
-			throw e
-		}
-	}
-
-	override async close(result?: TResult | Error) {
-		if (result instanceof Error) {
-			if (this.cancellationAction) {
-				result = await this.cancellationAction()
+	private handleAction(action?: DialogActionKey) {
+		const handle = async (action: () => DialogAction<TResult>) => {
+			try {
+				const result = await action()
+				if (this.manualClose === false) {
+					this.close(result)
+				}
+			} catch (e: any) {
+				Snackbar.show(e.message)
+				throw e
 			}
 		}
 
+		const cancellationAction = async () => this.close(this.cancellationAction ? await this.cancellationAction() : new Error('Dialog cancelled'))
+
+		switch (action) {
+			case 'primary':
+				return handle(this.primaryAction)
+			case 'secondary':
+				return this.secondaryAction ? handle(this.secondaryAction) : cancellationAction()
+			case 'cancellation':
+				return cancellationAction()
+			default:
+				return Promise.resolve()
+		}
+	}
+
+	// @ts-expect-error The base close method is a utility method and won't be called
+	override close(result: TResult | Error) {
 		super.close()
-		this.closed.dispatch(result!)
+		this.closed.dispatch(result)
 	}
 }
 

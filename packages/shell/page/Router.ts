@@ -3,6 +3,7 @@ import { HttpErrorCode } from '../../utilities'
 import { PageError } from './PageError'
 import { PageComponentConstructor, PageParameters, PageComponent } from './PageComponent'
 import RouteParser from 'route-parser'
+import { Application } from '../application'
 
 type Page = PageComponent<any>
 type PageConstructor = PageComponentConstructor<any>
@@ -16,7 +17,7 @@ class Router {
 	private static readonly notFoundPage = new PageError({ error: HttpErrorCode.NotFound })
 
 	constructor() {
-		window.addEventListener('MoDeL.initialize', () => {
+		Application.initialize.then(() => {
 			const isHomePage = ['/', ''].includes(window.location.pathname)
 			if (isHomePage && this._homePageConstructor) {
 				this.navigateToPage(new this._homePageConstructor())

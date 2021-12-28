@@ -27,6 +27,6 @@ globalThis.MoDeL = new class {
 
 	get application() {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return window.document.body.querySelector('#application')!
+		return window.document.body.querySelector('[application]')!
 	}
 }

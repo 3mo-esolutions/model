@@ -1,5 +1,5 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, DialogHost, ComponentConstructor } from '../..'
+import { Dialog, ComponentConstructor } from '../..'
 
 export type DialogParameters = void | Record<string, any>
 
@@ -19,7 +19,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	confirm(): Promise<TResult> {
-		return DialogHost.instance.confirm(this)
+		return MoDeL.application.dialogHost.confirm(this)
 	}
 
 	protected get dialog() {

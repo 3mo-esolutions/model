@@ -7,30 +7,11 @@ export class DialogHost extends Component {
 
 	get dialogComponents() {
 		return Array.from(this.shadowRoot.querySelectorAll('*'))
-			.filter(element => element instanceof DialogComponent) as Array<DialogComponent>
+			.filter((element): element is DialogComponent<any, any> => element instanceof DialogComponent)
 	}
 
-	protected override initialized() {
-		this.registerKeyListeners()
-	}
-
-	private registerKeyListeners() {
-		// All default behaviors of the MWC Dialogs related to keydown event has been disabled.
-		// So the host is now responsible to make sure those functions still work
-		document.addEventListener('keydown', async (e) => {
-			const lastDialog = this.dialogComponents[this.dialogComponents.length - 1]?.['dialog']
-			if (lastDialog !== undefined) {
-				if (lastDialog.blocking === false && e.key === KeyboardKey.Escape) {
-					lastDialog.close()
-					e.stopImmediatePropagation()
-				}
-
-				if (lastDialog.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
-					(document.deepActiveElement as HTMLElement).blur()
-					await lastDialog['handlePrimaryButtonClick']()
-				}
-			}
-		})
+	get focusedDialogComponent() {
+		return this.dialogComponents.length === 0 ? undefined : this.dialogComponents[this.dialogComponents.length - 1]
 	}
 
 	confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
@@ -52,7 +33,7 @@ export class DialogHost extends Component {
 				}
 				dialog.remove()
 				if (this.dialogComponents.length === 0) {
-					document.body.style.overflow = 'auto'
+					document.body.style.removeProperty('overflow')
 				}
 			})
 		})
