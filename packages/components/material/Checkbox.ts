@@ -11,16 +11,16 @@ import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 @component('mo-checkbox')
 export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))) {
 	static override get styles() {
-		return css`
-			${super.styles}
-
-			${MwcCheckbox.styles}
-
-			:host {
-				--mdc-checkbox-touch-target-size: 36px;
-				--mdc-checkbox-ripple-size: 36px;
-			}
-		`
+		return [
+			...super.styles,
+			...MwcCheckbox.styles,
+			css`
+				:host {
+					--mdc-checkbox-touch-target-size: 36px;
+					--mdc-checkbox-ripple-size: 36px;
+				}
+			`
+		]
 	}
 
 	@property()

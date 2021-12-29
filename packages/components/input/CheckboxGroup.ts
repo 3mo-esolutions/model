@@ -36,7 +36,7 @@ export class CheckboxGroup extends Checkbox {
 		})
 	}
 
-	protected render() {
+	protected override render() {
 		return html`
 			<style>
 				:host {

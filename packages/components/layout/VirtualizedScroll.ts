@@ -1,9 +1,9 @@
-import { component } from '../../library'
-import { LitVirtualizer } from 'lit-virtualizer'
-import { Scroll } from '..'
+import { component, ComponentMixin } from '../../library'
+import { LitVirtualizer } from '@lit-labs/virtualizer'
+import { Scroll } from './Scroll'
 
 @component('mo-virtualized-scroll')
-export class VirtualizedScroll<T> extends LitVirtualizer<T> {
+export class VirtualizedScroll extends ComponentMixin(LitVirtualizer) {
 	static override get styles() {
 		return Scroll.styles
 	}
@@ -11,6 +11,6 @@ export class VirtualizedScroll<T> extends LitVirtualizer<T> {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-virtualized-scroll': VirtualizedScroll<unknown>
+		'mo-virtualized-scroll': VirtualizedScroll
 	}
 }

@@ -22,7 +22,7 @@ export class NavigationListItem extends ListItem {
 		const pageHost = this.pageHostGetter()
 		const isSelected = pageOrDialog instanceof PageComponent
 			? pageHost.currentPage ? MoDeL.Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
-			: pageOrDialog.constructor === this.componentConstructor?.[0]
+			: pageOrDialog.constructor as unknown as Constructor<NavigatableComponent> === this.componentConstructor?.[0]
 		this.selected = isSelected
 	}
 

@@ -18,24 +18,25 @@ import { MaterialIcon } from '..'
 @component('mo-button')
 export class Button extends ComponentMixin(MwcButton) {
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				:host {
+					height: 36px;
+					line-height: normal;
+				}
 
-			:host {
-				height: 36px;
-				line-height: normal;
-			}
-
-			button {
-				margin: auto;
-				height: 100% !important;
-			}
-		`
+				button {
+					margin: auto;
+					height: 100% !important;
+				}
+			`
+		]
 	}
 
 	@property() override icon!: MaterialIcon
 
-	protected firstUpdated(props: PropertyValues) {
+	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.buttonElement.setAttribute('part', 'button')
 	}

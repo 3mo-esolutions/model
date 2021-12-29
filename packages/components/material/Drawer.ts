@@ -25,50 +25,51 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 	static readonly isDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
 
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				.mdc-drawer .mdc-drawer__title {
+					color: var(--mo-color-foreground);
+				}
 
-			.mdc-drawer .mdc-drawer__title {
-				color: var(--mo-color-foreground);
-			}
+				.mdc-drawer .mdc-drawer__subtitle {
+					color: var(--mo-color-foreground);
+				}
 
-			.mdc-drawer .mdc-drawer__subtitle {
-				color: var(--mo-color-foreground);
-			}
+				:host {
+					position: relative;
+				}
 
-			:host {
-				position: relative;
-			}
+				:host([type=dismissible]) aside {
+					background: var(--mo-color-background);
+					z-index: 0;
+				}
 
-			:host([type=dismissible]) aside {
-				background: var(--mo-color-background);
-				z-index: 0;
-			}
+				:host([type=modal]) aside {
+					top: 0;
+					z-index: 9;
+				}
 
-			:host([type=modal]) aside {
-				top: 0;
-				z-index: 9;
-			}
+				:host([type=dismissible]) .mdc-drawer__header {
+					display: none;
+				}
 
-			:host([type=dismissible]) .mdc-drawer__header {
-				display: none;
-			}
+				.mdc-drawer__content {
+					margin-top: var(--mo-thickness-m);
+					scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+					scrollbar-width: thin;
+				}
 
-			.mdc-drawer__content {
-				margin-top: var(--mo-thickness-m);
-				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
-				scrollbar-width: thin;
-			}
+				.mdc-drawer__content::-webkit-scrollbar {
+					width: 5px;
+					height: 5px;
+				}
 
-			.mdc-drawer__content::-webkit-scrollbar {
-				width: 5px;
-				height: 5px;
-			}
-
-			.mdc-drawer__content::-webkit-scrollbar-thumb {
-				background: var(--mo-scrollbar-foreground-color);
-			}
-		`
+				.mdc-drawer__content::-webkit-scrollbar-thumb {
+					background: var(--mo-scrollbar-foreground-color);
+				}
+			`
+		]
 	}
 
 	@property({ reflect: true }) override type: DrawerType = 'modal'

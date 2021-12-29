@@ -1,4 +1,6 @@
-import { property as propertyDecorator, internalProperty as internalPropertyDecorator, PropertyDeclaration, InternalPropertyDeclaration, LitElement, PropertyValues } from 'lit-element'
+import { PropertyDeclaration, LitElement, PropertyValues } from 'lit'
+// eslint-disable-next-line import/no-internal-modules
+import { InternalPropertyDeclaration, property as propertyDecorator, state as stateDecorator } from 'lit/decorators.js'
 import { ComponentConstructor } from '..'
 
 type LitElementWithObservers = LitElement & {
@@ -46,6 +48,6 @@ export const state = <T>(options?: InternalPropertyDeclaration & { observer?: Ob
 		if (options?.observer) {
 			observer(options.observer)(prototype, propertyKey)
 		}
-		return internalPropertyDecorator(options)(prototype, propertyKey)
+		return stateDecorator(options)(prototype, propertyKey)
 	}
 }

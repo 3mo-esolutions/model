@@ -25,18 +25,19 @@ export class IconButton extends ComponentMixin(MwcIconButton) {
 	}
 
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				:host {
+					--mdc-icon-size: var(--mo-font-size-icon, 20px);
+					--mdc-icon-button-size: calc(var(--mdc-icon-size) * 2);
+				}
 
-			:host {
-				--mdc-icon-size: var(--mo-font-size-icon, 20px);
-				--mdc-icon-button-size: calc(var(--mdc-icon-size) * 2);
-			}
-
-			:host([small]) {
-				--mdc-icon-button-size: calc(var(--mdc-icon-size) * 1.5);
-			}
-		`
+				:host([small]) {
+					--mdc-icon-button-size: calc(var(--mdc-icon-size) * 1.5);
+				}
+			`
+		]
 	}
 }
 

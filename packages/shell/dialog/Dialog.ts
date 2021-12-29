@@ -55,90 +55,91 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	}
 
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				:host([size=small]) {
+					--mdc-dialog-min-width: 320px;
+					--mdc-dialog-max-width: 480px;
+					--mdc-dialog-min-height: auto;
+				}
 
-			:host([size=small]) {
-				--mdc-dialog-min-width: 320px;
-				--mdc-dialog-max-width: 480px;
-				--mdc-dialog-min-height: auto;
-			}
+				:host([size=medium]) {
+					--mdc-dialog-max-width: 1024px;
+					--mdc-dialog-min-width: calc(100% - 32px);
+					--mdc-dialog-min-height: 768px;
+				}
 
-			:host([size=medium]) {
-				--mdc-dialog-max-width: 1024px;
-				--mdc-dialog-min-width: calc(100% - 32px);
-				--mdc-dialog-min-height: 768px;
-			}
+				:host([size=large]) {
+					--mdc-dialog-max-width: 1680px;
+					--mdc-dialog-min-width: calc(100% - 32px);
+					--mdc-dialog-min-height: calc(100% - 32px);
+				}
 
-			:host([size=large]) {
-				--mdc-dialog-max-width: 1680px;
-				--mdc-dialog-min-width: calc(100% - 32px);
-				--mdc-dialog-min-height: calc(100% - 32px);
-			}
+				.mdc-dialog__container {
+					width: var(--mdc-dialog-max-width);
+				}
 
-			.mdc-dialog__container {
-				width: var(--mdc-dialog-max-width);
-			}
+				.mdc-dialog__surface {
+					height: var(--mdc-dialog-min-height);
+				}
 
-			.mdc-dialog__surface {
-				height: var(--mdc-dialog-min-height);
-			}
+				.mdc-dialog__actions {
+					padding: 16px;
+				}
 
-			.mdc-dialog__actions {
-				padding: 16px;
-			}
+				#actions {
+					gap: var(--mo-thickness-xl);
+				}
 
-			#actions {
-				gap: var(--mo-thickness-xl);
-			}
+				#title {
+					padding-right: 48px;
+				}
 
-			#title {
-				padding-right: 48px;
-			}
+				:host([size=large]) #title {
+					padding-bottom: 15px;
+					border-bottom: 1px solid;
+				}
 
-			:host([size=large]) #title {
-				padding-bottom: 15px;
-				border-bottom: 1px solid;
-			}
+				:host([size=large]) #content {
+					padding-top: 8px;
+					padding-bottom: 8px;
+				}
 
-			:host([size=large]) #content {
-				padding-top: 8px;
-				padding-bottom: 8px;
-			}
+				#content {
+					scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+					scrollbar-width: thin;
+				}
 
-			#content {
-				scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
-				scrollbar-width: thin;
-			}
+				#content::-webkit-scrollbar {
+					width: 5px;
+					height: 5px;
+				}
 
-			#content::-webkit-scrollbar {
-				width: 5px;
-				height: 5px;
-			}
+				#content::-webkit-scrollbar-thumb {
+					background: var(--mo-scrollbar-foreground-color);
+				}
 
-			#content::-webkit-scrollbar-thumb {
-				background: var(--mo-scrollbar-foreground-color);
-			}
+				:host([size=large]) #actions, :host([size=large]) #title {
+					border-color: var(--mdc-dialog-scroll-divider-color);
+				}
 
-			:host([size=large]) #actions, :host([size=large]) #title {
-				border-color: var(--mdc-dialog-scroll-divider-color);
-			}
+				#flexHeader {
+					flex-direction: row;
+					position: absolute;
+					right: 8px;
+					top: 13px;
+				}
 
-			#flexHeader {
-				flex-direction: row;
-				position: absolute;
-				right: 8px;
-				top: 13px;
-			}
+				slot[name=footer] {
+					flex: 1;
+				}
 
-			slot[name=footer] {
-				flex: 1;
-			}
-
-			:host([hideFooter]) footer {
-				display: none;
-			}
-		`
+				:host([hideFooter]) footer {
+					display: none;
+				}
+			`
+		]
 	}
 
 	// TODO: Dynamic heading slot

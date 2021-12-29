@@ -10,18 +10,19 @@ import { Radio as MwcRadio } from '@material/mwc-radio'
 @component('mo-radio')
 export class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 	static override get styles() {
-		return css`
-			${super.styles}
+		return [
+			...super.styles,
+			css`
+				.mdc-radio {
+					padding: 8px;
+				}
 
-			.mdc-radio {
-				padding: 8px;
-			}
-
-			.mdc-radio .mdc-radio__native-control {
-				height: 36px;
-				width: 36px;
-			}
-		`
+				.mdc-radio .mdc-radio__native-control {
+					height: 36px;
+					width: 36px;
+				}
+			`
+		]
 	}
 
 	@property({ type: Boolean })

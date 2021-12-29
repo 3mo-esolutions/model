@@ -67,7 +67,7 @@ export class ContextMenuItem extends ListItem {
 		]
 	}
 
-	protected initialized() {
+	protected override initialized() {
 		this.initializeDetailsMenuIfExists()
 		this.syncOpenAndMouseOver()
 		this.overrideClickBehavior()
@@ -108,7 +108,7 @@ export class ContextMenuItem extends ListItem {
 		})
 	}
 
-	render() {
+	override render() {
 		return html`
 			${super.render()}
 			<mo-flex position='absolute'>
