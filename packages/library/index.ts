@@ -1,6 +1,7 @@
 /* eslint-disable import/no-internal-modules */
 export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues } from 'lit'
 export { customElement as component, queryAsync } from 'lit/decorators.js'
+export { Directive, directive } from 'lit/directive.js'
 export { render } from 'lit-html'
 export { repeat } from 'lit-html/directives/repeat.js'
 export { cache } from 'lit-html/directives/cache.js'
