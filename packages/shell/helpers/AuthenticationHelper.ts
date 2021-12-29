@@ -46,7 +46,7 @@ export class AuthenticationHelper {
 		this.noAuthenticationComponents.add(component)
 	}
 
-	static async authenticateGlobally() {
+	static async authenticateGloballyIfAvailable() {
 		if (this.globalAuthentication) {
 			await this.authenticate()
 			await ApplicationProviderHelper.provideAfterGlobalAuthenticationProviders()

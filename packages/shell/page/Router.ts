@@ -3,7 +3,6 @@ import { HttpErrorCode } from '../../utilities'
 import { PageComponentConstructor, PageParameters, PageComponent } from './PageComponent'
 import { PageHost } from '.'
 import { PageError } from './PageError'
-import { Application } from '../application'
 import RouteParser from 'route-parser'
 
 type Page = PageComponent<any>
@@ -40,8 +39,6 @@ export const routeHost = (routePageConstructor: PageComponentConstructor<any>, p
 export const homePage = () => <T extends PageParameters>(pageConstructor: PageComponentConstructor<T>) => {
 	Router.homePageConstructor = pageConstructor
 }
-
-Application.initialize.then(() => Router.initialize())
 
 export class Router {
 	private static readonly notFoundPage = new PageError({ error: HttpErrorCode.NotFound })

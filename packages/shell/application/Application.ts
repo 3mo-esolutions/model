@@ -2,7 +2,7 @@ import { css, html, property, Component, TemplateResult, nothing, query, event }
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper } from '..'
+import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, Router } from '..'
 
 type View = 'desktop' | 'tablet'
 
@@ -11,15 +11,6 @@ export const application = <T extends Application>(ApplicationConstructor: Const
 }
 
 export abstract class Application extends Component {
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	private static initializeResolver?: () => void
-	static get initialize() {
-		// eslint-disable-next-line
-		return !!MoDeL.application
-			? Promise.resolve()
-			: new Promise<void>(resolve => Application.initializeResolver = resolve)
-	}
-
 	protected abstract get drawerTemplate(): TemplateResult
 
 	@event() readonly viewChange!: EventDispatcher<View>
@@ -67,8 +58,8 @@ export abstract class Application extends Component {
 
 	protected override async initialized() {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
-		await AuthenticationHelper.authenticateGlobally()
-		Application.initializeResolver?.()
+		await AuthenticationHelper.authenticateGloballyIfAvailable()
+		Router.initialize()
 	}
 
 	static override get styles() {

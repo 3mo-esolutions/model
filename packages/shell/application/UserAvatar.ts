@@ -78,7 +78,7 @@ export class UserAvatar extends Component {
 
 	private get avatarContent() {
 		return this.user ? this.initials : html`
-			<mo-icon-button icon='account_circle' @click=${() => AuthenticationHelper.authenticateGlobally()}></mo-icon-button>
+			<mo-icon-button icon='account_circle' @click=${() => AuthenticationHelper.authenticateGloballyIfAvailable()}></mo-icon-button>
 		`
 	}
 }
