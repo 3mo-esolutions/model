@@ -6,7 +6,7 @@ import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, Authentic
 
 type View = 'desktop' | 'tablet'
 
-export const application = <T extends Application>(ApplicationConstructor: Constructor<T>) => {
+export const application = () => <T extends Application>(ApplicationConstructor: Constructor<T>) => {
 	window.document.body.appendChild(new ApplicationConstructor)
 }
 

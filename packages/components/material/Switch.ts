@@ -3,7 +3,7 @@ import { LabelMixin, InputMixin } from '..'
 import { Switch as MwcSwitch } from '@material/mwc-switch'
 
 /**
- * @attr checked
+ * @attr selected
  * @attr disabled
  * @fires change {CustomEvent}
  */

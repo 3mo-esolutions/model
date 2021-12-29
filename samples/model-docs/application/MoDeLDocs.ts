@@ -1,7 +1,7 @@
 import { Application, application, component, html, Drawer, Logo } from '@3mo/model'
 import { PageReader } from './pages'
 
-@application
+@application()
 @component('docs-application')
 export class MoDeLDocs extends Application {
 	constructor() {
