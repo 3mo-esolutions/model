@@ -1,4 +1,5 @@
 import './MoDeL'
+export * from './AuthenticationHelper'
 export * from './AuthorizationHelper'
 export * from './Background'
 export * from './Manifest'

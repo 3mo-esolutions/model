@@ -4,13 +4,10 @@ import { NavigationMode, PageHost } from './PageHost'
 export type PageParameters = void | Record<string, string | number | undefined>
 
 export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
-	authorizations: Array<keyof MoDeL.Authorizations>
 	getHost(): Promise<PageHost>
 }
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
-	static authorizations = new Array<keyof MoDeL.Authorizations>()
-
 	static getHost() {
 		return Promise.resolve(MoDeL.application.pageHost)
 	}

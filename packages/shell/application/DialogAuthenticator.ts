@@ -45,7 +45,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
 			DialogAuthenticator.authenticatedUser.value = undefined
-			MoDeL.application.authenticator?.confirm(true)
+			this.confirm(true)
 		}
 	}
 
@@ -59,8 +59,8 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	override async confirm(preventAuthentication = false) {
-		if (preventAuthentication) {
+	override async confirm(preventAutomaticAuthentication = false) {
+		if (preventAutomaticAuthentication) {
 			return super.confirm()
 		}
 

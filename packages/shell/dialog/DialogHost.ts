@@ -17,7 +17,7 @@ export class DialogHost extends Component {
 	confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 
-		if (AuthorizationHelper.isAuthorized(...dialog.constructor.authorizations) === false) {
+		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
 			const errorMessage = '🔒 Access denied'
 			Snackbar.show(errorMessage)
 			return Promise.reject(new Error(errorMessage))

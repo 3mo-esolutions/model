@@ -1,7 +1,7 @@
 import { component, homePage, html, internalProperty, PageComponent, route } from '@3mo/model'
 import { GitHubHelper } from '../helpers'
 
-@homePage
+@homePage()
 @route('*path')
 @component('doc-page-reader')
 export class PageReader extends PageComponent<{ path?: string }> {

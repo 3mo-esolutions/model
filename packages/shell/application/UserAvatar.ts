@@ -1,9 +1,10 @@
 import { state, html, component, Component, property, css } from '../../library'
-import { User } from '..'
+import { AuthenticationHelper } from '..'
+import { DialogAuthenticator } from './DialogAuthenticator'
 
 @component('mo-user-avatar')
 export class UserAvatar extends Component {
-	@property({ type: Object }) user?: User
+	@property({ type: Object }) user = DialogAuthenticator.authenticatedUser.value
 
 	@state() private menuOpen = false
 
@@ -25,6 +26,10 @@ export class UserAvatar extends Component {
 				background: rgba(0, 0, 0, calc(0.25 * 2));
 			}
 		`
+	}
+
+	protected override initialized() {
+		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.user = user)
 	}
 
 	private get name() {
@@ -64,8 +69,8 @@ export class UserAvatar extends Component {
 				<li divider padded role='separator'></li>
 
 				<mo-list-item icon='exit_to_app' disabled style='cursor: pointer; pointer-events: auto;'
-					?hidden=${!MoDeL.application.authenticator || !MoDeL.application.authenticatedUser}
-					@click=${() => MoDeL.application.unauthenticate()}
+					?hidden=${!AuthenticationHelper.hasAuthenticator() || !this.user}
+					@click=${() => AuthenticationHelper.unauthenticate()}
 				>Sign out</mo-list-item>
 			</mo-menu>
 		`
@@ -73,7 +78,7 @@ export class UserAvatar extends Component {
 
 	private get avatarContent() {
 		return this.user ? this.initials : html`
-			<mo-icon-button icon='account_circle' @click=${() => MoDeL.application.authenticate()}></mo-icon-button>
+			<mo-icon-button icon='account_circle' @click=${() => AuthenticationHelper.authenticateGlobally()}></mo-icon-button>
 		`
 	}
 }

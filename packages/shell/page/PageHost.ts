@@ -3,6 +3,7 @@ import { HttpErrorCode, PwaHelper } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper, Snackbar } from '..'
 import { PageParameters } from './PageComponent'
+import { AuthenticationHelper } from '../helpers'
 
 export const enum NavigationMode {
 	Navigate,
@@ -26,7 +27,9 @@ export class PageHost extends Component {
 			return
 		}
 
-		if (AuthorizationHelper.isAuthorized(...page.constructor.authorizations) === false) {
+		await AuthenticationHelper.authenticateComponent(page)
+
+		if (AuthorizationHelper.componentAuthorized(page) === false) {
 			page = new PageError({ error: HttpErrorCode.Forbidden })
 		}
 

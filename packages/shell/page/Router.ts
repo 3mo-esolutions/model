@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { HttpErrorCode } from '../../utilities'
-import { PageError } from './PageError'
 import { PageComponentConstructor, PageParameters, PageComponent } from './PageComponent'
-import RouteParser from 'route-parser'
+import { PageHost } from '.'
+import { PageError } from './PageError'
 import { Application } from '../application'
+import RouteParser from 'route-parser'
 
 type Page = PageComponent<any>
 type PageConstructor = PageComponentConstructor<any>
@@ -13,88 +14,115 @@ export const enum RouteMatchMode {
 	IgnoreParameters = 'ignore-parameters',
 }
 
-class Router {
+export const route = (...routes: Array<string>) => {
+	return <T extends PageParameters>(pageConstructor: PageComponentConstructor<T>) => {
+		routes.forEach(route => Router.register(route, pageConstructor))
+	}
+}
+
+export const routeHost = (routePageConstructor: PageComponentConstructor<any>, pageHostQuery = 'mo-page-host') => {
+	const getPageHost = async () => {
+		const pageHost = await routePageConstructor.getHost()
+		if ((pageHost.currentPage instanceof routePageConstructor) === false) {
+			const page = new routePageConstructor()
+			await page.navigate()
+			await page.updateComplete
+		}
+		const page = pageHost.currentPage as PageComponent<any>
+		return page.shadowRoot.querySelector(pageHostQuery) as PageHost
+	}
+	return (pageConstructor: Constructor<PageComponent<any>> | AbstractConstructor<PageComponent<any>>) => {
+		// @ts-expect-error getHost also exists in an abstract constructor of a PageComponent
+		pageConstructor.getHost = getPageHost
+	}
+}
+
+export const homePage = () => <T extends PageParameters>(pageConstructor: PageComponentConstructor<T>) => {
+	Router.homePageConstructor = pageConstructor
+}
+
+Application.initialize.then(() => Router.initialize())
+
+export class Router {
 	private static readonly notFoundPage = new PageError({ error: HttpErrorCode.NotFound })
 
-	constructor() {
-		Application.initialize.then(() => {
-			const isHomePage = ['/', ''].includes(window.location.pathname)
-			if (isHomePage && this._homePageConstructor) {
-				this.navigateToPage(new this._homePageConstructor())
-			} else {
-				this.navigateToCurrentPage()
-			}
+	private static _homePageConstructor?: PageConstructor
+	static set homePageConstructor(page: PageConstructor) { Router._homePageConstructor = page }
 
-			window.onpopstate = () => this.navigateToCurrentPage()
-		})
+	private static readonly pageByRoute = new Map<string, PageConstructor>()
+
+	static initialize() {
+		const isHomePage = ['/', ''].includes(window.location.pathname)
+		if (isHomePage && Router._homePageConstructor) {
+			Router.navigateToPage(new Router._homePageConstructor())
+		} else {
+			Router.navigateToCurrentPage()
+		}
+
+		window.onpopstate = () => Router.navigateToCurrentPage()
 	}
 
-	private _homePageConstructor?: PageConstructor
-	set homePageConstructor(page: PageConstructor) { this._homePageConstructor = page }
-
-	private readonly pageByRoute = new Map<string, PageConstructor>()
-
-	register(route: string, page: PageConstructor) {
-		this.pageByRoute.set(route, page)
+	static register(route: string, page: PageConstructor) {
+		Router.pageByRoute.set(route, page)
 	}
 
-	navigateToCurrentPage() {
-		const currentPageConstructor = this.getPageByPath()
-		const parameters = this.getPageParametersByPath()
+	static navigateToCurrentPage() {
+		const currentPageConstructor = Router.getPageByPath()
+		const parameters = Router.getPageParametersByPath()
 		const page = currentPageConstructor ? new currentPageConstructor(parameters) : Router.notFoundPage
-		this.navigateToPage(page)
+		Router.navigateToPage(page)
 	}
 
-	navigateToPage(page: Page) {
-		this.setPathByPage(page)
+	static navigateToPage(page: Page) {
+		Router.setPathByPage(page)
 		page.navigate()
 	}
 
-	setPathByPage(page: Page) {
-		const path = this.getRouteByPage(page)
+	static setPathByPage(page: Page) {
+		const path = Router.getRouteByPage(page)
 		if (path) {
-			this.path = path
+			Router.path = path
 		}
 	}
 
-	get path() {
+	static get path() {
 		return window.location.pathname + window.location.search
 	}
 
-	set path(value) {
-		if (this.path !== value) {
+	static set path(value) {
+		if (Router.path !== value) {
 			history.pushState(null, '', value)
 		}
 	}
 
-	getRouteByPath(path = this.path) {
-		return this.getRoutePagePairByPath(path)?.[0] ?? path
+	static getRouteByPath(path = Router.path) {
+		return Router.getRoutePagePairByPath(path)?.[0] ?? path
 	}
 
-	getPageByPath(path = this.path) {
-		return this.getRoutePagePairByPath(path)?.[1]
+	static getPageByPath(path = Router.path) {
+		return Router.getRoutePagePairByPath(path)?.[1]
 	}
 
-	private getRoutePagePairByPath(path = this.path) {
-		return Array.from(this.pageByRoute)
-			.find(([route]) => this.getPageParametersByRoute(route, path) !== undefined)
+	private static getRoutePagePairByPath(path = Router.path) {
+		return Array.from(Router.pageByRoute)
+			.find(([route]) => Router.getPageParametersByRoute(route, path) !== undefined)
 	}
 
-	getRouteByPage(page: Page) {
-		return Array.from(this.pageByRoute)
+	static getRouteByPage(page: Page) {
+		return Array.from(Router.pageByRoute)
 			.filter(([, pageConstructor]) => pageConstructor === page.constructor)
-			.map(([route]) => this.getRouteByParameters(route, page['parameters']))
+			.map(([route]) => Router.getRouteByParameters(route, page['parameters']))
 			.find((route): route is string => route !== undefined)
 	}
 
-	arePagesEqual(page1: Page, page2: Page, mode = RouteMatchMode.All) {
+	static arePagesEqual(page1: Page, page2: Page, mode = RouteMatchMode.All) {
 		return page1.constructor === page2.constructor
-			&& (this.getRouteByPage(page1) === this.getRouteByPage(page2) || mode === RouteMatchMode.IgnoreParameters)
+			&& (Router.getRouteByPage(page1) === Router.getRouteByPage(page2) || mode === RouteMatchMode.IgnoreParameters)
 	}
 
-	getPageParametersByPath(path = this.path) {
-		const route = this.getRouteByPath(path)
-		const parameters = !route ? {} : this.getPageParametersByRoute(route, path) ?? {}
+	static getPageParametersByPath(path = Router.path) {
+		const route = Router.getRouteByPath(path)
+		const parameters = !route ? {} : Router.getPageParametersByRoute(route, path) ?? {}
 		return Object.fromEntries(
 			Object.entries(parameters).map(([key, value]) => {
 				const numberValue = Number(value)
@@ -103,24 +131,24 @@ class Router {
 		)
 	}
 
-	private getPageParametersByRoute(route: string, path: string) {
+	private static getPageParametersByRoute(route: string, path: string) {
 		return new RouteParser(route).match(path) as PageParameters || undefined
 	}
 
-	private getRouteByParameters(route: string, parameters: PageParameters) {
+	private static getRouteByParameters(route: string, parameters: PageParameters) {
 		return new RouteParser(route).reverse(parameters || {}) || undefined
 	}
 }
 
-// @ts-ignore was readonly
-MoDeL.Router = new Router
+// @ts-expect-error This is marked Readonly for external use
+MoDeL.Router = Router
 
 declare global {
 	// eslint-disable-next-line
 	namespace MoDeL {
 		interface Globals {
 			// eslint-disable-next-line
-			readonly Router: Router
+			readonly Router: typeof Router
 		}
 	}
 }

@@ -1,11 +1,14 @@
 import { css, html, property, Component, TemplateResult, nothing, query, event } from '../../library'
-import { DialogAuthenticator } from './DialogAuthenticator'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProvider, PageHost, ThemeHelper, DialogHost } from '..'
+import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper } from '..'
 
 type View = 'desktop' | 'tablet'
+
+export const application = <T extends Application>(ApplicationConstructor: Constructor<T>) => {
+	window.document.body.appendChild(new ApplicationConstructor)
+}
 
 export abstract class Application extends Component {
 	// eslint-disable-next-line @typescript-eslint/member-ordering
@@ -17,16 +20,12 @@ export abstract class Application extends Component {
 			: new Promise<void>(resolve => Application.initializeResolver = resolve)
 	}
 
-	static AuthenticatorConstructor?: Constructor<DialogAuthenticator>
-	static readonly providers = new Set<ApplicationProvider>()
-
 	protected abstract get drawerTemplate(): TemplateResult
 
 	@event() readonly viewChange!: EventDispatcher<View>
 
 	@property({ observer: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
-	@property({ type: Object }) authenticatedUser = DialogAuthenticator.authenticatedUser.value
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
 	@property({ reflect: true }) view: View = 'desktop'
@@ -61,38 +60,15 @@ export abstract class Application extends Component {
 		mediaQueryList.addEventListener('change', handler)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	private _authenticator?: DialogAuthenticator
-	get authenticator() {
-		if (!this._authenticator && Application.AuthenticatorConstructor) {
-			this._authenticator = new Application.AuthenticatorConstructor()
-		}
-		return this._authenticator
-	}
-
 	override async connectedCallback() {
-		await Promise.all(Array.from(Application.providers).filter(p => p.afterAuthentication === false).map(p => p.provide()))
-		window.document.title = Manifest.short_name || ''
+		await ApplicationProviderHelper.provideBeforeGlobalAuthenticationProviders()
 		super.connectedCallback()
 	}
 
 	protected override async initialized() {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
-
-		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.authenticatedUser = user)
-		await this.authenticate()
-
-		await Promise.all(Array.from(Application.providers).filter(p => p.afterAuthentication === true).map(p => p.provide()))
-
+		await AuthenticationHelper.authenticateGlobally()
 		Application.initializeResolver?.()
-	}
-
-	async authenticate() {
-		await this.authenticator?.confirm()
-	}
-
-	async unauthenticate() {
-		await this.authenticator?.unauthenticate()
 	}
 
 	static override get styles() {
@@ -229,8 +205,8 @@ export abstract class Application extends Component {
 	}
 
 	protected get topAppBarActionItemsTemplate() {
-		return !this.authenticator ? nothing : html`
-			<mo-user-avatar .user=${this.authenticatedUser}>
+		return !AuthenticationHelper.hasAuthenticator() ? nothing : html`
+			<mo-user-avatar>
 				${this.userAvatarMenuItemsTemplate}
 			</mo-user-avatar>
 		`

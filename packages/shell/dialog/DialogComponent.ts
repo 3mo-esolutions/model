@@ -1,18 +1,10 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, ComponentConstructor } from '../..'
+import { Dialog } from '../..'
 
 export type DialogParameters = void | Record<string, any>
 
-export interface DialogComponentConstructor<T extends DialogParameters> extends Constructor<DialogComponent<T>>, ComponentConstructor {
-	authorizations: Array<keyof MoDeL.Authorizations>
-}
-
 export abstract class DialogComponent<T extends DialogParameters = void, TResult = void> extends Component {
-	static authorizations = new Array<keyof MoDeL.Authorizations>()
-
 	@event() readonly closed!: EventDispatcher<TResult | Error>
-
-	override ['constructor']: DialogComponentConstructor<T>
 
 	constructor(protected readonly parameters: T) {
 		super()

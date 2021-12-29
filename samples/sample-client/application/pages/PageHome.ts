@@ -1,6 +1,6 @@
 import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/model'
 
-@homePage
+@homePage()
 @route('/home')
 @component('sample-page-home')
 export class PageHome extends PageComponent {

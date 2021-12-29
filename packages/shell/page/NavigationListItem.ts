@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, property, html, ifDefined } from '../../library'
-import { PageComponent, DialogComponentConstructor, PageComponentConstructor, DialogComponent, RouteMatchMode, PageHost } from '..'
+import { PageComponent, DialogComponent, RouteMatchMode, PageHost } from '..'
 import { ListItem } from '../../components'
+
+type NavigatableComponent = PageComponent<any> | DialogComponent<any, any>
 
 @component('mo-navigation-list-item')
 export class NavigationListItem extends ListItem {
@@ -24,12 +26,12 @@ export class NavigationListItem extends ListItem {
 		this.selected = isSelected
 	}
 
-	private componentConstructor?: [component: PageComponentConstructor<any> | DialogComponentConstructor<any>, parameters: Record<string, string | number | undefined>]
+	private componentConstructor?: [component: Constructor<NavigatableComponent>, parameters: Record<string, string | number | undefined>]
 
 	@property({ type: Object })
-	set component(value: PageComponent<any> | DialogComponent<any>) {
+	set component(value: NavigatableComponent) {
 		this.componentConstructor = [
-			value.constructor,
+			value.constructor as Constructor<NavigatableComponent>,
 			(value instanceof PageComponent) ? value['parameters'] ?? {} : value['parameters'] ?? {}
 		]
 
