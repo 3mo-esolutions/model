@@ -112,7 +112,6 @@ export const styles = css`
 		--mdc-theme-text-secondary-on-background: var(--mo-color-gray) !important;
 		--mdc-icon-font: Material Icons Sharp !important;
 		--mdc-theme-text-primary-on-dark: var(--mo-color-surface) !important;
-		--mdc-switch-unchecked-color: var(--mo-color-foreground) !important;
 		--mdc-radio-unchecked-color: var(--mo-color-foreground) !important;
 		--mdc-checkbox-unchecked-color: var(--mo-color-foreground-transparent) !important;
 		--mdc-checkbox-ink-color: var(--mo-color-accessible);

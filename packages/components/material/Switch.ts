@@ -13,16 +13,38 @@ export class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
 		return [
 			...super.styles,
 			css`
-				.mdc-switch:enabled .mdc-switch__track::before {
-					background: var(--mo-color-foreground-transparent);
-				}
+				:host {
+					--mdc-switch-selected-handle-color: var(--mo-accent-gradient);
+					--mdc-switch-selected-focus-handle-color: var(--mdc-switch-selected-handle-color);
+					--mdc-switch-selected-hover-handle-color: var(--mdc-switch-selected-handle-color);
+					--mdc-switch-selected-pressed-handle-color: var(--mdc-switch-selected-handle-color);
 
-				.mdc-switch:enabled:not(:focus):not(:active) .mdc-switch__track::after {
-					background: var(--mo-accent-gradient-transparent);
-				}
+					--mdc-switch-selected-track-color: rgba(var(--mo-accent-base), 0.5);
+					--mdc-switch-selected-focus-track-color: var(--mdc-switch-selected-track-color);
+					--mdc-switch-selected-hover-track-color: var(--mdc-switch-selected-track-color);
+					--mdc-switch-selected-pressed-track-color: var(--mdc-switch-selected-track-color);
 
-				.mdc-switch:enabled:hover:not(:focus):not(:active) .mdc-switch__track::after {
-					background: var(--mo-accent-gradient-transparent);
+					--mdc-switch-selected-focus-state-layer-color: var(--mo-accent);
+					--mdc-switch-selected-hover-state-layer-color: var(--mo-accent);
+					--mdc-switch-selected-pressed-state-layer-color: var(--mo-accent);
+
+					--mdc-switch-selected-icon-color: var(--mo-color-accessible);
+
+					--mdc-switch-unselected-handle-color: var(--mo-color-foreground);
+					--mdc-switch-unselected-focus-handle-color: var(--mdc-switch-unselected-handle-color);
+					--mdc-switch-unselected-hover-handle-color: var(--mdc-switch-unselected-handle-color);
+					--mdc-switch-unselected-pressed-handle-color: var(--mdc-switch-unselected-handle-color);
+
+					--mdc-switch-unselected-track-color: rgba(var(--mo-color-foreground-base), 0.25);
+					--mdc-switch-unselected-focus-track-color: var(--mdc-switch-unselected-track-color);
+					--mdc-switch-unselected-hover-track-color: var(--mdc-switch-unselected-track-color);
+					--mdc-switch-unselected-pressed-track-color: var(--mdc-switch-unselected-track-color);
+
+					--mdc-switch-unselected-focus-state-layer-color: var(--mo-color-foreground);
+					--mdc-switch-unselected-hover-state-layer-color: var(--mo-color-foreground);
+					--mdc-switch-unselected-pressed-state-layer-color: var(--mo-color-foreground);
+
+					--mdc-switch-unselected-icon-color: var(--mo-color-background);
 				}
 
 				.mdc-switch {
