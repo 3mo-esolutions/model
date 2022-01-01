@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues } from 'lit-element'
+import { LitElement, PropertyValues } from 'lit'
 import { render, } from '..'
 
 export const renderContainer = <T extends LitElement>(containerQuery: string) => {

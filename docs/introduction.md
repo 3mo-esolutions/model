@@ -13,6 +13,6 @@ Here are some of the technologies used in MoDeL in order to achieve these goals:
 | Strongly-Typed | via [**TypeScript**](https://www.typescriptlang.org/) & [**Lit Analyzer**](https://github.com/runem/lit-analyzer) |
 | Reduce Boilerplate | via [**TypeScript**](https://www.typescriptlang.org/) |
 | Elegant Build Process | via [**WebPack**](https://webpack.js.org/) |
-| Template Library | via [**lit-html**](https://github.com/Polymer/lit-html) |
-| HTMLElement base class | via [**LitElement**](https://github.com/Polymer/lit-element) |
+| Template Library | via [**lit-html**](https://github.com/lit/lit/tree/main/packages/lit-html) |
+| HTMLElement base class | via [**LitElement**](https://github.com/lit/lit/tree/main/packages/lit-element) |
 | Generic Components | via [**MoDeL**](https://model.3mo.rocks) & [**Material Web Components**](https://github.com/material-components/material-components-web-components) |

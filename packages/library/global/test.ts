@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element'
+import { LitElement } from 'lit'
 
 async function initialize<TComponent extends LitElement>(component: TComponent) {
 	document.body.appendChild(component)

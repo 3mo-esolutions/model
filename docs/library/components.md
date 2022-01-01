@@ -34,4 +34,4 @@ In the HTML-side of things, it is available via a new registered HTML-Tag which 
 
 As you see, Web Components are a low-level set of APIs. Consuming it involves code boilerplate and ceremonies.
 
-One of the Goals of MoDeL is to simplify creating Web Components using a declarative approach via the `Component` class, which itself build upon the [**LitElement**](https://github.com/Polymer/lit-element) base class of lit project.
+One of the Goals of MoDeL is to simplify creating Web Components using a declarative approach via the `Component` class, which itself build upon the [**LitElement**](https://github.com/lit/lit) base class of lit project.

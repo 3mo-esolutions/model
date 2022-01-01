@@ -1,7 +1,7 @@
 export const element = <T extends HTMLElement>(prototype: T, property: string) => {
 	Object.defineProperty(prototype, property, {
-		get: function () {
-			return this.shadowRoot.getElementById(property)
+		get: function (this: HTMLElement) {
+			return this.shadowRoot?.getElementById(property) ?? undefined
 		}
 	})
 }
@@ -9,8 +9,8 @@ export const element = <T extends HTMLElement>(prototype: T, property: string) =
 export const query = (selector: string) => {
 	return (prototype: HTMLElement, propertyKey: PropertyKey) => {
 		Object.defineProperty(prototype, propertyKey, {
-			get: function () {
-				return this.shadowRoot.querySelector(selector)
+			get: function (this: HTMLElement) {
+				return this.shadowRoot?.querySelector(selector) ?? undefined
 			}
 		})
 	}
@@ -19,8 +19,8 @@ export const query = (selector: string) => {
 export const queryAll = (selector: string) => {
 	return (prototype: HTMLElement, propertyKey: PropertyKey) => {
 		Object.defineProperty(prototype, propertyKey, {
-			get: function () {
-				return Array.from(this.shadowRoot.querySelectorAll(selector))
+			get: function (this: HTMLElement) {
+				return Array.from(this.shadowRoot?.querySelectorAll(selector) ?? [])
 			}
 		})
 	}

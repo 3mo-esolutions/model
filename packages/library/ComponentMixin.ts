@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues } from 'lit-element'
+import { LitElement, PropertyValues } from 'lit'
 import { StyleMixin } from '.'
 import { ComponentConstructor } from '../../library'
 
@@ -8,7 +8,7 @@ export interface IComponent {
 }
 
 export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T) => {
-	class StyleMixinConstructor extends StyleMixin(Constructor) {
+	class ComponentMixinConstructor extends StyleMixin(Constructor) {
 		static observers: Map<PropertyKey, Observer<any>>
 
 		override['constructor']: ComponentConstructor
@@ -39,5 +39,5 @@ export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T
 			this.disconnected()
 		}
 	}
-	return StyleMixinConstructor
+	return ComponentMixinConstructor
 }

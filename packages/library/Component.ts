@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element'
+import { LitElement } from 'lit'
 import { nothing, ComponentMixin } from '.'
 
 export interface ComponentConstructor extends Constructor<Component> {

@@ -1,5 +1,5 @@
 import { PropertyValues, query, event } from '../../library'
-import { LitElement } from 'lit-element'
+import { LitElement } from 'lit'
 import '@material/mwc-formfield'
 
 export const InputMixin = <T extends Constructor<LitElement>, TValue>(Constructor: T) => {
