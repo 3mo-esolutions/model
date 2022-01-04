@@ -11,6 +11,8 @@ export interface ComponentConstructor extends Constructor<Component> {
 // and the class won't need any implementation.
 
 export abstract class Component extends ComponentMixin(LitElement) {
+	static override enabledWarnings = []
+
 	protected get template() {
 		return nothing
 	}
