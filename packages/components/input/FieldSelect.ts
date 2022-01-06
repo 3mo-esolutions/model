@@ -21,7 +21,7 @@ type OptionsGetter<T> = {
  */
 @component('mo-field-select')
 export class FieldSelect<T> extends Field<Value> {
-	static readonly optionsRenderLimit = 50
+	static readonly optionsRenderLimit = 200
 
 	@event() readonly dataChange!: EventDispatcher<Data<T>>
 	@event() readonly indexChange!: EventDispatcher<Index>
