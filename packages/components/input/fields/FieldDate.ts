@@ -7,6 +7,7 @@ import { Field } from '../Field'
 export class FieldDate extends Field<Date | undefined> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) hideDatePicker = false
+	@property({ type: Object }) shortcutReferenceDate = new MoDate
 
 	// For lit-analyzer to solve generic error
 	@property({ type: Object })
@@ -48,8 +49,8 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	private selectDate(date: Date) {
-		this.value = date
 		this.open = false
+		this.value = date
 		this.change.dispatch(date)
 	}
 
@@ -86,10 +87,11 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	private calculateDateFromLocalDate(string: string) {
+		const referenceDate = new MoDate
 		const dateParts = string.split(FormatHelper.getDateSeparator())
 
 		if (dateParts.length === 2) {
-			return new Date(new Date().getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
+			return new Date(referenceDate.getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
 		}
 
 		if (dateParts.length === 3) {
@@ -100,18 +102,18 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	private calculateDateFromOperation(string: string) {
+		const referenceDate = this.shortcutReferenceDate
 		const lastChar = string.charAt(string.length - 1).toLowerCase()
 		let num: number
 
 		if (!isNaN(Number(lastChar))) {
-			num = parseInt(string.substr(0, string.length))
-			return new MoDate().addDay(num)
+			num = parseInt(string.substring(0, string.length))
+			return referenceDate.addDay(num)
 		} else {
-			num = parseInt(string.substr(0, string.length - 1))
-
+			num = parseInt(string.substring(0, string.length - 1))
 			switch (lastChar) {
-				case 'y': return new MoDate().addYear(num)
-				case 'm': return new MoDate().addMonth(num)
+				case 'y': return referenceDate.addYear(num)
+				case 'm': return referenceDate.addMonth(num)
 				default: return undefined
 			}
 		}
@@ -129,20 +131,21 @@ export class FieldDate extends Field<Date | undefined> {
 	}
 
 	private calculateDateFromKeyword(keyword: string) {
+		const referenceDate = this.shortcutReferenceDate
 		switch (keyword) {
-			case 'h': return new MoDate()
-			case 'üm': return new MoDate().addDay(+2)
-			case 'm': return new MoDate().addDay(+1)
-			case 'üüm': return new MoDate().addDay(+3)
-			case 'g': return new MoDate().addDay(-1)
-			case 'vg': return new MoDate().addDay(-2)
-			case 'vvg': return new MoDate().addDay(-3)
-			case 'adw': return new MoDate().weekStart
-			case 'edw': return new MoDate().weekEnd
-			case 'adm': return new MoDate().monthStart
-			case 'edm': return new MoDate().monthEnd
-			case 'adj': return new MoDate().yearStart
-			case 'edj': return new MoDate().yearEnd
+			case 'h': return new MoDate(referenceDate)
+			case 'üm': return referenceDate.addDay(+2)
+			case 'm': return referenceDate.addDay(+1)
+			case 'üüm': return referenceDate.addDay(+3)
+			case 'g': return referenceDate.addDay(-1)
+			case 'vg': return referenceDate.addDay(-2)
+			case 'vvg': return referenceDate.addDay(-3)
+			case 'adw': return referenceDate.weekStart
+			case 'edw': return referenceDate.weekEnd
+			case 'adm': return referenceDate.monthStart
+			case 'edm': return referenceDate.monthEnd
+			case 'adj': return referenceDate.yearStart
+			case 'edj': return referenceDate.yearEnd
 			default: return undefined
 		}
 	}

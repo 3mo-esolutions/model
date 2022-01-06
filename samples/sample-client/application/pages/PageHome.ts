@@ -15,6 +15,8 @@ export class PageHome extends PageComponent {
 							count='1'
 							@countChange=${(e: CustomEvent<number>) => Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)}
 						></sample-counter>
+
+						<mo-field-date label='Date' .shortcutReferenceDate=${new MoDate().addDay(5)}></mo-field-date>
 					</mo-flex>
 				</mo-card>
 			</mo-page>

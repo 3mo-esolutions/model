@@ -48,8 +48,9 @@ export class MoDate extends Date {
 	}
 
 	addDay(days: number) {
-		this.setDate(this.day + days)
-		return this
+		const date = new MoDate(this)
+		date.setDate(this.day + days)
+		return date
 	}
 
 	get weekDay() {
@@ -104,7 +105,7 @@ export class MoDate extends Date {
 
 		const range = []
 		for (let i = 0; i < 7; i++) {
-			range.push(new MoDate(weekStart).addDay(i))
+			range.push(weekStart.addDay(i))
 		}
 
 		return range
@@ -148,15 +149,17 @@ export class MoDate extends Date {
 	}
 
 	addMonth(months: number) {
-		this.setMonth(this.month + months)
-		return this
+		const date = new MoDate(this)
+		date.setMonth(this.month + months)
+		return date
 	}
 	//#endregion
 
 	//#region Year
 	addYear(years: number) {
-		this.setFullYear(this.year + years)
-		return this
+		const date = new MoDate(this)
+		date.setFullYear(this.year + years)
+		return date
 	}
 
 	get year() {
