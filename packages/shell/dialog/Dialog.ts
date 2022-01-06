@@ -180,11 +180,16 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
-		this.primaryButton?.addEventListener('click', () => this.handleAction('primary'))
-		this.primarySlot.addEventListener('slotchange', () => this.primaryButton?.addEventListener('click', () => this.handleAction('primary')))
-		this.secondaryButton?.addEventListener('click', () => this.handleAction('secondary'))
-		this.secondarySlot.addEventListener('slotchange', () => this.secondaryButton?.addEventListener('click', () => this.handleAction('secondary')))
+
 		this.changeCloseBehavior()
+
+		const handlePrimaryButtonClick = () => this.handleAction('primary')
+		this.primaryButton?.addEventListener('click', handlePrimaryButtonClick)
+		this.primarySlot.addEventListener('slotchange', () => this.primaryButton?.addEventListener('click', handlePrimaryButtonClick))
+
+		const handleSecondaryButtonClick = () => this.handleAction('secondary')
+		this.secondaryButton?.addEventListener('click', handleSecondaryButtonClick)
+		this.secondarySlot.addEventListener('slotchange', () => this.secondaryButton?.addEventListener('click', handleSecondaryButtonClick))
 	}
 
 	protected override updated(props: PropertyValues) {
