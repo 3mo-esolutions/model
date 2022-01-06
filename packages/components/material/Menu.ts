@@ -36,6 +36,14 @@ export class Menu extends ComponentMixin(MwcMenu) {
 		this.overrideClosingLogic()
 	}
 
+	override get listElement() {
+		try {
+			return super.listElement
+		} catch (error) {
+			return null
+		}
+	}
+
 	private overrideClosingLogic() {
 		// Here, the internals of menu and menu surface are manipulated to prevent automatic
 		// closings of the menu. Material team is aware of this problem and the issue is filed in this link:

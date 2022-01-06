@@ -25,4 +25,7 @@ module.exports = {
 			skipped: '⚠ '
 		}
 	},
+	parallelOptions: {
+		executors: 4,
+	}
 }
