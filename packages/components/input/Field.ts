@@ -61,7 +61,8 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-border-top-left-radius: var(--mo-border-radius);
 				--mo-field-border-top-right-radius: var(--mo-border-radius);
 				position: relative;
-				display: flex;
+				display: grid;
+				grid-template-columns: auto 1fr auto auto;
 				min-width: 0;
 
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
@@ -97,6 +98,7 @@ export abstract class Field<T> extends Input<T> {
 			}
 
 			div[part=container] {
+				display: grid;
 				margin: 0 5px;
 				flex: 1;
 				position: relative;
@@ -184,14 +186,17 @@ export abstract class Field<T> extends Input<T> {
 
 			slot[name=leading] {
 				justify-content: start;
+				height: var(--mo-field-height);
 			}
 
 			slot[name=trailing] {
 				justify-content: end;
+				height: var(--mo-field-height);
 			}
 
 			slot[name=trailingInternal] {
 				justify-content: end;
+				height: var(--mo-field-height);
 			}
 		`
 	}
