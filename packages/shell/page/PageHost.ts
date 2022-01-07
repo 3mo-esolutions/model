@@ -1,7 +1,7 @@
 import { Component, component, css, html, event, state } from '../../library'
-import { HttpErrorCode, PwaHelper } from '../../utilities'
+import { HttpErrorCode, PwaHelper, WindowHelper } from '../../utilities'
 import { PageComponent, PageError } from '.'
-import { AuthorizationHelper, Snackbar } from '..'
+import { AuthorizationHelper } from '..'
 import { PageParameters } from './PageComponent'
 import { AuthenticationHelper } from '../helpers'
 
@@ -39,22 +39,11 @@ export class PageHost extends Component {
 			mode = NavigationMode.NewWindow
 		}
 
-		switch (mode) {
-			case NavigationMode.Navigate:
-				await this.navigateTo(page)
-				break
-			case NavigationMode.NewTab:
-				window.open(url, '_blank')?.focus()
-				break
-			case NavigationMode.NewWindow:
-				const newWindow = window.open(url, undefined, `width=${window.outerWidth},height=${window.outerHeight}`)
-				if (!newWindow) {
-					Snackbar.show('Allow to open a window')
-					return
-				}
-				newWindow.moveTo(0, 0)
-				newWindow.focus()
-				break
+		if (mode === NavigationMode.Navigate) {
+			await this.navigateTo(page)
+		} else {
+			const newWindow = await WindowHelper.open(url, mode === NavigationMode.NewWindow ? { popup: true } : undefined)
+			newWindow.focus()
 		}
 	}
 

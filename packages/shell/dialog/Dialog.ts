@@ -24,6 +24,7 @@ type DialogAction<TResult = void> = TResult | PromiseLike<TResult>
 @component('mo-dialog')
 export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@event() readonly closed!: EventDispatcher<TResult | Error>
+	@event() readonly requestPopup!: EventDispatcher
 
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false
@@ -34,6 +35,8 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@property() override initialFocusAttribute = 'data-focus'
 	@property() override scrimClickAction: DialogActionKey = ''
 	@property() override escapeKeyAction: DialogActionKey = 'cancellation'
+	@property({ type: Boolean }) popupContinuation = false
+	@property({ type: Boolean, reflect: true }) boundToWindow = false
 
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
 	@query('footer') private readonly footerElement!: HTMLElement
@@ -74,6 +77,17 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 					--mdc-dialog-max-width: 1680px;
 					--mdc-dialog-min-width: calc(100% - 32px);
 					--mdc-dialog-min-height: calc(100% - 32px);
+				}
+
+				:host([boundToWindow][size=large]) {
+					--mdc-dialog-max-width: 100%;
+					--mdc-dialog-min-width: 100%;
+					--mdc-dialog-min-height: 100%;
+					--mdc-dialog-max-height: 100%;
+				}
+
+				:host([boundToWindow]) {
+					--mdc-dialog-scrim-color: var(--mo-color-background);
 				}
 
 				.mdc-dialog__container {
@@ -158,11 +172,13 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 
 	override connectedCallback() {
 		super.connectedCallback()
+		window.addEventListener('beforeunload', this.handleBeforeUnload)
 		document.addEventListener('keydown', this.handleKeyDown)
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback()
+		window.removeEventListener('beforeunload', this.handleBeforeUnload)
 		document.removeEventListener('keydown', this.handleKeyDown)
 	}
 
@@ -172,6 +188,12 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 				(document.deepActiveElement as HTMLElement).blur()
 				await this.handleAction('primary')
 			}
+		}
+	}
+
+	private readonly handleBeforeUnload = () => {
+		if (this.boundToWindow) {
+			this.handleAction('cancellation')
 		}
 	}
 
@@ -210,7 +232,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		flex.id = 'flexHeader'
 		const template = html`
 			<slot name='header'></slot>
-			<div id='divCloseButton'></div>
+			<div id='divHeaderOptions'></div>
 		`
 		render(template, flex)
 		this.surfaceElement.appendChild(flex)
@@ -233,10 +255,16 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	@renderContainer('#divCloseButton')
-	protected get closeIconButton() {
-		return this.blocking ? nothing : html`
-			<mo-icon-button icon='close' @click=${() => this.handleAction('cancellation')}></mo-icon-button>
+	protected override setEventListeners() {
+		this.boundHandleKeydown = null
+		super.setEventListeners()
+	}
+
+	@renderContainer('#divHeaderOptions')
+	protected get headerOptionsTemplate() {
+		return html`
+			${this.boundToWindow || !this.popupContinuation ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
+			${this.boundToWindow || this.blocking ? nothing : html`<mo-icon-button icon='close' @click=${() => this.handleAction('cancellation')}></mo-icon-button>`}
 		`
 	}
 
@@ -289,6 +317,9 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	override close(result: TResult | Error) {
 		super.close()
 		this.closed.dispatch(result)
+		if (this.boundToWindow) {
+			window.close()
+		}
 	}
 }
 
