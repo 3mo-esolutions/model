@@ -20,7 +20,19 @@ type ListValue = string | Array<string>
 export class List extends ComponentMixin(MwcList) {
 	@event() private readonly change!: EventDispatcher<ListValue | undefined>
 
-	@property({ reflect: true, observer: valueChanged }) value?: ListValue
+	@property({
+		reflect: true,
+		observer(this: List) {
+			if (!this.value) {
+				return
+			}
+
+			const index = this.value instanceof Array
+				? new Set(this.value.map(v => this.items.findIndex(item => item.value === v)))
+				: this.items.findIndex(i => i.value === this.value)
+			this.select(index)
+		}
+	}) value?: ListValue
 
 	constructor() {
 		super()
@@ -33,17 +45,6 @@ export class List extends ComponentMixin(MwcList) {
 			this.change.dispatch(value)
 		})
 	}
-}
-
-function valueChanged(this: List) {
-	if (!this.value) {
-		return
-	}
-
-	const index = this.value instanceof Array
-		? new Set(this.value.map(v => this.items.findIndex(item => item.value === v)))
-		: this.items.findIndex(i => i.value === this.value)
-	this.select(index)
 }
 
 declare global {

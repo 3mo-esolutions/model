@@ -13,6 +13,13 @@ type OptionsGetter<T> = {
 	renderOption: (data: T, index: number, array: Array<T>) => TemplateResult
 }
 
+function getOptionsText<T>(options: Array<Option<T>>) {
+	return options
+		.filter(o => !o.default)
+		.map(o => o.text)
+		.join(', ')
+}
+
 /**
  * @slot
  * @fires dataChange {CustomEvent<Data<T>>}
@@ -29,6 +36,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) multiple = false
+	@property({ type: Boolean, observer(this: FieldSelect<T>) { this.inputElement.readOnly = !this.searchable } }) searchable = false
 	@property({ type: Boolean, reflect: true }) reflectDefault = false
 	@property()
 	get default() { return this.querySelector<Option<T>>('mo-option[default]')?.text }
@@ -58,6 +66,8 @@ export class FieldSelect<T> extends Field<Value> {
 	protected fetchedData?: Array<T>
 
 	private programmaticSelection = false
+
+	private preventNextChange = false
 
 	override get value() { return super.value }
 	override set value(value) {
@@ -137,7 +147,6 @@ export class FieldSelect<T> extends Field<Value> {
 		super.firstUpdated(props)
 		this.value = this.value
 		this.registerEventListeners()
-		this.inputElement.readOnly = true
 	}
 
 	private registerEventListeners() {
@@ -146,15 +155,22 @@ export class FieldSelect<T> extends Field<Value> {
 		this.divContainer.addEventListener('click', () => this.open = !this.open)
 		this.addEventListener('focus', () => this.inputElement.setSelectionRange(0, 0))
 		this.addEventListener('keydown', (e: KeyboardEvent) => {
+			const key = e.key as KeyboardKey
 			const openKeys = [KeyboardKey.Enter]
 			const navigationKeys = [KeyboardKey.ArrowDown, KeyboardKey.ArrowUp]
-			if (openKeys.includes(e.key as KeyboardKey)) {
+
+			if (openKeys.includes(key)) {
 				e.stopImmediatePropagation()
+				if (this.searchable) {
+					this.preventNextChange = true
+				}
 			}
-			if (this.open === false && [...openKeys, ...navigationKeys].includes(e.key as KeyboardKey)) {
+
+			if (this.open === false && [...openKeys, ...navigationKeys].includes(key)) {
 				this.open = true
 			}
-			if (navigationKeys.includes(e.key as KeyboardKey)) {
+
+			if (navigationKeys.includes(key)) {
 				const focusedItem = this.menuOptions?.getFocusedItemIndex()
 				this.menuOptions?.focusItemAtIndex(!focusedItem || focusedItem === -1 ? 0 : focusedItem)
 			}
@@ -185,14 +201,13 @@ export class FieldSelect<T> extends Field<Value> {
 				?multi=${this.multiple}
 				?manualClose=${this.manualClose}
 				fixed
-				defaultFocus=${this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
+				defaultFocus=${this.searchable ? 'NONE' : this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
 				corner='BOTTOM_START'
-				wrapFocus
 				activatable
 				?open=${this.open}
 				@opened=${() => this.open = true}
 				@closed=${() => this.open = false}
-				@selected=${(e: CustomEvent<{ index: Set<number> | number }>) => this.handleOptionSelection(e)}
+				@selected=${() => this.handleOptionSelection()}
 			>
 				<slot></slot>
 			</mo-menu>
@@ -214,28 +229,68 @@ export class FieldSelect<T> extends Field<Value> {
 		return getOptionsText(this.getValueOptions(value))
 	}
 
-	// TODO: why is this not needed?
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected toValue(_value: string) {
+	protected toValue() {
 		return this.selectedOptions instanceof Array
 			? this.selectedOptions.map(o => o.value).filter(o => !!o)
 			: this.selectedOptions?.value
 	}
 
-	protected handleOptionSelection(e: CustomEvent<{ index: Set<number> | number }>) {
+	protected override handleFocus() {
+		super.handleFocus()
+		if (this.searchable) {
+			this.updateComplete.then(() => this.select())
+		}
+	}
+
+	protected override handleInput() {
+		super.handleInput()
+		if (this.searchable) {
+			this.searchOptions()
+		}
+	}
+
+	protected override handleChange() {
+		if (this.preventNextChange) {
+			this.preventNextChange = false
+			return
+		}
+		super.handleChange()
+	}
+
+	protected searchOptions() {
+		const keyword = this.inputElement.value.toLowerCase()
+		const matchedOptions = new Array<Option<T>>()
+		this.options.forEach(option => {
+			const matches = option.text.toLowerCase().includes(keyword) || !keyword
+			option.height = matches ? '' : '0px'
+			option.switchAttribute('mwc-list-item', matches)
+			if (matches) {
+				matchedOptions.push(option)
+			}
+		})
+		if (this.menuOptions?.listElement?.['items_']) {
+			this.menuOptions.listElement['items_'] = !keyword ? this.options : matchedOptions
+		}
+		this.open = matchedOptions.length > 0
+	}
+
+	protected handleOptionSelection() {
 		if (this.programmaticSelection) {
 			return
 		}
 
-		const indexes = e.detail.index instanceof Set ? Array.from(e.detail.index) : [e.detail.index]
-		const options = this.options.filter((_, i) => indexes.includes(i))
-
-		this.value = this.toValue(getOptionsText(options)) ?? undefined
+		this.value = this.toValue() ?? undefined
 
 		const toNumberIfPossible = (value?: number | string) => typeof value === 'number' ? value : value?.charAt(0) === '0' || isNaN(Number(value)) ? value : Number(value)
 		const handledValues = (this.value instanceof Array
 			? this.value.map(v => toNumberIfPossible(v))
 			: toNumberIfPossible(this.value as string)) as PluralizeUnion<string>
+
+		this.options.filter(o => o.selected && (handledValues instanceof Array
+			? handledValues.includes(toNumberIfPossible(o.value) as string) === false
+			: handledValues !== toNumberIfPossible(o.value))
+		).forEach(o => o.activated = o.selected = false)
+
 		this.change.dispatch(handledValues)
 		this.dataChange.dispatch(this.data)
 		this.indexChange.dispatch(this.index)
@@ -320,13 +375,6 @@ export class FieldSelect<T> extends Field<Value> {
 
 		this.value = this['_value']
 	}
-}
-
-function getOptionsText<T>(options: Array<Option<T>>) {
-	return options
-		.filter(o => !o.default)
-		.map(o => o.text)
-		.join(', ')
 }
 
 declare global {
