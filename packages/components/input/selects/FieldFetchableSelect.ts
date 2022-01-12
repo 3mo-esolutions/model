@@ -21,7 +21,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	@property({ type: Object, observer(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
 	@property({ type: Boolean, reflect: true }) protected fetching = false
 	@property({ type: Object }) optionTemplate?: typeof FieldFetchableSelect.prototype.getOptionTemplate
-	@property({ type: Object }) parametersByKeyword?: typeof FieldFetchableSelect.prototype.getParametersByKeyword
+	@property({ type: Object }) searchParameters?: typeof FieldFetchableSelect.prototype.getSearchParameters
 	@property({ type: Object }) fetch: typeof FieldFetchableSelect.prototype.fetchData = () => Promise.resolve([])
 
 	static override get styles() {
@@ -56,17 +56,20 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		`
 	}
 
-	protected getParametersByKeyword(keyword: string): TDataFetcherParameters | undefined {
-		return this.parametersByKeyword?.(keyword)
+	protected getSearchParameters(keyword: string): Partial<TDataFetcherParameters> | undefined {
+		return this.searchParameters?.(keyword)
 	}
 
 	protected override async search(keyword: string) {
-		const parameters = this.getParametersByKeyword(keyword)
-		if (!parameters) {
+		const searchParameters = this.getSearchParameters(keyword)
+		if (!searchParameters) {
 			return super.search(keyword)
 		} else {
 			await this.searchDebouncer.debounce(this.debounce)
-			await this.refetchData(parameters, true)
+			await this.refetchData({
+				...this.parameters,
+				...searchParameters,
+			} as TDataFetcherParameters, true)
 		}
 	}
 
