@@ -1,17 +1,12 @@
-import { element, html, property, TemplateResult, state, renderContainer, css, render, event, component, PropertyValues } from '../../library'
-import { Option, Menu } from '..'
-import { Field } from './Field'
+import { element, html, property, state, renderContainer, css, event, component, PropertyValues } from '../../../library'
+import { Option, Menu } from '../..'
+import { Field } from '../Field'
 
 type PluralizeUnion<T> = Array<T> | T | undefined
 
 type Value = PluralizeUnion<string | number>
 type Data<T> = PluralizeUnion<T>
 type Index = PluralizeUnion<number>
-
-type OptionsGetter<T> = {
-	fetchData: () => Promise<Array<T>>
-	renderOption: (data: T, index: number, array: Array<T>) => TemplateResult
-}
 
 function getOptionsText<T>(options: Array<Option<T>>) {
 	return options
@@ -24,15 +19,11 @@ function getOptionsText<T>(options: Array<Option<T>>) {
  * @slot
  * @fires dataChange {CustomEvent<Data<T>>}
  * @fires indexChange {CustomEvent<Index>}
- * @fires dataFetch {CustomEvent<Array<T>>}
  */
 @component('mo-field-select')
 export class FieldSelect<T> extends Field<Value> {
-	static readonly optionsRenderLimit = 200
-
 	@event() readonly dataChange!: EventDispatcher<Data<T>>
 	@event() readonly indexChange!: EventDispatcher<Index>
-	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) multiple = false
@@ -55,15 +46,8 @@ export class FieldSelect<T> extends Field<Value> {
 	}
 
 	@state() private manualClose = false
-	@state({
-		observer: function (this: FieldSelect<T>) {
-			this.fetchOptions()
-		}
-	}) protected optionsGetter: OptionsGetter<T> | undefined
 
 	@element protected readonly menuOptions?: Menu | null
-
-	protected fetchedData?: Array<T>
 
 	private programmaticSelection = false
 
@@ -153,7 +137,6 @@ export class FieldSelect<T> extends Field<Value> {
 		this.addEventListener('mouseover', () => this.manualClose = this.multiple)
 		this.addEventListener('mouseout', () => this.manualClose = false)
 		this.divContainer.addEventListener('click', () => this.open = !this.open)
-		this.addEventListener('focus', () => this.inputElement.setSelectionRange(0, 0))
 		this.addEventListener('keydown', (e: KeyboardEvent) => {
 			const key = e.key as KeyboardKey
 			const openKeys = [KeyboardKey.Enter]
@@ -237,8 +220,9 @@ export class FieldSelect<T> extends Field<Value> {
 
 	protected override handleFocus() {
 		super.handleFocus()
+		this.inputElement.setSelectionRange(0, 0)
 		if (this.searchable) {
-			this.updateComplete.then(() => this.select())
+			this.select()
 		}
 	}
 
@@ -255,23 +239,6 @@ export class FieldSelect<T> extends Field<Value> {
 			return
 		}
 		super.handleChange()
-	}
-
-	protected searchOptions() {
-		const keyword = this.inputElement.value.toLowerCase()
-		const matchedOptions = new Array<Option<T>>()
-		this.options.forEach(option => {
-			const matches = option.text.toLowerCase().includes(keyword) || !keyword
-			option.height = matches ? '' : '0px'
-			option.switchAttribute('mwc-list-item', matches)
-			if (matches) {
-				matchedOptions.push(option)
-			}
-		})
-		if (this.menuOptions?.listElement?.['items_']) {
-			this.menuOptions.listElement['items_'] = !keyword ? this.options : matchedOptions
-		}
-		this.open = matchedOptions.length > 0
 	}
 
 	protected handleOptionSelection() {
@@ -309,12 +276,8 @@ export class FieldSelect<T> extends Field<Value> {
 	protected async selectByIndex(index?: Index) {
 		await this.updateComplete
 		this.value = !(index instanceof Array)
-			// @ts-ignore if index is not an Array, it is a number
-			? this.options[index].value
-			: index.map(i => this.options[i])
-				.filter(b => !!b)
-				.map(o => o.value)
-
+			? this.options[Number(index)].value
+			: index.map(i => this.options[i].value)
 	}
 
 	protected async selectByValue(value?: Value) {
@@ -345,35 +308,31 @@ export class FieldSelect<T> extends Field<Value> {
 		this.menuOptions?.select(this.multiple ? new Set<number>() : -1)
 	}
 
-	async fetchOptions() {
-		if (!this.optionsGetter) {
-			return
-		}
+	private async searchOptions() {
+		const keyword = this.inputElement.value.toLowerCase()
+		await this.search(keyword)
+		await this.updateComplete
+		this.open = this.options.length > 0
+	}
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		this.fetchedData = await this.optionsGetter.fetchData() ?? []
-		this.dataFetch.dispatch(this.fetchedData)
+	protected async search(keyword: string) {
+		const matchedValues = this.options
+			.filter(option => option.text.toLowerCase().includes(keyword))
+			.map(option => option.value)
+		this.filterOptions(matchedValues)
+		await Promise.resolve()
+	}
 
-		Array.from(this.querySelectorAll('mo-option[fetched]')).forEach(o => o.remove())
-
-		const fetchedOptions = this.fetchedData
-			.slice(0, FieldSelect.optionsRenderLimit)
-			.map(this.optionsGetter.renderOption)
-
-		const div = document.createElement('div')
-		render(fetchedOptions, div)
-		const options = Array.from(div.querySelectorAll('mo-option'))
-		options.forEach(o => {
-			o.switchAttribute('fetched', true)
-			if (this.multiple) {
-				o.multiple = true
-			}
+	private filterOptions(matchedValues: Array<Value>) {
+		const matchedOptions = this.options.filter(o => matchedValues.includes(o.value))
+		this.options.forEach(option => {
+			const matches = matchedOptions.includes(option)
+			option.height = matches ? '' : '0px'
+			option.switchAttribute('mwc-list-item', matches)
 		})
-		div.remove()
-
-		this.append(...options)
-
-		this.value = this['_value']
+		if (this.menuOptions?.listElement?.['items_']) {
+			this.menuOptions.listElement['items_'] = matchedOptions
+		}
 	}
 }
 
