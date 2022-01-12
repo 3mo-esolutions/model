@@ -271,7 +271,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@renderContainer('slot[name="primaryAction"]')
 	protected get primaryButtonTemplate() {
 		return !this.primaryButtonText ? nothing : html`
-			<mo-button raised @click=${() => this.handleAction('primary')}>
+			<mo-button type='raised' @click=${() => this.handleAction('primary')}>
 				${this.primaryButtonText}
 			</mo-button>
 		`

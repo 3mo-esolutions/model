@@ -113,7 +113,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	protected override get template() {
 		return html`
 			<mo-dialog blocking primaryOnEnter>
-				<mo-button slot='primaryAction' justifyContent='center' raised>${this.primaryButtonText}</mo-button>
+				<mo-button slot='primaryAction' justifyContent='center' type='raised'>${this.primaryButtonText}</mo-button>
 				<mo-flex alignItems='center' minWidth='350px'>
 					${this.headerTemplate}
 					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>

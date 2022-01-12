@@ -2,12 +2,15 @@ import { component, property, css, PropertyValues, ComponentMixin } from '../../
 import { Button as MwcButton } from '@material/mwc-button'
 import { MaterialIcon } from '..'
 
+export const enum ButtonType {
+	Normal = 'normal',
+	Outlined = 'outlined',
+	Raised = 'raised',
+}
+
 /**
  * @attr icon
  * @attr label
- * @attr raised
- * @attr unelevated
- * @attr outlined
  * @attr dense
  * @attr disabled
  * @attr trailingIcon
@@ -17,6 +20,14 @@ import { MaterialIcon } from '..'
  */
 @component('mo-button')
 export class Button extends ComponentMixin(MwcButton) {
+	@property({
+		observer(this: Button) {
+			this.outlined = this.type === ButtonType.Outlined
+			this.raised = this.type === ButtonType.Raised
+			this.unelevated = false
+		}
+	}) type = ButtonType.Normal
+
 	static override get styles() {
 		return [
 			...super.styles,
@@ -29,6 +40,13 @@ export class Button extends ComponentMixin(MwcButton) {
 				button {
 					margin: auto;
 					height: 100% !important;
+					/* 64px is Material's default */
+					min-width: var(--mo-button-min-width, 64px) !important;
+				}
+
+				.mdc-button .mdc-button__icon {
+					/* 8px is Material's default */
+					margin-right: var(--mo-button-icon-margin-right, 8px) !important;
 				}
 			`
 		]

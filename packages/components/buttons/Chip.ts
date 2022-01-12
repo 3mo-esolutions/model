@@ -1,5 +1,5 @@
-import { component, css, html, renderContainer, nothing, property, event } from '../library'
-import { Button } from '.'
+import { component, css, html, renderContainer, nothing, property, event } from '../../library'
+import { Button } from '..'
 
 /**
  * @fires delete {CustomEvent}
