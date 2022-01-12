@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, css, property, event, TemplateResult, html, TemplateHelper } from '../../../library'
-import { Enqueuer, PropertyValues } from '../../..'
+import { Debouncer, Enqueuer, PropertyValues } from '../../..'
 import { FieldSelect } from './FieldSelect'
 import { Option } from './Option'
 
@@ -17,6 +17,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	@event() readonly parametersChange!: EventDispatcher<TDataFetcherParameters | undefined>
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
+	@property({ type: Number }) debounce = 500
 	@property({ type: Object, observer(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
 	@property({ type: Boolean, reflect: true }) protected fetching = false
 	@property({ type: Object }) optionTemplate?: typeof FieldFetchableSelect.prototype.getOptionTemplate
@@ -34,6 +35,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	}
 
 	private readonly fetchEnqueuer = new Enqueuer<Array<T>>()
+	private readonly searchDebouncer = new Debouncer()
 
 	protected fetchedData = new Array<T>()
 
@@ -63,6 +65,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		if (!parameters) {
 			return super.search(keyword)
 		} else {
+			await this.searchDebouncer.debounce(this.debounce)
 			await this.refetchData(parameters, true)
 		}
 	}
