@@ -12,7 +12,7 @@ export type FieldFetchableSelectParametersType = Record<string, unknown>
  */
 @component('mo-field-fetchable-select')
 export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchableSelectParametersType = Record<string, never>> extends FieldSelect<T> {
-	private static readonly fetchedOptionsRenderLimit = 150
+	private static readonly fetchedOptionsRenderLimit = 200
 
 	@event() readonly parametersChange!: EventDispatcher<TDataFetcherParameters | undefined>
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
@@ -96,13 +96,14 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	private get fetchedOptions() { return Array.from(this.querySelectorAll<Option<T>>('mo-option[fetched]')) }
 	private set fetchedOptions(value) {
 		this.fetchedOptions.forEach(o => o.remove())
-		value.slice(0, FieldFetchableSelect.fetchedOptionsRenderLimit).forEach(o => {
+		const optionsToAppend = value.slice(0, FieldFetchableSelect.fetchedOptionsRenderLimit)
+		optionsToAppend.forEach(o => {
 			o.switchAttribute('fetched', true)
 			if (this.multiple) {
 				o.multiple = true
 			}
 		})
-		this.append(...value)
+		this.append(...optionsToAppend)
 	}
 }
 
