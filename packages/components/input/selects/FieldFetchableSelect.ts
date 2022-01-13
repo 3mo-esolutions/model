@@ -4,14 +4,14 @@ import { Debouncer, Enqueuer, PropertyValues } from '../../..'
 import { FieldSelect } from './FieldSelect'
 import { Option } from './Option'
 
-export type FieldFetchableSelectParametersType = Record<string, unknown>
+export type FieldFetchableSelectParametersType = Record<string, unknown> | void
 
 /**
  * @fires parametersChange {CustomEvent<TDataFetcherParameters | undefined>}
  * @fires dataFetch {CustomEvent<Array<T>>}
  */
 @component('mo-field-fetchable-select')
-export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchableSelectParametersType = Record<string, never>> extends FieldSelect<T> {
+export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchableSelectParametersType = void> extends FieldSelect<T> {
 	private static readonly fetchedOptionsRenderLimit = 200
 
 	@event() readonly parametersChange!: EventDispatcher<TDataFetcherParameters | undefined>
@@ -79,7 +79,8 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 
 		this.fetching = true
 		const data = await this.fetchEnqueuer.enqueue(fetchPromise)
-		this.fetchedData = data
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		this.fetchedData = data || []
 		this.dataFetch.dispatch(this.fetchedData)
 		this.renderFetchedDataOptions()
 		this.fetching = false
