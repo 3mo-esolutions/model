@@ -1,96 +1,76 @@
-import { nothing, PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip } from '@3mo/model'
-import { Photo, PhotoService } from '../../sdk'
+import { component, html, PageComponent, homePage, route, state } from '@3mo/model'
+import { countries } from './countries'
 
-const enum Tab {
-	Card = 'card',
-	DataGrid = 'dataGrid',
-}
-
-@route('/', '/home/:albumId?')
-@component('photos-page-home')
-export class PageHome extends PageComponent<{ readonly albumId?: number }> {
-	@state() private photos = new Array<Photo>()
-	@state() private selectedPhotos = new Array<Photo>()
-	@state() private tab = Tab.DataGrid
-	@state() private dataGridParameters: FirstParameter<typeof PhotoService.getAll> = {}
-
+@homePage()
+@route('/home')
+@component('sample-page-home')
+export class PageHome extends PageComponent {
 	protected override get template() {
 		return html`
-			<mo-page heading='Startseite' fullHeight>
-				<style>
-					mo-card {
-						min-height: 100px;
-						min-width: 100px;
-					}
-
-					mo-card::part(header) {
-						text-align: center;
-					}
-				</style>
-
-				<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
-					<mo-tab label='Card' value=${Tab.Card}></mo-tab>
-					<mo-tab label='DataGrid' value=${Tab.DataGrid}></mo-tab>
-				</mo-tab-bar>
-
-				${cache(this.tab === Tab.Card ? this.cardTemplate : this.dataGridTemplate)}
+			<mo-page heading='Home' fullHeight>
+				<mo-flex height='100%' alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)'>
+					${this.buttonGroupTemplate}
+				</mo-flex>
 			</mo-page>
 		`
 	}
 
-	private get cardTemplate() {
+	protected get buttonGroupTemplate() {
 		return html`
-		<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
-				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
-				${this.selectedPhotos.length === 0 ? nothing : html`
-					<mo-icon-button icon='edit'
-						${tooltip(html`
-							<mo-card heading='Tooltip'>
-								Edit <b>${this.selectedPhotos.length}</b> Photos
-							</mo-card>
-						`)}
-					></mo-icon-button>
-					<mo-icon-button icon='delete' ${tooltip('Delete!')}></mo-icon-button>
-				`}
-		</mo-flex>
-			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='var(--mo-thickness-m)'>
-				${this.photos.filter(photo => !this.parameters.albumId || photo.albumId === this.parameters.albumId).slice(0, 50).map(photo => html`
-					<photos-photo-card
-						.photo=${photo}
-						?selected=${this.selectedPhotos.includes(photo)}
-						@selectionChange=${(event: CustomEvent<boolean>) => this.updateSelectedPhotos(event.detail, photo)}
-						@contextmenu=${(e: MouseEvent) => ContextMenuHost.open(e, html`
-							<mo-context-menu-item icon='edit'>Edit</mo-context-menu-item>
-							<mo-context-menu-item icon='delete'>Delete</mo-context-menu-item>
-						`)}
-					></photos-photo-card>
-				`)}
-			</mo-grid>
+			<mo-button-group type='outlined' direction='horizontal'>
+				<mo-button>B</mo-button>
+				<mo-button>I</mo-button>
+				<mo-button>U</mo-button>
+			</mo-button-group>
 		`
 	}
 
-	private get dataGridTemplate() {
+	protected get splitButtonsTemplate() {
 		return html`
-			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
-				.parameters=${this.dataGridParameters}
-				.selectedData=${this.selectedPhotos}
-				@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}
-				@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
-				@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
-			>
-				<app-field-select-album multiple slot='toolbar' default='All'
-					.value=${this.dataGridParameters.albumIds}
-					@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
-				</app-field-select-album>
+			<mo-split-button>
+				<mo-button type='raised' icon='save'>Speichern</mo-button>
+				<mo-list-item slot='more'>Zwischenspeichern</mo-list-item>
+				<mo-list-item slot='more'>Als Kopie speichern</mo-list-item>
+			</mo-split-button>
 
-				<mo-fab slot='fab' icon='add'></mo-fab>
-			</photos-data-grid-photo>
+			<mo-split-button>
+				<mo-button type='raised' icon='merge_type'>Merge</mo-button>
+				<mo-list-item slot='more'>Squash & Merge</mo-list-item>
+				<mo-list-item slot='more'>Rebase & Merge</mo-list-item>
+			</mo-split-button>
 		`
 	}
 
-	private readonly updateSelectedPhotos = (isSelected: boolean, photo: Photo) => {
-		this.selectedPhotos = isSelected
-			? [...this.selectedPhotos, photo]
-			: this.selectedPhotos.filter(p => p !== photo)
+	protected get fieldSelectTemplate() {
+		return html`
+			<mo-card>
+				<mo-field-select label='Länder' searchable>
+					${countries.map(country => html`
+						<mo-option value=${country.code}>${country.label}</mo-option>
+					`)}
+				</mo-field-select>
+			</mo-card>
+		`
+	}
+
+	@state() fetchableSelectParameters = {}
+	protected get fieldFetchableSelectTemplate() {
+		return html`
+			<mo-card>
+				<mo-field-fetchable-select label='Länder' searchable
+					.fetch=${this.fetch}
+					.parameters=${this.fetchableSelectParameters as any}
+					.optionTemplate=${(country: any) => html`<mo-option value=${country.code}>${country.label}</mo-option>` as any}
+					.searchParameters=${(keyword: string) => ({ keyword: keyword })}
+				></mo-field-fetchable-select>
+			</mo-card>
+		`
+	}
+
+	private readonly fetch = async (parameters?: { keyword?: string }) => {
+		console.log('fetching data will take 200ms ...', parameters?.keyword)
+		await Promise.sleep(200)
+		const keyword = parameters?.keyword
+		return Promise.resolve(!keyword ? countries : countries.filter(country => country.label.toLowerCase().includes(keyword.toLowerCase())))
 	}
 }
