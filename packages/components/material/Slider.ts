@@ -6,8 +6,9 @@ import { Slider as MwcSlider } from '@material/mwc-slider'
  * @attr min
  * @attr max
  * @attr step
- * @attr pin
- * @attr markers
+ * @attr discrete
+ * @attr withTickMarks
+ * @attr disabled
  * @fires input {CustomEvent}
  * @fires change {CustomEvent}
  */
