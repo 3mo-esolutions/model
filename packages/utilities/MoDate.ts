@@ -70,15 +70,10 @@ export class MoDate extends Date {
 
 	//#region Week
 	get week() {
-		const target = new MoDate(this.valueOf())
-		const dayNr = (this.weekDay + 6) % 7
-		target.setDate(target.day - dayNr + 3)
-		const firstThursday = target.valueOf()
-		target.setMonth(0, 1)
-		if (target.weekDay !== 4) {
-			target.setMonth(0, 1 + ((4 - target.weekDay) + 7) % 7)
-		}
-		return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000)
+		const firstOfJanuary = new MoDate(this.year, 0, 1)
+		const today = new MoDate(this.year, this.month, this.day)
+		const difference = today.valueOf() - firstOfJanuary.valueOf()
+		return Math.ceil(((difference / 86400000) + firstOfJanuary.weekDay + 1) / 7)
 	}
 
 	get weekStart() {
@@ -87,6 +82,10 @@ export class MoDate extends Date {
 
 	get weekEnd() {
 		return this.getWeekRange(this.week)[this.getWeekRange(this.week).length - 1]
+	}
+
+	addWeek(weeks: number) {
+		return this.addDay(7 * weeks)
 	}
 
 	getWeekStart(weekNumber: number) {

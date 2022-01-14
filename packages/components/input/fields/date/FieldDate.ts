@@ -22,7 +22,7 @@ export class FieldDate extends FieldDateBase<Date | undefined> {
 	}
 
 	protected toValue(value: string) {
-		return value ? DateHelper.parseDateFromText(value) : undefined
+		return value ? DateHelper.parseDateFromText(value, this.shortcutReferenceDate) : undefined
 	}
 }
 

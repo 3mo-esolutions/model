@@ -1,6 +1,12 @@
 import { FormatHelper } from '../..'
 
+declare global {
+	type DateRange = [start: Date | undefined, end: Date | undefined]
+}
+
 export class DateHelper {
+	static readonly userDateRangeSeparators = [...FormatHelper.dateRangeSeparator, ' ']
+
 	static parseDateFromText(dateText: string, referenceDate = new MoDate) {
 		dateText = dateText.toLowerCase()
 
@@ -8,21 +14,21 @@ export class DateHelper {
 			return undefined
 		}
 
-		const date = new Date(dateText || new Date)
-		if (String(date) !== 'Invalid Date') {
-			return date
+		if (dateText.startsWith('+') || dateText.startsWith('-')) {
+			return DateHelper.parseDateFromOperation(dateText, referenceDate)
 		}
 
 		if (dateText.includes(FormatHelper.getDateSeparator())) {
 			return DateHelper.parseDateFromLocalDate(dateText, referenceDate)
 		}
 
-		if (dateText.startsWith('+') || dateText.startsWith('-')) {
-			return DateHelper.parseDateFromOperation(dateText, referenceDate)
-		}
-
 		if ((dateText.length === 3 || dateText.length === 4 || dateText.length === 8) && !isNaN(parseInt(dateText))) {
 			return DateHelper.parseDateFromShortcut(dateText)
+		}
+
+		const date = new Date(dateText || new Date)
+		if (String(date) !== 'Invalid Date') {
+			return date
 		}
 
 		const keywordDate = DateHelper.parseDateFromKeyword(dateText, referenceDate)
@@ -31,6 +37,27 @@ export class DateHelper {
 		}
 
 		return undefined
+	}
+
+	static parseDateRangeFromText(dateRangeText: string, referenceDate = new MoDate) {
+		const keywordResult = DateHelper.parseDateRangeFromKeyword(dateRangeText, referenceDate)
+		if (keywordResult) {
+			return keywordResult
+		}
+
+		let separator = DateHelper.userDateRangeSeparators.find(separator => dateRangeText.includes(separator))
+
+		if (!separator) {
+			dateRangeText += FormatHelper.dateRangeSeparator
+			separator = FormatHelper.dateRangeSeparator
+		}
+
+		const [startDateText, endDateText] = dateRangeText.toLowerCase().split(separator)
+
+		const startDate = DateHelper.parseDateFromText(startDateText, referenceDate)
+		const endDate = DateHelper.parseDateFromText(endDateText, referenceDate)
+
+		return [startDate, endDate] as DateRange
 	}
 
 	private static parseDateFromLocalDate(dateText: string, referenceDate = new MoDate) {
@@ -86,10 +113,40 @@ export class DateHelper {
 			case 'vvg': return referenceDate.addDay(-3)
 			case 'adw': return referenceDate.weekStart
 			case 'edw': return referenceDate.weekEnd
+			case 'anw': return referenceDate.addWeek(+1).weekStart
+			case 'enw': return referenceDate.addWeek(+1).weekEnd
+			case 'alw': return referenceDate.addWeek(-1).weekStart
+			case 'elw': return referenceDate.addWeek(-1).weekEnd
 			case 'adm': return referenceDate.monthStart
 			case 'edm': return referenceDate.monthEnd
+			case 'anm': return referenceDate.addMonth(+1).monthStart
+			case 'enm': return referenceDate.addMonth(+1).monthEnd
+			case 'alm': return referenceDate.addMonth(-1).monthStart
+			case 'elm': return referenceDate.addMonth(-1).monthEnd
 			case 'adj': return referenceDate.yearStart
 			case 'edj': return referenceDate.yearEnd
+			case 'anj': return referenceDate.addYear(+1).yearStart
+			case 'enj': return referenceDate.addYear(+1).yearEnd
+			case 'alj': return referenceDate.addYear(-1).yearStart
+			case 'elj': return referenceDate.addYear(-1).yearEnd
+			default: return undefined
+		}
+	}
+
+	private static parseDateRangeFromKeyword(keyword: string, referenceDate = new MoDate): DateRange | undefined {
+		switch (keyword) {
+			case 'w':
+			case 'dw': return [referenceDate.weekStart, referenceDate.weekEnd]
+			case 'nw': return [referenceDate.addWeek(+1).weekStart, referenceDate.addWeek(+1).weekEnd]
+			case 'lw': return [referenceDate.addWeek(-1).weekStart, referenceDate.addWeek(-1).weekEnd]
+			case 'm':
+			case 'dm': return [referenceDate.monthStart, referenceDate.monthEnd]
+			case 'lm': return [referenceDate.addMonth(-1).monthStart, referenceDate.addMonth(-1).monthEnd]
+			case 'nm': return [referenceDate.addMonth(+1).monthStart, referenceDate.addMonth(+1).monthEnd]
+			case 'j':
+			case 'dj': return [referenceDate.yearStart, referenceDate.yearEnd]
+			case 'lj': return [referenceDate.addYear(-1).yearStart, referenceDate.addYear(-1).yearEnd]
+			case 'nj': return [referenceDate.addYear(+1).yearStart, referenceDate.addYear(+1).yearEnd]
 			default: return undefined
 		}
 	}

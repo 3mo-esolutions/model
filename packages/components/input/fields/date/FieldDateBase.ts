@@ -7,8 +7,8 @@ export abstract class FieldDateBase<T> extends Field<T> {
 	@property({ type: Boolean }) hideDatePicker = false
 	@property({ type: Object }) shortcutReferenceDate = new MoDate
 
-	protected get calendarDate() { return new MoDate }
-	protected set calendarDate(_value) { this.open = false }
+	protected abstract get calendarDate(): MoDate
+	protected abstract set calendarDate(value: MoDate)
 
 	protected override get template() {
 		return html`
