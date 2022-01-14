@@ -1,15 +1,9 @@
 import { Component, component, css, html, event, state } from '../../library'
-import { HttpErrorCode, PwaHelper, WindowHelper } from '../../utilities'
+import { HttpErrorCode, WindowHelper, WindowOpenMode } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper } from '..'
-import { PageParameters } from './PageComponent'
+import { PageNavigationStrategy, PageParameters } from './PageComponent'
 import { AuthenticationHelper } from '../helpers'
-
-export const enum NavigationMode {
-	Navigate,
-	NewTab,
-	NewWindow,
-}
 
 /**
  * @fires navigate {CustomEvent<PageComponent<any>}
@@ -22,7 +16,7 @@ export class PageHost extends Component {
 
 	@state() currentPage?: PageComponent<any>
 
-	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate, force = false) => {
+	readonly navigateToPage = async (page: PageComponent<any>, strategy = PageNavigationStrategy.Page, force = false) => {
 		if (this.currentPage && Router.arePagesEqual(this.currentPage, page) && force === false) {
 			return
 		}
@@ -33,27 +27,21 @@ export class PageHost extends Component {
 			page = new PageError({ error: HttpErrorCode.Forbidden })
 		}
 
-		const url = window.location.origin + MoDeL.Router.getRouteByPage(page)
+		const url = window.location.origin + Router.getRouteByPage(page)
 
-		if (PwaHelper.isInstalled && mode === NavigationMode.NewTab && Manifest.display_override?.includes('tabbed') === false) {
-			mode = NavigationMode.NewWindow
-		}
-
-		if (mode === NavigationMode.Navigate) {
-			await this.navigateTo(page)
+		if (strategy === PageNavigationStrategy.Page) {
+			this.navigateTo(page)
 		} else {
-			const newWindow = await WindowHelper.open(url, mode === NavigationMode.NewWindow ? { popup: true } : undefined)
-			newWindow.focus()
+			await WindowHelper.openAndFocus(url, strategy === PageNavigationStrategy.Window ? WindowOpenMode.Window : WindowOpenMode.Tab)
 		}
 	}
 
-	private async navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
+	private navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 		this.currentPage = page
 		Router.setPathByPage(page)
 		this.navigate.dispatch(this.currentPage)
-		await this.currentPage.updateComplete
-		this.headingChange.dispatch(this.currentPage['page']?.heading ?? '')
+		page.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}
 
 	static override get styles() {

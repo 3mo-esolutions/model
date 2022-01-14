@@ -25,6 +25,7 @@ type DialogAction<TResult = void> = TResult | PromiseLike<TResult>
 export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@event() readonly closed!: EventDispatcher<TResult | Error>
 	@event() readonly requestPopup!: EventDispatcher
+	@event() readonly headingChange!: EventDispatcher<string>
 
 	@property({ reflect: true }) size: DialogSize = 'small'
 	@property({ type: Boolean }) blocking = false
@@ -35,7 +36,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@property() override initialFocusAttribute = 'data-focus'
 	@property() override scrimClickAction: DialogActionKey = ''
 	@property() override escapeKeyAction: DialogActionKey = 'cancellation'
-	@property({ type: Boolean }) popupContinuation = false
+	@property({ type: Boolean }) poppable = false
 	@property({ type: Boolean, reflect: true }) boundToWindow = false
 
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
@@ -46,7 +47,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	cancellationAction?: () => DialogAction<TResult>
 
 	get isActiveDialog(): boolean {
-		return MoDeL.application.dialogHost.focusedDialogComponent?.['dialog'] === this
+		return MoDeL.application.dialogHost.focusedDialogComponent?.dialogElement === this
 	}
 
 	override get primaryButton() {
@@ -214,9 +215,12 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		this.secondarySlot.addEventListener('slotchange', () => this.secondaryButton?.addEventListener('click', handleSecondaryButtonClick))
 	}
 
-	protected override updated(props: PropertyValues) {
+	protected override updated(props: PropertyValues<this>) {
 		super.updated(props)
 		this.decideFooterVisibility()
+		if (props.has('heading')) {
+			this.headingChange.dispatch(this.heading)
+		}
 	}
 
 	private decideFooterVisibility() {
@@ -263,7 +267,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@renderContainer('#divHeaderOptions')
 	protected get headerOptionsTemplate() {
 		return html`
-			${this.boundToWindow || !this.popupContinuation ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
+			${this.boundToWindow || !this.poppable ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
 			${this.boundToWindow || this.blocking ? nothing : html`<mo-icon-button icon='close' @click=${() => this.handleAction('cancellation')}></mo-icon-button>`}
 		`
 	}

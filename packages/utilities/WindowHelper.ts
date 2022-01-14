@@ -1,31 +1,37 @@
+import { PwaHelper } from '.'
+
+export const enum WindowOpenMode { Tab, Window }
+
 export class WindowHelper {
 	private static readonly windowSizeReductionMultiplier = 0.9
 
-	static open(path = window.location.pathname, options?: {
-		popup?: boolean
-		screenX?: number
-		screenY?: number
-		width?: number
-		height?: number
-	}) {
+	static open(path = window.location.pathname, mode = WindowOpenMode.Tab) {
 		return new Promise<Window>((resolve, reject) => {
-			const featuresString = !options ? undefined : Object.entries(options)
-				.map(([key, value]) => value === true ? key : `${key}=${value}`).join(',')
-			const newWindow = window.open(path, undefined, featuresString)
+			if (PwaHelper.isInstalled && mode === WindowOpenMode.Tab && Manifest.display_override?.includes('tabbed') === false) {
+				mode = WindowOpenMode.Window
+			}
+
+			const newWindow = window.open(path, undefined, mode === WindowOpenMode.Tab ? '' : 'popup')
 			if (!newWindow) {
-				return reject(new Error('Allow to open a window'))
+				return reject(new Error('Failed to open a window, probably because the permission is denied.'))
 			}
-			if (options?.popup && !options.screenX && !options.screenY) {
-				newWindow.resizeTo(
-					window.outerWidth * WindowHelper.windowSizeReductionMultiplier,
-					window.outerHeight * WindowHelper.windowSizeReductionMultiplier
-				)
-				newWindow.moveTo(
-					window.screenX + (window.outerWidth - newWindow.outerWidth) / 2,
-					window.screenY + (window.outerHeight - newWindow.outerHeight) / 2
-				)
-			}
+
+			newWindow.resizeTo(
+				window.outerWidth * WindowHelper.windowSizeReductionMultiplier,
+				window.outerHeight * WindowHelper.windowSizeReductionMultiplier
+			)
+
+			newWindow.moveTo(
+				window.screenX + (window.outerWidth - newWindow.outerWidth) / 2,
+				window.screenY + (window.outerHeight - newWindow.outerHeight) / 2
+			)
+
 			newWindow.addEventListener('MoDeL.initialized', () => resolve(newWindow))
 		})
+	}
+
+	static async openAndFocus(...args: Parameters<typeof WindowHelper.open>) {
+		const window = await WindowHelper.open(...args)
+		window.focus()
 	}
 }

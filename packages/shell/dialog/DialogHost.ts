@@ -1,5 +1,6 @@
 import { Component, component } from '../../library'
-import { DialogComponent, Snackbar, AuthorizationHelper } from '..'
+import { WindowHelper, WindowOpenMode } from '../../utilities'
+import { DialogComponent, Snackbar, AuthorizationHelper, PageDialog, DialogConfirmationStrategy } from '..'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
@@ -14,14 +15,33 @@ export class DialogHost extends Component {
 		return this.dialogComponents.length === 0 ? undefined : this.dialogComponents[this.dialogComponents.length - 1]
 	}
 
-	confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
-		MoDeL.application.closeDrawerIfDismissible()
-
+	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
 			const errorMessage = '🔒 Access denied'
 			Snackbar.show(errorMessage)
-			return Promise.reject(new Error(errorMessage))
+			throw new Error(errorMessage)
 		}
+
+		if (strategy === DialogConfirmationStrategy.Dialog) {
+			return this.confirmDialog<T, TParams, TResult>(dialog)
+		}
+
+		const Constructor = dialog.constructor as unknown as typeof DialogComponent
+		const propertiesToCopy = Array.from(Constructor.elementProperties.keys())
+		const popupWindow = await WindowHelper.open(PageDialog.route, strategy === DialogConfirmationStrategy.Window ? WindowOpenMode.Window : WindowOpenMode.Tab)
+
+		const DialogConstructor = popupWindow.customElements.get(dialog.tagName.toLowerCase()) as CustomElementConstructor
+		const dialogComponent = new DialogConstructor(dialog.parameters) as DialogComponent<T, TResult>
+		// @ts-expect-error property is a key of the elementProperties map
+		propertiesToCopy.forEach((property) => dialogComponent[property] = dialog[property])
+
+		await popupWindow.window.MoDeL.application.pageHost.updateComplete
+		const page = popupWindow.window.MoDeL.application.pageHost.currentPage as PageDialog
+		return page.confirmDialog(dialogComponent)
+	}
+
+	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
+		MoDeL.application.closeDrawerIfDismissible()
 
 		this.shadowRoot.append(dialog)
 		return new Promise<TResult>((resolve, reject) => {

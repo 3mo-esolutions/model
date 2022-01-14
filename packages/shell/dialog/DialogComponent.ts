@@ -1,95 +1,89 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, KeyboardHelper, WindowHelper } from '../..'
+import { Dialog, LocalStorageEntry, PageDialog, query } from '../..'
 
 export type DialogParameters = void | Record<string, any>
 
-export abstract class DialogComponent<T extends DialogParameters = void, TResult = void> extends Component {
-	@event() readonly closed!: EventDispatcher<TResult | Error>
+export const enum DialogConfirmationStrategy { Dialog, Tab, Window }
 
-	constructor(protected readonly parameters: T) {
+export abstract class DialogComponent<T extends DialogParameters = void, TResult = void> extends Component {
+	static readonly poppableConfirmationStrategy = new LocalStorageEntry<DialogConfirmationStrategy>('MoDeL.Components.DialogComponent.PoppableConfirmationStrategy', DialogConfirmationStrategy.Dialog)
+
+	@event() readonly closed!: EventDispatcher<TResult | Error>
+	@event() readonly headingChange!: EventDispatcher<string>
+
+	@query('mo-dialog') readonly dialogElement?: Dialog<TResult>
+
+	constructor(readonly parameters: T) {
 		super()
 	}
 
-	confirm(): Promise<TResult> {
-		if (KeyboardHelper.ctrlPressed || KeyboardHelper.shiftPressed || KeyboardHelper.metaPressed) {
-			return this.confirmAsPopup()
-		}
-		return MoDeL.application.dialogHost.confirm(this)
-	}
-
-	async confirmAsPopup() {
-		const Constructor = this.constructor as unknown as typeof DialogComponent
-		const propertiesToCopy = Array.from(Constructor.elementProperties.keys())
-		const popupWindow = await WindowHelper.open(window.location.pathname, { popup: true })
-		const DialogConstructor = popupWindow.customElements.get(this.tagName.toLowerCase()) as CustomElementConstructor
-		const dialogComponent = new DialogConstructor(this.parameters) as DialogComponent<T, TResult>
-		// @ts-expect-error elementProperties exists for reactive elements
-		propertiesToCopy.forEach(property => dialogComponent[property] = this[property])
-		const confirmPromise = dialogComponent.confirm()
-		await dialogComponent.updateComplete
-		if (dialogComponent.dialog) {
-			dialogComponent.dialog.boundToWindow = true
-		}
-		return confirmPromise
+	confirm(strategy?: DialogConfirmationStrategy): Promise<TResult> {
+		return MoDeL.application.dialogHost.confirm(this, strategy)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	private minimized = false
-	protected async continueAsPopup() {
-		this.minimized = true
+	private popped = false
+	protected async pop(strategy: Exclude<DialogConfirmationStrategy, DialogConfirmationStrategy.Dialog> = DialogConfirmationStrategy.Tab) {
+		this.popped = true
 		this.open = false
-		const value = await this.confirmAsPopup()
-		this.minimized = false
+		const value = await this.confirm(strategy)
+		this.popped = false
 		this.close(value)
 	}
 
-	protected get dialog() {
-		return this.shadowRoot.querySelector<Dialog<TResult>>('mo-dialog') ?? undefined
-	}
-
 	get primaryButton() {
-		return this.dialog?.primaryButton
+		return this.dialogElement?.primaryButton
 	}
 
 	get secondaryButton() {
-		return this.dialog?.secondaryButton
+		return this.dialogElement?.secondaryButton
 	}
 
 	protected close(result: TResult | Error) {
-		this.dialog?.close(result)
+		this.dialogElement?.close(result)
 		this.open = false
 	}
 
-	private get open() { return this.dialog?.open ?? false }
+	private get open() { return this.dialogElement?.open ?? false }
 	private set open(value) {
-		if (this.dialog) {
-			this.dialog.open = value
+		if (this.dialogElement) {
+			this.dialogElement.open = value
 		}
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
-		if (this.dialog === undefined) {
+		if (this.dialogElement === undefined) {
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
+
 		this.open = true
-		this.dialog.primaryAction = this.primaryButtonAction.bind(this)
-		this.dialog.secondaryAction = this.secondaryButtonAction?.bind(this)
-		this.dialog.cancellationAction = this.cancellationAction?.bind(this)
-		this.dialog.addEventListener('requestPopup', () => this.continueAsPopup())
-		this.dialog.addEventListener('closed', (e: CustomEvent<TResult>) => {
+		this.dialogElement.primaryAction = this.primaryButtonAction.bind(this)
+		this.dialogElement.secondaryAction = this.secondaryButtonAction?.bind(this)
+		this.dialogElement.cancellationAction = this.cancellationAction?.bind(this)
+		this.dialogElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
+		this.dialogElement.requestPopup.subscribe(() => this.pop())
+		this.dialogElement.addEventListener('closed', (e: CustomEvent<TResult>) => {
 			// Google MWC has events in some of their components
 			// which dispatch a "closed" event with "bubbles" option set to true
 			// thus reaching the DialogComponent. This is blocked here.
 			const eventSourceWasNotDialog = (e.source instanceof Dialog) === false
 
-			if (eventSourceWasNotDialog || this.minimized) {
+			if (eventSourceWasNotDialog || this.popped) {
 				e.stopImmediatePropagation()
 				return
 			}
 
 			this.closed.dispatch(e.detail)
 		})
+
+		if (this.dialogElement.poppable &&
+			Router.path !== PageDialog.route &&
+			DialogComponent.poppableConfirmationStrategy.value !== DialogConfirmationStrategy.Dialog
+		) {
+			this.pop(DialogComponent.poppableConfirmationStrategy.value)
+			return
+		}
 	}
 
 	protected primaryButtonAction(): TResult | PromiseLike<TResult> {

@@ -14,6 +14,8 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	@state() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
 	@state() primaryButtonText = 'Login'
 
+	private preventNextAutomaticAuthentication = false
+
 	protected abstract authenticateProcess(): Promise<User>
 	protected abstract unauthenticateProcess(): Promise<void>
 	protected abstract checkAuthenticationProcess(): Promise<boolean>
@@ -45,7 +47,8 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		} finally {
 			Snackbar.show('Unauthenticated successfully')
 			DialogAuthenticator.authenticatedUser.value = undefined
-			this.confirm(true)
+			this.preventNextAutomaticAuthentication = true
+			this.confirm()
 		}
 	}
 
@@ -59,9 +62,10 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	override async confirm(preventAutomaticAuthentication = false) {
-		if (preventAutomaticAuthentication) {
-			return super.confirm()
+	override async confirm(...args: Parameters<typeof DialogComponent.prototype.confirm>) {
+		if (this.preventNextAutomaticAuthentication === true) {
+			this.preventNextAutomaticAuthentication = false
+			return super.confirm(...args)
 		}
 
 		const isAuthenticated = await this.isAuthenticated()

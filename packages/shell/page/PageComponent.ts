@@ -1,7 +1,10 @@
-import { PropertyValues, Component, ComponentConstructor } from '../../library'
-import { NavigationMode, PageHost } from './PageHost'
+import { PropertyValues, Component, ComponentConstructor, event, query } from '../../library'
+import { Page } from './Page'
+import type { PageHost } from './PageHost'
 
 export type PageParameters = void | Record<string, string | number | undefined>
+
+export const enum PageNavigationStrategy { Page, Tab, Window }
 
 export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
 	getHost(): Promise<PageHost>
@@ -12,9 +15,13 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		return Promise.resolve(MoDeL.application.pageHost)
 	}
 
-	override ['constructor']: PageComponentConstructor<T>
+	@event() readonly headingChange!: EventDispatcher<string>
 
-	constructor(protected readonly parameters: T) {
+	@query('mo-page') protected readonly pageElement?: Page
+
+	override['constructor']: PageComponentConstructor<T>
+
+	constructor(readonly parameters: T) {
 		super()
 		// The router always returns an empty record
 		// whenever no parameters are found in the URL
@@ -26,35 +33,21 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		return this.constructor.getHost()
 	}
 
-	navigate() {
-		return this.handleNavigation(NavigationMode.Navigate)
-	}
-
-	open() {
-		return this.handleNavigation(NavigationMode.NewTab)
-	}
-
-	openInNewWindow() {
-		return this.handleNavigation(NavigationMode.NewWindow)
-	}
-
-	protected async handleNavigation(mode: NavigationMode, force = false) {
+	async navigate(strategy = PageNavigationStrategy.Page, force = false) {
 		const host = await this.getHost()
-		host.navigateToPage(this, mode, force)
+		host.navigateToPage(this, strategy, force)
 	}
 
 	protected refresh(parameters = this.parameters) {
-		return new this.constructor(parameters).handleNavigation(NavigationMode.Navigate, true)
+		return new this.constructor(parameters).navigate(PageNavigationStrategy.Page, true)
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
-		if (this.page === undefined) {
+		if (this.pageElement === undefined) {
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-page' element`)
 		}
-	}
-
-	protected get page() {
-		return this.shadowRoot.querySelector('mo-page') ?? undefined
+		this.headingChange.dispatch(this.pageElement.heading)
+		this.pageElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}
 }

@@ -1,4 +1,4 @@
-import { component, html, css, property, Component } from '../../library'
+import { component, html, css, property, Component, event } from '../../library'
 
 /**
  * @slot
@@ -7,7 +7,9 @@ import { component, html, css, property, Component } from '../../library'
  */
 @component('mo-page')
 export class Page extends Component {
-	@property() heading = ''
+	@event() readonly headingChange!: EventDispatcher<string>
+
+	@property({ observer(this: Page) { this.headingChange.dispatch(this.heading) } }) heading = ''
 	@property({ type: Boolean, reflect: true }) fullHeight = false
 
 	protected override connected() {
