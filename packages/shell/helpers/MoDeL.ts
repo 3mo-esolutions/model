@@ -1,18 +1,11 @@
-declare namespace MoDeL {
-	type Environment = 'development' | 'production' | 'test'
+/* eslint-disable */
+import type { Application } from '..'
 
-	interface Globals {
-		readonly environment: Environment
-	}
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-declare const MoDeL: MoDeL.Globals
 declare const environment: string
 
-// @ts-ignore defining MoDeL
-globalThis.MoDeL = new class {
-	get environment() {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+class MoDeL {
+	static get environment() {
 		const global = window as any
 		if (global.__karma__) {
 			return 'test'
@@ -25,8 +18,17 @@ globalThis.MoDeL = new class {
 		return 'production'
 	}
 
-	get application() {
+	static get application() {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return window.document.body.querySelector('[application]')!
+		return window.document.body.querySelector<Application>('[application]')!
 	}
+}
+
+globalThis.MoDeL = MoDeL
+
+type MoDeLClass = typeof MoDeL
+
+declare global {
+	type MoDeLEnvironment = 'development' | 'production' | 'test'
+	var MoDeL: MoDeLClass
 }

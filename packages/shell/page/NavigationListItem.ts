@@ -21,7 +21,7 @@ export class NavigationListItem extends ListItem {
 		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
 		const pageHost = this.pageHostGetter()
 		const isSelected = pageOrDialog instanceof PageComponent
-			? pageHost.currentPage ? MoDeL.Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
+			? pageHost.currentPage ? Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
 			: pageOrDialog.constructor as unknown as Constructor<NavigatableComponent> === this.componentConstructor?.[0]
 		this.selected = isSelected
 	}

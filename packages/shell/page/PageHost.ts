@@ -23,7 +23,7 @@ export class PageHost extends Component {
 	@state() currentPage?: PageComponent<any>
 
 	readonly navigateToPage = async (page: PageComponent<any>, mode = NavigationMode.Navigate, force = false) => {
-		if (this.currentPage && MoDeL.Router.arePagesEqual(this.currentPage, page) && force === false) {
+		if (this.currentPage && Router.arePagesEqual(this.currentPage, page) && force === false) {
 			return
 		}
 
@@ -50,7 +50,7 @@ export class PageHost extends Component {
 	private async navigateTo<T extends PageComponent<TParams>, TParams extends PageParameters>(page: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 		this.currentPage = page
-		MoDeL.Router.setPathByPage(page)
+		Router.setPathByPage(page)
 		this.navigate.dispatch(this.currentPage)
 		await this.currentPage.updateComplete
 		this.headingChange.dispatch(this.currentPage['page']?.heading ?? '')

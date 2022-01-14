@@ -137,15 +137,11 @@ export class Router {
 	}
 }
 
-// @ts-expect-error This is marked Readonly for external use
-MoDeL.Router = Router
+globalThis.Router = Router
+
+type RouterClass = typeof Router
 
 declare global {
 	// eslint-disable-next-line
-	namespace MoDeL {
-		interface Globals {
-			// eslint-disable-next-line
-			readonly Router: typeof Router
-		}
-	}
+	var Router: RouterClass
 }

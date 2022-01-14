@@ -20,6 +20,7 @@ class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
  * @attr hasMeta
  * @attr graphic
  * @attr twoline
+ * @slot -
  * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item-checkbox')
