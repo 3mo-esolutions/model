@@ -21,7 +21,7 @@ export const enum ButtonType {
 @component('mo-button')
 export class Button extends ComponentMixin(MwcButton) {
 	@property({
-		observer(this: Button) {
+		updated(this: Button) {
 			this.outlined = this.type === ButtonType.Outlined
 			this.raised = this.type === ButtonType.Raised
 			this.unelevated = false

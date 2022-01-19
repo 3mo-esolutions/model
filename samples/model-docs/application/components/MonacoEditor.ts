@@ -9,7 +9,13 @@ export const enum MonacoEditorLanguage {
 
 @component('doc-monaco-editor')
 export class MonacoEditor extends Component {
-	@property({ observer: valueChanged }) value!: string
+	@property({
+		updated(this: MonacoEditor) {
+			if (this.editor) {
+				this.editor.value = this.value
+			}
+		}
+	}) value!: string
 	@property() language!: string
 
 	protected initialized() {
@@ -80,13 +86,6 @@ export class MonacoEditor extends Component {
 		const viewLinesElement = this.editor.querySelector('.view-lines') as HTMLElement
 		this.style.height = (viewLinesElement.offsetHeight - 120) + 'px'
 	}
-}
-
-function valueChanged(this: MonacoEditor) {
-	if (!this.editor)
-		return
-
-	this.editor.value = this.value
 }
 
 interface MonacoEditorElement extends HTMLElement {

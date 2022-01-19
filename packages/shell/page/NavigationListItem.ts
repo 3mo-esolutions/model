@@ -11,7 +11,7 @@ export class NavigationListItem extends ListItem {
 
 	@property({
 		type: Object,
-		observer(this: NavigationListItem, value: () => PageHost, oldValue?: () => PageHost) {
+		updated(this: NavigationListItem, value: () => PageHost, oldValue?: () => PageHost) {
 			oldValue?.().navigate.unsubscribe(this.handlePageHostNavigation)
 			value().navigate.subscribe(this.handlePageHostNavigation)
 		}

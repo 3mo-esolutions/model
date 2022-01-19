@@ -10,7 +10,11 @@ import { Tab } from '.'
 export class TabBar extends ComponentMixin(MwcTabBar) {
 	@event() readonly navigate!: EventDispatcher<string | undefined>
 
-	@property({ observer: valueChanged }) value?: string
+	@property({
+		updated(this: TabBar) {
+			this.updateTabs()
+		}
+	}) value?: string
 
 	@property({ type: Boolean }) preventFirstTabNavigation = false
 
@@ -51,13 +55,9 @@ export class TabBar extends ComponentMixin(MwcTabBar) {
 	protected override initialized() {
 		this.tabsSlot.addEventListener('slotchange', () => {
 			this.value = this.value ?? this.getAttribute('value') ?? undefined
-			valueChanged.call(this)
+			this.updateTabs()
 		})
 	}
-}
-
-async function valueChanged(this: TabBar) {
-	await this.updateTabs()
 }
 
 declare global {

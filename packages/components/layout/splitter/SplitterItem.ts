@@ -4,9 +4,9 @@ import { Splitter } from './Splitter'
 // REFACTOR: use lit-html for templating
 @component('mo-splitter-item')
 export class SplitterItem extends Component {
-	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) size = ''
-	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) min = '50px'
-	@property({ reflect: true, observer(this: SplitterItem) { this.calculateStyles() } }) max = ''
+	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) size = ''
+	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) min = '50px'
+	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) max = ''
 
 	private get splitter() {
 		return this.parentElement as Splitter

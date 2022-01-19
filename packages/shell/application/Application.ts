@@ -15,7 +15,7 @@ export abstract class Application extends Component {
 
 	@event() readonly viewChange!: EventDispatcher<View>
 
-	@property({ observer: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
+	@property({ updated: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false

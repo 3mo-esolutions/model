@@ -9,7 +9,7 @@ import { component, html, css, property, Component, event } from '../../library'
 export class Page extends Component {
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@property({ observer(this: Page) { this.headingChange.dispatch(this.heading) } }) heading = ''
+	@property({ updated(this: Page) { this.headingChange.dispatch(this.heading) } }) heading = ''
 	@property({ type: Boolean, reflect: true }) fullHeight = false
 
 	protected override connected() {

@@ -18,7 +18,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
 	@property({ type: Number }) debounce = 500
-	@property({ type: Object, observer(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
+	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
 	@property({ type: Boolean, reflect: true }) protected fetching = false
 	@property({ type: Object }) optionTemplate?: typeof FieldFetchableSelect.prototype.getOptionTemplate
 	@property({ type: Object }) searchParameters?: typeof FieldFetchableSelect.prototype.getSearchParameters

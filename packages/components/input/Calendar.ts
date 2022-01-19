@@ -11,7 +11,7 @@ export class Calendar extends Component {
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
 	@property({
 		type: Object,
-		observer: function (this: Calendar) {
+		updated(this: Calendar) {
 			this.navigatingYear = this.value.year
 			this.navigatingMonth = this.value.month
 		}

@@ -20,7 +20,7 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 	@property({
 		type: Boolean,
 		reflect: true,
-		observer(this: ListItem) {
+		updated(this: ListItem) {
 			if (this.nonActivatable === true) {
 				this.disabled = true
 			}

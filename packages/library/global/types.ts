@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-type Observer<T> = (value: T, oldValue: T) => void
-
 type AbstractConstructor<T> = abstract new (...args: Array<any>) => T
 
 type Constructor<T> = new (...args: Array<any>) => T
