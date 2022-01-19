@@ -22,12 +22,13 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	private popped = false
+	private _minimized = false
+
 	protected async pop(strategy: Exclude<DialogConfirmationStrategy, DialogConfirmationStrategy.Dialog> = DialogConfirmationStrategy.Tab) {
-		this.popped = true
+		this._minimized = true
 		this.open = false
 		const value = await this.confirm(strategy)
-		this.popped = false
+		this._minimized = false
 		this.close(value)
 	}
 
@@ -52,12 +53,10 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
 		if (this.dialogElement === undefined) {
 			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
 		}
 
-		this.open = true
 		this.dialogElement.primaryAction = this.primaryButtonAction.bind(this)
 		this.dialogElement.secondaryAction = this.secondaryButtonAction?.bind(this)
 		this.dialogElement.cancellationAction = this.cancellationAction?.bind(this)
@@ -69,7 +68,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 			// thus reaching the DialogComponent. This is blocked here.
 			const eventSourceWasNotDialog = (e.source instanceof Dialog) === false
 
-			if (eventSourceWasNotDialog || this.popped) {
+			if (eventSourceWasNotDialog || this._minimized) {
 				e.stopImmediatePropagation()
 				return
 			}
@@ -84,6 +83,9 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 			this.pop(DialogComponent.poppableConfirmationStrategy.value)
 			return
 		}
+
+		this.open = true
+		super.firstUpdated(props)
 	}
 
 	protected primaryButtonAction(): TResult | PromiseLike<TResult> {

@@ -25,6 +25,13 @@ function renderTemplate<T extends LitElement>(this: T, descriptor: PropertyDescr
 	}
 }
 
+function renderAllTemplates<T extends LitElement>(this: T) {
+	const constructor = this.constructor as unknown as LitElementWithCustomRenders
+	for (const [containerQuery, descriptor] of constructor.customRenders ?? []) {
+		renderTemplate.call(this, descriptor, containerQuery)
+	}
+}
+
 export const renderContainer = <T extends LitElement>(containerQuery: string) => {
 	return (prototype: T, _property: string, descriptor: PropertyDescriptor) => {
 		const constructor = prototype.constructor as unknown as LitElementWithCustomRenders
@@ -33,10 +40,12 @@ export const renderContainer = <T extends LitElement>(containerQuery: string) =>
 			const originalUpdated = prototype['updated']
 			prototype['updated'] = function (this: LitElementWithCustomRenders, changedProperties: PropertyValues) {
 				originalUpdated.call(this, changedProperties)
-				const c = this.constructor as unknown as LitElementWithCustomRenders
-				for (const [containerQuery, descriptor] of c.customRenders ?? []) {
-					renderTemplate.call(this, descriptor, containerQuery)
-				}
+				renderAllTemplates.call(this)
+			}
+			const firstUpdated = prototype['firstUpdated']
+			prototype['firstUpdated'] = function (this: LitElementWithCustomRenders, changedProperties: PropertyValues) {
+				firstUpdated.call(this, changedProperties)
+				renderAllTemplates.call(this)
 			}
 			// eslint-disable-next-line no-prototype-builtins
 		} else if (!constructor.hasOwnProperty('customRenders')) {
