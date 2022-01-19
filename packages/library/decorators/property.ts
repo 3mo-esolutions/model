@@ -12,7 +12,7 @@ export const updated = <T>(callback: UpdatedCallback<T>) => {
 	return (prototype: LitElement, propertyKey: PropertyKey) => {
 		const constructor = prototype.constructor as unknown as LitElementWithObservers
 		if (!constructor.observers) {
-			constructor.observers = new Map<PropertyKey, UpdatedCallback<any>>()
+			constructor.observers = new Map()
 			const originalUpdated = prototype['updated']
 			prototype['updated'] = function (this: LitElementWithObservers, changedProperties: PropertyValues) {
 				originalUpdated.call(this, changedProperties)
