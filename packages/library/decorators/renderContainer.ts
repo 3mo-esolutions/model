@@ -1,5 +1,4 @@
-import { LitElement, nothing, PropertyValues } from 'lit'
-import { render, } from '..'
+import { LitElement, nothing, PropertyValues, render } from 'lit'
 
 type LitElementWithCustomRenders = LitElement & {
 	customRenders?: Map<string, PropertyDescriptor>
