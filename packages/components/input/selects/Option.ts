@@ -11,7 +11,7 @@ export class Option<TData> extends ListItemCheckbox {
 	@property({
 		type: Boolean,
 		reflect: true,
-		observer(this: Option<TData>) {
+		updated(this: Option<TData>) {
 			if (!this.default) {
 				return
 			}

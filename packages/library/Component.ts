@@ -1,10 +1,6 @@
 import { LitElement } from 'lit'
 import { nothing, ComponentMixin } from '.'
 
-export interface ComponentConstructor extends Constructor<Component> {
-	observers: Map<PropertyKey, Observer<any>>
-}
-
 LitElement.enabledWarnings = []
 
 // REFACTOR: after https://github.com/microsoft/TypeScript/issues/35822 is solved,

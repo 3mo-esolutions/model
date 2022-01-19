@@ -10,7 +10,7 @@ export const enum MonacoEditorLanguage {
 @component('doc-monaco-editor')
 export class MonacoEditor extends Component {
 	@property({
-		observer(this: MonacoEditor) {
+		updated(this: MonacoEditor) {
 			if (this.editor) {
 				this.editor.value = this.value
 			}

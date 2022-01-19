@@ -3,7 +3,7 @@ import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-text')
 export class FieldText extends FieldTextBase {
-	@property({ type: Number, reflect: true, observer: counterChanged }) counter?: number
+	@property({ type: Number, reflect: true, updated: counterChanged }) counter?: number
 
 	@renderContainer('slot[name="trailingInternal"]')
 	protected get counterTemplate() {

@@ -22,7 +22,7 @@ export class List extends ComponentMixin(MwcList) {
 
 	@property({
 		reflect: true,
-		observer(this: List) {
+		updated(this: List) {
 			if (!this.value) {
 				return
 			}

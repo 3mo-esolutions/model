@@ -1,4 +1,4 @@
-import { PropertyValues, Component, ComponentConstructor, event, query } from '../../library'
+import { PropertyValues, Component, event, query } from '../../library'
 import { Page } from './Page'
 import type { PageHost } from './PageHost'
 
@@ -6,7 +6,7 @@ export type PageParameters = void | Record<string, string | number | undefined>
 
 export const enum PageNavigationStrategy { Page, Tab, Window }
 
-export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>>, ComponentConstructor {
+export interface PageComponentConstructor<T extends PageParameters> extends Constructor<PageComponent<T>> {
 	getHost(): Promise<PageHost>
 }
 

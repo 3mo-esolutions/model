@@ -11,7 +11,7 @@ export class TabBar extends ComponentMixin(MwcTabBar) {
 	@event() readonly navigate!: EventDispatcher<string | undefined>
 
 	@property({
-		observer(this: TabBar) {
+		updated(this: TabBar) {
 			this.updateTabs()
 		}
 	}) value?: string
