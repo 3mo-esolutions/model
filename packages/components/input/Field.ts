@@ -151,6 +151,7 @@ export abstract class Field<T> extends Input<T> {
 				transition: 0.1s ease-out;
 				background-color: transparent;
 				caret-color: var(--mo-accent);
+				text-align: inherit;
 			}
 
 			input:focus input::placeholder {
