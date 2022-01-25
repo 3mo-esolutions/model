@@ -18,6 +18,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
 	@property({ type: Number }) debounce = 500
+	@property({ type: Number }) optionsRenderLimit = FieldFetchableSelect.fetchedOptionsRenderLimit
 	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
 	@property({ type: Boolean, reflect: true }) protected fetching = false
 	@property({ type: Object }) optionTemplate?: typeof FieldFetchableSelect.prototype.getOptionTemplate
@@ -97,7 +98,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	private get fetchedOptions() { return Array.from(this.querySelectorAll<Option<T>>('mo-option[fetched]')) }
 	private set fetchedOptions(value) {
 		this.fetchedOptions.forEach(o => o.remove())
-		const optionsToAppend = value.slice(0, FieldFetchableSelect.fetchedOptionsRenderLimit)
+		const optionsToAppend = value.slice(0, this.optionsRenderLimit)
 		optionsToAppend.forEach(o => {
 			o.switchAttribute('fetched', true)
 			if (this.multiple) {
