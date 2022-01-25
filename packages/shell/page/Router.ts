@@ -48,31 +48,31 @@ export class Router {
 
 	private static readonly pageByRoute = new Map<string, PageConstructor>()
 
-	static initialize() {
+	static async initialize() {
 		const isHomePage = ['/', ''].includes(window.location.pathname)
 		if (isHomePage && Router._homePageConstructor) {
-			Router.navigateToPage(new Router._homePageConstructor())
+			await Router.navigateToPage(new Router._homePageConstructor())
 		} else {
-			Router.navigateToCurrentPage()
+			await Router.navigateToCurrentPage()
 		}
 
-		window.onpopstate = () => Router.navigateToCurrentPage()
+		window.addEventListener('popstate', () => Router.navigateToCurrentPage())
 	}
 
 	static register(route: string, page: PageConstructor) {
 		Router.pageByRoute.set(route, page)
 	}
 
-	static navigateToCurrentPage() {
+	static async navigateToCurrentPage() {
 		const currentPageConstructor = Router.getPageByPath()
 		const parameters = Router.getPageParametersByPath()
 		const page = currentPageConstructor ? new currentPageConstructor(parameters) : Router.notFoundPage
-		Router.navigateToPage(page)
+		await Router.navigateToPage(page)
 	}
 
-	static navigateToPage(page: Page) {
+	static async navigateToPage(page: Page) {
 		Router.setPathByPage(page)
-		page.navigate()
+		await page.navigate()
 	}
 
 	static setPathByPage(page: Page) {

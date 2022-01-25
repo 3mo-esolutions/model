@@ -35,7 +35,7 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	async navigate(strategy = PageNavigationStrategy.Page, force = false) {
 		const host = await this.getHost()
-		host.navigateToPage(this, strategy, force)
+		await host.navigateToPage(this, strategy, force)
 	}
 
 	protected refresh(parameters = this.parameters) {

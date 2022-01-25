@@ -59,7 +59,7 @@ export abstract class Application extends Component {
 	protected override async initialized() {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
 		await AuthenticationHelper.authenticateGloballyIfAvailable()
-		Router.initialize()
+		await Router.initialize()
 		window.dispatchEvent(new Event('MoDeL.initialized'))
 	}
 
