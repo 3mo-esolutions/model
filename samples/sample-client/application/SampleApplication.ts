@@ -9,6 +9,7 @@ export class Sample extends Application {
 	protected override get drawerTemplate() {
 		return html`
 			<mo-navigation-list-item icon='home' .component=${new PageHome}>Home</mo-navigation-list-item>
+			<mo-navigation-list-item icon='view_stream' .component=${new PageField}>Fields</mo-navigation-list-item>
 		`
 	}
 }

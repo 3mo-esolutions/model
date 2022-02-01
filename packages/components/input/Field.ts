@@ -135,7 +135,7 @@ export abstract class Field<T> extends Input<T> {
 	static override get styles() {
 		return css`
 			:host {
-				--mo-field-height: 45px;
+				--mo-field-height: 40px;
 				--mo-field-label-scale-value-on-focus: 0.75;
 				--mo-field-label-scale-on-focus: scale(var(--mo-field-label-scale-value-on-focus));
 				--mo-field-label-translate-value-on-focus: -50%;
@@ -152,8 +152,8 @@ export abstract class Field<T> extends Input<T> {
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
 				border-top-right-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
-				background-color: var(--mo-field-background);
-				border-bottom: 1px solid var(--mo-color-gray);
+				background-color: var(--mdc-text-field-fill-color);
+				border-bottom: 1px solid var(--mo-color-gray-transparent) ;
 				padding: 0 8px;
 				height: var(--mo-field-height);
 				justify-content: center;
@@ -171,6 +171,10 @@ export abstract class Field<T> extends Input<T> {
 			:host([disabled]) div[part=container], :host([disabled]) slot[name=trailingInternal] {
 				pointer-events: none;
 				opacity: 0.5;
+			}
+
+			:host([disabled]), :host([readonly]) {
+				cursor: not-allowed;
 			}
 
 			:host([readonly]) div[part=container], :host([readonly]) slot[name=trailingInternal] {
@@ -229,7 +233,7 @@ export abstract class Field<T> extends Input<T> {
 				width: 100%;
 				font-size: var(--mo-field-font-size);
 				outline: none;
-				padding: 0.7rem 0 0 0;
+				padding: 0.8rem 0 0 0;
 				height: calc(100% - 0.7rem);
 				color: var(--mo-color-foreground);
 				transition: 0.1s ease-out;
@@ -249,6 +253,10 @@ export abstract class Field<T> extends Input<T> {
 
 			:host([dense]) input:not(:placeholder-shown) ~ label {
 				visibility: hidden;
+			}
+
+			:host(:focus) label, input:focus ~ label, :host([open]) label, input:not(:placeholder-shown) ~ label {
+				font-size: var(--mo-field-font-size);
 			}
 
 			:host(:focus) label, input:focus ~ label, :host([open]) label {
