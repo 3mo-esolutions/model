@@ -30,16 +30,12 @@ export class LocalStorageEntry<T> {
 		if (value === undefined || value === 'undefined') {
 			return this.defaultValue
 		}
-		return this.isJson(value) ? JSON.parse(value, this.reviver) : value
+		return JSON.isJson(value) ? JSON.parse(value, this.reviver) : value
 	}
 
 	set value(obj: T) {
 		window.localStorage.setItem(this.name, JSON.stringify(obj))
 		this.changed.dispatch(obj)
 		LocalStorageContainer.changed.dispatch(this)
-	}
-
-	private isJson(text: string) {
-		return /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))
 	}
 }

@@ -1,4 +1,5 @@
 import './Promise'
+import './Json'
 import './KeyboardKey'
 import './CurrencyCode'
 import './LanguageCode'
