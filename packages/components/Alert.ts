@@ -80,6 +80,10 @@ export class Alert extends Component {
 		`
 	}
 
+	private get isCollapsible() {
+		return this.collapsible && this.heading
+	}
+
 	protected override get template() {
 		return html`
 			<mo-flex role='alert'>
@@ -109,7 +113,7 @@ export class Alert extends Component {
 	}
 
 	protected get expandIconTemplate() {
-		return !this.collapsible || !this.heading ? nothing : html`
+		return !this.isCollapsible ? nothing : html`
 			<mo-icon-button small alignSelf='center'
 				icon=${this.open ? 'expand_less' : 'expand_more'}
 				@click=${() => this.open = !this.open}
