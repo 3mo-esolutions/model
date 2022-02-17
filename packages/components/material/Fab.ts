@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, PropertyValues } from '../../library'
 import { MaterialIcon, TextContentController } from '..'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
@@ -19,6 +19,11 @@ export class Fab extends ComponentMixin(MwcFab) {
 		this.label = textContent
 		this.extended = !!textContent
 	})
+
+	protected override firstUpdated(props: PropertyValues) {
+		super.firstUpdated(props)
+		this.switchAttribute('mo-fab', true)
+	}
 }
 
 declare global {
