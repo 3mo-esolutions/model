@@ -1,5 +1,5 @@
 import { component, property, ComponentMixin } from '../../library'
-import { MaterialIcon } from '..'
+import { MaterialIcon, TextContentController } from '..'
 import { Tab as MwcTab } from '@material/mwc-tab'
 
 class MwcTabWithCompatibleMinWidth extends MwcTab {
@@ -20,16 +20,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
 export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
 	@property({ reflect: true }) value!: string
 	@property({ reflect: true }) override icon!: MaterialIcon
-
-	protected override initialized() {
-		if (this.textContent) {
-			this.label = this.textContent
-		}
-		new MutationObserver(() => this.label = this.textContent ?? '').observe(this, {
-			subtree: true,
-			characterData: true
-		})
-	}
+	protected readonly textContentController = new TextContentController(this, textContent => this.label = textContent)
 }
 
 declare global {

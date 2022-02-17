@@ -1,5 +1,5 @@
 import { component, property, ComponentMixin } from '../../library'
-import { MaterialIcon } from '..'
+import { MaterialIcon, TextContentController } from '..'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
 /**
@@ -15,19 +15,10 @@ import { Fab as MwcFab } from '@material/mwc-fab'
 export class Fab extends ComponentMixin(MwcFab) {
 	@property() override icon!: MaterialIcon
 
-	constructor() {
-		super()
-		new MutationObserver(() => {
-			if (this.textContent) {
-				this.label = this.textContent
-				this.extended = true
-			}
-		}).observe(this, {
-			subtree: true,
-			characterData: true,
-			childList: true,
-		})
-	}
+	protected readonly textContentController = new TextContentController(this, textContent => {
+		this.label = textContent
+		this.extended = !!textContent
+	})
 }
 
 declare global {
