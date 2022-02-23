@@ -53,10 +53,24 @@ export class FabGroup extends Component {
 		`
 	}
 
+	protected override connected() {
+		window.addEventListener('click', this.handleWindowClick)
+	}
+
+	protected override disconnected() {
+		window.removeEventListener('click', this.handleWindowClick)
+	}
+
+	private readonly handleWindowClick = (e: MouseEvent) => {
+		if (this.open && !this.contains(e.target as Node)) {
+			this.open = false
+		}
+	}
+
 	protected override get template() {
 		return html`
 			<mo-fab icon='add'
-				@click=${() => this.open = !this.open}
+				@click=${this.handleClick}
 			></mo-fab>
 
 			<mo-div position='absolute' bottom='0' right='0'>
@@ -65,6 +79,11 @@ export class FabGroup extends Component {
 				</mo-flex>
 			</mo-div>
 		`
+	}
+
+	private readonly handleClick = (e: MouseEvent) => {
+		e.stopImmediatePropagation()
+		this.open = !this.open
 	}
 
 	private updateFabElements() {
