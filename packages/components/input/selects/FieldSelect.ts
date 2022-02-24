@@ -28,7 +28,13 @@ export class FieldSelect<T> extends Field<Value> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) multiple = false
 	@property({ type: Boolean, updated(this: FieldSelect<T>) { this.inputElement.readOnly = !this.searchable } }) searchable = false
-	@property({ type: Boolean, reflect: true }) reflectDefault = false
+	@property({
+		type: Boolean,
+		reflect: true,
+		updated(this: FieldSelect<T>) {
+			Promise.delegateToEventLoop(() => this.value = this.value)
+		}
+	}) reflectDefault = false
 	@property()
 	get default() { return this.querySelector<Option<T>>('mo-option[default]')?.text }
 	set default(value) {
