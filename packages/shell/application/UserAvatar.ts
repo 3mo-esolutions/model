@@ -1,4 +1,4 @@
-import { state, html, component, Component, property, css } from '../../library'
+import { state, html, component, Component, property, css, nothing } from '../../library'
 import { AuthenticationHelper } from '..'
 import { DialogAuthenticator } from './DialogAuthenticator'
 
@@ -46,7 +46,7 @@ export class UserAvatar extends Component {
 	protected override get template() {
 		return html`
 			<mo-avatar @click=${() => this.menuOpen = !this.menuOpen}>
-				${this.avatarContent}
+				${this.avatarContentTemplate}
 			</mo-avatar>
 
 			<mo-menu .anchor=${this} corner='BOTTOM_START' activatable
@@ -54,15 +54,7 @@ export class UserAvatar extends Component {
 				@opened=${() => this.menuOpen = true}
 				@closed=${() => this.menuOpen = false}
 			>
-				<mo-list-item graphic='avatar' twoLine nonInteractive>
-					<span>${this.name}</span>
-					<span slot='secondary'>${this.user?.email}</span>
-					<mo-avatar slot='graphic'>
-						${this.avatarContent}
-					</mo-avatar>
-				</mo-list-item>
-
-				<li divider role='separator'></li>
+				${this.avatarTemplate}
 
 				<slot></slot>
 
@@ -76,7 +68,21 @@ export class UserAvatar extends Component {
 		`
 	}
 
-	private get avatarContent() {
+	private get avatarTemplate() {
+		return !DialogAuthenticator.authenticatedUser.value ? nothing : html`
+			<mo-list-item graphic='avatar' twoLine nonInteractive>
+				<span>${this.name}</span>
+				<span slot='secondary'>${this.user?.email}</span>
+				<mo-avatar slot='graphic'>
+					${this.avatarContentTemplate}
+				</mo-avatar>
+			</mo-list-item>
+
+			<li divider role='separator'></li>
+		`
+	}
+
+	private get avatarContentTemplate() {
 		return this.user ? this.initials : html`
 			<mo-icon-button icon='account_circle' @click=${() => AuthenticationHelper.authenticateGloballyIfAvailable()}></mo-icon-button>
 		`
