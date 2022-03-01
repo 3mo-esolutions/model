@@ -5,7 +5,7 @@ import { HttpErrorCode } from '../..'
 @component('mo-page-error')
 export class PageError extends PageComponent<{ readonly error: HttpErrorCode, readonly message?: string }> {
 	// TODO: Localize
-	private readonly errors = new Map<HttpErrorCode, { readonly emoji?: string, readonly defaultMessage: string }>([
+	private static readonly errors = new Map<HttpErrorCode, { readonly emoji?: string, readonly defaultMessage: string }>([
 		[HttpErrorCode.BadRequest, { emoji: '😟', defaultMessage: 'Bad Request' }],
 		[HttpErrorCode.Unauthorized, { emoji: '⛔', defaultMessage: 'Unauthorized' }],
 		[HttpErrorCode.PaymentRequired, { emoji: '🤑', defaultMessage: 'Payment Required' }],
@@ -64,7 +64,7 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 				<mo-flex gap='var(--mo-thickness-xl)' alignItems='center' justifyContent='center'>
 					<mo-div class='code'>${this.errorTemplate}</mo-div>
 					<mo-flex gap='var(--mo-thickness-m)'>
-						<mo-heading typography='heading1' textAlign='center'>${this.parameters.message ?? this.errors.get(this.parameters.error)?.defaultMessage}</mo-heading>
+						<mo-heading typography='heading1' textAlign='center'>${this.parameters.message ?? PageError.errors.get(this.parameters.error)?.defaultMessage}</mo-heading>
 						<mo-heading typography='heading3' textAlign='center'>Open the menu and navigate to a page</mo-heading>
 					</mo-flex>
 				</mo-flex>
@@ -73,7 +73,7 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 	}
 
 	private get errorTemplate() {
-		const error = this.errors.get(this.parameters.error)
+		const error = PageError.errors.get(this.parameters.error)
 		const errorCode = String(this.parameters.error)
 		return !error?.emoji ? html`
 			<span>${errorCode}</span>
