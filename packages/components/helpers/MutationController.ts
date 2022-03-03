@@ -1,10 +1,10 @@
-import { ReactiveController, ReactiveControllerHost } from '../../library'
+import { Controller, ReactiveControllerHost } from '../../library'
 
-export class MutationController extends ReactiveController<Node> {
+export class MutationController extends Controller {
 	protected observer?: MutationObserver
 
 	constructor(
-		host: ReactiveControllerHost & Node,
+		protected override readonly host: ReactiveControllerHost & Node,
 		private readonly callback: MutationCallback,
 		private readonly options: MutationObserverInit = { childList: true },
 	) { super(host) }

@@ -15,7 +15,7 @@ export * from './decorators'
 export * from './StyleMixin'
 export * from './ComponentMixin'
 export * from './Component'
-export * from './ReactiveController'
+export * from './Controller'
 import './global'
 
 import { TemplateResult, nothing as nothingTemplate } from 'lit-html'
