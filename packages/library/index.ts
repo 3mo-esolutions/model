@@ -1,5 +1,5 @@
 /* eslint-disable import/no-internal-modules */
-export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues, ReactiveController, ReactiveControllerHost, ReactiveElement } from 'lit'
+export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, PropertyValues, ReactiveControllerHost, ReactiveElement } from 'lit'
 export { customElement as component, queryAsync } from 'lit/decorators.js'
 export * from 'lit/directive.js'
 export { render } from 'lit-html'
@@ -15,6 +15,7 @@ export * from './decorators'
 export * from './StyleMixin'
 export * from './ComponentMixin'
 export * from './Component'
+export * from './ReactiveController'
 import './global'
 
 import { TemplateResult, nothing as nothingTemplate } from 'lit-html'

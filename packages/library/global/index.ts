@@ -1,5 +1,6 @@
 import './clone'
 import './deepActiveElement'
+import './HTMLSlotElement'
 import './event'
 import './helpers'
 import './types'

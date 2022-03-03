@@ -1,45 +1,29 @@
 import { Component, component, css, html, property } from '../../../library'
 import { Splitter } from './Splitter'
 
-// REFACTOR: use lit-html for templating
 @component('mo-splitter-item')
 export class SplitterItem extends Component {
-	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) size = ''
-	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) min = '50px'
-	@property({ reflect: true, updated(this: SplitterItem) { this.calculateStyles() } }) max = ''
+	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) size?: string
+	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) min = '50px'
+	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) max?: string
 
 	private get splitter() {
 		return this.parentElement as Splitter
 	}
 
-	calculateStyles() {
-		switch (this.splitter.direction ?? 'vertical') {
-			case 'horizontal':
-			case 'horizontal-reversed':
-				this.style.width = this.size
-				this.style.minWidth = this.min
-				this.style.maxWidth = this.max
-				this.style.flexDirection = 'column'
-				break
-			case 'vertical':
-			case 'vertical-reversed':
-				this.style.height = this.size
-				this.style.minHeight = this.min
-				this.style.maxHeight = this.max
-				this.style.flexDirection = 'row'
-				break
-		}
-	}
-
 	static override get styles() {
 		return css`
 			:host {
-				display: flex;
-				user-select: none;
+				overflow: hidden;
+				position: relative;
+				display: block;
+				height: 100%;
+				width: 100%;
 			}
 
 			::slotted(:first-child) {
-				flex: 1;
+				height: 100%;
+				width: 100%;
 			}
 		`
 	}

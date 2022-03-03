@@ -1,26 +1,16 @@
-import { ReactiveController, ReactiveControllerHost } from '../../library'
+import { ReactiveControllerHost } from '../../library'
+import { MutationController } from './MutationController'
 
-export class TextContentController implements ReactiveController {
-	protected observer?: MutationObserver
-
+export class TextContentController extends MutationController {
 	constructor(
-		private readonly host: ReactiveControllerHost & Node,
-		private readonly textContentChanged: (textContent: string) => void,
-		private readonly options: MutationObserverInit = {
+		host: ReactiveControllerHost & Node,
+		textContentChanged: (textContent: string) => void,
+	) {
+		super(host, () => textContentChanged(this.textContent), {
 			subtree: true,
 			characterData: true,
 			childList: true,
-		}
-	) { this.host.addController(this) }
-
-	hostConnected() {
-		this.textContentChanged(this.textContent)
-		this.observer = new MutationObserver(() => this.textContentChanged(this.textContent))
-		this.observer.observe(this.host, this.options)
-	}
-
-	hostDisconnected() {
-		this.observer?.disconnect()
+		})
 	}
 
 	private get textContent() {
