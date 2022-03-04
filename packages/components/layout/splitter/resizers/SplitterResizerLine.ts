@@ -29,7 +29,7 @@ export class SplitterResizerLine extends SplitterResizer {
 			}
 
 			:host([hostDirection=horizontal][hostHover]), :host([hostDirection=horizontal][hostResizing]), :host([hostDirection=horizontal-reversed][hostHover]), :host([hostDirection=horizontal-reversed][hostResizing]) {
-				transform: var(--mo-splitter-resizer-line-vertical-transform, scaleX(2));
+				transform: var(--mo-splitter-resizer-line-horizontal-transform, scaleX(2));
 			}
 		`
 	}
