@@ -1,4 +1,4 @@
-import { html, component, Component, css, property } from '../../library'
+import { html, component, Component, css, property, eventListener } from '../../library'
 import { Fab } from '.'
 
 @component('mo-fab-group')
@@ -53,15 +53,8 @@ export class FabGroup extends Component {
 		`
 	}
 
-	protected override connected() {
-		window.addEventListener('click', this.handleWindowClick)
-	}
-
-	protected override disconnected() {
-		window.removeEventListener('click', this.handleWindowClick)
-	}
-
-	private readonly handleWindowClick = (e: MouseEvent) => {
+	@eventListener({ target: window, type: 'click' })
+	protected handleWindowClick(e: MouseEvent) {
 		if (this.open && !this.contains(e.target as Node)) {
 			this.open = false
 		}

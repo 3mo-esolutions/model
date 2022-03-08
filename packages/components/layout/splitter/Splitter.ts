@@ -1,4 +1,4 @@
-import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined } from '../../../library'
+import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener } from '../../../library'
 import { SplitterItem, CSSDirection, MutationController, SplitterResizerHost } from '../..'
 import * as CSS from 'csstype'
 
@@ -26,14 +26,6 @@ export class Splitter extends Component {
 		this.requestUpdate()
 	})
 
-	protected override connected() {
-		window.addEventListener('mousemove', this.handleMouseMove)
-	}
-
-	protected override disconnected() {
-		window.removeEventListener('mousemove', this.handleMouseMove)
-	}
-
 	static override get styles() {
 		return css`
 			:host {
@@ -54,6 +46,31 @@ export class Splitter extends Component {
 				z-index: 1;
 			}
 		`
+	}
+
+	@eventListener({ target: window, type: 'mousemove' })
+	protected handleMouseMove(e: MouseEvent) {
+		const resizingResizer = this.resizerElements.find(r => r.resizing)
+		const resizingItem = !resizingResizer ? undefined : this.items[this.resizerElements.indexOf(resizingResizer)]
+		if (resizingItem) {
+			const oldTotalSize = this.totalSize
+			const { clientX, clientY } = e
+			const { left, top, right, bottom } = resizingItem.getBoundingClientRect()
+
+			const getSize = () => {
+				switch (this.direction) {
+					case 'horizontal':
+						return clientX - left
+					case 'horizontal-reversed':
+						return right - clientX
+					case 'vertical':
+						return clientY - top
+					case 'vertical-reversed':
+						return bottom - clientY
+				}
+			}
+			resizingItem.size = `${getSize() / oldTotalSize * 100}%`
+		}
 	}
 
 	protected override get template() {
@@ -96,37 +113,11 @@ export class Splitter extends Component {
 		`
 	}
 
-	private readonly handleMouseMove = (e: MouseEvent) => {
-		const resizingResizer = this.resizerElements.find(r => r.resizing)
-		const resizingItem = !resizingResizer ? undefined : this.items[this.resizerElements.indexOf(resizingResizer)]
-		if (resizingItem) {
-			const oldTotalSize = this.totalSize
-			const { clientX, clientY } = e
-			const { left, top, right, bottom } = resizingItem.getBoundingClientRect()
-
-			const getSize = () => {
-				switch (this.direction) {
-					case 'horizontal':
-						return clientX - left
-					case 'horizontal-reversed':
-						return right - clientX
-					case 'vertical':
-						return clientY - top
-					case 'vertical-reversed':
-						return bottom - clientY
-				}
-			}
-			resizingItem.size = `${getSize() / oldTotalSize * 100}%`
-		}
-	}
-
 	private get totalSize() {
 		const clientRect = this.getBoundingClientRect()
-		return this.isHorizontal ? clientRect.width : clientRect.height
-	}
-
-	private get isHorizontal() {
 		return this.direction === 'horizontal' || this.direction === 'horizontal-reversed'
+			? clientRect.width
+			: clientRect.height
 	}
 }
 

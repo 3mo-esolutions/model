@@ -1,6 +1,6 @@
 import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues } from '../../library'
 import { Snackbar } from '..'
-import { ComponentMixin } from '../..'
+import { ComponentMixin, eventListener } from '../..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
@@ -171,19 +171,8 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	// 	`
 	// }
 
-	override connectedCallback() {
-		super.connectedCallback()
-		window.addEventListener('beforeunload', this.handleBeforeUnload)
-		document.addEventListener('keydown', this.handleKeyDown)
-	}
-
-	override disconnectedCallback() {
-		super.disconnectedCallback()
-		window.removeEventListener('beforeunload', this.handleBeforeUnload)
-		document.removeEventListener('keydown', this.handleKeyDown)
-	}
-
-	private readonly handleKeyDown = async (e: KeyboardEvent) => {
+	@eventListener({ target: document, type: 'keydown' })
+	protected async handleKeyDown(e: KeyboardEvent) {
 		if (this.isActiveDialog) {
 			if (this.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
 				(document.deepActiveElement as HTMLElement).blur()
@@ -192,7 +181,8 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private readonly handleBeforeUnload = () => {
+	@eventListener({ target: window, type: 'beforeunload' })
+	protected handleBeforeUnload() {
 		if (this.boundToWindow) {
 			this.handleAction('cancellation')
 		}

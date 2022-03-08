@@ -1,4 +1,4 @@
-import { component, html, Component, css, property, event, query } from '../../../library'
+import { component, html, Component, css, property, event, query, eventListener } from '../../../library'
 import { CSSDirection, SplitterResizer } from '../..'
 
 /**
@@ -19,37 +19,27 @@ export class SplitterResizerHost extends Component {
 		return [...this.slotElement.slottedElements].find(e => e instanceof SplitterResizer) as SplitterResizer | undefined
 	}
 
-	protected override connected() {
-		this.addEventListener('mousedown', this.handleMouseDown)
-		window.addEventListener('mouseup', this.handleWindowMouseUp)
-		this.addEventListener('mouseenter', this.handleMouseEnter)
-		this.addEventListener('mouseleave', this.handleMouseLeave)
-	}
-
-	protected override disconnected() {
-		this.removeEventListener('mousedown', this.handleMouseDown)
-		window.removeEventListener('mouseup', this.handleWindowMouseUp)
-		this.removeEventListener('mouseenter', this.handleMouseEnter)
-		this.removeEventListener('mouseleave', this.handleMouseLeave)
-	}
-
-	private readonly handleMouseDown = () => {
+	@eventListener('mousedown')
+	protected handleMouseDown() {
 		this.resizing = true
 		!this.resizerElement ? void 0 : this.resizerElement.hostResizing = true
 		this.resizeStart.dispatch()
 	}
 
-	private readonly handleWindowMouseUp = () => {
+	@eventListener({ target: window, type: 'mouseup' })
+	protected handleWindowMouseUp() {
 		this.resizing = false
 		!this.resizerElement ? void 0 : this.resizerElement.hostResizing = false
 		this.resizeStop.dispatch()
 	}
 
-	private readonly handleMouseEnter = () => {
+	@eventListener('mouseenter')
+	protected handleMouseEnter() {
 		!this.resizerElement ? void 0 : this.resizerElement.hostHover = true
 	}
 
-	private readonly handleMouseLeave = () => {
+	@eventListener('mouseleave')
+	protected handleMouseLeave() {
 		!this.resizerElement ? void 0 : this.resizerElement.hostHover = false
 	}
 
