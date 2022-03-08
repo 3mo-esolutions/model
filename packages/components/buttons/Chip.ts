@@ -1,5 +1,5 @@
 import { component, css, html, renderContainer, nothing, property, event } from '../../library'
-import { Button } from '..'
+import { Button, ButtonType } from '..'
 
 /**
  * @fires delete {CustomEvent}
@@ -10,7 +10,7 @@ export class Chip extends Button {
 
 	@property({ type: Boolean, reflect: true }) hasDelete = false
 
-	override unelevated = true
+	override type = ButtonType.Unelevated
 
 	static override get styles() {
 		return [
@@ -40,6 +40,10 @@ export class Chip extends Button {
 	}
 
 	@renderContainer('slot[name="trailingIcon"]')
+	protected get trailingTemplate() {
+		return this.deleteIconButtonTemplate
+	}
+
 	protected get deleteIconButtonTemplate() {
 		return !this.hasDelete ? nothing : html`
 			<mo-icon-button small icon='cancel' fontSize='16px'

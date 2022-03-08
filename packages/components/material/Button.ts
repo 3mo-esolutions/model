@@ -6,6 +6,7 @@ export const enum ButtonType {
 	Normal = 'normal',
 	Outlined = 'outlined',
 	Raised = 'raised',
+	Unelevated = 'unelevated',
 }
 
 /**
@@ -24,7 +25,7 @@ export class Button extends ComponentMixin(MwcButton) {
 		updated(this: Button) {
 			this.outlined = this.type === ButtonType.Outlined
 			this.raised = this.type === ButtonType.Raised
-			this.unelevated = false
+			this.unelevated = this.type === ButtonType.Unelevated
 		}
 	}) type = ButtonType.Normal
 
