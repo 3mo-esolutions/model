@@ -1,36 +1,36 @@
 export class KeyboardHelper {
-	private static _ctrlPressed = false
-	static get ctrlPressed() { return this._ctrlPressed }
+	private static _ctrl = false
+	static get ctrl() { return this._ctrl }
 
-	private static _shiftPressed = false
-	static get shiftPressed() { return this._shiftPressed }
+	private static _shift = false
+	static get shift() { return this._shift }
 
-	private static _altPressed = false
-	static get altPressed() { return this._altPressed }
+	private static _alt = false
+	static get alt() { return this._alt }
 
-	private static _metaPressed = false
-	static get metaPressed() { return this._metaPressed }
+	private static _meta = false
+	static get meta() { return this._meta }
 
 	static initialize() {
 		window.addEventListener('keydown', e => {
-			KeyboardHelper._ctrlPressed = e.ctrlKey
-			KeyboardHelper._shiftPressed = e.shiftKey
-			KeyboardHelper._altPressed = e.altKey
-			KeyboardHelper._metaPressed = e.metaKey
+			KeyboardHelper._ctrl = e.ctrlKey
+			KeyboardHelper._shift = e.shiftKey
+			KeyboardHelper._alt = e.altKey
+			KeyboardHelper._meta = e.metaKey
 		})
 
 		window.addEventListener('keyup', e => {
-			KeyboardHelper._ctrlPressed = e.ctrlKey
-			KeyboardHelper._shiftPressed = e.shiftKey
-			KeyboardHelper._altPressed = e.altKey
-			KeyboardHelper._metaPressed = e.metaKey
+			KeyboardHelper._ctrl = e.ctrlKey
+			KeyboardHelper._shift = e.shiftKey
+			KeyboardHelper._alt = e.altKey
+			KeyboardHelper._meta = e.metaKey
 		})
 
 		window.addEventListener('blur', () => {
-			KeyboardHelper._ctrlPressed = false
-			KeyboardHelper._shiftPressed = false
-			KeyboardHelper._altPressed = false
-			KeyboardHelper._metaPressed = false
+			KeyboardHelper._ctrl = false
+			KeyboardHelper._shift = false
+			KeyboardHelper._alt = false
+			KeyboardHelper._meta = false
 		})
 	}
 }
