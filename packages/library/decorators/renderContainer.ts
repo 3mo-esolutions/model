@@ -1,59 +1,38 @@
-import { LitElement, nothing, PropertyValues, render } from 'lit'
+import { LitElement, nothing, render } from 'lit'
+import { decorateLitElement } from './decorateLitElement'
 
-type LitElementWithCustomRenders = LitElement & {
-	customRenders?: Map<string, PropertyDescriptor>
-}
-
-function extractTemplate<T extends LitElement>(this: T, descriptor: PropertyDescriptor) {
-	if (typeof descriptor.get === 'function') {
-		return descriptor.get.call(this)
-	}
-
-	if (typeof descriptor.value === 'function') {
-		return descriptor.value.call(this)
-	}
-
-	return nothing
-}
-
-
-function renderTemplate<T extends LitElement>(this: T, descriptor: PropertyDescriptor, containerQuery: string) {
-	const template = extractTemplate.call(this, descriptor)
-	const container = this.shadowRoot?.querySelector<HTMLElement>(containerQuery)
-	if (container) {
-		render(template, container)
+export const renderContainer = (containerQuery: string) => {
+	return (prototype: LitElement, _property: string, descriptor: PropertyDescriptor) => {
+		decorateLitElement({
+			prototype,
+			constructorPropertyName: '$customRenders$',
+			initialValue: new Map,
+			lifecycleHooks: new Map([
+				['firstUpdated', renderAllTemplates],
+				['updated', renderAllTemplates],
+			])
+		}).set(containerQuery, descriptor)
 	}
 }
 
-function renderAllTemplates<T extends LitElement>(this: T) {
-	const constructor = this.constructor as unknown as LitElementWithCustomRenders
-	for (const [containerQuery, descriptor] of constructor.customRenders ?? []) {
-		renderTemplate.call(this, descriptor, containerQuery)
-	}
-}
-
-export const renderContainer = <T extends LitElement>(containerQuery: string) => {
-	return (prototype: T, _property: string, descriptor: PropertyDescriptor) => {
-		const constructor = prototype.constructor as unknown as LitElementWithCustomRenders
-		if (!constructor.customRenders) {
-			constructor.customRenders = new Map()
-			const originalUpdated = prototype['updated']
-			prototype['updated'] = function (this: LitElementWithCustomRenders, changedProperties: PropertyValues) {
-				originalUpdated.call(this, changedProperties)
-				renderAllTemplates.call(this)
-			}
-			const firstUpdated = prototype['firstUpdated']
-			prototype['firstUpdated'] = function (this: LitElementWithCustomRenders, changedProperties: PropertyValues) {
-				firstUpdated.call(this, changedProperties)
-				renderAllTemplates.call(this)
-			}
-			// eslint-disable-next-line no-prototype-builtins
-		} else if (!constructor.hasOwnProperty('customRenders')) {
-			// clone any existing customRenders of superclasses
-			const customRenders = constructor.customRenders
-			constructor.customRenders = new Map()
-			customRenders.forEach((key, value) => constructor.customRenders?.set(value, key))
+function renderAllTemplates(this: LitElement, customRenders: Map<string, PropertyDescriptor>) {
+	const extractTemplate = (descriptor: PropertyDescriptor) => {
+		if (typeof descriptor.get === 'function') {
+			return descriptor.get.call(this)
 		}
-		constructor.customRenders.set(containerQuery, descriptor)
+
+		if (typeof descriptor.value === 'function') {
+			return descriptor.value.call(this)
+		}
+
+		return nothing
+	}
+
+	for (const [containerQuery, descriptor] of customRenders) {
+		const template = extractTemplate(descriptor)
+		const container = this.shadowRoot?.querySelector<HTMLElement>(containerQuery)
+		if (container) {
+			render(template, container)
+		}
 	}
 }
