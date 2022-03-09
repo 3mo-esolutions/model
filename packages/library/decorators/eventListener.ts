@@ -20,60 +20,63 @@ function extractArguments(args: EventListenerDecoratorOptions) {
 }
 
 export const eventListener = (...eventListenerOptions: EventListenerDecoratorOptions) => {
-	return (prototype: LitElement, property: string, descriptor?: PropertyDescriptor) => {
-		decorateLitElement<Map<string, ReturnType<typeof extractArguments> & { descriptor?: PropertyDescriptor }>>({
+	return (prototype: LitElement, propertyKey: string, descriptor?: PropertyDescriptor) => {
+		decorateLitElement<Map<any, ReturnType<typeof extractArguments> & { descriptor?: PropertyDescriptor, property: string }>>({
 			prototype,
 			constructorPropertyName: '$eventListeners$',
 			initialValue: new Map,
 			lifecycleHooks: new Map([
 				['connectedCallback', function (this, eventListeners) {
-					for (const [propertyKey, { type, target, options, descriptor }] of eventListeners) {
-						const eventTarget = target ?? this
-						eventTarget.addEventListener(type, extractListener.call(this, propertyKey, descriptor), options)
+					for (const [key, { type, target, options, descriptor, property }] of eventListeners) {
+						if (this.constructor.name === extractConstructorNameFromUniquePropertyKey(key)) {
+							defineBoundListener.call(this, property, descriptor)
+							const eventTarget = target ?? this
+							eventTarget.addEventListener(type, getBoundListener.call(this, property), options)
+						}
 					}
 				}],
 				['disconnectedCallback', function (this, eventListeners) {
-					for (const [propertyKey, { type, target, descriptor, options }] of eventListeners) {
+					for (const { type, target, options, property } of eventListeners.values()) {
 						const eventTarget = target ?? this
-						eventTarget.removeEventListener(type, extractListener.call(this, propertyKey, descriptor), options)
+						eventTarget.removeEventListener(type, getBoundListener.call(this, property), options)
 					}
 				}],
 			])
-		}).set(property, { ...extractArguments(eventListenerOptions), descriptor })
+		}).set(getUniquePropertyKey(prototype.constructor, propertyKey), { descriptor, property: propertyKey, ...extractArguments(eventListenerOptions) })
 	}
 }
 
-function extractListener(this: LitElement, propertyKey: string, descriptor?: PropertyDescriptor) {
-	const fn = !descriptor
+const getUniquePropertyKey = (constructor: any, property: string) => `${constructor.name}.${property}`
+const extractConstructorNameFromUniquePropertyKey = (uniquePropertyKey: string) => uniquePropertyKey.split('.')[0]
+
+function getBoundListener(this: LitElement, propertyKey: string) {
+	return Object.getOwnPropertyDescriptor(this, getBoundMethodKey(propertyKey))?.value
+}
+
+function defineBoundListener(this: LitElement, propertyKey: string, descriptor?: PropertyDescriptor) {
+	const unboundFuction = !descriptor
 		? Object.getOwnPropertyDescriptor(this, propertyKey)?.value
 		: typeof descriptor.get === 'function'
 			? descriptor.get
 			: descriptor.value
 
-	const isEventListenerOrEventListenerObject = (listener: unknown): listener is EventListenerOrEventListenerObject => {
-		const isListener = typeof listener === 'function'
-		// @ts-expect-error in operator does not narrow down the type
-		const isListenerObject = typeof listener === 'object' && listener !== null && 'handleEvent' in listener && typeof listener.handleEvent === 'function'
-		return isListener || isListenerObject
+	if (isEventListenerOrEventListenerObject(unboundFuction) === false) {
+		throw new TypeError(`${getUniquePropertyKey(this.constructor, propertyKey)} is not a function`)
 	}
 
-	if (isEventListenerOrEventListenerObject(fn) === false) {
-		throw new TypeError(`${this.constructor.name}${propertyKey} is not a function`)
-	}
-
-	const boundFunctionKey = `'BOUND_'${propertyKey}`
-
-	if (this.constructor.hasOwnProperty(boundFunctionKey)) {
-		return Object.getOwnPropertyDescriptor(this.constructor, boundFunctionKey)?.value
-	}
-
-	const boundFunction = fn.bind(this)
-	Object.defineProperty(this.constructor, boundFunctionKey, {
-		value: boundFunction,
-		configurable: false,
+	Object.defineProperty(this, getBoundMethodKey(propertyKey), {
+		value: unboundFuction.bind(this),
+		configurable: true,
 		enumerable: false,
 		writable: false,
 	})
+}
 
-	return boundFunction
+const getBoundMethodKey = (method: string) => `$BOUND_${method}$`
+
+const isEventListenerOrEventListenerObject = (listener: unknown): listener is EventListenerOrEventListenerObject => {
+	const isListener = typeof listener === 'function'
+	// @ts-expect-error 'in' operator seemingly does not narrow down the type
+	const isListenerObject = typeof listener === 'object' && listener !== null && 'handleEvent' in listener && typeof listener.handleEvent === 'function'
+	return isListener || isListenerObject
 }
