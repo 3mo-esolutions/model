@@ -1,5 +1,4 @@
-import { query } from 'lit-element'
-import { component, css, property, html, PropertyValues, event } from '../../library'
+import { component, css, property, html, PropertyValues, event, query } from '../../library'
 import { Flex, ListItem, Menu } from '../../components'
 import { ContextMenu } from '..'
 

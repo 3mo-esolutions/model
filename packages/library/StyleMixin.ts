@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { property } from 'lit-element'
+import { property } from 'lit/decorators.js'
 import * as CSS from 'csstype'
 import { CssHelper } from '../..'
 

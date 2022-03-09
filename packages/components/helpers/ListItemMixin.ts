@@ -1,5 +1,4 @@
-import { render, query, css, html, event, CSSResult } from '../../library'
-import { property } from 'lit-element'
+import { render, query, css, html, event, CSSResult, property } from '../../library'
 import { MaterialIcon } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 

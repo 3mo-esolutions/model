@@ -1,5 +1,5 @@
-import { html, PropertyValues, query } from '../../library'
-import { property, LitElement } from 'lit-element'
+import { html, PropertyValues, query, property } from '../../library'
+import { LitElement } from 'lit'
 import '@material/mwc-formfield'
 
 export const LabelMixin = <T extends Constructor<LitElement>>(Constructor: T) => {
