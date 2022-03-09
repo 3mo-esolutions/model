@@ -30,7 +30,7 @@ export class Section extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex width='100%' height='100%'>
-				<mo-flex minHeight='35px' direction='horizontal' alignItems='center'>
+				<mo-flex minHeight='30px' direction='horizontal' alignItems='center' style='border-bottom: 1px solid var(--mo-color-transparent-gray-3)' margin='0 0 var(--mo-thickness-xl) 0'>
 					<slot name='heading'>
 						${this.headingTemplate}
 					</slot>
@@ -44,7 +44,7 @@ export class Section extends Component {
 
 	protected get headingTemplate() {
 		return html`
-			<mo-heading part='heading' typography='heading6' foreground='var(--mo-accent)' style='text-transform: uppercase'>
+			<mo-heading part='heading' typography='heading6' foreground='var(--mo-color-on-surface)'>
 				${this.heading}
 			</mo-heading>
 		`
