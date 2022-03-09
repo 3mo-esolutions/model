@@ -21,11 +21,6 @@ export class Section extends Component {
 				position: relative;
 			}
 
-			/* slot[name=heading] {
-				display: block;
-				flex: 1;
-			} */
-
 			mo-heading {
 				margin: 8px 4px 8px 0;
 			}
