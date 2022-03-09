@@ -18,14 +18,9 @@ export class Section extends Component {
 		return css`
 			:host {
 				display: block;
-				position: relative;
 			}
 
-			mo-heading {
-				margin: 8px 4px 8px 0;
-			}
-
-			slot[name=action] {
+			slot[name=action], slot[name=heading], slot[name=heading]::slotted(*) {
 				color: var(--mo-accent);
 			}
 		`
@@ -33,8 +28,8 @@ export class Section extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex width='100%' height='100%'>
-				<mo-flex minHeight='30px' direction='horizontal' alignItems='center' ?hidden=${this.heading.length === 0}>
+			<mo-flex width='100%' height='100%' gap='var(--mo-thickness-l)'>
+				<mo-flex minHeight='30px' direction='horizontal' alignItems='center'>
 					<slot name='heading'>
 						${this.headingTemplate}
 					</slot>
@@ -48,7 +43,7 @@ export class Section extends Component {
 
 	protected get headingTemplate() {
 		return html`
-			<mo-heading part='heading' typography='heading4' foreground='var(--mo-accent)' fontWeight='500'>
+			<mo-heading part='heading' typography='heading4' fontWeight='500'>
 				${this.heading}
 			</mo-heading>
 		`
