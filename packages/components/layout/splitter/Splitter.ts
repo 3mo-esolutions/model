@@ -30,7 +30,6 @@ export class Splitter extends Component {
 		return css`
 			:host {
 				display: block;
-				overflow: hidden;
 			}
 
 			:host([resizing]) {
