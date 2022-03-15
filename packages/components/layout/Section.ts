@@ -20,17 +20,16 @@ export class Section extends Component {
 				display: block;
 			}
 
-			slot[name=heading] {
-				display: block;
-				flex: 1;
+			slot[name=action], slot[name=heading], slot[name=heading]::slotted(*) {
+				color: var(--mo-accent);
 			}
 		`
 	}
 
 	protected override get template() {
 		return html`
-			<mo-flex width='100%' height='100%'>
-				<mo-flex minHeight='35px' direction='horizontal' alignItems='center'>
+			<mo-flex width='100%' height='100%' gap='var(--mo-thickness-l)'>
+				<mo-flex minHeight='30px' direction='horizontal' alignItems='center'>
 					<slot name='heading'>
 						${this.headingTemplate}
 					</slot>
@@ -44,7 +43,7 @@ export class Section extends Component {
 
 	protected get headingTemplate() {
 		return html`
-			<mo-heading part='heading' typography='heading6' foreground='var(--mo-accent)' style='text-transform: uppercase'>
+			<mo-heading part='heading' typography='heading4' fontWeight='500'>
 				${this.heading}
 			</mo-heading>
 		`
