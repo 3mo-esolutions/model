@@ -25,7 +25,8 @@ const sharedConfigs = {
 			patterns: [
 				{
 					from: 'node_modules/@3mo/model/www/',
-					to: ''
+					to: '',
+					noErrorOnMissing: true
 				}
 			]
 		})
