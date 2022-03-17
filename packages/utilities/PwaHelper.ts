@@ -11,18 +11,18 @@ export class PwaHelper {
 	}
 
 	static async registerServiceWorker() {
+		if (MoDeL.environment === 'test') {
+			return
+		}
+
 		const serviceWorkerContainer = navigator.serviceWorker as ServiceWorkerContainer | undefined
 
 		if (!serviceWorkerContainer?.controller) {
 			return
 		}
 
-		if (MoDeL.environment === 'test') {
-			return
-		}
-
 		if (MoDeL.environment === 'development') {
-			const serviceWorkers = await navigator.serviceWorker.getRegistrations()
+			const serviceWorkers = await serviceWorkerContainer.getRegistrations()
 			serviceWorkers.forEach(serviceWorker => serviceWorker.unregister())
 			return
 		}
