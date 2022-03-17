@@ -62,7 +62,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	override async confirm(...args: Parameters<typeof DialogComponent.prototype.confirm>) {
+	override async confirm(...args: Parameters<DialogComponent['confirm']>) {
 		if (this.preventNextAutomaticAuthentication === true) {
 			this.preventNextAutomaticAuthentication = false
 			return super.confirm(...args)

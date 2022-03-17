@@ -21,9 +21,9 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	@property({ type: Number }) optionsRenderLimit = FieldFetchableSelect.fetchedOptionsRenderLimit
 	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
 	@property({ type: Boolean, reflect: true }) protected fetching = false
-	@property({ type: Object }) optionTemplate?: typeof FieldFetchableSelect.prototype.getOptionTemplate
-	@property({ type: Object }) searchParameters?: typeof FieldFetchableSelect.prototype.getSearchParameters
-	@property({ type: Object }) fetch: typeof FieldFetchableSelect.prototype.fetchData = () => Promise.resolve([])
+	@property({ type: Object }) optionTemplate?: FieldFetchableSelect<T, TDataFetcherParameters>['getOptionTemplate']
+	@property({ type: Object }) searchParameters?: FieldFetchableSelect<T, TDataFetcherParameters>['getSearchParameters']
+	@property({ type: Object }) fetch: FieldFetchableSelect<T, TDataFetcherParameters>['fetchData'] = () => Promise.resolve([])
 
 	static override get styles() {
 		return css`

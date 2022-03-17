@@ -3,7 +3,7 @@ import { component, css, Component, html, property, query } from '../../library'
 
 @component('mo-button-group')
 export class ButtonGroup extends Component {
-	@property({ reflect: true }) direction: typeof Flex.prototype.direction = 'horizontal'
+	@property({ reflect: true }) direction: Flex['direction'] = 'horizontal'
 
 	@property({ reflect: true }) type = ButtonType.Normal
 
