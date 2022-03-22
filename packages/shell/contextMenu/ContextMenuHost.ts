@@ -1,17 +1,18 @@
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css } from '../../library'
 import { Corner } from '@material/mwc-menu'
-import { ContextMenu, ContextMenuItem } from '..'
+import { ContextMenu, ListItem } from '../..'
 
 @component('mo-context-menu-host')
 export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu }
 	static get openMenuOnElement() { return this.instance.openMenuOnElement }
+	static get closeMenu() { return this.instance.closeMenu }
 	static get contextMenu() { return this.instance.contextMenu }
 
 	@property({ type: Object }) menuContent?: TemplateResult
 
-	@queryAll('mo-context-menu-item') readonly items!: Array<ContextMenuItem>
+	@queryAll('[mwc-list-item]') readonly items!: Array<ListItem>
 
 	@query('mo-context-menu') private readonly contextMenu!: ContextMenu
 
@@ -44,6 +45,11 @@ export class ContextMenuHost extends Component {
 		this.contextMenu.corner = corner
 		this.contextMenu.anchor = element
 		this.menuContent = template
+		await this.updateComplete
+	}
+
+	closeMenu = async () => {
+		ContextMenuHost.instance.menuContent = undefined
 		await this.updateComplete
 	}
 
