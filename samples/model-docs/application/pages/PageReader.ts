@@ -1,4 +1,4 @@
-import { component, homePage, html, internalProperty, PageComponent, route } from '@3mo/model'
+import { component, homePage, html, state, PageComponent, route } from '@3mo/model'
 import { GitHubHelper } from '../helpers'
 
 @homePage()
@@ -7,9 +7,9 @@ import { GitHubHelper } from '../helpers'
 export class PageReader extends PageComponent<{ path?: string }> {
 	private static readonly defaultPath = '/introduction'
 
-	@internalProperty() private docs = ''
+	@state() private docs = ''
 
-	protected async initialized() {
+	protected override async initialized() {
 		this.parameters.path = this.parameters.path ?? PageReader.defaultPath
 		this.docs = await GitHubHelper.fetch(`docs${this.parameters.path}.md`)
 	}

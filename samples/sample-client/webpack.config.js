@@ -15,7 +15,7 @@ module.exports = (_, arguments) => MoDeLWebpackConfigFactory(arguments.env.test 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist'),
 		historyApiFallback: true,
-		port: 8081,
+		port: 3000,
 	}
 }, [
 	new FaviconsWebpackPlugin({

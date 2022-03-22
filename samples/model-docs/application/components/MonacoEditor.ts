@@ -18,10 +18,11 @@ export class MonacoEditor extends Component {
 	}) value!: string
 	@property() language!: string
 
-	protected initialized() {
+	protected override initialized() {
 		this.iframeMain.onload = () => {
-			if (!this.editor)
+			if (!this.editor) {
 				return
+			}
 
 			this.fixEditorHeight()
 			this.editor.value = this.value

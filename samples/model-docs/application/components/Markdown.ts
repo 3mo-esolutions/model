@@ -5,7 +5,7 @@ import { MonacoEditor, MonacoEditorLanguage } from '.'
 
 @component('doc-markdown')
 export class Markdown extends Component {
-	static get styles() {
+	static override get styles() {
 		return css`
 			:host {
 				line-height: 150%;

@@ -15,7 +15,7 @@
 	"homepage": "https://github.com/3mo-esolutions/model#readme",
 	"scripts": {
 		"start": "cd ./samples/sample-client && npm start",
-		"check": "lit-analyzer ./src/**/* --strict --rules.no-missing-import off",
+		"check": "lit-analyzer ./packages/**/* --strict --rules.no-missing-import off",
 		"lint": "eslint ."
 	},
 	"dependencies": {
