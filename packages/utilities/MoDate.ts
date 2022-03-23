@@ -1,46 +1,93 @@
-import { LocalizationHelper } from '.'
-
-// eslint-disable-next-line no-restricted-syntax
-enum Month {
-	January,
-	February,
-	March,
-	April,
-	May,
-	June,
-	July,
-	August,
-	September,
-	October,
-	November,
-	December,
-}
-
-// eslint-disable-next-line no-restricted-syntax
-enum WeekDay {
-	Sunday,
-	Monday,
-	Tuesday,
-	Wednesday,
-	Thursday,
-	Friday,
-	Saturday,
-}
-
-type WeekStartDay = Extract<WeekDay, WeekDay.Sunday | WeekDay.Monday>
+import { LocalizationHelper, Temporal } from '.'
+import JSBI from 'jsbi'
 
 export class MoDate extends Date {
 	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
-	private readonly weekStartDay: WeekStartDay = WeekDay.Monday
 
-	difference(comparisonDate = new MoDate) {
-		return new TimeSpan(this, comparisonDate)
+	static formatDuration = formatDuration
+
+	static get weekStartDay() {
+		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo
+		return new Intl.Locale(LocalizationHelper.language.value).weekInfo?.firstDay ?? 1
 	}
+
+	private static readonly million = JSBI.BigInt(1e6)
+	static fromEpochNanoseconds(epochNanoseconds: BigInt) {
+		const nanoseconds = JSBI.divide(JSBI.BigInt(epochNanoseconds.toString()), MoDate.million)
+		return new MoDate(Number(String(nanoseconds)))
+	}
+
+	static getWeekRange(weekNumber: number, year: number) {
+		const firstDayOfTheFirstCalendarWeekOfTheYear = new Array(7)
+			.fill(undefined)
+			.map((_, i) => new MoDate(year, 0, 1).addDay(i))
+			.find(d => d.week === 1) as MoDate
+
+		const aDayInTheSpecifiedWeek = firstDayOfTheFirstCalendarWeekOfTheYear.addDay(7 * (weekNumber - 1))
+		const weekStart = new MoDate(aDayInTheSpecifiedWeek.addDay(MoDate.weekStartDay - aDayInTheSpecifiedWeek.weekDay))
+
+		return new Array(7)
+			.fill(undefined)
+			.map((_, i) => weekStart.addDay(i))
+	}
+
+	//#region Instant
+	equals(comparisonDate: Parameters<Temporal.Instant['equals']>[0] | MoDate) {
+		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
+		return this.temporalInstant.equals(other)
+	}
+
+	since(
+		comparisonDate: Parameters<Temporal.Instant['since']>[0] | MoDate = new MoDate,
+		options?: Parameters<Temporal.Instant['since']>[1],
+	) {
+		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
+		return this.temporalInstant.since(other, options)
+	}
+
+	until(
+		comparisonDate: Parameters<Temporal.Instant['until']>[0] | MoDate = new MoDate,
+		options?: Parameters<Temporal.Instant['until']>[1],
+	) {
+		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
+		return this.temporalInstant.since(other, options)
+	}
+
+	add(...parameters: Parameters<Temporal.Instant['add']>) {
+		return this.temporalInstant.add(...parameters)
+	}
+
+	subtract(...parameters: Parameters<Temporal.Instant['subtract']>) {
+		return this.temporalInstant.subtract(...parameters)
+	}
+
+	round(...parameters: Parameters<Temporal.Instant['round']>) {
+		return this.temporalInstant.round(...parameters)
+	}
+
+	toZonedDateTime(...parameters: Parameters<Temporal.Instant['toZonedDateTime']>) {
+		return this.temporalInstant.toZonedDateTime(...parameters)
+	}
+
+	get zonedDateTime() {
+		const dateTimeResolvedOptions = Intl.DateTimeFormat().resolvedOptions()
+		return this.toZonedDateTime({
+			calendar: dateTimeResolvedOptions.calendar,
+			timeZone: dateTimeResolvedOptions.timeZone,
+		})
+	}
+
+	toZonedDateTimeISO(...parameters: Parameters<Temporal.Instant['toZonedDateTimeISO']>) {
+		return this.temporalInstant.toZonedDateTimeISO(...parameters)
+	}
+	//#endregion
 
 	//#region Day
 	static get weekDayNames() {
-		const daysNumbers = new Array(7).fill(undefined).map((_, i) => 5 + i)
-		return daysNumbers.map(number => new Date(1970, 1 - 1, number).toLocaleString('de', { weekday: 'long' }))
+		return new Array(7)
+			.fill(undefined)
+			.map((_, i) => new Date(1970, 0, i - 2).toLocaleString(LocalizationHelper.language.value, { weekday: 'long' }))
 	}
 
 	get day() {
@@ -48,19 +95,11 @@ export class MoDate extends Date {
 	}
 
 	addDay(days: number) {
-		const date = new MoDate(this)
-		date.setDate(this.day + days)
-		return date
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ days }).epochNanoseconds)
 	}
 
 	get weekDay() {
-		return this.getDay() as WeekDay
-	}
-
-	get weekDayCorrected() {
-		return this.weekStartDay === WeekDay.Sunday
-			? this.weekDay
-			: (this.weekDay + 6) % 7
+		return this.zonedDateTime.dayOfWeek
 	}
 
 	get weekDayName() {
@@ -70,56 +109,37 @@ export class MoDate extends Date {
 
 	//#region Week
 	get week() {
-		const firstOfJanuary = new MoDate(this.year, 0, 1)
-		const today = new MoDate(this.year, this.month, this.day)
-		const difference = today.valueOf() - firstOfJanuary.valueOf()
-		return Math.ceil(((difference / 86400000) + firstOfJanuary.weekDay + 1) / 7)
+		return this.zonedDateTime.weekOfYear
 	}
 
 	get weekStart() {
-		return this.getWeekRange(this.week)[0]
+		return this.weekRange[0]
 	}
 
 	get weekEnd() {
-		return this.getWeekRange(this.week)[this.getWeekRange(this.week).length - 1]
+		const range = MoDate.getWeekRange(this.week, this.year)
+		return range[range.length - 1]
+	}
+
+	get weekRange() {
+		return MoDate.getWeekRange(this.week, this.year)
 	}
 
 	addWeek(weeks: number) {
-		return this.addDay(7 * weeks)
-	}
-
-	getWeekStart(weekNumber: number) {
-		return this.getWeekRange(weekNumber)[0]
-	}
-
-	getWeekEnd(weekNumber: number) {
-		return this.getWeekRange(weekNumber)[this.getWeekRange(weekNumber).length - 1]
-	}
-
-	getWeekRange(weekNumber = this.week, year = this.year) {
-		const aDayInTheSpecifiedWeek = new MoDate(year, Month.January, 1).addDay(7 * (weekNumber - 1))
-
-		const diff = aDayInTheSpecifiedWeek.day - aDayInTheSpecifiedWeek.weekDay + (this.weekStartDay === WeekDay.Sunday ? -6 : 1)
-		const weekStart = new MoDate(aDayInTheSpecifiedWeek.setDate(diff))
-
-		const range = []
-		for (let i = 0; i < 7; i++) {
-			range.push(weekStart.addDay(i))
-		}
-
-		return range
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ weeks }).epochNanoseconds)
 	}
 	//#endregion
 
 	//#region Month
 	static get monthNames() {
 		const format = new Intl.DateTimeFormat(LocalizationHelper.language.value, { month: 'long' })
-		const monthNumbers = new Array(12).fill(undefined).map((_, i) => i)
-		return monthNumbers.map(number => format.format(new Date(Date.UTC(2000, number, 1, 0, 0, 0))))
+		return new Array(12)
+			.fill(undefined)
+			.map((_, i) => format.format(new Date(Date.UTC(2000, i, 1, 0, 0, 0))))
 	}
 
 	get month() {
-		return this.getMonth() as Month
+		return this.getMonth()
 	}
 
 	get monthName() {
@@ -135,30 +155,23 @@ export class MoDate extends Date {
 	}
 
 	get monthRange() {
-		const range = new Array<MoDate>()
-		for (let day = this.monthStart.day; day <= this.monthEnd.day; day++) {
-			range.push(new MoDate(this.year, this.month, day))
-		}
-		return range
+		return new Array(this.monthEnd.day - this.monthStart.day + 1)
+			.fill(undefined)
+			.map((_, i) => new MoDate(this.year, this.month, i + 1))
 	}
 
 	get monthWeeks() {
-		const weekNumbers = this.monthRange.map(date => date.week)
-		return weekNumbers.filter((week, index) => weekNumbers.indexOf(week) === index).sort()
+		return [...new Set(this.monthRange.map(date => date.week))]
 	}
 
 	addMonth(months: number) {
-		const date = new MoDate(this)
-		date.setMonth(this.month + months)
-		return date
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ months }).epochNanoseconds)
 	}
 	//#endregion
 
 	//#region Year
 	addYear(years: number) {
-		const date = new MoDate(this)
-		date.setFullYear(this.year + years)
-		return date
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ years }).epochNanoseconds)
 	}
 
 	get year() {
@@ -170,103 +183,41 @@ export class MoDate extends Date {
 	}
 
 	get yearEnd() {
-		return new MoDate(this.year, 11, 31)
+		return new MoDate(this.year + 1, 0, 1).addDay(-1)
 	}
 	//#endregion
 }
 
-class TimeSpan {
-	static get zero() { return new TimeSpan(new MoDate, new MoDate) }
-
-	private static getUTCTime(date: Date) {
-		return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds())
-	}
-
-	constructor(private readonly date1: MoDate, private readonly date2: MoDate) { }
-
-	get milliseconds() {
-		return TimeSpan.getUTCTime(this.date1) - TimeSpan.getUTCTime(this.date2)
-	}
-
-	get seconds() {
-		return this.milliseconds / 1000
-	}
-
-	get minutes() {
-		return this.seconds / 60
-	}
-
-	get hours() {
-		return this.minutes / 60
-	}
-
-	get days() {
-		return this.hours / 24
-	}
-
-	get weeks() {
-		return this.days / 7
-	}
-
-	get months() {
-		return this.days / 30
-	}
-
-	get years() {
-		return this.months / 12
-	}
-
-	get text() {
-		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
-		switch (true) {
-			case Math.abs(this.years) >= 1:
-				return formatter.format(Math.floor(this.years), 'years')
-			case Math.abs(this.months) >= 1:
-				return formatter.format(Math.floor(this.months), 'months')
-			case Math.abs(this.weeks) >= 1:
-				return formatter.format(Math.floor(this.weeks), 'weeks')
-			case Math.abs(this.days) >= 1:
-				return formatter.format(Math.floor(this.days), 'days')
-			case Math.abs(this.hours) >= 1:
-				return formatter.format(Math.floor(this.hours), 'hours')
-			case Math.abs(this.minutes) >= 1:
-				return formatter.format(Math.floor(this.minutes), 'minutes')
-			default:
-				return formatter.format(Math.floor(this.seconds), 'seconds')
-		}
-	}
-
-	toString() {
-		return this.text
-	}
-
-	valueOf() {
-		return this.milliseconds
+export function formatDuration(duration: Temporal.Duration) {
+	const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
+	switch (true) {
+		case Math.abs(duration.years) >= 1:
+			return formatter.format(Math.floor(duration.years), 'years')
+		case Math.abs(duration.months) >= 1:
+			return formatter.format(Math.floor(duration.months), 'months')
+		case Math.abs(duration.weeks) >= 1:
+			return formatter.format(Math.floor(duration.weeks), 'weeks')
+		case Math.abs(duration.days) >= 1:
+			return formatter.format(Math.floor(duration.days), 'days')
+		case Math.abs(duration.hours) >= 1:
+			return formatter.format(Math.floor(duration.hours), 'hours')
+		case Math.abs(duration.minutes) >= 1:
+			return formatter.format(Math.floor(duration.minutes), 'minutes')
+		default:
+			return formatter.format(Math.floor(duration.seconds), 'seconds')
 	}
 }
 
-globalThis.TimeSpan = TimeSpan
+globalThis.formatDuration = formatDuration
 globalThis.MoDate = MoDate
-globalThis.Month = Month
-globalThis.WeekDay = WeekDay
 
-type TimeSpanClass = typeof TimeSpan
 type MoDateClass = typeof MoDate
-type MonthType = Month
-type MonthEnum = typeof Month
-type WeekDayType = WeekDay
-type WeekDayEnum = typeof WeekDay
+type FormatDurationFunction = typeof formatDuration
 
 declare global {
 	// eslint-disable-next-line
-	var TimeSpan: TimeSpanClass
+	var formatDuration: FormatDurationFunction
 	// eslint-disable-next-line
 	var MoDate: MoDateClass
 	type MoDate = InstanceType<MoDateClass>
-	// eslint-disable-next-line
-	var Month: MonthEnum
-	type Month = MonthType
-	// eslint-disable-next-line
-	var WeekDay: WeekDayEnum
-	type WeekDay = WeekDayType
 }

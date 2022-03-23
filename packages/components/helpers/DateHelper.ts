@@ -1,11 +1,11 @@
 import { FormatHelper } from '../..'
 
 declare global {
-	type DateRange = [start: Date | undefined, end: Date | undefined]
+	type DateRange = [start?: Date, end?: Date]
 }
 
 export class DateHelper {
-	static readonly userDateRangeSeparators = [...FormatHelper.dateRangeSeparator, ' ']
+	static readonly userDateRangeSeparators = [...FormatHelper.dateRangeSeparator, ' ', '-', '~']
 
 	static parseDateFromText(dateText: string, referenceDate = new MoDate) {
 		dateText = dateText.toLowerCase()

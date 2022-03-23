@@ -1,4 +1,4 @@
-import { Component, css, component, html, state, nothing, property, query, event } from '../../library'
+import { Component, css, component, html, state, nothing, property, query, event, classMap } from '../../library'
 import { Flex } from '..'
 
 /**
@@ -23,29 +23,28 @@ export class Calendar extends Component {
 
 	@query('.year.selected') private readonly selectedYearElement!: Flex
 
-	private readonly years = new Array(200).fill(0).map((_n, i) => 1901 + i)
-	private readonly weekDays = new Array(7).fill(0).map((_n, i) => i)
+	private readonly years = new Array(200).fill(undefined).map((_n, i) => 1901 + i)
 
 	private get navigatingDate() {
 		return new MoDate(this.navigatingYear, this.navigatingMonth)
 	}
 
 	private previousMonth() {
-		if (this.navigatingMonth !== Month.January) {
+		if (this.navigatingMonth !== 0) {
 			this.navigatingMonth--
 			return
 		}
 		this.navigatingYear--
-		this.navigatingMonth = Month.December
+		this.navigatingMonth = 11
 	}
 
 	private nextMonth() {
-		if (this.navigatingMonth !== Month.December) {
+		if (this.navigatingMonth !== 11) {
 			this.navigatingMonth++
 			return
 		}
 		this.navigatingYear++
-		this.navigatingMonth = Month.January
+		this.navigatingMonth = 0
 	}
 
 	static override get styles() {
@@ -70,8 +69,8 @@ export class Calendar extends Component {
 			}
 
 			:host([includeWeekNumbers]) .monthHeader {
-				max-width: calc(var(--mo-calendar-max-width) - var(--mo-calendar-week-number-width));
-				margin: 0 0 0 var(--mo-calendar-week-number-width);
+				/* max-width: calc(var(--mo-calendar-max-width) - var(--mo-calendar-week-number-width)); */
+				/* margin: 0 0 0 var(--mo-calendar-week-number-width); */
 			}
 
 			.navigatingMonth, .navigatingYear {
@@ -108,8 +107,15 @@ export class Calendar extends Component {
 				height: var(--mo-calendar-day-size);
 			}
 
+			.day:not(.isInMonth) {
+				color: var(--mo-color-gray);
+			}
+
 			.day:hover, .year:hover {
 				background: var(--mo-color-background);
+			}
+			.day.today:not([selected]) {
+				color: var(--mo-accent);
 			}
 
 			.selected {
@@ -137,37 +143,34 @@ export class Calendar extends Component {
 	}
 
 	private get daySelectionTemplate() {
-		const getWeeksTemplate = () => {
-			if (this.includeWeekNumbers === false) {
-				return nothing
-			}
-
-			return this.navigatingDate.monthWeeks.map((week, i) => html`
-				<mo-flex gridColumn='1' gridRow=${i + 2} class='week'>
-					${week}
-				</mo-flex>
-			`)
-		}
 		return html`
 			<mo-grid class='month'
 				rows='repeat(auto-fill, var(--mo-calendar-day-size))'
-				columns='var(--mo-calendar-week-number-width) repeat(7, var(--mo-calendar-day-size))'
+				columns=${this.includeWeekNumbers ? 'var(--mo-calendar-week-number-width) repeat(7, var(--mo-calendar-day-size))' : 'repeat(7, var(--mo-calendar-day-size))'}
 				alignItems='center'
 				justifyItems='center'
 			>
+				${this.includeWeekNumbers === false ? nothing : html`<mo-div></mo-div>`}
 
-				${this.weekDays.map((day, i) => html`
-					<mo-div class='monthHeader' gridRow='1' gridColumn=${i + 2}>
-						${MoDate.weekDayNames[day].charAt(0).toUpperCase() + MoDate.weekDayNames[day].charAt(1)}
+				${MoDate.weekDayNames.map(dayName => html`
+					<mo-div class='monthHeader'>
+						${dayName.charAt(0).toUpperCase() + dayName.charAt(1)}
 					</mo-div>
 				`)}
 
-				${getWeeksTemplate()}
+				${this.navigatingDate.monthWeeks.map(weekNumber => html`
+					${this.includeWeekNumbers === false ? nothing : html`
+						<mo-div class='week'>
+							${weekNumber}
+						</mo-div>
+					`}
 
-				${this.navigatingDate.monthRange.map(date => html`
-					<mo-flex gridColumn=${date.weekDayCorrected + 2} class='day${Math.floor(this.value.difference(date).days) === 0 ? ' selected' : ''}' @click=${() => this.selectDate(date)}>
-						${date.day}
-					</mo-flex>
+					${MoDate.getWeekRange(weekNumber, this.navigatingDate.year).map(day => html`
+						<mo-flex
+							class=${classMap({ day: true, selected: this.value.equals(day), today: day.equals(new MoDate), isInMonth: day.month === this.navigatingDate.month })}
+							@click=${() => this.selectDate(day)}
+						>${day.day}</mo-flex>
+					`)}
 				`)}
 			</mo-grid>
 		`
@@ -183,7 +186,7 @@ export class Calendar extends Component {
 			<mo-scroll height='*'>
 				<mo-grid rows='repeat(50, var(--mo-calendar-day-size))' columns='repeat(4, 1fr)'>
 					${this.years.map(year => html`
-						<mo-flex class='year${this.navigatingYear === year ? ' selected' : ''}' @click=${() => this.selectYear(year)}>
+						<mo-flex class=${classMap({ year: true, selected: this.navigatingYear === year })} @click=${() => this.selectYear(year)}>
 							${year}
 						</mo-flex>
 					`)}

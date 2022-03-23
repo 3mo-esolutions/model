@@ -1,7 +1,7 @@
 import { LocalizationHelper } from '.'
 
 export class FormatHelper {
-	static readonly dateRangeSeparator = '~'
+	static readonly dateRangeSeparator = ' – '
 
 	static getDateSeparator(language = LocalizationHelper.language.value) {
 		return Intl.DateTimeFormat(language).format(new Date).replace(/\p{Number}/gu, '')[0]
