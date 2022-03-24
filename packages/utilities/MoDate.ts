@@ -1,5 +1,4 @@
 import { LocalizationHelper, Temporal } from '.'
-import JSBI from 'jsbi'
 
 export class MoDate extends Date {
 	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
@@ -10,12 +9,6 @@ export class MoDate extends Date {
 		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo
 		return new Intl.Locale(LocalizationHelper.language.value).weekInfo?.firstDay ?? 1
-	}
-
-	private static readonly million = JSBI.BigInt(1e6)
-	static fromEpochNanoseconds(epochNanoseconds: BigInt) {
-		const nanoseconds = JSBI.divide(JSBI.BigInt(epochNanoseconds.toString()), MoDate.million)
-		return new MoDate(Number(String(nanoseconds)))
 	}
 
 	static getWeekRange(weekNumber: number, year: number) {
@@ -30,6 +23,15 @@ export class MoDate extends Date {
 		return new Array(7)
 			.fill(undefined)
 			.map((_, i) => weekStart.addDay(i))
+	}
+
+	static fromEpochNanoseconds(epochNanoseconds: bigint) {
+		return new MoDate(Number(epochNanoseconds / BigInt(1_000_000)))
+	}
+
+	private _temporalInstant?: Temporal.Instant
+	get temporalInstant() {
+		return this._temporalInstant ??= new Temporal.Instant(BigInt(this.valueOf() * 1_000_000))
 	}
 
 	//#region Instant

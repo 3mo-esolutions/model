@@ -23,10 +23,12 @@ export abstract class FieldDateBase<T> extends Field<T> {
 				@closed=${() => this.open = false}
 				@opened=${() => this.open = true}
 			>
-				<mo-calendar
-					.value=${this.calendarDate}
-					@change=${(e: CustomEvent<MoDate>) => this.calendarDate = e.detail}
-				></mo-calendar>
+				${!this.open ? nothing : html`
+					<mo-calendar
+						.value=${this.calendarDate}
+						@change=${(e: CustomEvent<MoDate>) => this.calendarDate = e.detail}
+					></mo-calendar>
+				`}
 			</mo-menu>
 		`
 	}
