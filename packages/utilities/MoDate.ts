@@ -3,7 +3,25 @@ import { LocalizationHelper, Temporal } from '.'
 export class MoDate extends Date {
 	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 
-	static formatDuration = formatDuration
+	static formatDuration(duration: Temporal.Duration) {
+		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
+		switch (true) {
+			case Math.abs(duration.years) >= 1:
+				return formatter.format(Math.floor(duration.years), 'years')
+			case Math.abs(duration.months) >= 1:
+				return formatter.format(Math.floor(duration.months), 'months')
+			case Math.abs(duration.weeks) >= 1:
+				return formatter.format(Math.floor(duration.weeks), 'weeks')
+			case Math.abs(duration.days) >= 1:
+				return formatter.format(Math.floor(duration.days), 'days')
+			case Math.abs(duration.hours) >= 1:
+				return formatter.format(Math.floor(duration.hours), 'hours')
+			case Math.abs(duration.minutes) >= 1:
+				return formatter.format(Math.floor(duration.minutes), 'minutes')
+			default:
+				return formatter.format(Math.floor(duration.seconds), 'seconds')
+		}
+	}
 
 	static get weekStartDay() {
 		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
@@ -19,14 +37,6 @@ export class MoDate extends Date {
 
 		const aDayInTheSpecifiedWeek = firstDayOfTheFirstCalendarWeekOfTheYear.addDay(7 * (weekNumber - 1))
 		const weekStart = aDayInTheSpecifiedWeek.addDay(MoDate.weekStartDay - aDayInTheSpecifiedWeek.weekDay)
-
-		console.log(
-			year, weekNumber,
-			weekStart.toISOString(),
-			new Array(7)
-				.fill(undefined)
-				.map((_, i) => weekStart.addDay(i).toISOString())
-		);
 
 		return new Array(7)
 			.fill(undefined)
@@ -195,35 +205,11 @@ export class MoDate extends Date {
 	//#endregion
 }
 
-export function formatDuration(duration: Temporal.Duration) {
-	const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
-	switch (true) {
-		case Math.abs(duration.years) >= 1:
-			return formatter.format(Math.floor(duration.years), 'years')
-		case Math.abs(duration.months) >= 1:
-			return formatter.format(Math.floor(duration.months), 'months')
-		case Math.abs(duration.weeks) >= 1:
-			return formatter.format(Math.floor(duration.weeks), 'weeks')
-		case Math.abs(duration.days) >= 1:
-			return formatter.format(Math.floor(duration.days), 'days')
-		case Math.abs(duration.hours) >= 1:
-			return formatter.format(Math.floor(duration.hours), 'hours')
-		case Math.abs(duration.minutes) >= 1:
-			return formatter.format(Math.floor(duration.minutes), 'minutes')
-		default:
-			return formatter.format(Math.floor(duration.seconds), 'seconds')
-	}
-}
-
-globalThis.formatDuration = formatDuration
 globalThis.MoDate = MoDate
 
 type MoDateClass = typeof MoDate
-type FormatDurationFunction = typeof formatDuration
 
 declare global {
-	// eslint-disable-next-line
-	var formatDuration: FormatDurationFunction
 	// eslint-disable-next-line
 	var MoDate: MoDateClass
 	type MoDate = InstanceType<MoDateClass>

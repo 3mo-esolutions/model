@@ -6,6 +6,8 @@ import { Flex } from '..'
  */
 @component('mo-calendar')
 export class Calendar extends Component {
+	private static readonly startingYear = 1900
+
 	@event() readonly change!: EventDispatcher<MoDate>
 
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
@@ -23,7 +25,7 @@ export class Calendar extends Component {
 
 	@query('.year.selected') private readonly selectedYearElement!: Flex
 
-	private readonly years = new Array(200).fill(undefined).map((_n, i) => 1901 + i)
+	private readonly years = new Array(200).fill(undefined).map((_n, i) => Calendar.startingYear + i)
 
 	private get navigatingDate() {
 		return new MoDate(this.navigatingYear, this.navigatingMonth)
