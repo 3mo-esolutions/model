@@ -1,5 +1,5 @@
-import { Temporal as TemporalNamespace, Intl } from '@js-temporal/polyfill'
-export { TemporalNamespace as Temporal, Intl as TemporalIntl }
+import * as TemporalNamespace from 'temporal-polyfill'
+export { TemporalNamespace as Temporal }
 
 globalThis.Temporal = TemporalNamespace
 

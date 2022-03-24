@@ -11,14 +11,22 @@ export class MoDate extends Date {
 		return new Intl.Locale(LocalizationHelper.language.value).weekInfo?.firstDay ?? 1
 	}
 
-	static getWeekRange(weekNumber: number, year: number) {
+	static getWeekRange([year, weekNumber]: DateWeek) {
 		const firstDayOfTheFirstCalendarWeekOfTheYear = new Array(7)
 			.fill(undefined)
 			.map((_, i) => new MoDate(year, 0, 1).addDay(i))
 			.find(d => d.week === 1) as MoDate
 
 		const aDayInTheSpecifiedWeek = firstDayOfTheFirstCalendarWeekOfTheYear.addDay(7 * (weekNumber - 1))
-		const weekStart = new MoDate(aDayInTheSpecifiedWeek.addDay(MoDate.weekStartDay - aDayInTheSpecifiedWeek.weekDay))
+		const weekStart = aDayInTheSpecifiedWeek.addDay(MoDate.weekStartDay - aDayInTheSpecifiedWeek.weekDay)
+
+		console.log(
+			year, weekNumber,
+			weekStart.toISOString(),
+			new Array(7)
+				.fill(undefined)
+				.map((_, i) => weekStart.addDay(i).toISOString())
+		);
 
 		return new Array(7)
 			.fill(undefined)
@@ -34,7 +42,14 @@ export class MoDate extends Date {
 		return this._temporalInstant ??= new Temporal.Instant(BigInt(this.valueOf() * 1_000_000))
 	}
 
-	//#region Instant
+	private _zonedDateTime?: Temporal.ZonedDateTime
+	get zonedDateTime() {
+		return this._zonedDateTime ??= this.temporalInstant.toZonedDateTime({
+			calendar: Intl.DateTimeFormat().resolvedOptions().calendar,
+			timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		})
+	}
+
 	equals(comparisonDate: Parameters<Temporal.Instant['equals']>[0] | MoDate) {
 		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
 		return this.temporalInstant.equals(other)
@@ -56,34 +71,17 @@ export class MoDate extends Date {
 		return this.temporalInstant.since(other, options)
 	}
 
-	add(...parameters: Parameters<Temporal.Instant['add']>) {
-		return this.temporalInstant.add(...parameters)
+	add(...parameters: Parameters<Temporal.ZonedDateTime['add']>) {
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add(...parameters).epochNanoseconds)
 	}
 
-	subtract(...parameters: Parameters<Temporal.Instant['subtract']>) {
-		return this.temporalInstant.subtract(...parameters)
+	subtract(...parameters: Parameters<Temporal.ZonedDateTime['subtract']>) {
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.subtract(...parameters).epochNanoseconds)
 	}
 
-	round(...parameters: Parameters<Temporal.Instant['round']>) {
-		return this.temporalInstant.round(...parameters)
+	round(...parameters: Parameters<Temporal.ZonedDateTime['round']>) {
+		return MoDate.fromEpochNanoseconds(this.zonedDateTime.round(...parameters).epochNanoseconds)
 	}
-
-	toZonedDateTime(...parameters: Parameters<Temporal.Instant['toZonedDateTime']>) {
-		return this.temporalInstant.toZonedDateTime(...parameters)
-	}
-
-	get zonedDateTime() {
-		const dateTimeResolvedOptions = Intl.DateTimeFormat().resolvedOptions()
-		return this.toZonedDateTime({
-			calendar: dateTimeResolvedOptions.calendar,
-			timeZone: dateTimeResolvedOptions.timeZone,
-		})
-	}
-
-	toZonedDateTimeISO(...parameters: Parameters<Temporal.Instant['toZonedDateTimeISO']>) {
-		return this.temporalInstant.toZonedDateTimeISO(...parameters)
-	}
-	//#endregion
 
 	//#region Day
 	static get weekDayNames() {
@@ -97,7 +95,7 @@ export class MoDate extends Date {
 	}
 
 	addDay(days: number) {
-		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ days }).epochNanoseconds)
+		return this.add({ days })
 	}
 
 	get weekDay() {
@@ -114,21 +112,23 @@ export class MoDate extends Date {
 		return this.zonedDateTime.weekOfYear
 	}
 
+	get weekRange() {
+		const weekStart = this.addDay(MoDate.weekStartDay - this.weekDay)
+		return new Array(this.zonedDateTime.daysInWeek)
+			.fill(undefined)
+			.map((_, i) => weekStart.addDay(i))
+	}
+
 	get weekStart() {
 		return this.weekRange[0]
 	}
 
 	get weekEnd() {
-		const range = MoDate.getWeekRange(this.week, this.year)
-		return range[range.length - 1]
-	}
-
-	get weekRange() {
-		return MoDate.getWeekRange(this.week, this.year)
+		return this.weekRange[this.weekRange.length - 1]
 	}
 
 	addWeek(weeks: number) {
-		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ weeks }).epochNanoseconds)
+		return this.add({ weeks })
 	}
 	//#endregion
 
@@ -163,17 +163,22 @@ export class MoDate extends Date {
 	}
 
 	get monthWeeks() {
-		return [...new Set(this.monthRange.map(date => date.week))]
+		return this.monthRange
+			.map(date => [date.weekStart.year, date.week] as const)
+			.reduce((acc, [year, week]) =>
+				acc = acc.some(([y, w]) => y === year && w === week) ? acc : [...acc, [year, week]],
+				[] as Array<DateWeek>
+			)
 	}
 
 	addMonth(months: number) {
-		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ months }).epochNanoseconds)
+		return this.add({ months })
 	}
 	//#endregion
 
 	//#region Year
 	addYear(years: number) {
-		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add({ years }).epochNanoseconds)
+		return this.add({ years })
 	}
 
 	get year() {

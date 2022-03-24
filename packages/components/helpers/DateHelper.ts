@@ -2,6 +2,7 @@ import { FormatHelper } from '../..'
 
 declare global {
 	type DateRange = [start?: Date, end?: Date]
+	type DateWeek = [year: number, week: number]
 }
 
 export class DateHelper {

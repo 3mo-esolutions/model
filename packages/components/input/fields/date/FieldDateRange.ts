@@ -2,6 +2,7 @@
 import { component, property } from '../../../../library'
 import { FormatHelper, DateHelper, state } from '../../../..'
 import { FieldDateBase } from './FieldDateBase'
+import { MaterialIcon } from '../../../helpers'
 
 @component('mo-field-date-range')
 export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
@@ -11,6 +12,8 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 	override set value(value) { super.value = value }
 
 	@state() isSelectingEndDate = true
+
+	protected override calendarIconButtonIcon: MaterialIcon = 'date_range'
 
 	protected override get calendarDate() { return new MoDate(this.value[0] || new Date) }
 	protected override set calendarDate(date) {

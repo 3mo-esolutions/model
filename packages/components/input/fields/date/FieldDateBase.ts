@@ -1,5 +1,6 @@
 
 import { html, nothing, property, renderContainer } from '../../../../library'
+import { MaterialIcon } from '../../../helpers'
 import { Field } from '../../Field'
 
 export abstract class FieldDateBase<T> extends Field<T> {
@@ -36,12 +37,12 @@ export abstract class FieldDateBase<T> extends Field<T> {
 	@renderContainer('slot[name="trailingInternal"]')
 	protected get calendarIconButtonTemplate() {
 		return this.hideDatePicker ? nothing : html`
-			<mo-icon-button
-				tabindex='-1'
-				small icon='today'
+			<mo-icon-button tabindex='-1' small icon=${this.calendarIconButtonIcon}
 				foreground=${this.open ? 'var(--mo-accent)' : ''}
 				@click=${() => this.open = !this.open}>
 			</mo-icon-button>
 		`
 	}
+
+	protected readonly calendarIconButtonIcon: MaterialIcon = 'today'
 }

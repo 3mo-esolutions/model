@@ -158,14 +158,14 @@ export class Calendar extends Component {
 					</mo-div>
 				`)}
 
-				${this.navigatingDate.monthWeeks.map(weekNumber => html`
+				${this.navigatingDate.monthWeeks.map(([year, weekNumber]) => html`
 					${this.includeWeekNumbers === false ? nothing : html`
 						<mo-div class='week'>
 							${weekNumber}
 						</mo-div>
 					`}
 
-					${MoDate.getWeekRange(weekNumber, this.navigatingDate.year).map(day => html`
+					${MoDate.getWeekRange([year, weekNumber]).map(day => html`
 						<mo-flex
 							class=${classMap({ day: true, selected: this.value.equals(day), today: day.equals(new MoDate), isInMonth: day.month === this.navigatingDate.month })}
 							@click=${() => this.selectDate(day)}
