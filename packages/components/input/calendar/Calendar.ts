@@ -1,53 +1,19 @@
-import { Component, css, component, html, state, nothing, property, query, event, classMap } from '../../library'
-import { Flex } from '..'
+import { Component, css, component, html, state, nothing, property, query, classMap } from '../../../library'
+import { Flex } from '../..'
 
-/**
- * @fires change {CustomEvent<MoDate>}
- */
 @component('mo-calendar')
 export class Calendar extends Component {
 	private static readonly startingYear = 1900
 
-	@event() readonly change!: EventDispatcher<MoDate>
-
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
-	@property({
-		type: Object,
-		updated(this: Calendar) {
-			this.navigatingYear = this.value.year
-			this.navigatingMonth = this.value.month
-		}
-	}) value = new MoDate()
 
-	@state() private navigatingYear = this.value.year
-	@state() private navigatingMonth = this.value.month
+	@state() protected navigatingDate = new MoDate()
 	@state() private yearSelection = false
 
 	@query('.year.selected') private readonly selectedYearElement!: Flex
 
+	private readonly today = new MoDate().round({ smallestUnit: 'day', roundingMode: 'floor' })
 	private readonly years = new Array(200).fill(undefined).map((_n, i) => Calendar.startingYear + i)
-
-	private get navigatingDate() {
-		return new MoDate(this.navigatingYear, this.navigatingMonth)
-	}
-
-	private previousMonth() {
-		if (this.navigatingMonth !== 0) {
-			this.navigatingMonth--
-			return
-		}
-		this.navigatingYear--
-		this.navigatingMonth = 11
-	}
-
-	private nextMonth() {
-		if (this.navigatingMonth !== 11) {
-			this.navigatingMonth++
-			return
-		}
-		this.navigatingYear++
-		this.navigatingMonth = 0
-	}
 
 	static override get styles() {
 		return css`
@@ -55,10 +21,6 @@ export class Calendar extends Component {
 				--mo-calendar-max-width: 325px;
 				--mo-calendar-min-height: 230px;
 				--mo-calendar-day-size: 36px;
-				--mo-calendar-week-number-width: 0px;
-			}
-
-			:host([includeWeekNumbers]) {
 				--mo-calendar-week-number-width: var(--mo-calendar-day-size);
 			}
 
@@ -70,14 +32,9 @@ export class Calendar extends Component {
 				align-items: center;
 			}
 
-			:host([includeWeekNumbers]) .monthHeader {
-				/* max-width: calc(var(--mo-calendar-max-width) - var(--mo-calendar-week-number-width)); */
-				/* margin: 0 0 0 var(--mo-calendar-week-number-width); */
-			}
-
 			.navigatingMonth, .navigatingYear {
 				font-size: var(--mo-font-size-l);
-				transition: var(--mo-duration-medium);
+				transition: var(--mo-duration-quick);
 			}
 
 			.navigatingYear:hover {
@@ -100,29 +57,30 @@ export class Calendar extends Component {
 			}
 
 			.year {
-				width: 95%;
+				width: 100%;
 				justify-content: center;
 				align-items: center;
+			}
+
+			.selected {
+				background: var(--mo-accent);
+				color: var(--mo-color-accessible) !important;
 			}
 
 			.day {
 				height: var(--mo-calendar-day-size);
 			}
 
+			.day:hover, .year:hover {
+				background: var(--mo-color-transparent-gray-3);
+			}
+
 			.day:not(.isInMonth) {
 				color: var(--mo-color-gray);
 			}
 
-			.day:hover, .year:hover {
-				background: var(--mo-color-background);
-			}
-			.day.today:not([selected]) {
+			.day.today {
 				color: var(--mo-accent);
-			}
-
-			.selected {
-				background: var(--mo-accent) !important;
-				color: var(--mo-color-accessible) !important;
 			}
 		`
 	}
@@ -131,12 +89,16 @@ export class Calendar extends Component {
 		return html`
 			<mo-flex width='var(--mo-calendar-max-width)' minHeight='var(--mo-calendar-min-height)' alignItems='center' justifyContent='center'>
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' width='100%'>
-					<mo-icon-button icon='keyboard_arrow_left' @click=${() => this.previousMonth()}></mo-icon-button>
+					<mo-icon-button icon='keyboard_arrow_left'
+						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}
+					></mo-icon-button>
 					<mo-div>
 						<a class='navigatingMonth'>${this.navigatingDate.monthName}</a>
-						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingYear}</a>
+						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingDate.year}</a>
 					</mo-div>
-					<mo-icon-button icon='keyboard_arrow_right' @click=${() => this.nextMonth()}></mo-icon-button>
+					<mo-icon-button icon='keyboard_arrow_right'
+						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(+1)}
+					></mo-icon-button>
 				</mo-flex>
 
 				${this.yearSelection ? this.yearSelectionTemplate : this.daySelectionTemplate}
@@ -167,20 +129,24 @@ export class Calendar extends Component {
 						</mo-div>
 					`}
 
-					${MoDate.getWeekRange([year, weekNumber]).map(day => html`
-						<mo-flex
-							class=${classMap({ day: true, selected: this.value.equals(day), today: day.equals(new MoDate), isInMonth: day.month === this.navigatingDate.month })}
-							@click=${() => this.selectDate(day)}
-						>${day.day}</mo-flex>
-					`)}
+					${MoDate.getWeekRange([year, weekNumber]).map(day => this.getDayTemplate(day))}
 				`)}
 			</mo-grid>
 		`
 	}
 
-	private selectDate(date: MoDate) {
-		this.value = date
-		this.change.dispatch(date)
+	protected getDayTemplate(day: MoDate) {
+		return html`
+			<mo-flex class=${classMap(this.getDefaultDayElementClasses(day))}>${day.day}</mo-flex>
+		`
+	}
+
+	protected getDefaultDayElementClasses(day: MoDate) {
+		return {
+			day: true,
+			today: day.equals(this.today),
+			isInMonth: day.month === this.navigatingDate.month,
+		}
 	}
 
 	private get yearSelectionTemplate() {
@@ -188,7 +154,7 @@ export class Calendar extends Component {
 			<mo-scroll height='*'>
 				<mo-grid rows='repeat(50, var(--mo-calendar-day-size))' columns='repeat(4, 1fr)'>
 					${this.years.map(year => html`
-						<mo-flex class=${classMap({ year: true, selected: this.navigatingYear === year })} @click=${() => this.selectYear(year)}>
+						<mo-flex class=${classMap({ year: true, selected: this.navigatingDate.year === year })} @click=${() => this.selectYear(year)}>
 							${year}
 						</mo-flex>
 					`)}
@@ -198,14 +164,18 @@ export class Calendar extends Component {
 	}
 
 	private selectYear(year: number) {
-		this.navigatingYear = year
+		this.navigatingDate.setFullYear(year)
 		this.yearSelection = false
 	}
 
 	private async toggleYearSelection() {
 		this.yearSelection = !this.yearSelection
 		if (this.yearSelection) {
-			await Promise.delegateToEventLoop(() => this.selectedYearElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }))
+			await Promise.delegateToEventLoop(() => this.selectedYearElement.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+				inline: 'center'
+			}))
 		}
 	}
 }

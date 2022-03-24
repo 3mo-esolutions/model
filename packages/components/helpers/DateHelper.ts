@@ -1,12 +1,12 @@
 import { FormatHelper } from '../..'
 
 declare global {
-	type DateRange = [start?: Date, end?: Date]
+	type DateRange = [start?: MoDate, end?: MoDate]
 	type DateWeek = [year: number, week: number]
 }
 
 export class DateHelper {
-	static readonly userDateRangeSeparators = [...FormatHelper.dateRangeSeparator, ' ', '-', '~']
+	static readonly userDateRangeSeparators = [FormatHelper.dateRangeSeparator, ' ', '-', '~']
 
 	static parseDateFromText(dateText: string, referenceDate = new MoDate) {
 		dateText = dateText.toLowerCase()
@@ -27,7 +27,7 @@ export class DateHelper {
 			return DateHelper.parseDateFromShortcut(dateText)
 		}
 
-		const date = new Date(dateText || new Date)
+		const date = new MoDate(dateText || new MoDate)
 		if (String(date) !== 'Invalid Date') {
 			return date
 		}
@@ -65,11 +65,11 @@ export class DateHelper {
 		const dateParts = dateText.split(FormatHelper.getDateSeparator())
 
 		if (dateParts.length === 2) {
-			return new Date(referenceDate.getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
+			return new MoDate(referenceDate.getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
 		}
 
 		if (dateParts.length === 3) {
-			return new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
+			return new MoDate(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
 		}
 
 		return undefined

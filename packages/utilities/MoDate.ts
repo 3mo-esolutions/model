@@ -65,6 +65,12 @@ export class MoDate extends Date {
 		return this.temporalInstant.equals(other)
 	}
 
+	isInRange([start, end]: DateRange) {
+		return !!start && !!end
+			&& this.temporalInstant.epochNanoseconds >= start.temporalInstant.epochNanoseconds
+			&& this.temporalInstant.epochNanoseconds <= end.temporalInstant.epochNanoseconds
+	}
+
 	since(
 		comparisonDate: Parameters<Temporal.Instant['since']>[0] | MoDate = new MoDate,
 		options?: Parameters<Temporal.Instant['since']>[1],

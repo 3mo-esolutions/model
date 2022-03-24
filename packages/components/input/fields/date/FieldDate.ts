@@ -1,20 +1,37 @@
 
-import { component, property } from '../../../../library'
-import { FormatHelper, DateHelper } from '../../../..'
+import { ClassInfo, component, property } from '../../../../library'
+import { FormatHelper, DateHelper, html, classMap } from '../../../..'
+import { CalendarSelectionAdapter } from '../../calendar'
 import { FieldDateBase } from './FieldDateBase'
+
+class DateCalendarSelectionAdapter extends CalendarSelectionAdapter<MoDate> {
+	getDayTemplate(day: MoDate, classInfo: ClassInfo) {
+		return html`
+			<mo-flex
+				class=${classMap({ ...classInfo, selected: this.calendar.value?.equals(day) ?? false })}
+				@click=${() => this.select(day)}
+			>${day.day}</mo-flex>
+		`
+	}
+
+	getNavigatingDate(value?: MoDate) {
+		const date = value ?? new MoDate()
+		return new MoDate(date.year, date.month)
+	}
+}
 
 @component('mo-field-date')
 export class FieldDate extends FieldDateBase<Date | undefined> {
+	protected calendarSelectionAdapterConstructor = DateCalendarSelectionAdapter
+
 	// For lit-analyzer to solve generic error
 	@property({ type: Object })
 	override get value() { return super.value }
 	override set value(value) { super.value = value }
 
-	protected override get calendarDate() { return new MoDate(this.value || new Date) }
-	protected override set calendarDate(value) {
+	protected override handleCalendarChange(value?: Date) {
+		super.handleCalendarChange(value)
 		this.open = false
-		this.value = value
-		this.change.dispatch(value)
 	}
 
 	protected fromValue(value: Date | undefined) {

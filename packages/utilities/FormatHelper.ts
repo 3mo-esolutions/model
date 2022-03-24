@@ -83,8 +83,8 @@ export class FormatHelper {
 	}
 
 	static dateRange(value: DateRange) {
-		const startText = value[0] ? this.date(value[0]) : undefined
-		const endText = value[1] ? this.date(value[1]) : undefined
-		return !startText && !endText ? undefined : `${startText || ''}${FormatHelper.dateRangeSeparator}${endText || ''}`
+		const [startText, endText] = value.map(d => !d ? undefined : this.date(d))
+		return !startText && !endText ? undefined :
+			[startText, endText].map(d => d || '').join(FormatHelper.dateRangeSeparator)
 	}
 }

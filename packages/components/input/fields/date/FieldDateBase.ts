@@ -1,6 +1,7 @@
 
 import { html, nothing, property, renderContainer } from '../../../../library'
 import { MaterialIcon } from '../../../helpers'
+import { CalendarSelectionAdapter } from '../../calendar'
 import { Field } from '../../Field'
 
 export abstract class FieldDateBase<T> extends Field<T> {
@@ -8,8 +9,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 	@property({ type: Boolean }) hideDatePicker = false
 	@property({ type: Object }) shortcutReferenceDate = new MoDate
 
-	protected abstract get calendarDate(): MoDate
-	protected abstract set calendarDate(value: MoDate)
+	protected readonly abstract calendarSelectionAdapterConstructor: Constructor<CalendarSelectionAdapter<T>>
 
 	protected override get template() {
 		return html`
@@ -25,10 +25,11 @@ export abstract class FieldDateBase<T> extends Field<T> {
 				@opened=${() => this.open = true}
 			>
 				${!this.open ? nothing : html`
-					<mo-calendar
-						.value=${this.calendarDate}
-						@change=${(e: CustomEvent<MoDate>) => this.calendarDate = e.detail}
-					></mo-calendar>
+					<mo-selectable-calendar
+						.selectionAdapterConstructor=${this.calendarSelectionAdapterConstructor}
+						.value=${this.value}
+						@change=${(e: CustomEvent<T>) => this.handleCalendarChange(e.detail)}
+					></mo-selectable-calendar>
 				`}
 			</mo-menu>
 		`
@@ -45,4 +46,9 @@ export abstract class FieldDateBase<T> extends Field<T> {
 	}
 
 	protected readonly calendarIconButtonIcon: MaterialIcon = 'today'
+
+	protected handleCalendarChange(value: T) {
+		this.value = value
+		this.change.dispatch(value)
+	}
 }
