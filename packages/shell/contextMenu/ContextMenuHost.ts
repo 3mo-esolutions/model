@@ -49,7 +49,7 @@ export class ContextMenuHost extends Component {
 	}
 
 	closeMenu = async () => {
-		ContextMenuHost.instance.menuContent = undefined
+		this.menuContent = undefined
 		await this.updateComplete
 	}
 

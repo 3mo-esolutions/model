@@ -1,6 +1,8 @@
 import { LocalizationHelper } from '.'
 
 export class FormatHelper {
+	static readonly dateRangeSeparator = ' – '
+
 	static getDateSeparator(language = LocalizationHelper.language.value) {
 		return Intl.DateTimeFormat(language).format(new Date).replace(/\p{Number}/gu, '')[0]
 	}
@@ -78,5 +80,11 @@ export class FormatHelper {
 		language // No need for now. Will be needed for non-latin langauges.
 		const date = new Date(value)
 		return String(date) === 'Invalid Date' ? undefined : date
+	}
+
+	static dateRange(value: DateRange) {
+		const [startText, endText] = value.map(d => !d ? undefined : this.date(d))
+		return !startText && !endText ? undefined :
+			[startText, endText].map(d => d || '').join(FormatHelper.dateRangeSeparator)
 	}
 }
