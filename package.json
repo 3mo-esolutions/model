@@ -63,7 +63,7 @@
 		"lit": "2.*",
 		"lit-analyzer": "1.*",
 		"route-parser": "*",
-		"temporal-polyfill": "^0.0.5",
+		"temporal-polyfill": "*",
 		"terser-webpack-plugin": "*",
 		"ts-lit-plugin": "1.*",
 		"ts-loader": "9.*",
