@@ -1,13 +1,15 @@
 
-import { html, nothing, property, renderContainer } from '../../../../library'
+import { html, nothing, property, query, renderContainer } from '../../../../library'
 import { MaterialIcon } from '../../../helpers'
-import { CalendarSelectionAdapter } from '../../calendar'
+import { CalendarSelectionAdapter, SelectableCalendar } from '../../calendar'
 import { Field } from '../../Field'
 
 export abstract class FieldDateBase<T> extends Field<T> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) hideDatePicker = false
 	@property({ type: Object }) shortcutReferenceDate = new MoDate
+
+	@query('mo-selectable-calendar') protected readonly calendarElement?: SelectableCalendar<T>
 
 	protected readonly abstract calendarSelectionAdapterConstructor: Constructor<CalendarSelectionAdapter<T>>
 
@@ -23,15 +25,17 @@ export abstract class FieldDateBase<T> extends Field<T> {
 				corner='BOTTOM_START'
 				@closed=${() => this.open = false}
 				@opened=${() => this.open = true}
-			>
-				${!this.open ? nothing : html`
-					<mo-selectable-calendar
-						.selectionAdapterConstructor=${this.calendarSelectionAdapterConstructor}
-						.value=${this.value}
-						@change=${(e: CustomEvent<T>) => this.handleCalendarChange(e.detail)}
-					></mo-selectable-calendar>
-				`}
-			</mo-menu>
+			>${!this.open ? nothing : this.menuContentTemplate}</mo-menu>
+		`
+	}
+
+	protected get menuContentTemplate() {
+		return html`
+			<mo-selectable-calendar
+				.selectionAdapterConstructor=${this.calendarSelectionAdapterConstructor}
+				.value=${this.value}
+				@change=${(e: CustomEvent<T>) => this.handleCalendarChange(e.detail)}
+			></mo-selectable-calendar>
 		`
 	}
 

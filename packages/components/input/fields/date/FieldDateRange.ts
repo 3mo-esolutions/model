@@ -1,11 +1,15 @@
 
 import { component, property } from '../../../../library'
-import { FormatHelper, DateHelper, ClassInfo, classMap, css, html } from '../../../..'
+import { FormatHelper, DateHelper, ClassInfo, classMap, css, html, state, ifDefined } from '../../../..'
 import { FieldDateBase } from './FieldDateBase'
 import { MaterialIcon } from '../../../helpers'
 import { CalendarSelectionAdapter } from '../../calendar'
 
+const enum DateRangeCalendarSelectionAdapterCurrentSelection { StartDate, EndDate }
+
 class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRange> {
+	currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.StartDate
+
 	override get styles() {
 		return css`
 			.day.selected.first {
@@ -14,6 +18,10 @@ class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRan
 
 			.day.selected.last {
 				border-radius: 0 100px 100px 0;
+			}
+
+			.day.selected.first.last {
+				border-radius: 100px;
 			}
 
 			.day.inDateRange:not(.selected) {
@@ -48,21 +56,42 @@ class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRan
 		return new MoDate(date.year, date.month)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	private isSelectingEndDate = false
-
 	private handleClick(date: MoDate) {
 		const [startDate, endDate] = this.calendar.value ?? [undefined, undefined]
-		const value = ((this.isSelectingEndDate ? [startDate, date] : [date, endDate]) as DateRange)
-			.sort((a, b) => (a?.valueOf() ?? 0) - (b?.valueOf() ?? 0))
-		this.isSelectingEndDate = !!value[0]
-		this.select(value)
+
+		const shallReset = !!startDate && !!endDate
+		const value = this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate
+			? [date, shallReset ? undefined : endDate]
+			: [shallReset ? undefined : startDate, date]
+
+		const [newStartDate, newEndDate] = value
+
+		if (newStartDate && newEndDate) {
+			(value as [MoDate, MoDate]).sort((a, b) => a.valueOf() - b.valueOf())
+		}
+
+		this.currentSelection = newStartDate
+			? DateRangeCalendarSelectionAdapterCurrentSelection.EndDate
+			: DateRangeCalendarSelectionAdapterCurrentSelection.StartDate
+
+		this.select(value as DateRange)
 	}
 }
 
 @component('mo-field-date-range')
 export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
+	@state()
+	private get currentSelection() { return (this.calendarElement?.selectionAdapter as DateRangeCalendarSelectionAdapter | undefined)?.currentSelection ?? DateRangeCalendarSelectionAdapterCurrentSelection.StartDate }
+	private set currentSelection(value) {
+		const selectionAdapter = (this.calendarElement?.selectionAdapter as DateRangeCalendarSelectionAdapter | undefined)
+		if (selectionAdapter) {
+			selectionAdapter.currentSelection = value
+			this.requestUpdate()
+		}
+	}
+
 	protected calendarSelectionAdapterConstructor = DateRangeCalendarSelectionAdapter
+
 	// For lit-analyzer to solve generic error
 	@property({ type: Array })
 	override get value() { return super.value || [undefined, undefined] }
@@ -72,9 +101,32 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 
 	protected override handleCalendarChange(value?: DateRange) {
 		super.handleCalendarChange(value)
-		if (this.value[0] && this.value[1]) {
+		const [startDate, endDate] = value ?? [undefined, undefined]
+		if (startDate && endDate) {
 			this.open = false
 		}
+	}
+
+	protected override get menuContentTemplate() {
+		const [startDate, endDate] = this.value
+		return html`
+			<mo-flex>
+				<mo-flex direction='horizontal' alignItems='center' textAlign='center' height='30px'>
+						<mo-div width='*' fontWeight='500' cursor='pointer'
+							foreground=${ifDefined(this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate ? 'var(--mo-accent)' : undefined)}
+							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.StartDate}
+						>${!startDate ? 'Start' : FormatHelper.date(startDate)}</mo-div>
+
+						<mo-div foreground='var(--mo-color-gray)'>bis</mo-div>
+
+						<mo-div width='*' fontWeight='500' cursor='pointer'
+							foreground=${ifDefined(this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.EndDate ? 'var(--mo-accent)' : undefined)}
+							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.EndDate}
+						>${!endDate ? 'Ende' : FormatHelper.date(endDate)}</mo-div>
+				</mo-flex>
+				${super.menuContentTemplate}
+			</mo-flex>
+		`
 	}
 
 	protected fromValue(value: DateRange | undefined) {

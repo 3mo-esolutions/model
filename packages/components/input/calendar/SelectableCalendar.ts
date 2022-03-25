@@ -14,7 +14,7 @@ export class SelectableCalendar<T> extends Calendar {
 	}) value?: T
 
 	private _selectionAdapter?: CalendarSelectionAdapter<T>
-	protected get selectionAdapter() { return this._selectionAdapter ??= new this.selectionAdapterConstructor(this) }
+	get selectionAdapter() { return this._selectionAdapter ??= new this.selectionAdapterConstructor(this) }
 
 	protected override get template() {
 		return html`

@@ -65,10 +65,18 @@ export class MoDate extends Date {
 		return this.temporalInstant.equals(other)
 	}
 
+	isBefore(comparisonDate: MoDate) {
+		return this.temporalInstant.epochNanoseconds < comparisonDate.temporalInstant.epochNanoseconds
+	}
+
+	isAfter(comparisonDate: MoDate) {
+		return this.temporalInstant.epochNanoseconds > comparisonDate.temporalInstant.epochNanoseconds
+	}
+
 	isInRange([start, end]: DateRange) {
 		return !!start && !!end
-			&& this.temporalInstant.epochNanoseconds >= start.temporalInstant.epochNanoseconds
-			&& this.temporalInstant.epochNanoseconds <= end.temporalInstant.epochNanoseconds
+			&& (this.isAfter(start) || this.equals(start))
+			&& (this.isBefore(end) || this.equals(end))
 	}
 
 	since(
