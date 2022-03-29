@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"incremental": true,
+		"importHelpers": true,
 		// TODO #35822 TypeScript doesn't support mixin declarations.
 		// https://github.com/microsoft/TypeScript/issues/35822
 		// "declaration": true,
