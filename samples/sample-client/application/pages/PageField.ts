@@ -1,4 +1,4 @@
-import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/model'
+import { component, html, PageComponent, homePage, route } from '@3mo/model'
 
 @homePage()
 @route('/field')
@@ -46,10 +46,7 @@ export class PageField extends PageComponent {
 
 							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder mit Icons'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>
-									<mo-field-search label="Suche"></mo-field-search>
-									<mo-field-search label="Suche disabled" disabled></mo-field-search>
-									<mo-field-search label="Suche" readonly></mo-field-search>
-									
+																		
 									<mo-field-amount label='Betrag'></mo-field-amount>
 									<mo-field-amount label='Betrag disabled' disabled></mo-field-amount>
 									<mo-field-amount label='Betrag readonly' readonly></mo-field-amount>
@@ -72,6 +69,10 @@ export class PageField extends PageComponent {
 										<span slot='trailing'>cm</span>
 									</mo-field-text>
 
+									<mo-field-search label="Suche"></mo-field-search>
+									<mo-field-search label="Suche disabled" disabled></mo-field-search>
+									<mo-field-search label="Suche" readonly></mo-field-search>
+
 									<mo-field-text label="Text slot leading">
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
 									</mo-field-text>
@@ -82,23 +83,27 @@ export class PageField extends PageComponent {
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
 									</mo-field-text>
 
+									<mo-field-text label="Counter" counter='50'></mo-field-text>
+									<mo-field-text label="Counter disabled" counter='50' disabled></mo-field-text>
+									<mo-field-text label="Counter readonly" counter='50' readonly></mo-field-text>
+
 									<mo-field-text label="Text slot leading trailing">
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
 										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing disabled" disabled>
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing readonly" readonly>
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
 									</mo-field-text>
 
 									<mo-field-text label="Text slot leading trailing trailingInternal">
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
-										<span slot='trailingInternal'><mo-icon icon='person_add'></mo-icon></span>
+										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
+										<span slot='trailingInternal'><mo-icon-button icon='person_add'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing trailingInternal disabled" disabled>
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
@@ -158,7 +163,7 @@ export class PageField extends PageComponent {
 									<mo-list-item>List Item</mo-list-item>
 									<mo-list-item>List Item</mo-list-item>
 								</mo-list>
-								<!-- <mo-grid columns='repeat(4, 95px)' rows='auto' columnGap='var(--mo-thickness-xl)'>
+								 War ausgeklammert: <mo-grid columns='repeat(4, 95px)' rows='auto' columnGap='var(--mo-thickness-xl)'>
 								</mo-grid>
 							</mo-section>
 							<mo-context-menu-host>

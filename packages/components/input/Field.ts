@@ -104,6 +104,7 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
+	trailingInternal: any
 
 	protected inputType: FieldInputType = 'text'
 
@@ -141,9 +142,10 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-label-translate-value-on-focus: -50%;
 				--mo-field-label-translate-on-focus: translateY(var(--mo-field-label-translate-value-on-focus));
 				--mo-field-label-transform-on-focus: var(--mo-field-label-translate-on-focus) var(--mo-field-label-scale-on-focus);
-				--mo-field-label-top-on-focus: 15px;
+				--mo-field-label-top-on-focus: 14px;
 				--mo-field-border-top-left-radius: var(--mo-border-radius);
 				--mo-field-border-top-right-radius: var(--mo-border-radius);
+				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
 				display: grid;
 				grid-template-columns: auto 1fr auto auto;
@@ -153,8 +155,8 @@ export abstract class Field<T> extends Input<T> {
 				border-top-right-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
 				background-color: var(--mdc-text-field-fill-color);
-				border-bottom: 1px solid var(--mo-color-gray-transparent) ;
-				padding: 0 8px;
+				border-bottom: 1px solid var(--mo-color-gray-transparent);
+				padding: 0 10px 0 8px;
 				height: var(--mo-field-height);
 				justify-content: center;
 			}
@@ -166,9 +168,10 @@ export abstract class Field<T> extends Input<T> {
 			:host([dense]) {
 				--mo-field-height: 32px;
 				--mo-field-label-scale-value-on-focus: 1;
+				--mo-field-label-top-on-focus: 16px;
 			}
 
-			:host([disabled]) div[part=container], :host([disabled]) slot[name=trailingInternal] {
+			:host([disabled]) {
 				pointer-events: none;
 				opacity: 0.5;
 			}
@@ -187,7 +190,7 @@ export abstract class Field<T> extends Input<T> {
 
 			div[part=container] {
 				display: grid;
-				margin: 0 5px;
+				margin: 0 4px;
 				flex: 1;
 				position: relative;
 				height: var(--mo-field-height);
@@ -234,7 +237,7 @@ export abstract class Field<T> extends Input<T> {
 				font-size: var(--mo-field-font-size);
 				outline: none;
 				padding: 0.8rem 0 0 0;
-				height: calc(100% - 0.7rem);
+				height: calc(100% - 0.8rem);
 				color: var(--mo-color-foreground);
 				transition: 0.1s ease-out;
 				background-color: transparent;
@@ -296,14 +299,10 @@ export abstract class Field<T> extends Input<T> {
 			slot[name=leading] {
 				justify-content: start;
 				height: var(--mo-field-height);
+				vertical-align: bottom;
 			}
 
-			slot[name=trailing] {
-				justify-content: end;
-				height: var(--mo-field-height);
-			}
-
-			slot[name=trailingInternal] {
+			slot[name=trailing], slot[name=trailingInternal] {
 				justify-content: end;
 				height: var(--mo-field-height);
 			}
