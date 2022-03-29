@@ -18,7 +18,7 @@ type KeyPathValueOf<T, KeyPath extends string = KeyPathOf<T>> =
 	unknown
 
 function getPropertyByKeyPath<T, KeyPath extends KeyPathOf<T>>(object: T, keyPath: KeyPath): KeyPathValueOf<T, KeyPath> {
-	return keyPath.split('.').reduce((value: any, key) => value === undefined || value === null ? value : value[key], object)
+	return !keyPath ? undefined : keyPath.split('.').reduce((value: any, key) => value === undefined || value === null ? value : value[key], object)
 }
 
 function setPropertyByKeyPath<T, KeyPath extends KeyPathOf<T>>(object: T, keyPath: KeyPath, value: KeyPathValueOf<T, KeyPath>) {

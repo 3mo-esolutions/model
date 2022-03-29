@@ -91,11 +91,10 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 					--mdc-dialog-scrim-color: var(--mo-color-background);
 				}
 
-				.mdc-dialog__container {
-					width: var(--mdc-dialog-max-width);
-				}
-
 				.mdc-dialog__surface {
+					max-width: var(--mdc-dialog-max-width) !important;
+					width: 100vw;
+					min-height: var(--mdc-dialog-min-height);
 					height: var(--mdc-dialog-min-height);
 				}
 
