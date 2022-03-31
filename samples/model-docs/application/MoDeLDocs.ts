@@ -10,7 +10,7 @@ export class MoDeLDocs extends Application {
 		Drawer.isDocked.value = true
 	}
 
-	get drawerTemplate() {
+	protected override get drawerTemplate() {
 		return html`
 			<mo-navigation-list-item icon='insert_emoticon' .component=${new PageReader({ path: '/introduction' })}>Introduction</mo-navigation-list-item>
 			<mo-navigation-list icon='local_library' label='Library'>

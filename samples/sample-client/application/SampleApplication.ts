@@ -6,7 +6,7 @@ Logo.source = 'data:image/svg+xml;utf8,<svg width="247" height="123" xmlns="http
 @application()
 @component('sample-app')
 export class Sample extends Application {
-	protected get drawerTemplate() {
+	protected override get drawerTemplate() {
 		return html`
 			<mo-navigation-list-item icon='home' .component=${new PageHome}>Home</mo-navigation-list-item>
 		`

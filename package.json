@@ -15,8 +15,13 @@
 	"homepage": "https://github.com/3mo-esolutions/model#readme",
 	"scripts": {
 		"start": "cd ./samples/sample-client && npm start",
-		"check": "lit-analyzer ./packages/**/* --strict --rules.no-missing-import off",
-		"lint": "eslint ."
+		"dev": "npm run build && concurrently \"npm run build:watch\" \"npm run test:watch\"",
+		"lint": "eslint . && lit-analyzer ./packages/**/* --strict --rules.no-missing-import off",
+		"build": "webpack",
+		"build:watch": "webpack --watch",
+		"test": "karma start --single-run",
+		"test:watch": "karma start",
+		"test:ci": "npm run build && npm run test"
 	},
 	"dependencies": {
 		"@lit-labs/task": "1.*",
@@ -44,31 +49,37 @@
 		"@material/mwc-tab-bar": "0.25.*",
 		"@material/mwc-textarea": "0.25.*",
 		"@material/mwc-top-app-bar": "0.25.*",
+		"csstype": "3.*",
+		"lit": "2.*",
+		"route-parser": "*",
+		"temporal-polyfill": "*"
+	},
+	"devDependencies": {
 		"@types/jasmine": "3.*",
 		"@types/route-parser": "0.1.*",
 		"@typescript-eslint/eslint-plugin": "4.*",
 		"@typescript-eslint/parser": "4.*",
 		"bowser": "2.*",
+		"concurrently": "*",
 		"copy-webpack-plugin": "7.*",
-		"csstype": "3.*",
 		"eslint": "*",
 		"eslint-plugin-import": "*",
 		"eslint-plugin-lit": "*",
 		"html-webpack-plugin": "5.*",
 		"karma": "6.*",
 		"karma-chrome-launcher": "3.*",
+		"karma-firefox-launcher": "*",
+		"karma-helpful-reporter": "*",
 		"karma-jasmine": "4.*",
 		"karma-parallel": "*",
-		"karma-spec-reporter": "*",
-		"lit": "2.*",
 		"lit-analyzer": "1.*",
-		"route-parser": "*",
-		"temporal-polyfill": "*",
 		"terser-webpack-plugin": "*",
 		"ts-lit-plugin": "1.*",
 		"ts-loader": "9.*",
 		"tsconfig-paths-webpack-plugin": "3.*",
 		"typescript": "4.*",
-		"typescript-eslint": "*"
+		"typescript-eslint": "*",
+		"webpack": "5.*",
+		"webpack-cli": "4.*"
 	}
 }

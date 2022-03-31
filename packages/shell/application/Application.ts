@@ -1,4 +1,4 @@
-import { css, html, property, Component, TemplateResult, nothing, query, event } from '../../library'
+import { css, html, property, Component, nothing, query, event } from '../../library'
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
@@ -11,8 +11,6 @@ export const application = () => <T extends Application>(ApplicationConstructor:
 }
 
 export abstract class Application extends Component {
-	protected abstract get drawerTemplate(): TemplateResult
-
 	@event() readonly viewChange!: EventDispatcher<View>
 
 	@property({ updated: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
@@ -205,6 +203,10 @@ export abstract class Application extends Component {
 	}
 
 	protected get userAvatarMenuItemsTemplate() {
+		return nothing
+	}
+
+	protected get drawerTemplate() {
 		return nothing
 	}
 

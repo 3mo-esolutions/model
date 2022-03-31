@@ -4,9 +4,7 @@ module.exports = {
 	frameworks: ['parallel', 'jasmine'],
 	plugins: ['karma-*'],
 	files: ['./test-temp/main.js'],
-	exclude: [],
-	preprocessors: {},
-	reporters: ['spec'],
+	reporters: ['helpful'],
 	port: 9876,
 	browsers: ['ChromeHeadless'],
 	colors: true,
@@ -14,18 +12,19 @@ module.exports = {
 	singleRun: false,
 	concurrency: Infinity,
 	crossOriginAttribute: false,
-	specReporter: {
-		maxLogLines: 5,
-		suppressErrorSummary: true,
-		suppressSkipped: true,
-		showSpecTiming: true,
-		prefixes: {
-			success: '✅ ',
-			failure: '❌ ',
-			skipped: '⚠ '
-		}
-	},
 	parallelOptions: {
 		executors: 4,
+	},
+	helpfulReporter: {
+		clearScreenBeforeEveryRun: true,
+		removeTail: true,
+		colorBrowser: 205,
+		colorConsoleLogs: 45,
+		colorPass: 10,
+		colorSkip: 11,
+		colorFail: 9,
+		colorTestName: 250,
+		colorFirstLine: 9,
+		colorLoggedErrors: 9,
 	}
 }
