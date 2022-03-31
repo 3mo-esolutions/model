@@ -1,4 +1,4 @@
-import { component, html } from '../../library'
+import { component, html, ifDefined } from '../../library'
 import { DialogComponent } from '..'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
@@ -13,6 +13,7 @@ export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
 				secondaryButtonText=${this.parameters.secondaryButtonText ?? 'Abbrechen'}
 				?blocking=${this.parameters.blocking}
+				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
 			>
 				${this.parameters.content}

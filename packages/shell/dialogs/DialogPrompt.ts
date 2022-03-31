@@ -1,4 +1,5 @@
-import { state, component, html } from '../../library'
+import { state, component, html, ifDefined, query } from '../../library'
+import { FieldText, FieldTextArea } from '../../components'
 import { DialogComponent } from '..'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
@@ -12,17 +13,19 @@ type Parameters = BaseDialogParameters & {
 export class DialogPrompt extends DialogComponent<Parameters, string> {
 	@state() private value = this.parameters.value ?? ''
 
+	@query('#inputElement') readonly inputElement!: FieldText | FieldTextArea
+
 	protected override get template() {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
 				?blocking=${this.parameters.blocking}
+				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
 			>
 				<mo-flex width='100%' height='100%' gap='var(--mo-thickness-m)'>
 					${this.parameters.content}
-
 					${this.textFieldTemplate}
 				</mo-flex>
 			</mo-dialog>
@@ -31,13 +34,13 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 
 	private get textFieldTemplate() {
 		return this.parameters.isTextArea ? html`
-			<mo-field-text-area data-focus
+			<mo-field-text-area id='inputElement' data-focus
 				label=${this.parameters.inputLabel ?? 'Input'}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}
 			></mo-field-text-area>
 		` : html`
-			<mo-field-text data-focus
+			<mo-field-text id='inputElement' data-focus
 				label=${this.parameters.inputLabel ?? 'Input'}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}

@@ -1,4 +1,4 @@
-import { component, html } from '../../library'
+import { component, html, ifDefined } from '../../library'
 import { DialogComponent } from '..'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
@@ -10,6 +10,7 @@ export class DialogAlert extends DialogComponent<BaseDialogParameters> {
 				heading=${this.parameters.heading}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
 				?blocking=${this.parameters.blocking}
+				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
 			>
 				${this.parameters.content}
