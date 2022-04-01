@@ -5,6 +5,7 @@ module.exports = {
 	plugins: ['karma-*'],
 	files: ['./test-temp/main.js'],
 	reporters: ['helpful'],
+	logLevel: 'ERROR',
 	port: 9876,
 	browsers: ['ChromeHeadless'],
 	colors: true,
@@ -16,7 +17,6 @@ module.exports = {
 		executors: 4,
 	},
 	helpfulReporter: {
-		clearScreenBeforeEveryRun: true,
 		removeTail: true,
 		colorBrowser: 205,
 		colorConsoleLogs: 45,

@@ -15,7 +15,7 @@
 	"homepage": "https://github.com/3mo-esolutions/model#readme",
 	"scripts": {
 		"start": "cd ./samples/sample-client && npm start",
-		"dev": "npm run build && concurrently \"npm run build:watch\" \"npm run test:watch\"",
+		"dev": "npm run build && concurrently --raw \"npm run build:watch\" \"npm run test:watch\"",
 		"lint": "eslint . && lit-analyzer ./packages/**/* --strict --rules.no-missing-import off",
 		"build": "webpack",
 		"build:watch": "webpack --watch",
@@ -52,14 +52,14 @@
 		"csstype": "3.*",
 		"lit": "2.*",
 		"route-parser": "*",
-		"temporal-polyfill": "*"
+		"temporal-polyfill": "*",
+		"bowser": "2.*",
+		"@types/jasmine": "3.*",
+		"@types/route-parser": "0.1.*"
 	},
 	"devDependencies": {
-		"@types/jasmine": "3.*",
-		"@types/route-parser": "0.1.*",
 		"@typescript-eslint/eslint-plugin": "4.*",
 		"@typescript-eslint/parser": "4.*",
-		"bowser": "2.*",
 		"concurrently": "*",
 		"copy-webpack-plugin": "7.*",
 		"eslint": "*",

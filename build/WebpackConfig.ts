@@ -10,6 +10,7 @@ const Global = require('glob')
 const Path = require('path')
 
 const sharedConfigs = {
+	stats: 'minimal',
 	module: {
 		rules: [
 			{

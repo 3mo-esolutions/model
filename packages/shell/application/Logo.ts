@@ -3,7 +3,7 @@ import { ThemeHelper } from '..'
 
 @component('mo-logo')
 export class Logo extends Component {
-	static source = '/assets/favicon.svg'
+	static source?: string
 
 	@property() color = 'var(--mo-color-accessible)'
 	@property() source = Logo.source
@@ -13,7 +13,7 @@ export class Logo extends Component {
 	}
 
 	private async replaceColorVariable() {
-		if (Logo.source.includes('data:image/svg+xml;utf8,') === false) {
+		if (Logo.source?.includes('data:image/svg+xml;utf8,') === false) {
 			return
 		}
 		const isColorCssVariable = this.color.includes('var(')
@@ -28,7 +28,7 @@ export class Logo extends Component {
 			}
 			await Promise.sleep(failWaitTimeInMs)
 		}
-		this.source = Logo.source.replace('{{color}}', color)
+		this.source = Logo.source?.replace('{{color}}', color)
 	}
 
 	static override get styles() {

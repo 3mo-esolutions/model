@@ -54,7 +54,7 @@ describe(DialogPrompt.name, () => {
 	]
 
 	for (const parameters of parametersVariations) {
-		describe(`when "isTextArea" is "${parameters.isTextArea}"] and ["inputLabel" is "${parameters.inputLabel}"`, () => {
+		describe(`when ["isTextArea" is "${parameters.isTextArea}"] and ["inputLabel" is "${parameters.inputLabel}"]`, () => {
 			let dialog: DialogPrompt
 			beforeEach(async () => dialog = await initializeTestComponent(new DialogPrompt(parameters)))
 			afterEach(() => dialog.remove())
