@@ -1,6 +1,6 @@
 import { Component, component, css, html, property } from '../../library'
 import { CSSDirection } from '../helpers'
-import * as CSS from 'csstype'
+import type * as CSS from 'csstype'
 
 /**
  * @slot - Content

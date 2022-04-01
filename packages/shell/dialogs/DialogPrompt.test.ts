@@ -67,7 +67,7 @@ describe(DialogPrompt.name, () => {
 				expect(dialog.inputElement.value).toBe(parameters.value)
 			})
 
-			it('should return the value of the input element when the primary button is clicked', async () => {
+			it('should return the value of the input element when the primary button is clicked', () => {
 				expect(dialog.inputElement.value).toBe(parameters.value)
 			})
 		})

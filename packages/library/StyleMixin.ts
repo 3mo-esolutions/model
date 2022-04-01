@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable import/no-internal-modules */
+/* eslint-disable import/no-unresolved */
 import { property } from 'lit/decorators.js'
 import * as CSS from 'csstype'
 import { CssHelper } from '../..'

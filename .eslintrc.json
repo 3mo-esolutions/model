@@ -12,7 +12,8 @@
 	"ignorePatterns": [
 		"node_modules",
 		"dist",
-		"test-temp"
+		"test-temp",
+		"samples"
 	],
 	"extends": [
 		"eslint:recommended",

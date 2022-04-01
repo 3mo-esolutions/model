@@ -1,5 +1,5 @@
 import { component, html, property, Component, css } from '../../library'
-import * as CSS from 'csstype'
+import type * as CSS from 'csstype'
 
 @component('mo-grid')
 export class Grid extends Component {

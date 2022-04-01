@@ -1,3 +1,4 @@
+/* eslint-disable import/export */
 /* eslint-disable import/no-internal-modules */
 export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, HTMLTemplateResult, SVGTemplateResult, PropertyValues, ReactiveControllerHost, ReactiveElement } from 'lit'
 export { customElement as component, queryAsync } from 'lit/decorators.js'

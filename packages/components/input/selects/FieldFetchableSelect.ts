@@ -103,7 +103,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		if (fieldValue instanceof Array && fieldValue.length > 0) {
 			optionsToAppend.push(...value.filter(o => fieldValue.includes(o.value)))
 		} else if (fieldValue) {
-			const preselectedValueOption = value.find(o => o.value == fieldValue)
+			const preselectedValueOption = value.find(o => o.value === fieldValue)
 			if (preselectedValueOption) {
 				optionsToAppend.push(preselectedValueOption)
 			}

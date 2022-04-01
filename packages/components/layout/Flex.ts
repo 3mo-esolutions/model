@@ -1,6 +1,6 @@
 import { component, html, property, Component, css } from '../../library'
 import { CSSDirection } from '..'
-import * as CSS from 'csstype'
+import type * as CSS from 'csstype'
 
 @component('mo-flex')
 export class Flex extends Component {
