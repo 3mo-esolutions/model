@@ -187,9 +187,6 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		}
 	}
 
-	private readonly handlePrimaryButtonClick = () => this.handleAction('primary')
-	private readonly handleSecondaryButtonClick = () => this.handleAction('secondary')
-
 	protected override initialized() {
 		this.createHeaderSlot()
 		this.createFooterSlot()
@@ -198,11 +195,8 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 
 		this.changeCloseBehavior()
 
-		this.primaryButton?.addEventListener('click', this.handlePrimaryButtonClick)
-		this.primarySlot.addEventListener('slotchange', () => this.primaryButton?.addEventListener('click', this.handlePrimaryButtonClick))
-
-		this.secondaryButton?.addEventListener('click', this.handleSecondaryButtonClick)
-		this.secondarySlot.addEventListener('slotchange', () => this.secondaryButton?.addEventListener('click', this.handleSecondaryButtonClick))
+		this.primarySlot.addEventListener('click', () => this.handleAction('primary'))
+		this.secondarySlot.addEventListener('click', () => this.handleAction('secondary'))
 	}
 
 	protected override updated(props: PropertyValues<this>) {
@@ -265,7 +259,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@renderContainer('slot[name="primaryAction"]')
 	protected get primaryButtonTemplate() {
 		return !this.primaryButtonText ? nothing : html`
-			<mo-button type='raised' @click=${this.handlePrimaryButtonClick}>
+			<mo-button type='raised'>
 				${this.primaryButtonText}
 			</mo-button>
 		`
@@ -274,7 +268,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@renderContainer('slot[name="secondaryAction"]')
 	protected get secondaryButtonTemplate() {
 		return !this.secondaryButtonText ? nothing : html`
-			<mo-button @click=${this.handleSecondaryButtonClick}>
+			<mo-button>
 				${this.secondaryButtonText}
 			</mo-button>
 		`
