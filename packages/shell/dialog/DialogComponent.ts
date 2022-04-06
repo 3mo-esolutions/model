@@ -62,7 +62,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 		this.dialogElement.cancellationAction = this.cancellationAction?.bind(this)
 		this.dialogElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 		this.dialogElement.requestPopup.subscribe(() => this.pop())
-		this.dialogElement.addEventListener('closed', (e: CustomEvent<TResult>) => {
+		this.dialogElement.addEventListener<any>('closed', (e: CustomEvent<TResult>) => {
 			// Google MWC has events in some of their components
 			// which dispatch a "closed" event with "bubbles" option set to true
 			// thus reaching the DialogComponent. This is blocked here.

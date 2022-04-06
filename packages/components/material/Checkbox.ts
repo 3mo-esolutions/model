@@ -24,7 +24,7 @@ export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))
 	}
 
 	@property()
-	// @ts-ignore overriding the value property
+	// @ts-expect-error overriding the value property
 	get value(): CheckboxValue {
 		if (this.indeterminate) {
 			return 'indeterminate'

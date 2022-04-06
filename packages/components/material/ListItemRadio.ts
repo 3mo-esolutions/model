@@ -4,7 +4,7 @@ import { ListItemMixin } from '..'
 import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-list-item'
 
 class MwcRadioListItemWidthCompatibleLeft extends MwcRadioListItem {
-	// @ts-ignore It is actually a boolean
+	// @ts-expect-error It is actually a boolean
 	left: string
 }
 

@@ -1,10 +1,19 @@
+interface BeforeInstallPromptEvent extends Event {
+	readonly platforms: Array<string>
+	readonly userChoice: Promise<{
+		outcome: 'accepted' | 'dismissed'
+		platform: string
+	}>
+	prompt(): Promise<void>
+}
+
 window.addEventListener('beforeinstallprompt', e => {
 	e.preventDefault()
-	PwaHelper.pwaPrompt = e
+	PwaHelper.pwaPrompt = e as BeforeInstallPromptEvent
 })
 
 export class PwaHelper {
-	static pwaPrompt?: Event
+	static pwaPrompt?: BeforeInstallPromptEvent
 
 	static get isInstalled() {
 		return window.matchMedia('(display-mode: standalone)').matches
@@ -38,9 +47,9 @@ export class PwaHelper {
 			return
 		}
 
-		// @ts-ignore TypeScript library doesn't know about this specific event
-		const choiceResult = await this.pwaPrompt?.prompt()
-		if (choiceResult.outcome !== 'accepted') {
+		await this.pwaPrompt?.prompt()
+		const userChoice = await this.pwaPrompt?.userChoice
+		if (userChoice?.outcome !== 'accepted') {
 			throw new Error('PWA installation was not accepted')
 		}
 	}

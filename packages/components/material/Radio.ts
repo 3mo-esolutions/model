@@ -26,9 +26,9 @@ export class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 	}
 
 	@property({ type: Boolean })
-	// @ts-ignore overriding the value property
+	// @ts-expect-error overriding the value property
 	get value(): boolean { return this.checked }
-	// @ts-ignore overriding the value property
+	// @ts-expect-error overriding the value property
 	set value(value: boolean) { this.checked = value }
 }
 

@@ -1,6 +1,5 @@
 /* eslint-disable */
 const path = require('path')
-// @ts-ignore
 const MoDeLWebpackConfigFactory = require('./node_modules/@3mo/model/build/WebpackConfig.ts')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 

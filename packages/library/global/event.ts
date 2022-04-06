@@ -21,17 +21,15 @@ Object.defineProperty(HTMLElement.prototype, 'eventHandlers', {
 })
 
 HTMLElement.prototype.addEventListenerBase = HTMLElement.prototype.addEventListener
-// @ts-ignore overriding other overload of the addEventListener
-HTMLElement.prototype.addEventListener = function (type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
+HTMLElement.prototype.addEventListener = function (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) {
 	this.eventHandlers.push({ name: type, eventListener: listener })
 	this.addEventListenerBase(type, listener, options)
 }
 
 HTMLElement.prototype.removeEventListenerBase = HTMLElement.prototype.removeEventListener
-// @ts-ignore overriding other overload of the removeEventListener
-HTMLElement.prototype.removeEventListener = function (type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
-	this.eventHandlers.forEach((e, i) => {
-		if (e.name === type && e.eventListener === listener) {
+HTMLElement.prototype.removeEventListener = function (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) {
+	this.eventHandlers.forEach(({ eventListener, name }, i) => {
+		if (name === type && eventListener === listener) {
 			delete this.eventHandlers[i]
 		}
 	})
@@ -49,12 +47,8 @@ interface CustomEvent<T, TElement extends Element = Element> extends Event {
 }
 
 interface HTMLElement {
-	addEventListenerBase(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions): void
-	removeEventListenerBase(type: string, listener: EventListener, options?: boolean | EventListenerOptions): void
-
-	addEventListener<T>(type: string, listener: CustomEventHandler<T>, options?: boolean | AddEventListenerOptions): void
-	removeEventListener<T>(type: string, listener: CustomEventHandler<T>): void
-
-	readonly eventHandlers: Array<{ name: string, eventListener: (data: any) => void }>
+	readonly eventHandlers: Array<{ readonly name: string, readonly eventListener: EventListenerOrEventListenerObject }>
+	addEventListenerBase(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void
+	removeEventListenerBase(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void
 	removeAllEventListeners(): void
 }

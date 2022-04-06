@@ -178,7 +178,7 @@ export class Markdown extends Component {
 
 		this.shadowRoot.querySelectorAll('blockquote').forEach(quote => {
 			if (quote.firstElementChild) {
-				// @ts-ignore first character of the text is always one of the quoteMapper keys
+				// @ts-expect-error first character of the text is always one of the quoteMapper keys
 				quote.className = Markdown.quoteMap[quote.firstElementChild.innerHTML.charAt(0)]
 				quote.firstElementChild.innerHTML = quote.firstElementChild.innerHTML.slice(1)
 			}

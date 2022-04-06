@@ -3,7 +3,7 @@ import { MaterialIcon, TextContentController } from '..'
 import { Tab as MwcTab } from '@material/mwc-tab'
 
 class MwcTabWithCompatibleMinWidth extends MwcTab {
-	// @ts-ignore It is actually a boolean to resolve TS error
+	// @ts-expect-error It is actually a boolean to resolve TS error
 	minWidth: string
 }
 

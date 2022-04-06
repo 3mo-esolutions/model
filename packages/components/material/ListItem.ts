@@ -41,7 +41,7 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 
 	constructor() {
 		super()
-		this.addEventListener('request-selected', (e: CustomEvent<{ readonly selected: boolean }>) => {
+		this.addEventListener<any>('request-selected', (e: CustomEvent<{ readonly selected: boolean }>) => {
 			if (this.selected !== e.detail.selected) {
 				this.selectionChange.dispatch(e.detail.selected)
 			}
