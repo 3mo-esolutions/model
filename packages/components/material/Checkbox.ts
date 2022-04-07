@@ -18,6 +18,9 @@ export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))
 				:host {
 					--mdc-checkbox-touch-target-size: 36px;
 					--mdc-checkbox-ripple-size: 36px;
+					--mdc-checkbox-disabled-color: var(--mo-color-gray-transparent);
+					--mdc-checkbox-unchecked-color: var(--mo-color-foreground-transparent);
+					--mdc-checkbox-ink-color: var(--mo-color-accessible);
 				}
 			`
 		]
@@ -46,6 +49,8 @@ export class Checkbox extends InputMixin(LabelMixin(ComponentMixin(MwcCheckbox))
 			this.checked = false
 		}
 	}
+
+	override reducedTouchTarget = true
 }
 
 declare global {

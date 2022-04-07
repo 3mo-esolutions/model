@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, ComponentMixin, css } from '../../library'
 import { CircularProgressFourColor as MwcCircularProgress } from '@material/mwc-circular-progress-four-color'
 
 /**
@@ -8,12 +8,21 @@ import { CircularProgressFourColor as MwcCircularProgress } from '@material/mwc-
  */
 @component('mo-circular-progress')
 export class CircularProgress extends ComponentMixin(MwcCircularProgress) {
-	@property({ type: Boolean })
-	set fourColor(value: boolean) {
-		this.style.setProperty('--mo-circular-progress-bar-color-1', value ? '#2196f3' : '--mo-theme-primary')
-		this.style.setProperty('--mo-circular-progress-bar-color-2', value ? '#e91e63' : '--mo-theme-primary')
-		this.style.setProperty('--mo-circular-progress-bar-color-3', value ? '#ffc107' : '--mo-theme-primary')
-		this.style.setProperty('--mo-circular-progress-bar-color-4', value ? '#03dac5' : '--mo-theme-primary')
+	static override get styles() {
+		return [
+			...super.styles,
+			css`
+				:host {
+					width: 48px;
+					height: 48px;
+				}
+
+				.mdc-circular-progress {
+					width: 100% !important;
+					height: 100% !important;
+				}
+			`
+		]
 	}
 }
 

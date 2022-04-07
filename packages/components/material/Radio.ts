@@ -13,6 +13,10 @@ export class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 		return [
 			...super.styles,
 			css`
+				:host {
+					--mdc-radio-unchecked-color: var(--mo-color-foreground);
+				}
+
 				.mdc-radio {
 					padding: 8px;
 				}
@@ -30,6 +34,8 @@ export class Radio extends InputMixin(LabelMixin(ComponentMixin(MwcRadio))) {
 	get value(): boolean { return this.checked }
 	// @ts-expect-error overriding the value property
 	set value(value: boolean) { this.checked = value }
+
+	override reducedTouchTarget = true
 }
 
 declare global {

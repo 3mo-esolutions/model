@@ -31,6 +31,10 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 		return [
 			...super.styles,
 			css`
+				:host {
+					--mdc-list-item-graphic-margin: 12px;
+				}
+
 				:host([disabled][nonActivatable]) {
 					cursor: pointer;
 					pointer-events: auto;

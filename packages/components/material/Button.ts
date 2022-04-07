@@ -36,6 +36,8 @@ export class Button extends ComponentMixin(MwcButton) {
 				:host {
 					height: 36px;
 					line-height: normal;
+					--mdc-button-disabled-ink-color: var(--mo-color-gray-transparent);
+					--mdc-button-outline-color: var(--mo-accent);
 				}
 
 				button {
@@ -53,7 +55,8 @@ export class Button extends ComponentMixin(MwcButton) {
 		]
 	}
 
-	@property() override icon!: MaterialIcon
+	// @ts-expect-error Icon is nullable and not always set
+	@property() override icon?: MaterialIcon
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)

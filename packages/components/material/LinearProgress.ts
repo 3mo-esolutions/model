@@ -1,4 +1,4 @@
-import { component, ComponentMixin } from '../../library'
+import { component, ComponentMixin, css } from '../../library'
 import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progress'
 
 /**
@@ -9,7 +9,18 @@ import { LinearProgress as MwcLinearProgress } from '@material/mwc-linear-progre
  * @attr close
  */
 @component('mo-linear-progress')
-export class LinearProgress extends ComponentMixin(MwcLinearProgress) { }
+export class LinearProgress extends ComponentMixin(MwcLinearProgress) {
+	static override get styles() {
+		return [
+			...super.styles,
+			css`
+				:host {
+					--mdc-linear-progress-buffer-color: var(--mo-color-gray-transparent);
+				}
+			`
+		]
+	}
+}
 
 declare global {
 	interface HTMLElementTagNameMap {

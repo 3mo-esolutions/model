@@ -59,14 +59,14 @@ export class HTMLElementEventDispatcher<T = void> implements EventDispatcher<T> 
 
 	subscribe(handler: EventHandler<T>) {
 		const nativeHandler = (event: CustomEvent<T>) => handler(event.detail)
-		this.target.addEventListener(this.eventName, nativeHandler)
+		this.target.addEventListener<any>(this.eventName, nativeHandler)
 		this.handlersMap.set(handler, nativeHandler)
 	}
 
 	unsubscribe(handler: EventHandler<T>) {
 		const nativeHandler = this.handlersMap.get(handler)
 		if (nativeHandler) {
-			this.target.removeEventListener(this.eventName, nativeHandler)
+			this.target.removeEventListener<any>(this.eventName, nativeHandler)
 		}
 		this.handlersMap.delete(handler)
 	}

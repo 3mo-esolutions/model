@@ -105,45 +105,19 @@ export const styles = css`
 		--mo-accent-gradient: linear-gradient(135deg, rgb(var(--mo-accent-gradient-1)), rgb(var(--mo-accent-gradient-2)), rgb(var(--mo-accent-gradient-3)));
 		--mo-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-accent-gradient-1), 0.25), rgba(var(--mo-accent-gradient-2), 0.25), rgba(var(--mo-accent-gradient-3), 0.25));
 		/* Override Material Web Components variables */
+		--mdc-icon-font: Material Icons Sharp !important;
 		--mdc-theme-primary: var(--mo-accent) !important;
 		--mdc-theme-on-primary: var(--mo-color-accessible) !important;
 		--mdc-theme-secondary: var(--mo-accent) !important;
 		--mdc-theme-on-secondary: var(--mo-color-accessible) !important;
 		--mdc-theme-text-secondary-on-background: var(--mo-color-gray) !important;
-		--mdc-icon-font: Material Icons Sharp !important;
-		--mdc-theme-text-primary-on-dark: var(--mo-color-surface) !important;
-		--mdc-radio-unchecked-color: var(--mo-color-foreground) !important;
-		--mdc-checkbox-unchecked-color: var(--mo-color-foreground-transparent) !important;
-		--mdc-checkbox-ink-color: var(--mo-color-accessible);
-		--mdc-linear-progress-buffer-color: var(--mo-color-gray) !important;
-		--mdc-theme-on-surface: var(--mo-color-foreground-transparent) !important;
 		--mdc-theme-surface: var(--mo-color-surface) !important;
-		--mdc-select-fill-color: var(--mo-field-background) !important;
-		--mdc-select-ink-color: var(--mo-color-foreground) !important;
-		--mdc-select-label-ink-color: var(--mo-color-gray) !important;
-		--mdc-select-idle-line-color: var(--mo-color-gray) !important;
-		--mdc-select-hover-line-color: var(--mo-color-gray) !important;
-		--mdc-select-dropdown-icon-color: var(--mo-color-gray) !important;
-		--mdc-text-field-fill-color: var(--mo-field-background) !important;
-		--mdc-text-field-ink-color: var(--mo-color-foreground) !important;
-		--mdc-text-field-label-ink-color: var(--mo-color-gray) !important;
-		--mdc-text-field-idle-line-color: var(--mo-color-gray) !important;
-		--mdc-text-field-hover-line-color: var(--mo-color-gray) !important;
-		--mdc-theme-text-primary-on-background: var(--mo-color-foreground) !important;
-		--mdc-icon-button-size: calc(var(--mo-icon-size) * 2) !important;
-		--mdc-dialog-heading-ink-color: var(--mo-color-foreground) !important;
-		--mdc-dialog-content-ink-color: var(--mo-color-foreground-transparent) !important;
-		--mdc-dialog-scroll-divider-color: var(--mo-color-gray-transparent) !important;
-		--mdc-dialog-scrim-color: var(--mo-scrim) !important;
+		--mdc-theme-text-primary-on-dark: var(--mo-color-surface) !important;
+		--mdc-theme-on-surface: var(--mo-color-foreground-transparent) !important;
+		--mdc-theme-text-disabled-on-light: var(--mo-color-gray-transparent) !important;
 		--mdc-theme-text-hint-on-background: var(--mo-color-foreground-transparent) !important;
 		--mdc-theme-text-icon-on-background: var(--mo-color-gray) !important;
-		--mdc-tab-color-default: var(--mo-color-foreground-transparent) !important;
-		--mdc-tab-text-label-color-default: var(--mo-color-foreground-transparent) !important;
-		--mdc-theme-text-disabled-on-light: var(--mo-color-gray-transparent) !important;
-		--mdc-button-disabled-ink-color: var(--mo-color-gray-transparent) !important;
-		--mdc-button-outline-color: var(--mo-accent) !important;
-		--mdc-list-item-graphic-margin: 12px !important;
-		--mdc-checkbox-disabled-color: var(--mo-color-gray-transparent) !important;
+		--mdc-theme-text-primary-on-background: var(--mo-color-foreground) !important;
 	}
 
 	[application][theme=light] {

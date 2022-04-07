@@ -28,6 +28,14 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 		return [
 			...super.styles,
 			css`
+				:host {
+					--mdc-text-field-fill-color: var(--mo-field-background);
+					--mdc-text-field-ink-color: var(--mo-color-foreground);
+					--mdc-text-field-label-ink-color: var(--mo-color-gray);
+					--mdc-text-field-idle-line-color: var(--mo-color-gray);
+					--mdc-text-field-hover-line-color: var(--mo-color-gray);
+				}
+
 				.mdc-text-field {
 					border-top-left-radius: var(--mo-field-border-top-left-radius, 4px);
 					border-top-right-radius: var(--mo-field-border-top-right-radius, 4px);

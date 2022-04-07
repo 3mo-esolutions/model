@@ -68,7 +68,7 @@ export abstract class Field<T> extends Input<T> {
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
 				border-top-right-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
-				background-color: var(--mdc-text-field-fill-color);
+				background-color: var(--mo-field-background);
 				border-bottom: 1px solid var(--mo-color-gray);
 				padding: 0 8px;
 				height: var(--mo-field-height);
