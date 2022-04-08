@@ -1,5 +1,6 @@
 import { component, property, ComponentMixin, css } from '../../library'
-import { MaterialIcon, TextContentController } from '..'
+import { MaterialIcon } from '..'
+import { TextContentController } from '../../utilities'
 import { Tab as MwcTab } from '@material/mwc-tab'
 
 class MwcTabWithCompatibleMinWidth extends MwcTab {

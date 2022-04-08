@@ -1,5 +1,6 @@
 import { component, html, property } from '../../library'
-import { Checkbox, CSSDirection, observeMutation } from '..'
+import { observeMutation } from '../../utilities'
+import { Checkbox, CSSDirection } from '..'
 
 @component('mo-checkbox-group')
 export class CheckboxGroup extends Checkbox {

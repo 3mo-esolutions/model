@@ -1,5 +1,6 @@
 import { component, property, ComponentMixin, PropertyValues } from '../../library'
-import { MaterialIcon, TextContentController } from '..'
+import { TextContentController } from '../../utilities'
+import { MaterialIcon } from '..'
 import { Fab as MwcFab } from '@material/mwc-fab'
 
 /**

@@ -1,4 +1,4 @@
-import { Controller, ReactiveControllerHost } from '../../library'
+import { Controller, ReactiveControllerHost } from '../library'
 
 export class MutationController extends Controller {
 	protected observer?: MutationObserver

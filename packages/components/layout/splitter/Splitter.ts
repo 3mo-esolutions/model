@@ -1,5 +1,6 @@
 import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener } from '../../../library'
-import { SplitterItem, CSSDirection, MutationController, SplitterResizerHost } from '../..'
+import { SplitterItem, CSSDirection, SplitterResizerHost } from '../..'
+import { MutationController } from '../../../utilities'
 import type * as CSS from 'csstype'
 
 /**
