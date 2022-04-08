@@ -1,17 +1,12 @@
 import { component, html, property } from '../../library'
-import { Checkbox, CSSDirection } from '..'
+import { Checkbox, CSSDirection, observeMutation } from '..'
 
 @component('mo-checkbox-group')
 export class CheckboxGroup extends Checkbox {
 	@property() direction: CSSDirection = 'vertical'
 
-	protected override initialized() {
-		this.addEventListener('change', () => this.childrenValue = this.value)
-		this.checkboxes.forEach(checkbox => checkbox.addEventListener('change', () => this.value = this.childrenValue))
-	}
-
 	private get checkboxes() {
-		return Array.from(this.children).filter(elm => elm instanceof Checkbox) as Array<Checkbox>
+		return Array.from(this.children).filter(child => child instanceof Checkbox) as Array<Checkbox>
 	}
 
 	private get childrenValue(): CheckboxValue {
@@ -23,6 +18,7 @@ export class CheckboxGroup extends Checkbox {
 			return 'indeterminate'
 		}
 	}
+
 	private set childrenValue(value: CheckboxValue) {
 		if (value === 'indeterminate') {
 			return
@@ -30,17 +26,20 @@ export class CheckboxGroup extends Checkbox {
 
 		this.checkboxes.forEach(checkbox => {
 			checkbox.value = value
-			if (checkbox instanceof CheckboxGroup) {
-				checkbox.childrenValue = value
-			}
+			checkbox.change.dispatch(value)
 		})
+	}
+
+	protected override handleChange() {
+		super.handleChange()
+		this.childrenValue = this.value
 	}
 
 	protected override render() {
 		return html`
 			<style>
 				:host {
-					--mo-checkbox-group-nested-margin: 25px;
+					--mo-checkbox-group-nested-margin: 16px;
 				}
 
 				::slotted(*) {
@@ -50,10 +49,17 @@ export class CheckboxGroup extends Checkbox {
 			<mo-flex>
 				${super.render()}
 				<mo-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mo-thickness-xl))'>
-					<slot></slot>
+					<slot ${observeMutation(this.handleSlotChange)}></slot>
 				</mo-flex>
 			</mo-flex>
 		`
+	}
+
+	private readonly updateValue = () => this.value = this.childrenValue
+
+	private readonly handleSlotChange = () => {
+		this.updateValue()
+		this.checkboxes.forEach(checkbox => checkbox.change.subscribe(this.updateValue))
 	}
 }
 

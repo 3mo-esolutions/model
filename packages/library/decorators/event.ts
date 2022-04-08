@@ -27,18 +27,18 @@ declare global {
 }
 
 export class PureEventDispatcher<T = void> implements EventDispatcher<T> {
-	private handlers = new Array<EventHandler<T>>()
+	private readonly handlers = new Set<EventHandler<T>>()
 
 	subscribe(handler: EventHandler<T>) {
-		this.handlers.push(handler)
+		this.handlers.add(handler)
 	}
 
 	unsubscribe(handler: EventHandler<T>) {
-		this.handlers = this.handlers.filter(h => h !== handler)
+		this.handlers.delete(handler)
 	}
 
 	dispatch(data: T) {
-		this.handlers.slice(0).forEach(h => h(data))
+		[...this.handlers].forEach(h => h(data))
 	}
 }
 
