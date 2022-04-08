@@ -1,4 +1,4 @@
-import { component, html, property } from '../../library'
+import { component, css, eventListener, html, property } from '../../library'
 import { observeMutation } from '../../utilities'
 import { Checkbox, CSSDirection } from '..'
 
@@ -26,37 +26,46 @@ export class CheckboxGroup extends Checkbox {
 		}
 
 		this.checkboxes.forEach(checkbox => {
-			checkbox.value = value
-			checkbox.change.dispatch(value)
+			if (checkbox.value !== value) {
+				checkbox.value = value
+				checkbox.change.dispatch(value)
+			}
 		})
 	}
 
-	protected override handleChange() {
-		super.handleChange()
-		this.childrenValue = this.value
+	@eventListener('change')
+	protected changed = () => this.childrenValue = this.value
+
+	static override get styles() {
+		return [...super.styles, css`
+			:host {
+				--mo-checkbox-group-nested-margin: 32px;
+			}
+
+			::slotted(*) {
+				margin-left: var(--mo-checkbox-group-nested-margin);
+			}
+		`]
 	}
 
 	protected override render() {
 		return html`
-			<style>
-				:host {
-					--mo-checkbox-group-nested-margin: 16px;
-				}
-
-				::slotted(*) {
-					margin-left: var(--mo-checkbox-group-nested-margin);
-				}
-			</style>
 			<mo-flex>
 				${super.render()}
-				<mo-flex direction=${this.direction} height='*' margin='0 0 0 calc(2 * var(--mo-thickness-xl))'>
+				<mo-flex direction=${this.direction} height='*'>
 					<slot ${observeMutation(this.handleSlotChange)}></slot>
 				</mo-flex>
 			</mo-flex>
 		`
 	}
 
-	private readonly updateValue = () => this.value = this.childrenValue
+	private readonly updateValue = () => {
+		const value = this.childrenValue
+		if (value !== this.value) {
+			this.value = value
+			this.change.dispatch(value)
+		}
+	}
 
 	private readonly handleSlotChange = () => {
 		this.updateValue()

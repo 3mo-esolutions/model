@@ -38,7 +38,7 @@ export class PureEventDispatcher<T = void> implements EventDispatcher<T> {
 	}
 
 	dispatch(data: T) {
-		[...this.handlers].forEach(h => h(data))
+		this.handlers.forEach(handler => handler(data))
 	}
 }
 
