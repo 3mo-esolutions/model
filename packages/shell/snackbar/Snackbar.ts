@@ -56,7 +56,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 				}
 
 				render(html`
-					${!action ? nothing : html`<mo-button slot='action' @click=${handleAction}>${action.text}</mo-button>`}
+					${!action ? nothing : html`<mo-loading-button slot='action' @click=${handleAction}>${action.text}</mo-loading-button>`}
 					<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='var(--mo-color-background)' @click=${close}></mo-icon-button>
 				`, this.instance)
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import { LitElement } from 'lit'
+import { EventPart, LitElement } from 'lit'
 import { decorateLitElement } from './decorateLitElement'
 
 type ShorthandEventListenerDecoratorOptions = [type: string, options?: EventListenerOptions | boolean]
@@ -79,4 +79,13 @@ const isEventListenerOrEventListenerObject = (listener: unknown): listener is Ev
 	// @ts-expect-error 'in' operator seemingly does not narrow down the type
 	const isListenerObject = typeof listener === 'object' && listener !== null && 'handleEvent' in listener && typeof listener.handleEvent === 'function'
 	return isListener || isListenerObject
+}
+
+export const extractEventHandler = <TEvent extends Event = Event>(eventListener: EventListenerOrEventListenerObject) => {
+	if ('_$committedValue' in eventListener) {
+		const eventPart = eventListener as EventPart
+		const handler = eventListener['_$committedValue'] as (event: TEvent) => void
+		return handler.bind(eventPart.element)
+	}
+	return typeof eventListener === 'function' ? eventListener : eventListener.handleEvent
 }

@@ -1,6 +1,5 @@
-import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues } from '../../library'
+import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, eventListener, state } from '../../library'
 import { Snackbar } from '..'
-import { ComponentMixin, eventListener } from '../..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
@@ -23,6 +22,8 @@ type DialogAction<TResult = void> = TResult | PromiseLike<TResult>
  */
 @component('mo-dialog')
 export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
+	static readonly executingActionAdaptersByComponent = new Map<Constructor<HTMLElement>, (actionElement: HTMLElement, isExecuting: boolean) => void>()
+
 	@event() readonly closed!: EventDispatcher<TResult | Error>
 	@event() readonly requestPopup!: EventDispatcher
 	@event() readonly headingChange!: EventDispatcher<string>
@@ -38,6 +39,20 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@property() override escapeKeyAction: DialogActionKey = 'cancellation'
 	@property({ type: Boolean }) poppable = false
 	@property({ type: Boolean, reflect: true }) boundToWindow = false
+
+	@state({
+		updated(this: Dialog<TResult>) {
+			if (this.primaryButton) {
+				const PrimaryButtonConstructor = this.primaryButton.constructor as Constructor<HTMLElement>
+				Dialog.executingActionAdaptersByComponent.get(PrimaryButtonConstructor)?.(this.primaryButton, this.executingAction === 'primary')
+			}
+
+			if (this.secondaryButton) {
+				const SecondaryButtonConstructor = this.secondaryButton.constructor as Constructor<HTMLElement>
+				Dialog.executingActionAdaptersByComponent.get(SecondaryButtonConstructor)?.(this.secondaryButton, this.executingAction === 'secondary')
+			}
+		}
+	}) protected executingAction?: DialogActionKey
 
 	@query('.mdc-dialog__surface') private readonly surfaceElement!: HTMLDivElement
 	@query('footer') private readonly footerElement!: HTMLElement
@@ -62,6 +77,13 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		return [
 			...super.styles,
 			css`
+				:host {
+					--mdc-dialog-heading-ink-color: var(--mo-color-foreground);
+					--mdc-dialog-content-ink-color: var(--mo-color-foreground-transparent);
+					--mdc-dialog-scroll-divider-color: var(--mo-color-gray-transparent);
+					--mdc-dialog-scrim-color: var(--mo-scrim);
+				}
+
 				:host([size=small]) {
 					--mdc-dialog-min-width: 320px;
 					--mdc-dialog-max-width: 480px;
@@ -259,24 +281,25 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	@renderContainer('slot[name="primaryAction"]')
 	protected get primaryButtonTemplate() {
 		return !this.primaryButtonText ? nothing : html`
-			<mo-button type='raised'>
+			<mo-loading-button type='raised'>
 				${this.primaryButtonText}
-			</mo-button>
+			</mo-loading-button>
 		`
 	}
 
 	@renderContainer('slot[name="secondaryAction"]')
 	protected get secondaryButtonTemplate() {
 		return !this.secondaryButtonText ? nothing : html`
-			<mo-button>
+			<mo-loading-button>
 				${this.secondaryButtonText}
-			</mo-button>
+			</mo-loading-button>
 		`
 	}
 
-	private handleAction(action?: DialogActionKey) {
+	private handleAction(actionKey?: DialogActionKey) {
 		const handle = async (action: () => DialogAction<TResult>) => {
 			try {
+				this.executingAction = actionKey
 				const result = await action()
 				if (this.manualClose === false) {
 					this.close(result)
@@ -284,12 +307,14 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 			} catch (e: any) {
 				Snackbar.show(e.message)
 				throw e
+			} finally {
+				this.executingAction = undefined
 			}
 		}
 
 		const cancellationAction = async () => this.close(this.cancellationAction ? await this.cancellationAction() : new Error('Dialog cancelled'))
 
-		switch (action) {
+		switch (actionKey) {
 			case 'primary':
 				return handle(this.primaryAction)
 			case 'secondary':
