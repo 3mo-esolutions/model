@@ -110,6 +110,7 @@ export abstract class Field<T> extends Input<T> {
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.registerInputElementEvents()
+		Promise.delegateToEventLoop(() => this.checkValidity())
 	}
 
 	protected registerInputElementEvents() {
@@ -120,6 +121,7 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected handleInput() {
+		this.checkValidity()
 		this.input.dispatch(this.toValue(this.inputElement.value))
 		this.requestUpdate()
 	}
@@ -254,6 +256,22 @@ export abstract class Field<T> extends Input<T> {
 				transform: var(--mo-field-label-transform-on-focus);
 			}
 
+			:host([invalid]) {
+				border-bottom: 1px solid var(--mo-color-error);
+			}
+
+			:host([invalid]):after {
+				background-color: var(--mo-color-error);
+			}
+
+			:host([invalid]) input {
+				caret-color: var(--mo-color-error);
+			}
+
+			:host([invalid]) label {
+				color: var(--mo-color-error);
+			}
+
 			slot {
 				color: var(--mo-color-gray);
 				display: flex;
@@ -304,6 +322,7 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected handleFocus() {
+		this.checkValidity()
 		this.active = true
 		if (this.selectOnFocus) {
 			this.select()
@@ -320,6 +339,10 @@ export abstract class Field<T> extends Input<T> {
 	setSelectionRange = (...args: Parameters<typeof HTMLInputElement.prototype.setSelectionRange>) => this.inputElement.setSelectionRange(...args)
 	setRangeText = (...args: Parameters<typeof HTMLInputElement.prototype.setRangeText>) => this.inputElement.setRangeText(...args)
 	setCustomValidity = (...args: Parameters<typeof HTMLInputElement.prototype.setCustomValidity>) => this.inputElement.setCustomValidity(...args)
-	checkValidity = () => this.inputElement.checkValidity()
+	checkValidity = () => {
+		const isValid = this.inputElement.checkValidity()
+		this.switchAttribute('invalid', isValid === false)
+		return isValid
+	}
 	reportValidity = () => this.inputElement.reportValidity()
 }
