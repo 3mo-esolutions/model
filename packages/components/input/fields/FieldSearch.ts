@@ -1,10 +1,9 @@
-import { component, html, property, renderContainer, styleMap } from '../../../library'
+import { component, html, renderContainer, styleMap } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
-import { FieldInputMode } from '..'
 
 @component('mo-field-search')
 export class FieldSearch extends FieldTextBase {
-	@property({ reflect: true }) override inputMode: FieldInputMode = 'search'
+	override readonly inputMode = 'search'
 
 	@renderContainer('slot[name="leading"]')
 	protected get searchIconTemplate() {

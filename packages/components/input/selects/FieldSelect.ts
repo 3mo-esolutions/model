@@ -28,13 +28,7 @@ export class FieldSelect<T> extends Field<Value> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) multiple = false
 	@property({ type: Boolean, updated(this: FieldSelect<T>) { this.inputElement.readOnly = !this.searchable } }) searchable = false
-	@property({
-		type: Boolean,
-		reflect: true,
-		updated(this: FieldSelect<T>) {
-			Promise.delegateToEventLoop(() => this.value = this.value)
-		}
-	}) reflectDefault = false
+	@property({ type: Boolean, reflect: true, updated(this: FieldSelect<T>) { Promise.delegateToEventLoop(() => this.value = this.value) } }) reflectDefault = false
 	@property()
 	get default() { return this.querySelector<Option<T>>('mo-option[default]')?.text }
 	set default(value) {
@@ -51,14 +45,7 @@ export class FieldSelect<T> extends Field<Value> {
 		this.updateComplete.then(() => this.insertBefore(defaultOption, this.firstElementChild))
 	}
 
-	@state() private manualClose = false
-
-	@element protected readonly menuOptions?: Menu | null
-
-	private programmaticSelection = false
-
-	private preventNextChange = false
-
+	@property()
 	override get value() { return super.value }
 	override set value(value) {
 		value = (value instanceof Array
@@ -85,6 +72,16 @@ export class FieldSelect<T> extends Field<Value> {
 			: this.options.find(o => o.value === this.value)?.data) as Data<T>
 	}
 	set data(value) { this.selectByData(value) }
+
+	@state() private manualClose = false
+
+	@element protected readonly menuOptions?: Menu | null
+
+	private programmaticSelection = false
+
+	private preventNextChange = false
+
+	override readonly autoComplete = 'off'
 
 	get options() {
 		return Array.from(this.querySelectorAll<Option<T>>('mo-option'))

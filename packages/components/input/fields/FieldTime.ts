@@ -1,12 +1,9 @@
-import { component, html, PropertyValues, renderContainer } from '../../../library'
+import { component, html, renderContainer } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-time')
 export class FieldTime extends FieldTextBase {
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
-		this.inputElement.type = 'time'
-	}
+	protected override readonly inputType = 'time'
 
 	@renderContainer('slot[name="leading"]')
 	protected get timeIconTemplate() {

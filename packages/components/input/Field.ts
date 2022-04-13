@@ -1,6 +1,22 @@
 import { css, html, property, ifDefined, query, event, PropertyValues } from '../../library'
 import { Input } from './Input'
 
+export type FieldInputType =
+	| 'text'
+	| 'search'
+	| 'tel'
+	| 'url'
+	| 'email'
+	| 'password'
+	| 'datetime'
+	| 'date'
+	| 'month'
+	| 'week'
+	| 'time'
+	| 'datetime-local'
+	| 'number'
+	| 'color'
+
 export type FieldInputMode =
 	| 'none'
 	| 'text'
@@ -10,6 +26,63 @@ export type FieldInputMode =
 	| 'search'
 	| 'email'
 	| 'url'
+
+export type FieldAutoComplete =
+	| 'on'
+	| 'off'
+	| 'name'
+	| 'honorific-prefix'
+	| 'given-name'
+	| 'additional-name'
+	| 'family-name'
+	| 'honorific-suffix'
+	| 'nickname'
+	| 'username'
+	| 'new-password'
+	| 'current-password'
+	| 'one-time-code'
+	| 'organization-title'
+	| 'organization'
+	| 'street-address'
+	| 'address-line1'
+	| 'address-line2'
+	| 'address-line3'
+	| 'address-level4'
+	| 'address-level3'
+	| 'address-level2'
+	| 'address-level1'
+	| 'country'
+	| 'country-name'
+	| 'postal-code'
+	| 'cc-name'
+	| 'cc-given-name'
+	| 'cc-additional-name'
+	| 'cc-family-name'
+	| 'cc-number'
+	| 'cc-exp'
+	| 'cc-exp-month'
+	| 'cc-exp-year'
+	| 'cc-csc'
+	| 'cc-type'
+	| 'transaction-currency'
+	| 'transaction-amount'
+	| 'language'
+	| 'bday'
+	| 'bday-day'
+	| 'bday-month'
+	| 'bday-year'
+	| 'sex'
+	| 'url'
+	| 'photo'
+	| 'tel'
+	| 'tel-country-code'
+	| 'tel-national'
+	| 'tel-area-code'
+	| 'tel-local'
+	| 'tel-local-prefix'
+	| 'tel-local-suffix'
+	| 'tel-extension'
+	| 'impp'
 
 /**
  * @slot leading
@@ -21,6 +94,7 @@ export abstract class Field<T> extends Input<T> {
 
 	@property({ reflect: true }) label = ''
 	@property({ reflect: true }) pattern?: string
+	@property({ reflect: true }) autoComplete?: FieldAutoComplete
 	@property({ reflect: true }) override inputMode: FieldInputMode = 'text'
 	@property({ type: Boolean, reflect: true }) readonly = false
 	@property({ type: Boolean, reflect: true }) disabled = false
@@ -30,6 +104,8 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
+
+	protected inputType: FieldInputType = 'text'
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
@@ -210,7 +286,8 @@ export abstract class Field<T> extends Input<T> {
 					id='input'
 					part='input'
 					placeholder=' '
-					type='text'
+					autocomplete=${ifDefined(this.autoComplete)}
+					type=${this.inputType}
 					inputmode=${this.inputMode}
 					?readonly=${this.readonly}
 					?required=${this.required}

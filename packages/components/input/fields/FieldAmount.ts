@@ -7,7 +7,7 @@ export class FieldAmount extends FieldNumber {
 	@property() currency = CurrencyCode.EUR
 	@property() currencySymbol?: string
 
-	protected override fromValue(value: number | undefined): string {
+	protected override fromValue(value: number | undefined) {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
 	}
 

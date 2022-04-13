@@ -1,10 +1,11 @@
 import { component, property } from '../../../library'
 import { FormatHelper } from '../../../utilities'
-import { Field, FieldInputMode } from '../Field'
+import { Field } from '../Field'
 
 @component('mo-field-number')
 export class FieldNumber extends Field<number> {
-	@property({ reflect: true }) override inputMode: FieldInputMode = 'decimal'
+	override readonly inputMode = 'decimal'
+	override readonly autoComplete = 'off'
 
 	// For lit-analyzer to solve generic error
 	@property({ type: Number, reflect: true })

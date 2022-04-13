@@ -1,12 +1,10 @@
-import { component, PropertyValues } from '../../../library'
+import { component, property } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-password')
 export class FieldPassword extends FieldTextBase {
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
-		this.inputElement.type = 'password'
-	}
+	@property() override autoComplete: 'current-password' | 'new-password' = 'current-password'
+	protected override readonly inputType = 'password'
 }
 
 declare global {
