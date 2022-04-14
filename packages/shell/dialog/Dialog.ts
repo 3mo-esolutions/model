@@ -214,6 +214,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
+		this.shadowRoot.querySelector('.mdc-dialog__scrim')?.setAttribute('part', 'scrim')
 
 		this.changeCloseBehavior()
 
