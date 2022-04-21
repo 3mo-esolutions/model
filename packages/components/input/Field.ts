@@ -107,6 +107,12 @@ export abstract class Field<T> extends Input<T> {
 
 	protected inputType: FieldInputType = 'text'
 
+	override get value() { return super.value }
+	override set value(value) {
+		super.value = value
+		Promise.delegateToEventLoop(() => this.checkValidity())
+	}
+
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.registerInputElementEvents()
@@ -340,7 +346,7 @@ export abstract class Field<T> extends Input<T> {
 	setRangeText = (...args: Parameters<typeof HTMLInputElement.prototype.setRangeText>) => this.inputElement.setRangeText(...args)
 	setCustomValidity = (...args: Parameters<typeof HTMLInputElement.prototype.setCustomValidity>) => this.inputElement.setCustomValidity(...args)
 	checkValidity = () => {
-		const isValid = this.inputElement.checkValidity()
+		const isValid = this.inputElement?.checkValidity() ?? true
 		this.switchAttribute('invalid', isValid === false)
 		return isValid
 	}
