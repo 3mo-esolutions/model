@@ -37,7 +37,7 @@ export class Button extends ComponentMixin(MwcButton) {
 					height: 36px;
 					line-height: normal;
 					--mdc-button-disabled-ink-color: var(--mo-color-gray-transparent);
-					--mdc-button-outline-color: var(--mo-accent);
+					--mdc-button-outline-color: var(--mdc-theme-primary);
 				}
 
 				button {
