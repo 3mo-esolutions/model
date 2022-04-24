@@ -17,7 +17,7 @@ export class UserAvatar extends Component {
 
 			mo-avatar {
 				place-self: center;
-				color: var(--mo-color-accessible);
+				color: var(--mo-color-foreground);
 				background: rgba(0, 0, 0, 0.25);
 			}
 
@@ -45,7 +45,7 @@ export class UserAvatar extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-avatar @click=${() => this.menuOpen = !this.menuOpen}>
+			<mo-avatar foreground='var(--mo-color-accessible)' @click=${() => this.menuOpen = !this.menuOpen}>
 				${this.avatarContentTemplate}
 			</mo-avatar>
 

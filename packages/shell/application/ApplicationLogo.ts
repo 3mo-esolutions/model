@@ -1,19 +1,19 @@
 import { Component, component, css, html, ifDefined, property } from '../../library'
 import { ThemeHelper } from '..'
 
-@component('mo-logo')
-export class Logo extends Component {
+@component('mo-application-logo')
+export class ApplicationLogo extends Component {
 	static source?: string
 
 	@property() color = 'var(--mo-color-accessible)'
-	@property() source = Logo.source
+	@property() source = ApplicationLogo.source
 
 	protected override initialized() {
 		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
 	private async replaceColorVariable() {
-		if (Logo.source?.includes('data:image/svg+xml;utf8,') === false) {
+		if (this.source?.includes('data:image/svg+xml;utf8,') === false) {
 			return
 		}
 		const isColorCssVariable = this.color.includes('var(')
@@ -28,7 +28,7 @@ export class Logo extends Component {
 			}
 			await Promise.sleep(failWaitTimeInMs)
 		}
-		this.source = Logo.source?.replace('{{color}}', color)
+		this.source = this.source?.replaceAll('{{color}}', color)
 	}
 
 	static override get styles() {
@@ -40,7 +40,8 @@ export class Logo extends Component {
 			}
 
 			img, a {
-				height: 100%
+				height: 100%;
+				max-width: 100%;
 			}
 		`
 	}
@@ -57,6 +58,6 @@ export class Logo extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-logo': Logo
+		'mo-application-logo': ApplicationLogo
 	}
 }

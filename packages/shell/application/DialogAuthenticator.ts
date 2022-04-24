@@ -131,9 +131,15 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	protected get headerTemplate() {
 		return html`
 			<mo-flex height='100px' alignItems='center' gap='10px'>
-				<mo-logo height='60px' color='var(--mo-accent)'></mo-logo>
+				${this.logoTemplate}
 				<mo-heading typography='heading3'>${Manifest.short_name || 'Welcome'}</mo-heading>
 			</mo-flex>
+		`
+	}
+
+	protected get logoTemplate() {
+		return html`
+			<mo-application-logo height='60px'></mo-application-logo>
 		`
 	}
 

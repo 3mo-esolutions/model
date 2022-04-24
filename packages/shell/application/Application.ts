@@ -87,7 +87,7 @@ export abstract class Application extends Component {
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
-			:host([view=tablet]) mo-logo {
+			:host([view=tablet]) mo-application-logo {
 				display: none;
 			}
 
@@ -162,7 +162,7 @@ export abstract class Application extends Component {
 
 	protected get logoTemplate() {
 		return html`
-			<mo-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)' foreground='var(--mo-color-accessible)'></mo-logo>
+			<mo-application-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)'></mo-application-logo>
 		`
 	}
 
