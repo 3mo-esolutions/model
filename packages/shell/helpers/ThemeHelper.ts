@@ -27,20 +27,24 @@ export class ThemeHelper {
 				new Color('rgb(0, 119, 200)'),
 				(key: string, value: any) => key.length === 0 ? new Color(...value.colors) : value
 			)
-			this.value = this.value
+			this.injectCss()
 		}
 
 		override get value() { return super.value }
 		override set value(value) {
 			super.value = value
+			this.injectCss()
+		}
+
+		injectCss() {
 			this.styleElement = DocumentHelper.injectCSS(css`
 				[application] {
-					--mo-accent-base-r:${unsafeCSS(value.baseColor[0])};
-					--mo-accent-base-g:${unsafeCSS(value.baseColor[1])};
-					--mo-accent-base-b:${unsafeCSS(value.baseColor[2])};
-					--mo-accent-gradient-1: ${unsafeCSS(value.colors[0])};
-					--mo-accent-gradient-2: ${unsafeCSS(value.colors[1] ?? value.colors[0])};
-					--mo-accent-gradient-3: ${unsafeCSS(value.colors[2] ?? value.colors[1] ?? value.colors[0])};
+					--mo-accent-base-r:${unsafeCSS(this.value.baseColor[0])};
+					--mo-accent-base-g:${unsafeCSS(this.value.baseColor[1])};
+					--mo-accent-base-b:${unsafeCSS(this.value.baseColor[2])};
+					--mo-accent-gradient-1: ${unsafeCSS(this.value.colors[0])};
+					--mo-accent-gradient-2: ${unsafeCSS(this.value.colors[1] ?? this.value.colors[0])};
+					--mo-accent-gradient-3: ${unsafeCSS(this.value.colors[2] ?? this.value.colors[1] ?? this.value.colors[0])};
 				}
 			`, this.styleElement)
 		}
