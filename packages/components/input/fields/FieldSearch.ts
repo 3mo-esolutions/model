@@ -1,4 +1,4 @@
-import { component, html, renderContainer, styleMap } from '../../../library'
+import { component, html, renderContainer } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-search')
