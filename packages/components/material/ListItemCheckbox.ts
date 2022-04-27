@@ -1,4 +1,4 @@
-import { component, event, ComponentMixin } from '../../library'
+import { component, event, ComponentMixin, css } from '../../library'
 import { ListItemMixin } from '..'
 // eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
@@ -7,6 +7,9 @@ class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
 	// @ts-expect-error 'left' shall be overwritten 'MwcCheckListItem'.
 	override left: string
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const BaseClass = ComponentMixin(ListItemMixin(MwcCheckListItemWidthCompatibleLeft))
 
 /**
  * @attr left
@@ -24,8 +27,16 @@ class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
  * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item-checkbox')
-export class ListItemCheckbox extends ComponentMixin(ListItemMixin(MwcCheckListItemWidthCompatibleLeft)) {
+export class ListItemCheckbox extends BaseClass {
 	@event() override readonly selectionChange!: EventDispatcher<boolean>
+
+	static override get styles() {
+		return [...BaseClass.styles, css`
+			:host {
+				--mdc-checkbox-unchecked-color: var(--mo-color-foreground-transparent);
+			}
+		`]
+	}
 
 	constructor() {
 		super()
