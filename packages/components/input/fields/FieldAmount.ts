@@ -14,8 +14,12 @@ export class FieldAmount extends FieldNumber {
 	@renderContainer('slot[name="trailing"]')
 	protected get currencySymbolTemplate() {
 		return html`
-			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)}</mo-div>
+			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currencySymbolText}</mo-div>
 		`
+	}
+
+	protected get currencySymbolText() {
+		return this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)
 	}
 }
 
