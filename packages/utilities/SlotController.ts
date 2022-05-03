@@ -21,11 +21,15 @@ export class SlotController extends MutationController {
 		this.slotChangeCallback?.()
 	}
 
-	hasSlottedElements(slotName: string) {
-		// return this.host.querySelector(slotName ? `[slot="${slotName}"]` : ':not([slot])')
+	getAssignedElements(slotName: string) {
 		return Array.from(this.host.childNodes)
 			.filter(node => node.nodeType <= 2 || (node.nodeType === 3 && !!node.textContent?.trim()))
 			.flatMap(child => child instanceof HTMLSlotElement ? child.assignedElements() : [child])
-			.some(child => (child instanceof HTMLElement && child.slot === slotName) || (!slotName && (child instanceof HTMLElement) === false))
+			.filter(child => (child instanceof HTMLElement && child.slot === slotName) || (!slotName && (child instanceof HTMLElement) === false))
+	}
+
+	hasSlottedElements(slotName: string) {
+		// return this.host.querySelector(slotName ? `[slot="${slotName}"]` : ':not([slot])')
+		return this.getAssignedElements(slotName).length > 0
 	}
 }

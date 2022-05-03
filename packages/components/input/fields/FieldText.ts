@@ -1,28 +1,36 @@
-import { component, html, nothing, property, renderContainer } from '../../../library'
+import { component, html, nothing, property } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-text')
 export class FieldText extends FieldTextBase {
-	@property({ type: Number, reflect: true, updated: counterChanged }) counter?: number
+	@property({
+		type: Number,
+		reflect: true,
+		updated(this: FieldText) { this.inputElement.setAttribute('minLength', String(this.minLength || '')) }
+	}) minLength?: number
 
-	@renderContainer('slot[name="trailingInternal"]')
-	protected get counterTemplate() {
-		return !this.counter ? nothing : html`
-			<mo-div padding='0 6px 0 0' foreground='var(--mo-color-gray-transparent)'>${this.remainingLength}</mo-div>
+	@property({
+		type: Number,
+		reflect: true,
+		updated(this: FieldText) { this.inputElement.setAttribute('maxLength', String(this.maxLength || '')) }
+	}) maxLength?: number
+
+	protected override get template() {
+		return html`
+			${super.template}
+			${this.lengthTemplate}
 		`
 	}
 
-	private get remainingLength() {
-		return !this.counter ? undefined : this.counter - this.fromValue(this.value).length
+	private get lengthTemplate() {
+		if (!this.maxLength) {
+			return nothing
+		}
+		const remainingLength = this.maxLength - this.fromValue(this.value).length
+		return html`
+			<mo-div foreground='var(--mo-color-gray-transparent)'>${remainingLength}</mo-div>
+		`
 	}
-}
-
-function counterChanged(this: FieldText) {
-	if (!this.counter) {
-		return
-	}
-
-	this.inputElement.maxLength = this.counter
 }
 
 declare global {

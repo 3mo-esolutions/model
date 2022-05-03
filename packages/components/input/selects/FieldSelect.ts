@@ -1,4 +1,4 @@
-import { element, html, property, state, renderContainer, css, event, component, PropertyValues } from '../../../library'
+import { element, html, property, state, css, event, component, PropertyValues } from '../../../library'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
 
@@ -164,39 +164,37 @@ export class FieldSelect<T> extends Field<Value> {
 		this.addEventListener('defaultClick', () => this.resetSelection())
 	}
 
-	@renderContainer('slot[name="trailingInternal"]')
-	protected get dropDownIconTemplate() {
-		return html`
-			<mo-icon-button
-				part='dropDownIcon'
-				tabindex='-1'
-				small
-				icon='expand_more'
-				@click=${() => this.open = !this.open}
-			></mo-icon-button>
-		`
-	}
-
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-menu
-				id='menuOptions'
-				style=${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}
-				.anchor=${this as any}
-				?multi=${this.multiple}
-				?manualClose=${this.manualClose}
-				fixed
-				defaultFocus=${this.searchable ? 'NONE' : this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
-				corner='BOTTOM_START'
-				activatable
-				?open=${this.open}
-				@opened=${() => this.open = true}
-				@closed=${() => this.open = false}
-				@selected=${() => this.handleOptionSelection()}
-			>
-				<slot></slot>
-			</mo-menu>
+			<mo-div>
+				<mo-icon-button
+					part='dropDownIcon'
+					tabindex='-1'
+					small
+					icon='expand_more'
+					foreground='var(--mo-color-gray)'
+					@click=${() => this.open = !this.open}
+				></mo-icon-button>
+
+				<mo-menu
+					id='menuOptions'
+					style=${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}
+					.anchor=${this as any}
+					?multi=${this.multiple}
+					?manualClose=${this.manualClose}
+					fixed
+					defaultFocus=${this.searchable ? 'NONE' : this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
+					corner='BOTTOM_START'
+					activatable
+					?open=${this.open}
+					@opened=${() => this.open = true}
+					@closed=${() => this.open = false}
+					@selected=${() => this.handleOptionSelection()}
+				>
+					<slot></slot>
+				</mo-menu>
+			</mo-div>
 		`
 	}
 

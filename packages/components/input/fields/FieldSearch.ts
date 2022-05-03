@@ -1,21 +1,17 @@
-import { component, html, renderContainer } from '../../../library'
+import { component, html } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-search')
 export class FieldSearch extends FieldTextBase {
 	override readonly inputMode = 'search'
 
-	@renderContainer('slot[name="leading"]')
-	protected get searchIconTemplate() {
+	protected override get template() {
 		return html`
-			<mo-icon icon='search' foreground=${this.active ? 'var(--mo-accent)' : ''}></mo-icon>
-		`
-	}
-
-	@renderContainer('slot[name="trailingInternal"]')
-	protected get clearIconTemplate() {
-		return html`
-			<mo-icon-button icon='cancel' small ?hidden=${!this.value} @click=${() => this.clear()}></mo-icon-button>
+			<mo-icon icon='search' foreground=${this.active ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}></mo-icon>
+			${super.template}
+			<mo-icon-button foreground='var(--mo-color-gray)' icon='cancel' small
+				?hidden=${!this.value} @click=${() => this.clear()}
+			></mo-icon-button>
 		`
 	}
 

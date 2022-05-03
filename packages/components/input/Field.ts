@@ -1,4 +1,6 @@
-import { css, html, property, ifDefined, query, event, PropertyValues } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing } from '../../library'
+import { SlotController } from '../../utilities'
+import { IconButton } from '..'
 import { Input } from './Input'
 
 export type FieldInputType =
@@ -104,9 +106,31 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
-	trailingInternal: any
 
 	protected inputType: FieldInputType = 'text'
+
+	private readonly slotController = new SlotController(this, async () => {
+		await this.updateComplete
+		const elements = [...this.shadowRoot.querySelectorAll('*')]
+		const leadingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=leading]'))
+		const trailingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=trailing]'))
+
+		const firstIconButton = this.shadowRoot.querySelector('mo-icon-button:first-of-type')
+		const lastIconButton = this.shadowRoot.querySelector('mo-icon-button:last-of-type')
+
+		const leadingIconButtons = [
+			!firstIconButton ? undefined : elements.indexOf(firstIconButton) < leadingSlotIndex ? firstIconButton : undefined,
+			...this.slotController.getAssignedElements('leading').filter(e => e instanceof IconButton)
+		].filter(Boolean) as Array<HTMLElement>
+
+		const trailingIconButtons = [
+			...this.slotController.getAssignedElements('trailing').filter(e => e instanceof IconButton),
+			!lastIconButton ? undefined : elements.indexOf(lastIconButton) > trailingSlotIndex ? lastIconButton : undefined
+		].filter(Boolean) as Array<HTMLElement>
+
+		leadingIconButtons.forEach((iconButton, index) => iconButton.switchAttribute('data-leading-icon-button', index === 0))
+		trailingIconButtons.forEach((iconButton, index) => iconButton.switchAttribute('data-trailing-icon-button', index === trailingIconButtons.length - 1))
+	})
 
 	override get value() { return super.value }
 	override set value(value) {
@@ -147,8 +171,7 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-border-top-right-radius: var(--mo-border-radius);
 				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
-				display: grid;
-				grid-template-columns: auto 1fr auto auto;
+				display: flex;
 				min-width: 0;
 
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
@@ -160,6 +183,7 @@ export abstract class Field<T> extends Input<T> {
 				gap: 6px;
 				height: var(--mo-field-height);
 				justify-content: center;
+				align-items: center;
 			}
 
 			:host(:focus) {
@@ -177,7 +201,7 @@ export abstract class Field<T> extends Input<T> {
 				opacity: 0.5;
 			}
 
-			:host([readonly]) slot[name=trailing], :host([readonly]) slot[name=trailingInternal] {
+			:host([readonly]) slot[name=trailing] {
 				pointer-events: none;
 			}
 
@@ -190,8 +214,8 @@ export abstract class Field<T> extends Input<T> {
 			}
 
 			div[part=container] {
-				display: grid;
 				flex: 1;
+				display: grid;
 				position: relative;
 				height: var(--mo-field-height);
 			}
@@ -294,18 +318,23 @@ export abstract class Field<T> extends Input<T> {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				
 			}
 
-			/* slot[name=trailing] mo-icon-button,  slot[name=trailingInternal] mo-icon-button {
-				margin-right: -6px;
-			} */
+			[data-leading-icon-button], ::slotted([data-leading-icon-button]) {
+				margin-left: -8px;
+			}
+
+			[data-trailing-icon-button], ::slotted([data-trailing-icon-button]) {
+				margin-right: -8px;
+			}
 		`
 	}
 
 	protected override get template() {
+		const hasLeading = this.slotController.hasSlottedElements('leading')
+		const hasTrailing = this.slotController.hasSlottedElements('trailing')
 		return html`
-			<slot name='leading'></slot>
+			${!hasLeading ? nothing : html`<slot name='leading'></slot>`}
 			<div part='container'>
 				<input
 					id='input'
@@ -323,8 +352,7 @@ export abstract class Field<T> extends Input<T> {
 				>
 				<label for='input'>${this.label} ${this.required ? '*' : ''}</label>
 			</div>
-			<slot name='trailing'></slot>
-			<slot name='trailingInternal'></slot>
+			${!hasTrailing ? nothing : html`<slot name='trailing'></slot>`}
 		`
 	}
 

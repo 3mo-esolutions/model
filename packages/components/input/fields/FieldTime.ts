@@ -1,14 +1,14 @@
-import { component, html, renderContainer } from '../../../library'
+import { component, html } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-time')
 export class FieldTime extends FieldTextBase {
 	protected override readonly inputType = 'time'
 
-	@renderContainer('slot[name="leading"]')
-	protected get timeIconTemplate() {
+	protected override get template() {
 		return html`
-			<mo-icon icon='schedule'></mo-icon>
+			<mo-icon foreground='var(--mo-color-gray)' icon='schedule'></mo-icon>
+			${super.template}
 		`
 	}
 }

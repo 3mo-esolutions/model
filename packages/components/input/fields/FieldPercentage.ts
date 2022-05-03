@@ -1,4 +1,4 @@
-import { component, html, property, renderContainer } from '../../../library'
+import { component, html, property } from '../../../library'
 import { FormatHelper } from '../../../utilities'
 import { FieldNumber } from './FieldNumber'
 
@@ -16,10 +16,10 @@ export class FieldPercentage extends FieldNumber {
 		return value ? FormatHelper.percent(value) : '0'
 	}
 
-	@renderContainer('slot[name="trailing"]')
-	protected get percentageSignTemplate() {
+	protected override get template() {
 		return html`
-			<mo-div fontSize='20px' fontWeight='600'>
+			${super.template}
+			<mo-div fontSize='20px' fontWeight='600' foreground='var(--mo-color-gray)'>
 				${this.percentageSign}
 			</mo-div>
 		`
