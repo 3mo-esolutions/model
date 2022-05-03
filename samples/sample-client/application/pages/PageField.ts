@@ -40,6 +40,12 @@ export class PageField extends PageComponent {
 									<mo-field-password label='Passwort readonly' readonly></mo-field-password>
 									<mo-field-password label='Passwort required' required></mo-field-password>
 									<mo-field-password label='Passwort error' error></mo-field-password>
+
+									<mo-field-email label="E-Mail"></mo-field-email>
+									<mo-field-email label="E-Mail disabled" disabled></mo-field-email>
+									<mo-field-email label="E-Mail readonly" readonly></mo-field-email>
+									<mo-field-email label="E-Mail required" required></mo-field-email>
+									<mo-field-email label="E-Mail error" error></mo-field-email>
 								
 								</mo-grid>
 							</mo-section>
@@ -55,21 +61,39 @@ export class PageField extends PageComponent {
 									<mo-field-percentage label='Prozent disabled' disabled></mo-field-percentage>
 									<mo-field-percentage label='Prozent readonly' readonly></mo-field-percentage>
 
-									<mo-field-date label='Datum'></mo-field-date>
+									<mo-field-date label='Datum'>
+										<span slot='trailing'><mo-icon-button small icon='edit'></mo-icon-button></span>
+									</mo-field-date>
 									<mo-field-date label='Datum disabled' disabled></mo-field-date>
 									<mo-field-date label='Datum readonly' readonly></mo-field-date>
+
+									<mo-field-date-range label='Zeitraum'></mo-field-date-range>
+									<mo-field-date-range label='Zeitraum disabled' disabled></mo-field-date-range>
+									<mo-field-date-range label='Zeitraum readonly' readonly></mo-field-date-range>
 
 									<mo-field-text label="Text slot trailing">
 										<span slot='trailing'>cm</span>
 									</mo-field-text>
 									<mo-field-text label="Text slot trailing disabled" disabled>
-										<span slot='trailing'>cm</span>
+										<span slot='trailing'>Stück</span>
 									</mo-field-text>
 									<mo-field-text label="Text slot trailing readonly" readonly>
-										<span slot='trailing'>cm</span>
+										<span slot='trailing'>kg</span>
 									</mo-field-text>
 
-									<mo-field-search label="Suche"></mo-field-search>
+									<mo-field-email label="E-Mail slot leading">
+										<span slot='leading'><mo-icon icon='email'></span>
+									</mo-field-email>
+									<mo-field-email label="E-Mail slot leading disabled" disabled>
+										<span slot='leading'><mo-icon icon='email'></span>
+									</mo-field-email>
+									<mo-field-email label="E-Mail slot leading readonly" readonly>
+										<span slot='leading'><mo-icon icon='email'></span>
+									</mo-field-email>
+
+									<mo-field-search label="Suche">
+										<span slot='trailing'><mo-icon-button small icon='edit'></mo-icon-button></span>
+									</mo-field-search>
 									<mo-field-search label="Suche disabled" disabled></mo-field-search>
 									<mo-field-search label="Suche" readonly></mo-field-search>
 
@@ -83,37 +107,41 @@ export class PageField extends PageComponent {
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
 									</mo-field-text>
 
-									<mo-field-text label="Counter" counter='50'></mo-field-text>
+									<mo-field-time label='Zeitangabe'></mo-field-time>
+									<mo-field-time label='Zeitangabe disabled' disabled></mo-field-time>
+									<mo-field-time label='Zeitangabe readonly' readonly></mo-field-time>
+
+									<mo-field-text label="Counter" counter='150'></mo-field-text>
 									<mo-field-text label="Counter disabled" counter='50' disabled></mo-field-text>
-									<mo-field-text label="Counter readonly" counter='50' readonly></mo-field-text>
+									<mo-field-text label="Counter readonly" counter='10' readonly></mo-field-text>
 
 									<mo-field-text label="Text slot leading trailing">
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing disabled" disabled>
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing readonly" readonly>
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 									</mo-field-text>
 
 									<mo-field-text label="Text slot leading trailing trailingInternal">
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon-button icon='cancel'></mo-icon-button></span>
-										<span slot='trailingInternal'><mo-icon-button icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
+										<span slot='trailingInternal'><mo-icon-button small icon='person_add'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing trailingInternal disabled" disabled>
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
-										<span slot='trailingInternal'><mo-icon icon='person_add'></mo-icon></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
+										<span slot='trailingInternal'><mo-icon-button small icon='person_add'></mo-icon-button></span>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing trailingInternal readonly" readonly>
 										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
-										<span slot='trailingInternal'><mo-icon icon='person_add'></mo-icon></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
+										<span slot='trailingInternal'><mo-icon-button small icon='person_add'></mo-icon-button></span>
 									</mo-field-text>
 
 									<mo-field-text label="Text slot trailing trailingInternal">
@@ -179,20 +207,20 @@ export class PageField extends PageComponent {
 							<mo-section gap='var(--mo-thickness-xl)' heading='Select'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>						
 									<mo-field-select label="Selectlabel slot leading trailing">
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>
 									<mo-field-select label="Disabled" disabled>
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>
 									<mo-field-select label="Readonly" readonly>
-										<span slot='leading'><mo-icon icon='person_add'></mo-icon></span>
-										<span slot='trailing'><mo-icon icon='cancel'></mo-icon></span>
+										<span slot='leading'><mo-icon-button small icon='person_add'></mo-icon-button></span>
+										<span slot='trailing'><mo-icon-button small icon='cancel'></mo-icon-button></span>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>

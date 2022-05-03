@@ -12,16 +12,10 @@ export class FieldSearch extends FieldTextBase {
 		`
 	}
 
-	@renderContainer('slot[name="trailing"]')
+	@renderContainer('slot[name="trailingInternal"]')
 	protected get clearIconTemplate() {
 		return html`
-			<style>
-				mo-icon-button {
-					position: absolute;
-					right: -2px;
-				}
-			</style>
-			<mo-icon-button icon='cancel' ?hidden=${!this.value} @click=${() => this.clear()}></mo-icon-button>
+			<mo-icon-button icon='cancel' small ?hidden=${!this.value} @click=${() => this.clear()}></mo-icon-button>
 		`
 	}
 

@@ -154,9 +154,10 @@ export abstract class Field<T> extends Input<T> {
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
 				border-top-right-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
-				background-color: var(--mdc-text-field-fill-color);
+				background-color: var(--mo-field-background);
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
-				padding: 0 10px 0 8px;
+				padding: 0 10px;
+				gap: 6px;
 				height: var(--mo-field-height);
 				justify-content: center;
 			}
@@ -176,12 +177,12 @@ export abstract class Field<T> extends Input<T> {
 				opacity: 0.5;
 			}
 
-			:host([disabled]), :host([readonly]) {
-				cursor: not-allowed;
+			:host([readonly]) slot[name=trailing], :host([readonly]) slot[name=trailingInternal] {
+				pointer-events: none;
 			}
 
-			:host([readonly]) div[part=container], :host([readonly]) slot[name=trailingInternal] {
-				pointer-events: none;
+			:host([readonly]) input {
+				caret-color: transparent;
 			}
 
 			:host(:focus), :host([active]), :host([open]) {
@@ -190,7 +191,6 @@ export abstract class Field<T> extends Input<T> {
 
 			div[part=container] {
 				display: grid;
-				margin: 0 4px;
 				flex: 1;
 				position: relative;
 				height: var(--mo-field-height);
@@ -294,18 +294,12 @@ export abstract class Field<T> extends Input<T> {
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				
 			}
 
-			slot[name=leading] {
-				justify-content: start;
-				height: var(--mo-field-height);
-				vertical-align: bottom;
-			}
-
-			slot[name=trailing], slot[name=trailingInternal] {
-				justify-content: end;
-				height: var(--mo-field-height);
-			}
+			/* slot[name=trailing] mo-icon-button,  slot[name=trailingInternal] mo-icon-button {
+				margin-right: -6px;
+			} */
 		`
 	}
 

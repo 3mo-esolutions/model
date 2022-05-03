@@ -29,7 +29,7 @@ export class Chip extends Button {
 				}
 
 				#button {
-					height: 30px;
+					height: 30px !important;
 					font-weight: auto !important;
 					letter-spacing: normal !important;
 					text-decoration: auto !important;

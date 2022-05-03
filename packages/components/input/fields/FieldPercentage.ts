@@ -19,7 +19,7 @@ export class FieldPercentage extends FieldNumber {
 	@renderContainer('slot[name="trailing"]')
 	protected get percentageSignTemplate() {
 		return html`
-			<mo-div fontSize='20px'>
+			<mo-div fontSize='20px' fontWeight='600'>
 				${this.percentageSign}
 			</mo-div>
 		`

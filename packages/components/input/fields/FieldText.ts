@@ -8,7 +8,7 @@ export class FieldText extends FieldTextBase {
 	@renderContainer('slot[name="trailingInternal"]')
 	protected get counterTemplate() {
 		return !this.counter ? nothing : html`
-			<mo-div>${this.remainingLength}</mo-div>
+			<mo-div padding='0 6px 0 0' foreground='var(--mo-color-gray-transparent)'>${this.remainingLength}</mo-div>
 		`
 	}
 
