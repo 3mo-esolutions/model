@@ -1,4 +1,5 @@
 import { component, html, property, Component, css, nothing } from '../../library'
+import { SlotController } from '../../utilities'
 
 /**
  * @slot action - Actions in the header
@@ -16,6 +17,8 @@ export class Card extends Component {
 	@property() subHeading?: string
 	@property() avatar?: string
 	@property() image?: string
+
+	private readonly slotController = new SlotController(this)
 
 	static override get styles() {
 		return css`
@@ -80,12 +83,11 @@ export class Card extends Component {
 	}
 
 	protected get headerTemplate() {
-		const hasHeader = this.hasSlottedChildren('header')
+		const hasHeader = this.slotController.hasSlottedElements('header')
 			|| !!this.avatar || !!this.heading || !!this.subHeading
-			|| this.hasSlottedChildren('avatar') || this.hasSlottedChildren('heading')
-			|| this.hasSlottedChildren('subHeading') || this.hasSlottedChildren('action')
+			|| this.slotController.hasSlottedElements('avatar') || this.slotController.hasSlottedElements('heading')
+			|| this.slotController.hasSlottedElements('subHeading') || this.slotController.hasSlottedElements('action')
 		this.switchAttribute('hasHeader', hasHeader)
-
 		return !hasHeader ? nothing : html`
 			<slot part='header' name='header'>
 				<slot name='avatar'>
@@ -107,7 +109,7 @@ export class Card extends Component {
 	}
 
 	protected get mediaTemplate() {
-		const hasMedia = !!this.image || this.hasSlottedChildren('media')
+		const hasMedia = !!this.image || this.slotController.hasSlottedElements('media')
 		return !hasMedia ? nothing : html`
 			<slot part='media' name='media'>
 				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
@@ -116,20 +118,12 @@ export class Card extends Component {
 	}
 
 	protected get bodyTemplate() {
-		const handler = () => this.switchAttribute('hasBody', this.hasSlottedChildren(''))
-		handler()
-		return html`<slot @slotchange=${handler}></slot>`
+		this.switchAttribute('hasBody', this.slotController.hasSlottedElements(''))
+		return html`<slot></slot>`
 	}
 
 	protected get footerTemplate() {
-		return !this.hasSlottedChildren('footer') ? nothing : html`<slot part='footer' name='footer'></slot>`
-	}
-
-	private hasSlottedChildren(slot: string) {
-		return Array.from(this.childNodes)
-			.filter(node => node.nodeType <= 2 || (node.nodeType === 3 && !!node.textContent?.trim()))
-			.flatMap(child => child instanceof HTMLSlotElement ? child.assignedElements() : [child])
-			.some(child => (child instanceof HTMLElement && child.slot === slot) || (!slot && (child instanceof HTMLElement) === false))
+		return !this.slotController.hasSlottedElements('footer') ? nothing : html`<slot part='footer' name='footer'></slot>`
 	}
 }
 
