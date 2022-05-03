@@ -5,13 +5,13 @@ export class MutationController extends Controller {
 
 	constructor(
 		protected override readonly host: ReactiveControllerHost & Node,
-		private readonly callback: MutationCallback,
+		private readonly mutationCallback: MutationCallback,
 		private readonly options: MutationObserverInit = { childList: true },
 	) { super(host) }
 
 	override hostConnected() {
-		this.observer = new MutationObserver(this.callback)
-		this.callback([], this.observer)
+		this.observer = new MutationObserver(this.mutationCallback)
+		this.mutationCallback([], this.observer)
 		this.observer.observe(this.host, this.options)
 	}
 
