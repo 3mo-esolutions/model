@@ -1,4 +1,4 @@
-import { component, html, property, renderContainer } from '../../../library'
+import { component, html, property } from '../../../library'
 import { FormatHelper } from '../../../utilities'
 import { FieldNumber } from './FieldNumber'
 
@@ -11,15 +11,15 @@ export class FieldAmount extends FieldNumber {
 		return typeof value === 'number' ? FormatHelper.amount(value) : ''
 	}
 
-	@renderContainer('slot[name="trailing"]')
-	protected get currencySymbolTemplate() {
-		return html`
-			<mo-div fontSize='var(--mo-font-size-xl)'>${this.currencySymbolText}</mo-div>
-		`
-	}
-
 	protected get currencySymbolText() {
 		return this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)
+	}
+
+	protected override get template() {
+		return html`
+			${super.template}
+			<mo-div foreground='var(--mo-color-gray)' fontSize='var(--mo-font-size-xl)'>${this.currencySymbolText}</mo-div>
+		`
 	}
 }
 

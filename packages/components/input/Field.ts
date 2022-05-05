@@ -1,4 +1,5 @@
-import { css, html, property, ifDefined, query, event, PropertyValues } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS } from '../../library'
+import { SlotController } from '../../utilities'
 import { Input } from './Input'
 
 export type FieldInputType =
@@ -90,6 +91,8 @@ export type FieldAutoComplete =
  * @fires input {CustomEvent<T | undefined>}
  */
 export abstract class Field<T> extends Input<T> {
+	static readonly slotIntegrations = new Set<{ slotChangedHandler?: () => void, styles?: CSSResult }>()
+
 	@event() readonly input!: EventDispatcher<T | undefined>
 
 	@property({ reflect: true }) label = ''
@@ -106,6 +109,8 @@ export abstract class Field<T> extends Input<T> {
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
 
 	protected inputType: FieldInputType = 'text'
+
+	readonly slotController = new SlotController(this, () => Field.slotIntegrations.forEach(({ slotChangedHandler }) => slotChangedHandler?.call(this)))
 
 	override get value() { return super.value }
 	override set value(value) {
@@ -135,28 +140,30 @@ export abstract class Field<T> extends Input<T> {
 	static override get styles() {
 		return css`
 			:host {
-				--mo-field-height: 45px;
+				--mo-field-height: 40px;
 				--mo-field-label-scale-value-on-focus: 0.75;
 				--mo-field-label-scale-on-focus: scale(var(--mo-field-label-scale-value-on-focus));
 				--mo-field-label-translate-value-on-focus: -50%;
 				--mo-field-label-translate-on-focus: translateY(var(--mo-field-label-translate-value-on-focus));
 				--mo-field-label-transform-on-focus: var(--mo-field-label-translate-on-focus) var(--mo-field-label-scale-on-focus);
-				--mo-field-label-top-on-focus: 15px;
+				--mo-field-label-top-on-focus: 14px;
 				--mo-field-border-top-left-radius: var(--mo-border-radius);
 				--mo-field-border-top-right-radius: var(--mo-border-radius);
+				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
-				display: grid;
-				grid-template-columns: auto 1fr auto auto;
+				display: flex;
 				min-width: 0;
 
 				border-top-left-radius: var(--mo-field-border-top-left-radius);
 				border-top-right-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
 				background-color: var(--mo-field-background);
-				border-bottom: 1px solid var(--mo-color-gray);
-				padding: 0 8px;
+				border-bottom: 1px solid var(--mo-color-gray-transparent);
+				padding: 0 10px;
+				gap: 6px;
 				height: var(--mo-field-height);
 				justify-content: center;
+				align-items: center;
 			}
 
 			:host(:focus) {
@@ -166,15 +173,20 @@ export abstract class Field<T> extends Input<T> {
 			:host([dense]) {
 				--mo-field-height: 32px;
 				--mo-field-label-scale-value-on-focus: 1;
+				--mo-field-label-top-on-focus: 16px;
 			}
 
-			:host([disabled]) div[part=container], :host([disabled]) slot[name=trailingInternal] {
+			:host([disabled]) {
 				pointer-events: none;
 				opacity: 0.5;
 			}
 
-			:host([readonly]) div[part=container], :host([readonly]) slot[name=trailingInternal] {
+			:host([readonly]) slot[name=trailing] {
 				pointer-events: none;
+			}
+
+			:host([readonly]) input {
+				caret-color: transparent;
 			}
 
 			:host(:focus), :host([active]), :host([open]) {
@@ -182,9 +194,8 @@ export abstract class Field<T> extends Input<T> {
 			}
 
 			div[part=container] {
-				display: grid;
-				margin: 0 5px;
 				flex: 1;
+				display: grid;
 				position: relative;
 				height: var(--mo-field-height);
 			}
@@ -229,8 +240,8 @@ export abstract class Field<T> extends Input<T> {
 				width: 100%;
 				font-size: var(--mo-field-font-size);
 				outline: none;
-				padding: 0.7rem 0 0 0;
-				height: calc(100% - 0.7rem);
+				padding: 0.8rem 0 0 0;
+				height: calc(100% - 0.8rem);
 				color: var(--mo-color-foreground);
 				transition: 0.1s ease-out;
 				background-color: transparent;
@@ -285,26 +296,13 @@ export abstract class Field<T> extends Input<T> {
 				align-items: center;
 			}
 
-			slot[name=leading] {
-				justify-content: start;
-				height: var(--mo-field-height);
-			}
-
-			slot[name=trailing] {
-				justify-content: end;
-				height: var(--mo-field-height);
-			}
-
-			slot[name=trailingInternal] {
-				justify-content: end;
-				height: var(--mo-field-height);
-			}
+			${unsafeCSS([...Field.slotIntegrations].map(integration => integration.styles))}
 		`
 	}
 
 	protected override get template() {
 		return html`
-			<slot name='leading'></slot>
+			${!this.slotController.hasSlottedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
 			<div part='container'>
 				<input
 					id='input'
@@ -322,8 +320,7 @@ export abstract class Field<T> extends Input<T> {
 				>
 				<label for='input'>${this.label} ${this.required ? '*' : ''}</label>
 			</div>
-			<slot name='trailing'></slot>
-			<slot name='trailingInternal'></slot>
+			${!this.slotController.hasSlottedElements('trailing') ? nothing : html`<slot name='trailing'></slot>`}
 		`
 	}
 
