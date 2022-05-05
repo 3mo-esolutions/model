@@ -301,10 +301,8 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected override get template() {
-		const hasLeading = this.slotController.hasSlottedElements('leading')
-		const hasTrailing = this.slotController.hasSlottedElements('trailing')
 		return html`
-			${!hasLeading ? nothing : html`<slot name='leading'></slot>`}
+			${!this.slotController.hasSlottedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
 			<div part='container'>
 				<input
 					id='input'
@@ -322,7 +320,7 @@ export abstract class Field<T> extends Input<T> {
 				>
 				<label for='input'>${this.label} ${this.required ? '*' : ''}</label>
 			</div>
-			${!hasTrailing ? nothing : html`<slot name='trailing'></slot>`}
+			${!this.slotController.hasSlottedElements('trailing') ? nothing : html`<slot name='trailing'></slot>`}
 		`
 	}
 
