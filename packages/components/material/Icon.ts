@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, ComponentMixin } from '../../library'
 import { MaterialIcon } from '..'
 import { Icon as MwcIcon } from '@material/mwc-icon'
 

@@ -1,6 +1,5 @@
-import { css, html, property, ifDefined, query, event, PropertyValues, nothing } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS } from '../../library'
 import { SlotController } from '../../utilities'
-import { IconButton } from '..'
 import { Input } from './Input'
 
 export type FieldInputType =
@@ -92,6 +91,8 @@ export type FieldAutoComplete =
  * @fires input {CustomEvent<T | undefined>}
  */
 export abstract class Field<T> extends Input<T> {
+	static readonly slotIntegrations = new Set<{ slotChangedHandler?: () => void, styles?: CSSResult }>()
+
 	@event() readonly input!: EventDispatcher<T | undefined>
 
 	@property({ reflect: true }) label = ''
@@ -109,28 +110,7 @@ export abstract class Field<T> extends Input<T> {
 
 	protected inputType: FieldInputType = 'text'
 
-	private readonly slotController = new SlotController(this, async () => {
-		await this.updateComplete
-		const elements = [...this.shadowRoot.querySelectorAll('*')]
-		const leadingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=leading]'))
-		const trailingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=trailing]'))
-
-		const firstIconButton = this.shadowRoot.querySelector('mo-icon-button:first-of-type')
-		const lastIconButton = this.shadowRoot.querySelector('mo-icon-button:last-of-type')
-
-		const leadingIconButtons = [
-			!firstIconButton ? undefined : elements.indexOf(firstIconButton) < leadingSlotIndex ? firstIconButton : undefined,
-			...this.slotController.getAssignedElements('leading').filter(e => e instanceof IconButton)
-		].filter(Boolean) as Array<HTMLElement>
-
-		const trailingIconButtons = [
-			...this.slotController.getAssignedElements('trailing').filter(e => e instanceof IconButton),
-			!lastIconButton ? undefined : elements.indexOf(lastIconButton) > trailingSlotIndex ? lastIconButton : undefined
-		].filter(Boolean) as Array<HTMLElement>
-
-		leadingIconButtons.forEach((iconButton, index) => iconButton.switchAttribute('data-leading-icon-button', index === 0))
-		trailingIconButtons.forEach((iconButton, index) => iconButton.switchAttribute('data-trailing-icon-button', index === trailingIconButtons.length - 1))
-	})
+	readonly slotController = new SlotController(this, () => Field.slotIntegrations.forEach(({ slotChangedHandler }) => slotChangedHandler?.call(this)))
 
 	override get value() { return super.value }
 	override set value(value) {
@@ -316,13 +296,7 @@ export abstract class Field<T> extends Input<T> {
 				align-items: center;
 			}
 
-			[data-leading-icon-button], ::slotted([data-leading-icon-button]) {
-				margin-left: -8px;
-			}
-
-			[data-trailing-icon-button], ::slotted([data-trailing-icon-button]) {
-				margin-right: -8px;
-			}
+			${unsafeCSS([...Field.slotIntegrations].map(integration => integration.styles))}
 		`
 	}
 
