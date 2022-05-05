@@ -282,10 +282,6 @@ export abstract class Field<T> extends Input<T> {
 				visibility: hidden;
 			}
 
-			:host(:focus) label, input:focus ~ label, :host([open]) label, input:not(:placeholder-shown) ~ label {
-				font-size: var(--mo-field-font-size);
-			}
-
 			:host(:focus) label, input:focus ~ label, :host([open]) label {
 				color: var(--mo-accent);
 				top: var(--mo-field-label-top-on-focus);

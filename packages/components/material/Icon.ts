@@ -14,17 +14,6 @@ export class Icon extends ComponentMixin(MwcIcon) {
 		super.fontSize = value
 		this.style.setProperty('--mdc-icon-size', String(value))
 	}
-
-	static override get styles() {
-		return [
-			...super.styles,
-			css`
-				:host {
-					vertical-align: bottom;
-				}
-			`
-		]
-	}
 }
 
 declare global {
