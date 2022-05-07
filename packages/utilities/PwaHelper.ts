@@ -1,8 +1,8 @@
 interface BeforeInstallPromptEvent extends Event {
 	readonly platforms: Array<string>
 	readonly userChoice: Promise<{
-		outcome: 'accepted' | 'dismissed'
-		platform: string
+		readonly outcome: 'accepted' | 'dismissed'
+		readonly platform: string
 	}>
 	prompt(): Promise<void>
 }
@@ -20,24 +20,15 @@ export class PwaHelper {
 	}
 
 	static async registerServiceWorker() {
-		if (MoDeL.environment === 'test') {
-			return
-		}
-
 		const serviceWorkerContainer = navigator.serviceWorker as ServiceWorkerContainer | undefined
 
-		if (!serviceWorkerContainer?.controller) {
-			return
-		}
-
-		if (MoDeL.environment === 'development') {
-			const serviceWorkers = await serviceWorkerContainer.getRegistrations()
+		if (MoDeL.environment !== 'production') {
+			const serviceWorkers = await serviceWorkerContainer?.getRegistrations() || []
 			serviceWorkers.forEach(serviceWorker => serviceWorker.unregister())
-			return
+		} else {
+			await serviceWorkerContainer?.register('/ServiceWorker.js', { scope: '/' })
+			await this.requestInstallation()
 		}
-
-		await serviceWorkerContainer.register('/ServiceWorker.js', { scope: '/' })
-		await this.requestInstallation()
 	}
 
 	private static async requestInstallation() {
