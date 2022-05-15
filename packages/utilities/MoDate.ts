@@ -226,8 +226,8 @@ export class TimeSpan {
 
 	valueOf() { return this.milliseconds }
 
-	toString() {
-		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, { style: 'long' })
+	toString(options: Intl.RelativeTimeFormatOptions = { style: 'long' }) {
+		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, options)
 		const format = (value: number, unit: Intl.RelativeTimeFormatUnit) => formatter.format(Math.sign(value) * Math.floor(Math.abs(value)), unit)
 		switch (true) {
 			case Math.abs(this.years) >= 1:
