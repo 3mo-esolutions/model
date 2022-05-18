@@ -27,12 +27,12 @@ export class MoDate extends Date {
 		return new MoDate(Number(epochNanoseconds / BigInt(1_000_000)))
 	}
 
-	private _temporalInstant?: Temporal.Instant
+	private _temporalInstant?: Temporal.Temporal.Instant
 	get temporalInstant() {
-		return this._temporalInstant ??= new Temporal.Instant(BigInt(this.valueOf() * 1_000_000))
+		return this._temporalInstant ??= new Temporal.Temporal.Instant(BigInt(this.valueOf() * 1_000_000))
 	}
 
-	private _zonedDateTime?: Temporal.ZonedDateTime
+	private _zonedDateTime?: Temporal.Temporal.ZonedDateTime
 	get zonedDateTime() {
 		return this._zonedDateTime ??= this.temporalInstant.toZonedDateTime({
 			calendar: Intl.DateTimeFormat().resolvedOptions().calendar,
@@ -40,7 +40,7 @@ export class MoDate extends Date {
 		})
 	}
 
-	equals(comparisonDate: Parameters<Temporal.Instant['equals']>[0] | MoDate) {
+	equals(comparisonDate: Parameters<Temporal.Temporal.Instant['equals']>[0] | MoDate) {
 		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
 		return this.temporalInstant.equals(other)
 	}
@@ -59,27 +59,27 @@ export class MoDate extends Date {
 			&& (this.isBefore(end) || this.equals(end))
 	}
 
-	since(comparisonDate: Parameters<Temporal.Instant['since']>[0] | MoDate = new MoDate) {
+	since(comparisonDate: Parameters<Temporal.Temporal.Instant['since']>[0] | MoDate = new MoDate) {
 		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
 		const milliseconds = this.temporalInstant.since(other, { largestUnit: 'milliseconds' }).milliseconds
 		return new TimeSpan(milliseconds)
 	}
 
-	until(comparisonDate: Parameters<Temporal.Instant['until']>[0] | MoDate = new MoDate) {
+	until(comparisonDate: Parameters<Temporal.Temporal.Instant['until']>[0] | MoDate = new MoDate) {
 		const other = comparisonDate instanceof MoDate ? comparisonDate.temporalInstant : comparisonDate
 		const milliseconds = this.temporalInstant.until(other, { largestUnit: 'milliseconds' }).milliseconds
 		return new TimeSpan(milliseconds)
 	}
 
-	add(...parameters: Parameters<Temporal.ZonedDateTime['add']>) {
+	add(...parameters: Parameters<Temporal.Temporal.ZonedDateTime['add']>) {
 		return MoDate.fromEpochNanoseconds(this.zonedDateTime.add(...parameters).epochNanoseconds)
 	}
 
-	subtract(...parameters: Parameters<Temporal.ZonedDateTime['subtract']>) {
+	subtract(...parameters: Parameters<Temporal.Temporal.ZonedDateTime['subtract']>) {
 		return MoDate.fromEpochNanoseconds(this.zonedDateTime.subtract(...parameters).epochNanoseconds)
 	}
 
-	round(...parameters: Parameters<Temporal.ZonedDateTime['round']>) {
+	round(...parameters: Parameters<Temporal.Temporal.ZonedDateTime['round']>) {
 		return MoDate.fromEpochNanoseconds(this.zonedDateTime.round(...parameters).epochNanoseconds)
 	}
 

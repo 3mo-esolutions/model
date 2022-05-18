@@ -18,12 +18,12 @@
 	"devDependencies": {
 		"favicons": "*",
 		"favicons-webpack-plugin": "*",
-		"lit-analyzer": "1.*",
+		"lit-analyzer": "*",
 		"standard-version": "*",
-		"ts-lit-plugin": "1.*",
+		"ts-lit-plugin": "*",
 		"typescript": "4.*",
 		"webpack": "5.*",
-		"webpack-cli": "4.*",
-		"webpack-dev-server": "3.*"
+		"webpack-cli": "*",
+		"webpack-dev-server": "*"
 	}
 }

@@ -13,7 +13,7 @@ module.exports = (_, arguments) => MoDeLWebpackConfigFactory(arguments.env.test 
 		publicPath: '/'
 	},
 	devServer: {
-		contentBase: path.join(__dirname, 'dist'),
+		static: path.join(__dirname, 'dist'),
 		historyApiFallback: true
 	}
 }, [
