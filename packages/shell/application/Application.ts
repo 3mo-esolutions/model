@@ -60,6 +60,7 @@ export abstract class Application extends Component {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
 		await AuthenticationHelper.authenticateGloballyIfAvailable()
 		Router.initialize()
+		window.dispatchEvent(new Event('MoDeL.initialized'))
 	}
 
 	static override get styles() {
