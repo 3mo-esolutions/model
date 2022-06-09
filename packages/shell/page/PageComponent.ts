@@ -19,7 +19,7 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	@query('mo-page') protected readonly pageElement?: Page
 
-	override['constructor']: PageComponentConstructor<T>
+	override['constructor']!: PageComponentConstructor<T>
 
 	constructor(readonly parameters: T) {
 		super()
