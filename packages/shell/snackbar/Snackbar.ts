@@ -1,6 +1,7 @@
 import { render, nothing, component, html, css, ComponentMixin } from '../../library'
 import { LocalStorageEntry } from '../../utilities'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
+import { nonInertable } from '..'
 
 /**
  * @attr stacked
@@ -12,6 +13,7 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
  * @cssprop --mdc-snackbar-action-color
  */
 @component('mo-snackbar')
+@nonInertable()
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	static readonly defaultTimeoutInMilliseconds = new LocalStorageEntry('MoDeL.Components.Snackbar.DefaultTimeout', 4000)
 

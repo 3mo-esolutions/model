@@ -54,18 +54,18 @@ function getBoundListener(this: LitElement, propertyKey: string) {
 }
 
 function defineBoundListener(this: LitElement, propertyKey: string, descriptor?: PropertyDescriptor) {
-	const unboundFuction = !descriptor
+	const unboundFunction = !descriptor
 		? Object.getOwnPropertyDescriptor(this, propertyKey)?.value
 		: typeof descriptor.get === 'function'
 			? descriptor.get
 			: descriptor.value
 
-	if (isEventListenerOrEventListenerObject(unboundFuction) === false) {
+	if (isEventListenerOrEventListenerObject(unboundFunction) === false) {
 		throw new TypeError(`${getUniquePropertyKey(this.constructor, propertyKey)} is not a function`)
 	}
 
 	Object.defineProperty(this, getBoundMethodKey(propertyKey), {
-		value: unboundFuction.bind(this),
+		value: unboundFunction.bind(this),
 		configurable: true,
 		enumerable: false,
 		writable: false,

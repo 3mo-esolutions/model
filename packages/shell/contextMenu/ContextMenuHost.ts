@@ -1,8 +1,10 @@
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css } from '../../library'
 import { Corner } from '@material/mwc-menu'
 import { ContextMenu, ListItem } from '../..'
+import { nonInertable } from '..'
 
 @component('mo-context-menu-host')
+@nonInertable()
 export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu }
