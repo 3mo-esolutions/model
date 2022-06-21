@@ -26,7 +26,7 @@ export class DialogDefault<TResult = void> extends DialogComponent<Parameters<TR
 	}
 
 	protected override primaryButtonAction() {
-		return this.parameters.primaryButtonAction?.() ?? super.primaryButtonAction()
+		return this.parameters.primaryButtonAction ? this.parameters.primaryButtonAction() : super.primaryButtonAction()
 	}
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
