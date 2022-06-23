@@ -1,3 +1,7 @@
+///
+// @ts-check
+
+
 ////#region FIX: REFACTORED does not work
 // TODO [MD-103] research and improve service worker + make an offlineFallbackPage
 // const cache = 'pwabuilder-offline'
@@ -41,19 +45,24 @@
 
 //// #endregion
 
-const cache = 'pwabuilder-offline'
+const cacheStorageKey = 'model-pwa-storage'
 const offlineFallbackPage = 'index.html'
+
+/** @type {ServiceWorkerGlobalScope} */
+const serviceWorkerScope = self
+
+self.addEventListener
 
 // Install stage sets up the index page (home page) in the cache and opens a new cache
 self.addEventListener('install', (event) => {
 	//console.log("[PWA Builder] Install Event processing")
 
 	event.waitUntil(
-		caches.open(cache).then((cache) => {
+		caches.open(cacheStorageKey).then((cache) => {
 			//console.log("[PWA Builder] Cached offline page during install")
 
 			if (offlineFallbackPage === 'index.html') {
-				return cache.add(new Response('TODO: Update the value of the offlineFallbackPage constant in the serviceworker.'))
+				return cache.add(new Response('TODO: Update the value of the offlineFallbackPage constant in the service worker.'))
 			}
 
 			return cache.add(offlineFallbackPage)
@@ -84,23 +93,21 @@ self.addEventListener('fetch', (event) => {
 	)
 })
 
-function fromCache(request) {
+async function fromCache(request) {
 	// Check to see if you have it in the cache
 	// Return response
 	// If not in the cache, then return error page
-	return caches.open(cache).then((cache) => {
-		return cache.match(request).then((matching) => {
-			if (!matching || matching.status === 404) {
-				return Promise.reject('no-match')
-			}
+	const cache = await caches.open(cacheStorageKey)
+	const matchingResponse = await cache.match(request)
+	if (!matchingResponse || matchingResponse.status === 404) {
+		return Promise.reject('no-match')
+	}
 
-			return matching
-		})
-	})
+	return matchingResponse
 }
 
 function updateCache(request, response) {
-	return caches.open(cache).then((cache) => {
+	return caches.open(cacheStorageKey).then((cache) => {
 		return cache.put(request, response)
 	})
 }
