@@ -1,4 +1,4 @@
-import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/model'
+import { component, html, PageComponent, homePage, route, Snackbar, SnackbarType } from '@3mo/model'
 
 @homePage()
 @route('/home')
@@ -22,7 +22,6 @@ export class PageHome extends PageComponent {
 	}
 
 	private readonly handleCountChange = async (e: CustomEvent<number>) => {
-		await Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)
-		console.log(`DONE for number ${e.detail}`)
+		await Snackbar.show(SnackbarType.Info, `countChange event intercepted with the value: ${e.detail}`)
 	}
 }

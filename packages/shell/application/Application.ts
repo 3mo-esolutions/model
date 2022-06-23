@@ -2,7 +2,7 @@ import { css, html, property, Component, nothing, query, event } from '../../lib
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, Router } from '..'
+import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, Router, SnackbarHost } from '..'
 
 type View = 'desktop' | 'tablet'
 
@@ -21,6 +21,7 @@ export abstract class Application extends Component {
 
 	@query('mo-page-host') readonly pageHost!: PageHost
 	@query('mo-dialog-host') readonly dialogHost!: DialogHost
+	@query('mo-snackbar-host') readonly snackbarHost!: SnackbarHost
 	@query('mo-drawer') readonly drawer!: Drawer
 
 	constructor() {
@@ -139,7 +140,7 @@ export abstract class Application extends Component {
 				</mo-drawer>
 			</mo-top-app-bar>
 
-			<mo-snackbar></mo-snackbar>
+			<mo-snackbar-host></mo-snackbar-host>
 			<mo-dialog-host></mo-dialog-host>
 			<mo-context-menu-host></mo-context-menu-host>
 			<mo-confetti></mo-confetti>

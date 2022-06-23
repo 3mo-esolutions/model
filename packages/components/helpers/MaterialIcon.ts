@@ -1521,6 +1521,7 @@ export type MaterialIcon =
 	| 'wallet_travel'
 	| 'wallpaper'
 	| 'warning'
+	| 'warning_amber'
 	| 'wash'
 	| 'watch'
 	| 'watch_later'
