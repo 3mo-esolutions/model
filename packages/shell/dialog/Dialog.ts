@@ -1,5 +1,5 @@
 import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, eventListener, state } from '../../library'
-import { Snackbar } from '..'
+import { Snackbar, SnackbarType } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
@@ -306,7 +306,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 					this.close(result)
 				}
 			} catch (e: any) {
-				Snackbar.show(e.message)
+				Snackbar.show({ type: SnackbarType.Error, message: e.message })
 				throw e
 			} finally {
 				this.executingAction = undefined

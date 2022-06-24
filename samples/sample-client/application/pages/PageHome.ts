@@ -1,4 +1,4 @@
-import { component, html, PageComponent, homePage, route, Snackbar } from '@3mo/model'
+import { component, html, PageComponent, homePage, route, Snackbar, SnackbarType } from '@3mo/model'
 
 @homePage()
 @route('/home')
@@ -13,11 +13,15 @@ export class PageHome extends PageComponent {
 						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
 						<sample-counter
 							count='1'
-							@countChange=${(e: CustomEvent<number>) => Snackbar.show(`countChange event intercepted with the value: ${e.detail}`)}
+							@countChange=${this.handleCountChange}
 						></sample-counter>
 					</mo-flex>
 				</mo-card>
 			</mo-page>
 		`
+	}
+
+	private readonly handleCountChange = async (e: CustomEvent<number>) => {
+		await Snackbar.show({ type: SnackbarType.Info, message: `countChange event intercepted with the value: ${e.detail}` })
 	}
 }

@@ -1,4 +1,4 @@
-import { Snackbar } from '@3mo/model'
+import { Snackbar, SnackbarType } from '@3mo/model'
 import { PageHome } from './PageHome'
 
 describe('PageHome', () => {
@@ -18,6 +18,6 @@ describe('PageHome', () => {
 
 		page.shadowRoot.querySelector('sample-counter')?.countChange.dispatch(count)
 
-		expect(Snackbar.show).toHaveBeenCalledWith(`countChange event intercepted with the value: ${count}`)
+		expect(Snackbar.show).toHaveBeenCalledWith({ type: SnackbarType.Info, message: `countChange event intercepted with the value: ${count}` })
 	})
 })

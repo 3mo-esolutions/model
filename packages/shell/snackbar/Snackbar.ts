@@ -1,7 +1,15 @@
-import { render, nothing, component, html, css, ComponentMixin } from '../../library'
-import { LocalStorageEntry } from '../../utilities'
-import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
+import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing } from '../../library'
+import { MaterialIcon } from '../../components'
 import { nonInertable } from '..'
+import { PeriodicTimer } from '../../utilities'
+import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
+
+export const enum SnackbarType {
+	Info = 'info',
+	Success = 'success',
+	Warning = 'warning',
+	Error = 'error',
+}
 
 /**
  * @attr stacked
@@ -15,65 +23,155 @@ import { nonInertable } from '..'
 @component('mo-snackbar')
 @nonInertable()
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
-	static readonly defaultTimeoutInMilliseconds = new LocalStorageEntry('MoDeL.Components.Snackbar.DefaultTimeout', 4000)
+	private static readonly defaultDuration = 5_000
 
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-snackbar') as Snackbar }
+	private static readonly defaultTimerPeriodByType = new Map<SnackbarType, number>([
+		[SnackbarType.Info, 5_000],
+		[SnackbarType.Success, 5_000],
+		[SnackbarType.Warning, 10_000],
+		[SnackbarType.Error, 15_000],
+	])
+
+	private static readonly iconByType = new Map<SnackbarType, MaterialIcon>([
+		[SnackbarType.Info, 'info'],
+		[SnackbarType.Success, 'check_circle'],
+		[SnackbarType.Warning, 'warning'],
+		[SnackbarType.Error, 'error'],
+	])
+
+	static show(...parameters: Parameters<typeof MoDeL.application.snackbarHost.show>) {
+		return MoDeL.application.snackbarHost.show(...parameters)
+	}
 
 	static override get styles() {
 		return [
 			...super.styles,
 			css`
+				:host {
+					--mo-snackbar-success-color-base : 93, 170, 96;
+					--mo-snackbar-warning-color-base: 232, 152, 35;
+					--mo-snackbar-error-color-base: 221, 61, 49;
+					--mo-snackbar-info-color-base: 0, 119, 200;
+					width: 100%;
+				}
+
+				:host([type=success]) {
+					--mo-snackbar-color-base: var(--mo-snackbar-success-color-base);
+				}
+
+				:host([type=warning]) {
+					--mo-snackbar-color-base: var(--mo-snackbar-warning-color-base);
+				}
+
+				:host([type=error]) {
+					--mo-snackbar-color-base: var(--mo-snackbar-error-color-base);
+				}
+
+				:host([type=info]) {
+					--mo-snackbar-color-base: var(--mo-snackbar-info-color-base);
+				}
+
+				.mdc-snackbar {
+					position: var(--mo-snackbar-position, fixed);
+				}
+
 				.mdc-snackbar__surface {
 					background-color: var(--mo-color-foreground);
 				}
 
 				.mdc-snackbar__label {
+					padding-left: 8px;
 					color: rgba(var(--mo-color-background-base), 0.87)
+				}
+
+				div#icon {
+					display: flex;
+					height: 100%;
+					align-items: center;
+					justify-content: center;
+					padding-left: 8px;
+				}
+
+				div#progress {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					right: 0px;
+					width: 100%;
 				}
 			`
 		]
 	}
 
-	private static readonly toasts = new Set<Promise<void>>()
+	@property({ reflect: true }) type?: SnackbarType
+	@property({ type: Number }) duration?: number
 
-	static show(
-		message: string,
-		action?: {
-			text: string
-			handler: () => void | PromiseLike<void>
-		},
-		timeoutInMilliseconds = Snackbar.defaultTimeoutInMilliseconds.value,
-	) {
-		const toast = new Promise<void>(resolve => {
-			Promise.all(this.toasts).then(() => {
-				const close = () => {
-					this.toasts.delete(toast)
-					this.instance.close()
-					resolve()
-				}
-
-				const handleAction = async () => {
-					await action?.handler()
-					close()
-				}
-
-				render(html`
-					${!action ? nothing : html`<mo-loading-button slot='action' @click=${handleAction}>${action.text}</mo-loading-button>`}
-					<mo-icon-button slot='dismiss' icon='close' fontSize='18px' foreground='var(--mo-color-background)' @click=${close}></mo-icon-button>
-				`, this.instance)
-
-				this.instance.labelText = message
-				this.instance.show()
-				setTimeout(() => close(), timeoutInMilliseconds)
-			})
-		})
-
-		this.toasts.add(toast)
-
-		return toast
-	}
+	private timer?: PeriodicTimer
 
 	override timeoutMs = -1
+
+	@renderContainer('div#icon')
+	protected get iconTemplate() {
+		return !this.type ? nothing : html`
+			<mo-icon
+				icon=${ifDefined(Snackbar.iconByType.get(this.type))}
+				foreground='rgba(var(--mo-snackbar-color-base), 0.75)'
+			></mo-icon>
+		`
+	}
+
+	@renderContainer('slot[name="dismiss"]')
+	protected get dismissIconButtonTemplate() {
+		return html`
+			<mo-icon-button icon='close' fontSize='18px' foreground='var(--mo-color-background)'></mo-icon-button>
+		`
+	}
+
+	@renderContainer('div#progress')
+	protected get progressBarTemplate() {
+		return !this.timer ? nothing : html`
+			<mo-linear-progress progress=${1 - this.timer.remainingTimeToNextTick / this.timer.period.milliseconds + 0.075}></mo-linear-progress>
+		`
+	}
+
+	@eventListener('mouseover')
+	protected handleMouseOver() {
+		this.timer?.pause()
+	}
+
+	@eventListener('mouseout')
+	protected handleMouseOut() {
+		this.timer?.run()
+	}
+
+	protected override initialized() {
+		const snackbarElement = this.shadowRoot.querySelector('.mdc-snackbar')
+		const surfaceElement = this.shadowRoot.querySelector('.mdc-snackbar__surface')
+
+		window.setInterval(() => this.requestUpdate(), 100)
+
+		const iconDiv = document.createElement('div')
+		iconDiv.id = 'icon'
+		surfaceElement?.insertBefore(iconDiv, surfaceElement.firstChild)
+
+		const progressBarDiv = document.createElement('div')
+		progressBarDiv.id = 'progress'
+		snackbarElement?.append(progressBarDiv)
+	}
+
+	override async show() {
+		const typeDuration = !this.type ? undefined : Snackbar.defaultTimerPeriodByType.get(this.type)
+		const duration = this.duration ?? typeDuration ?? Snackbar.defaultDuration
+		this.timer = new PeriodicTimer(duration)
+		super.show()
+		await this.timer.waitForNextTick()
+		this.close()
+	}
+
+	override close() {
+		super.close()
+		this.timer?.dispose()
+	}
 }
 
 declare global {

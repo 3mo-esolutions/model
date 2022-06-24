@@ -1,6 +1,6 @@
 import { Component, component } from '../../library'
 import { WindowHelper, WindowOpenMode } from '../../utilities'
-import { DialogComponent, Snackbar, AuthorizationHelper, PageDialog, DialogConfirmationStrategy } from '..'
+import { DialogComponent, Snackbar, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, SnackbarType } from '..'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
@@ -18,7 +18,7 @@ export class DialogHost extends Component {
 	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
 			const errorMessage = '🔒 Access denied'
-			Snackbar.show(errorMessage)
+			Snackbar.show({ type: SnackbarType.Error, message: errorMessage })
 			throw new Error(errorMessage)
 		}
 
