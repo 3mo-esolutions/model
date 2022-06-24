@@ -1,11 +1,9 @@
 import { Component, component } from '../../library'
 import { WindowHelper, WindowOpenMode } from '../../utilities'
-import { DialogComponent, Snackbar, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, SnackbarType } from '..'
+import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, NotificationHost } from '..'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-dialog-host') as DialogHost }
-
 	get dialogComponents() {
 		return Array.from(this.shadowRoot.querySelectorAll('*'))
 			.filter((element): element is DialogComponent<any, any> => element instanceof DialogComponent)
@@ -17,9 +15,7 @@ export class DialogHost extends Component {
 
 	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
-			const errorMessage = '🔒 Access denied'
-			Snackbar.show({ type: SnackbarType.Error, message: errorMessage })
-			throw new Error(errorMessage)
+			NotificationHost.instance.notifyAndThrowError('🔒 Access denied')
 		}
 
 		if (strategy === DialogConfirmationStrategy.Dialog) {

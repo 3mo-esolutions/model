@@ -1,4 +1,4 @@
-import { Snackbar, SnackbarType } from '@3mo/model'
+import { NotificationHost } from '@3mo/model'
 import { PageHome } from './PageHome'
 
 describe('PageHome', () => {
@@ -14,10 +14,10 @@ describe('PageHome', () => {
 
 	it('should show a snackbar message when the count of "sample-counter" changes', () => {
 		const count = 11
-		spyOn(Snackbar, 'show')
+		spyOn(NotificationHost.instance, 'notify')
 
 		page.shadowRoot.querySelector('sample-counter')?.countChange.dispatch(count)
 
-		expect(Snackbar.show).toHaveBeenCalledWith({ type: SnackbarType.Info, message: `countChange event intercepted with the value: ${count}` })
+		expect(NotificationHost.instance.notifyInfo).toHaveBeenCalledWith(`countChange event intercepted with the value: ${count}`)
 	})
 })

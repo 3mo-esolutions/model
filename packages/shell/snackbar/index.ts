@@ -1,2 +1,2 @@
-export * from './SnackbarHost'
+export * from './NotificationHost'
 export * from './Snackbar'

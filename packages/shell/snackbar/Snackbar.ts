@@ -1,15 +1,8 @@
-import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing } from '../../library'
+import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing, unsafeCSS } from '../../library'
 import { MaterialIcon } from '../../components'
-import { nonInertable } from '..'
+import { nonInertable, NotificationType } from '..'
 import { PeriodicTimer } from '../../utilities'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
-
-export const enum SnackbarType {
-	Info = 'info',
-	Success = 'success',
-	Warning = 'warning',
-	Error = 'error',
-}
 
 /**
  * @attr stacked
@@ -25,50 +18,46 @@ export const enum SnackbarType {
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	private static readonly defaultDuration = 5_000
 
-	private static readonly defaultTimerPeriodByType = new Map<SnackbarType, number>([
-		[SnackbarType.Info, 5_000],
-		[SnackbarType.Success, 5_000],
-		[SnackbarType.Warning, 10_000],
-		[SnackbarType.Error, 15_000],
+	private static readonly defaultTimerPeriodByType = new Map<NotificationType, number>([
+		[NotificationType.Info, 5_000],
+		[NotificationType.Success, 5_000],
+		[NotificationType.Warning, 10_000],
+		[NotificationType.Error, 15_000],
 	])
 
-	private static readonly iconByType = new Map<SnackbarType, MaterialIcon>([
-		[SnackbarType.Info, 'info'],
-		[SnackbarType.Success, 'check_circle'],
-		[SnackbarType.Warning, 'warning'],
-		[SnackbarType.Error, 'error'],
+	private static readonly iconByType = new Map<NotificationType, MaterialIcon>([
+		[NotificationType.Info, 'info'],
+		[NotificationType.Success, 'check_circle'],
+		[NotificationType.Warning, 'warning'],
+		[NotificationType.Error, 'error'],
 	])
-
-	static show(...parameters: Parameters<typeof MoDeL.application.snackbarHost.show>) {
-		return MoDeL.application.snackbarHost.show(...parameters)
-	}
 
 	static override get styles() {
 		return [
 			...super.styles,
 			css`
 				:host {
+					--mo-snackbar-info-color-base: 0, 119, 200;
 					--mo-snackbar-success-color-base : 93, 170, 96;
 					--mo-snackbar-warning-color-base: 232, 152, 35;
 					--mo-snackbar-error-color-base: 221, 61, 49;
-					--mo-snackbar-info-color-base: 0, 119, 200;
 					width: 100%;
 				}
 
-				:host([type=success]) {
+				:host([type=${unsafeCSS(NotificationType.Info)}]) {
+					--mo-snackbar-color-base: var(--mo-snackbar-info-color-base);
+				}
+
+				:host([type=${unsafeCSS(NotificationType.Success)}]) {
 					--mo-snackbar-color-base: var(--mo-snackbar-success-color-base);
 				}
 
-				:host([type=warning]) {
+				:host([type=${unsafeCSS(NotificationType.Warning)}]) {
 					--mo-snackbar-color-base: var(--mo-snackbar-warning-color-base);
 				}
 
-				:host([type=error]) {
+				:host([type=${unsafeCSS(NotificationType.Error)}]) {
 					--mo-snackbar-color-base: var(--mo-snackbar-error-color-base);
-				}
-
-				:host([type=info]) {
-					--mo-snackbar-color-base: var(--mo-snackbar-info-color-base);
 				}
 
 				.mdc-snackbar {
@@ -103,7 +92,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 		]
 	}
 
-	@property({ reflect: true }) type?: SnackbarType
+	@property({ reflect: true }) type?: NotificationType
 	@property({ type: Number }) duration?: number
 
 	private timer?: PeriodicTimer

@@ -1,7 +1,7 @@
 import { html, css, state } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
-import { Snackbar, SnackbarType, User } from '..'
+import { NotificationHost, User } from '..'
 
 export abstract class DialogAuthenticator extends DialogComponent {
 	static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
@@ -35,7 +35,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			if (isAuthenticated === false) {
 				throw new Error('Something went wrong.\nTry again.')
 			}
-			Snackbar.show({ type: SnackbarType.Success, message: 'Authenticated successfully' })
+			NotificationHost.instance.notifySuccess('Authenticated successfully')
 		} catch (error: any) {
 			throw new Error(error.message ?? 'Incorrect Credentials')
 		}
@@ -45,7 +45,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		try {
 			await this.unauthenticateProcess()
 		} finally {
-			Snackbar.show({ type: SnackbarType.Error, message: 'Unauthenticated successfully' })
+			NotificationHost.instance.notifySuccess('Unauthenticated successfully')
 			DialogAuthenticator.authenticatedUser.value = undefined
 			this.preventNextAutomaticAuthentication = true
 			this.confirm()
@@ -55,9 +55,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	async resetPassword() {
 		try {
 			await this.resetPasswordProcess()
-			Snackbar.show({ type: SnackbarType.Info, message: 'Password reset instructions have been sent to your email address' })
+			NotificationHost.instance.notifyInfo('Password reset instructions have been sent to your email address')
 		} catch (error: any) {
-			Snackbar.show({ type: SnackbarType.Error, message: error.message ?? 'Password could not be reset' })
+			NotificationHost.instance.notifyError(error.message ?? 'Password could not be reset')
 			throw error
 		}
 	}
