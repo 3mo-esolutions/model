@@ -23,20 +23,20 @@ export const enum SnackbarType {
 @component('mo-snackbar')
 @nonInertable()
 export class Snackbar extends ComponentMixin(MwcSnackbar) {
-	private static readonly defaultTimerPeriod = TimeSpan.fromMilliseconds(5000)
+	private static readonly defaultDuration = 5_000
+
+	private static readonly defaultTimerPeriodByType = new Map<SnackbarType, number>([
+		[SnackbarType.Info, 5_000],
+		[SnackbarType.Success, 5_000],
+		[SnackbarType.Warning, 10_000],
+		[SnackbarType.Error, 15_000],
+	])
 
 	private static readonly iconByType = new Map<SnackbarType, MaterialIcon>([
 		[SnackbarType.Info, 'info'],
 		[SnackbarType.Success, 'check_circle'],
 		[SnackbarType.Warning, 'warning'],
 		[SnackbarType.Error, 'error'],
-	])
-
-	private static readonly durationsByType = new Map<SnackbarType, number>([
-		[SnackbarType.Info, 5_000],
-		[SnackbarType.Success, 5_000],
-		[SnackbarType.Warning, 10_000],
-		[SnackbarType.Error, 15_000],
 	])
 
 	static show(...parameters: Parameters<typeof MoDeL.application.snackbarHost.show>) {
@@ -104,6 +104,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	}
 
 	@property({ reflect: true }) type?: SnackbarType
+	@property({ type: Number }) duration?: number
 
 	private timer?: PeriodicTimer
 
@@ -159,7 +160,8 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	}
 
 	override async show() {
-		const duration = !this.type ? Snackbar.defaultTimerPeriod : Snackbar.durationsByType.get(this.type) || Snackbar.defaultTimerPeriod
+		const typeDuration = !this.type ? undefined : Snackbar.defaultTimerPeriodByType.get(this.type)
+		const duration = this.duration ?? typeDuration ?? Snackbar.defaultDuration
 		this.timer = new PeriodicTimer(duration)
 		super.show()
 		await this.timer.waitForNextTick()
