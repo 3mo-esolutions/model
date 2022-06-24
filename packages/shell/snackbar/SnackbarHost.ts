@@ -3,8 +3,8 @@ import { Snackbar, SnackbarType } from './Snackbar'
 
 type SnackbarActionClickHandler = () => void | PromiseLike<void>
 type SnackbarAction = {
-	title: string
-	handleClick: SnackbarActionClickHandler
+	readonly title: string
+	readonly handleClick: SnackbarActionClickHandler
 }
 
 type SnackbarOptions = {
