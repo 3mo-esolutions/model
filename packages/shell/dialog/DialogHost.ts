@@ -18,7 +18,7 @@ export class DialogHost extends Component {
 	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
 			const errorMessage = '🔒 Access denied'
-			Snackbar.show(SnackbarType.Error, errorMessage)
+			Snackbar.show({ type: SnackbarType.Error, message: errorMessage })
 			throw new Error(errorMessage)
 		}
 

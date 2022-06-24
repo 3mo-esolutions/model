@@ -22,6 +22,6 @@ export class PageHome extends PageComponent {
 	}
 
 	private readonly handleCountChange = async (e: CustomEvent<number>) => {
-		await Snackbar.show(SnackbarType.Info, `countChange event intercepted with the value: ${e.detail}`)
+		await Snackbar.show({ type: SnackbarType.Info, message: `countChange event intercepted with the value: ${e.detail}` })
 	}
 }

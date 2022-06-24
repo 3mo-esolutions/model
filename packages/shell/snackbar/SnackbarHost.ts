@@ -1,16 +1,22 @@
-import { Component, state, css, html, TemplateHelper, component } from '../../library'
+import { Component, state, css, html, TemplateHelper, component, ifDefined } from '../../library'
 import { Snackbar, SnackbarType } from './Snackbar'
 
 type SnackbarActionClickHandler = () => void | PromiseLike<void>
-type SnackbarActionFull = {
+type SnackbarAction = {
 	title: string
 	handleClick: SnackbarActionClickHandler
 }
-type SnackbarActionShort = [string, SnackbarActionClickHandler]
-type SnackbarAction = SnackbarActionFull | SnackbarActionShort
+
+type SnackbarOptions = {
+	readonly type?: SnackbarType
+	readonly message: string
+	readonly actions?: Array<SnackbarAction>
+}
 
 @component('mo-snackbar-host')
 export class SnackbarHost extends Component {
+	static readonly shownSnackbars = new Set<SnackbarOptions>()
+
 	@state() private readonly snackbars = new Set<Snackbar>()
 
 	static override get styles() {
@@ -44,7 +50,7 @@ export class SnackbarHost extends Component {
 		return html`${this.snackbars}`
 	}
 
-	async show(type: SnackbarType, message: string, ...actions: Array<SnackbarAction>) {
+	async show(snackbarOptions: SnackbarOptions) {
 		const close = async () => {
 			snackbar.close()
 			await Promise.all([this.updateComplete, snackbar.updateComplete])
@@ -57,19 +63,26 @@ export class SnackbarHost extends Component {
 			await close()
 		}
 
-		const fullActions = actions.map(action => Array.isArray(action) ? { title: action[0], handleClick: action[1] } : action)
-
 		const snackbarTemplate = html`
-			<mo-snackbar labelText=${message} type=${type} @MDCSnackbar:closed=${close} ?stacked=${fullActions.length > 1}>
-				${fullActions.map(action => html`
+			<mo-snackbar labelText=${snackbarOptions.message}
+				?stacked=${(snackbarOptions.actions?.length ?? 0) > 1}
+				type=${ifDefined(snackbarOptions.type)}
+				@MDCSnackbar:closed=${close}
+			>
+				${snackbarOptions.actions?.map(action => html`
 					<mo-loading-button slot='action' @click=${() => handleAction(action.handleClick)}>${action.title}</mo-loading-button>
 				`)}
 			</mo-snackbar>
 		`
 
 		const snackbar = TemplateHelper.extractBySelector(snackbarTemplate, 'mo-snackbar')
+		SnackbarHost.shownSnackbars.add(snackbarOptions)
+		await this.showSnackbar(snackbar)
+	}
 
+	private async showSnackbar(snackbar: Snackbar) {
 		this.snackbars.add(snackbar)
+
 		const promise = snackbar.show()
 
 		this.requestUpdate()

@@ -18,6 +18,6 @@ describe('PageHome', () => {
 
 		page.shadowRoot.querySelector('sample-counter')?.countChange.dispatch(count)
 
-		expect(Snackbar.show).toHaveBeenCalledWith(SnackbarType.Info, `countChange event intercepted with the value: ${count}`)
+		expect(Snackbar.show).toHaveBeenCalledWith({ type: SnackbarType.Info, message: `countChange event intercepted with the value: ${count}` })
 	})
 })
