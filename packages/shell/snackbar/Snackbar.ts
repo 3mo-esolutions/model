@@ -129,7 +129,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	@renderContainer('div#progress')
 	protected get progressBarTemplate() {
 		return !this.timer ? nothing : html`
-			<mo-linear-progress progress=${1 - this.timer.remainingTimeToNextTick / this.timer.period.milliseconds}></mo-linear-progress>
+			<mo-linear-progress progress=${1 - this.timer.remainingTimeToNextTick / this.timer.period.milliseconds + 0.075}></mo-linear-progress>
 		`
 	}
 

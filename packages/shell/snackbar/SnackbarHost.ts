@@ -1,5 +1,13 @@
-import { Component, state, css, html, TemplateHelper, nothing, component } from '../../library'
+import { Component, state, css, html, TemplateHelper, component } from '../../library'
 import { Snackbar, SnackbarType } from './Snackbar'
+
+type SnackbarActionClickHandler = () => void | PromiseLike<void>
+type SnackbarActionFull = {
+	title: string
+	handleClick: SnackbarActionClickHandler
+}
+type SnackbarActionShort = [string, SnackbarActionClickHandler]
+type SnackbarAction = SnackbarActionFull | SnackbarActionShort
 
 @component('mo-snackbar-host')
 export class SnackbarHost extends Component {
@@ -36,7 +44,7 @@ export class SnackbarHost extends Component {
 		return html`${this.snackbars}`
 	}
 
-	async show(type: SnackbarType, message: string, action?: { text: string, handler: () => void | PromiseLike<void> }) {
+	async show(type: SnackbarType, message: string, ...actions: Array<SnackbarAction>) {
 		const close = async () => {
 			snackbar.close()
 			await Promise.all([this.updateComplete, snackbar.updateComplete])
@@ -44,14 +52,18 @@ export class SnackbarHost extends Component {
 			this.requestUpdate()
 		}
 
-		const handleAction = async () => {
-			await action?.handler()
+		const handleAction = async (action: SnackbarActionClickHandler) => {
+			await action()
 			await close()
 		}
 
+		const fullActions = actions.map(action => Array.isArray(action) ? { title: action[0], handleClick: action[1] } : action)
+
 		const snackbarTemplate = html`
-			<mo-snackbar labelText=${message} type=${type} @MDCSnackbar:closed=${() => close()}>
-				${!action ? nothing : html`<mo-loading-button slot='action' @click=${handleAction}>${action.text}</mo-loading-button>`}
+			<mo-snackbar labelText=${message} type=${type} @MDCSnackbar:closed=${close} ?stacked=${fullActions.length > 1}>
+				${fullActions.map(action => html`
+					<mo-loading-button slot='action' @click=${() => handleAction(action.handleClick)}>${action.title}</mo-loading-button>
+				`)}
 			</mo-snackbar>
 		`
 
