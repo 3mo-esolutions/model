@@ -1,4 +1,5 @@
 import { Component, state, css, html, TemplateHelper, component, ifDefined } from '../../library'
+import { nonInertable } from '../helpers'
 import { Snackbar } from './Snackbar'
 
 export const enum NotificationType {
@@ -32,6 +33,7 @@ function normalizeNonTypedNotificationParameters(...parameters: NonTypedNotifica
 }
 
 @component('mo-notification-host')
+@nonInertable()
 export class NotificationHost extends Component {
 	static readonly shownNotifications = new Set<Notification>()
 

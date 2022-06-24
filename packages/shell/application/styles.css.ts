@@ -79,12 +79,6 @@ export const styles = css`
 		--mo-thickness-l: 8px;
 		--mo-thickness-xl: 14px;
 		--mo-thickness-xxl: 18px;
-		/* zIndex */
-		--mo-z-snackbar: 10;
-		--mo-z-sidebar: 4;
-		--mo-z-overlay: 3;
-		--mo-z-menu: 2;
-		--mo-z-surface: 1;
 		/* Colors */
 		--mo-color-on-surface: rgba(var(--mo-color-foreground-base), 0.87) !important;
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;

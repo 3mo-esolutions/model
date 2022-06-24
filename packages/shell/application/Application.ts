@@ -140,10 +140,10 @@ export abstract class Application extends Component {
 				</mo-drawer>
 			</mo-top-app-bar>
 
-			<mo-notification-host></mo-notification-host>
-			<mo-dialog-host></mo-dialog-host>
-			<mo-context-menu-host></mo-context-menu-host>
-			<mo-confetti></mo-confetti>
+			<mo-dialog-host style='z-index: 7'></mo-dialog-host>
+			<mo-notification-host style='z-index: 8'></mo-notification-host>
+			<mo-context-menu-host style='z-index: 10'></mo-context-menu-host>
+			<mo-confetti style='z-index: 11'></mo-confetti>
 		`
 	}
 
