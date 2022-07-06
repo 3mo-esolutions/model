@@ -36,7 +36,7 @@ export class Scroll extends Component {
 
 	protected override get template() {
 		return html`
-			<div>
+			<div part='container'>
 				<slot></slot>
 			</div>
 		`
