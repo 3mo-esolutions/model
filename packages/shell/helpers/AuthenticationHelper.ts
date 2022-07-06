@@ -71,5 +71,6 @@ export class AuthenticationHelper {
 
 	static async unauthenticate() {
 		await this.authenticator?.unauthenticate()
+		MoDeL.application.resetTitle()
 	}
 }

@@ -56,6 +56,10 @@ export abstract class Application extends Component {
 		super.connectedCallback()
 	}
 
+	resetTitle() {
+		document.title = Manifest.short_name
+	}
+
 	protected override async initialized() {
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
 		await AuthenticationHelper.authenticateGloballyIfAvailable()
