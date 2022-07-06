@@ -7,7 +7,7 @@ export class PeriodicTimer {
 	private pauses = new Array<[MoDate, MoDate | undefined]>()
 
 	private get isPaused() {
-		const last = this.pauses.at(-1)
+		const last = this.pauses[this.pauses.length - 1]
 		return !!last && last[1] === undefined
 	}
 
@@ -42,7 +42,8 @@ export class PeriodicTimer {
 
 	run() {
 		if (this.isPaused) {
-			this.pauses.at(-1)![1] = new MoDate
+			const lastPause = this.pauses[this.pauses.length - 1]
+			lastPause[1] = new MoDate
 			const remainingTimeToNextTick = this.remainingTimeToNextTick
 
 			window.clearTimeout(this.temporaryPauseTimer?.[1])

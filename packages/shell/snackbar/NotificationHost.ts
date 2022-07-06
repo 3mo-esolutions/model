@@ -95,7 +95,6 @@ export class NotificationHost extends Component {
 		return css`
 			:host {
 				position: fixed;
-				z-index: 1;
 				inset-block-end: 0;
 				inset-inline: 0;
 				max-height: max(50vh, 50%);
