@@ -5,7 +5,7 @@ import { decorateLitElement } from './decorateLitElement'
 type ShorthandEventListenerDecoratorOptions = [type: string, options?: EventListenerOptions | boolean]
 type FullEventListenerDecoratorOptions = [{
 	type: string
-	target?: EventTarget
+	target?: EventTarget | ((this: any) => EventTarget)
 	options?: EventListenerOptions | boolean
 }]
 type EventListenerDecoratorOptions = ShorthandEventListenerDecoratorOptions | FullEventListenerDecoratorOptions
@@ -19,6 +19,10 @@ function extractArguments(args: EventListenerDecoratorOptions) {
 	}
 }
 
+function extractEventTarget(this: any, target: FullEventListenerDecoratorOptions[0]['target']): EventTarget | undefined {
+	return typeof target === 'function' ? target.call(this) : target ?? this
+}
+
 export const eventListener = (...eventListenerOptions: EventListenerDecoratorOptions) => {
 	return (prototype: LitElement, propertyKey: string, descriptor?: PropertyDescriptor) => {
 		decorateLitElement<Map<any, ReturnType<typeof extractArguments> & { descriptor?: PropertyDescriptor, property: string }>>({
@@ -30,15 +34,15 @@ export const eventListener = (...eventListenerOptions: EventListenerDecoratorOpt
 					for (const [key, { type, target, options, descriptor, property }] of eventListeners) {
 						if (this.constructor.name === extractConstructorNameFromUniquePropertyKey(key)) {
 							defineBoundListener.call(this, property, descriptor)
-							const eventTarget = target ?? this
-							eventTarget.addEventListener(type, getBoundListener.call(this, property), options)
+							extractEventTarget.call(this, target)
+								?.addEventListener(type, getBoundListener.call(this, property), options)
 						}
 					}
 				}],
 				['disconnectedCallback', function (this, eventListeners) {
 					for (const { type, target, options, property } of eventListeners.values()) {
-						const eventTarget = target ?? this
-						eventTarget.removeEventListener(type, getBoundListener.call(this, property), options)
+						extractEventTarget.call(this, target)
+							?.removeEventListener(type, getBoundListener.call(this, property), options)
 					}
 				}],
 			])
