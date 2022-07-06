@@ -94,6 +94,7 @@ export class NotificationHost extends Component {
 	static override get styles() {
 		return css`
 			:host {
+				z-index: 8;
 				position: fixed;
 				inset-block-end: 0;
 				inset-inline: 0;

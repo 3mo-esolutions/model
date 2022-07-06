@@ -16,10 +16,7 @@ export class FabGroup extends Component {
 			}
 
 			:host([open]) {
-				z-index: 10;
-			}
-
-			:host([open]) {
+				/* TODO Does 10 go along with other z-index changes? */
 				z-index: 10;
 			}
 

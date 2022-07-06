@@ -1,4 +1,4 @@
-import { Component, component } from '../../library'
+import { Component, component, css } from '../../library'
 import { WindowHelper, WindowOpenMode } from '../../utilities'
 import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, NotificationHost } from '..'
 
@@ -53,6 +53,14 @@ export class DialogHost extends Component {
 				}
 			})
 		})
+	}
+
+	static override get styles() {
+		return css`
+			:host {
+				z-index: 7;
+			}
+		`
 	}
 }
 
