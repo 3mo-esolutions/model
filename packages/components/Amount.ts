@@ -7,7 +7,7 @@ export class Amount extends Component {
 
 	@property() currency = CurrencyCode.EUR
 	@property({ type: String, reflect: true }) currencySymbol?: string
-	@property({ type: String, reflect: true }) signDisplay: Intl.NumberFormatOptions['signDisplay'] = 'auto'
+	@property({ type: String, reflect: true }) signDisplay?: Intl.NumberFormatOptions['signDisplay'] = 'auto'
 	@property({ type: Boolean, reflect: true }) redNegative = Amount.redNegative.value
 	@property({ type: Number, updated(this: Amount) { this.switchAttribute('negative', this.value < 0) } }) value = 0
 
@@ -40,7 +40,7 @@ export class Amount extends Component {
 	}
 
 	protected get amountText() {
-		return FormatHelper.amount(this.value, { signDisplay: this.signDisplay })
+		return FormatHelper.amount(this.value, { signDisplay: this.signDisplay || 'auto' })
 	}
 
 	protected get currencySymbolText() {
