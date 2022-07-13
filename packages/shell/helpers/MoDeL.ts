@@ -19,7 +19,6 @@ class MoDeL {
 	}
 
 	static get application() {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return window.document.body.querySelector<Application>('[application]')!
 	}
 }
