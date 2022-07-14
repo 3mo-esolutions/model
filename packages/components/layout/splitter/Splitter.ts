@@ -82,10 +82,8 @@ export class Splitter extends Component {
 	}
 
 	private getItemTemplate(item: SplitterItem, index: number) {
-		const lastIndex = index === this.items.length - 1
-
 		const styles = {
-			'flex': lastIndex || item.size === undefined ? '1' : undefined,
+			'flex': index === this.items.length - 1 || item.size === undefined ? '1' : undefined,
 			...(this.direction === 'horizontal' || this.direction === 'horizontal-reversed' ? {
 				'width': item.size,
 				'min-width': item.min,
@@ -98,13 +96,15 @@ export class Splitter extends Component {
 		}
 		return html`
 			<slot name='${Splitter.itemSlotPrefix}${index}' style=${styleMap(styles)}></slot>
-			${lastIndex ? nothing : this.resizerHostTemplate}
+			${this.getResizerHostTemplate(item, index)}
 		`
 	}
 
-	private get resizerHostTemplate() {
-		return html`
-			<mo-splitter-resizer-host direction=${this.direction}
+	private getResizerHostTemplate(item: SplitterItem, index: number) {
+		return index === this.items.length - 1 ? nothing : html`
+			<mo-splitter-resizer-host part='resizer-host'
+				?locked=${item.locked}
+				direction=${this.direction}
 				@resizeStart=${() => this.resizing = true}
 				@resizeStop=${() => this.resizing = false}
 			>

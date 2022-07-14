@@ -12,6 +12,7 @@ export class SplitterResizerHost extends Component {
 
 	@property({ reflect: true, updated(this: SplitterResizerHost) { !this.resizerElement ? void 0 : this.resizerElement.hostDirection = this.direction } }) direction?: CSSDirection
 	@property({ type: Boolean, reflect: true }) resizing = false
+	@property({ type: Boolean, reflect: true }) locked = false
 
 	@query('slot') private readonly slotElement!: HTMLSlotElement
 
@@ -54,6 +55,11 @@ export class SplitterResizerHost extends Component {
 				-webkit-user-select: none;
 				-moz-user-select: none;
 				transition: var(--mo-duration-quick);
+			}
+
+			:host([locked]) {
+				pointer-events: none;
+				visibility: collapse;
 			}
 
 			:host([direction=horizontal]), :host([direction=horizontal-reversed]) {

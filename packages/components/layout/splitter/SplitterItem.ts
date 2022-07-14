@@ -6,6 +6,7 @@ export class SplitterItem extends Component {
 	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) size?: string
 	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) min = '50px'
 	@property({ updated(this: SplitterItem) { this.splitter.requestUpdate() } }) max?: string
+	@property({ type: Boolean, updated(this: SplitterItem) { this.splitter.requestUpdate() } }) locked = false
 
 	private get splitter() {
 		return this.parentElement as Splitter
