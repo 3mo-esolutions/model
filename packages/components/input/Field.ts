@@ -361,15 +361,15 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	checkValidity() {
-		return this.inputElement?.checkValidity() ?? true
+		return Promise.resolve(this.inputElement?.checkValidity() ?? true)
 	}
 
 	reportValidity() {
 		this.inputElement.reportValidity()
 	}
 
-	private validate() {
-		const valid = this.checkValidity()
+	protected async validate() {
+		const valid = await this.checkValidity()
 		this.switchAttribute('invalid', valid === false)
 	}
 }
