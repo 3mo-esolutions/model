@@ -80,6 +80,7 @@ export const styles = css`
 		--mo-thickness-xl: 14px;
 		--mo-thickness-xxl: 18px;
 		/* Colors */
+		--mo-color-error: rgb(var(--mo-color-error-base)) !important;
 		--mo-color-on-surface: rgba(var(--mo-color-foreground-base), 0.87) !important;
 		--mo-color-gray: rgb(var(--mo-color-gray-base)) !important;
 		--mo-color-gray-transparent: rgba(var(--mo-color-gray-base), 0.5) !important;
@@ -115,6 +116,7 @@ export const styles = css`
 	}
 
 	[application][theme=light] {
+		color-scheme: light;
 		--mo-color-background-base: 255, 255, 255;
 		--mo-color-foreground-base: 0, 0, 0;
 		--mo-color-background: rgb(220, 221, 225) !important;
@@ -123,7 +125,7 @@ export const styles = css`
 		--mo-color-surface: rgb(255, 255, 255) !important;
 		--mo-color-gray-base: 121, 121, 121;
 		--mo-shadow-base: 95, 81, 78;
-		--mo-color-error: rgb(176, 0, 32);
+		--mo-color-error-base: 176, 0, 32;
 		--mo-hover-background: rgba(0, 0, 0, .05);
 		--mo-field-background: rgba(var(--mo-color-foreground-base), 0.09);
 		--mo-field-menu-background: var(--mo-color-surface);
@@ -132,6 +134,7 @@ export const styles = css`
 	}
 
 	[application][theme=dark] {
+		color-scheme: dark;
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;
 		--mo-color-background: rgb(16, 17, 20) !important;
@@ -140,7 +143,7 @@ export const styles = css`
 		--mo-color-foreground-transparent: rgb(220, 220, 220) !important;
 		--mo-color-gray-base: 165, 165, 165;
 		--mo-shadow-base: 0, 1, 3;
-		--mo-color-error: rgb(255, 61, 96);
+		--mo-color-error-base: 255, 61, 96;
 		--mo-hover-background: rgba(255, 255, 255, .05);
 		--mo-field-background: rgba(var(--mo-color-background-base), 0.5);
 		--mo-field-menu-background: var(--mo-color-background);
