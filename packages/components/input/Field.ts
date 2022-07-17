@@ -115,13 +115,13 @@ export abstract class Field<T> extends Input<T> {
 	override get value() { return super.value }
 	override set value(value) {
 		super.value = value
-		Promise.delegateToEventLoop(() => this.checkValidity())
+		Promise.delegateToEventLoop(() => this.validate())
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.registerInputElementEvents()
-		Promise.delegateToEventLoop(() => this.checkValidity())
+		Promise.delegateToEventLoop(() => this.validate())
 	}
 
 	protected registerInputElementEvents() {
@@ -132,7 +132,7 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected handleInput() {
-		this.checkValidity()
+		this.validate()
 		this.input.dispatch(this.toValue(this.inputElement.value))
 		this.requestUpdate()
 	}
@@ -325,7 +325,7 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected handleFocus() {
-		this.checkValidity()
+		this.validate()
 		this.active = true
 		if (this.selectOnFocus) {
 			this.select()
@@ -336,16 +336,40 @@ export abstract class Field<T> extends Input<T> {
 		this.active = false
 	}
 
-	override blur = () => this.inputElement.blur()
-	override focus = () => this.inputElement.focus()
-	select = () => this.inputElement.select()
-	setSelectionRange = (...args: Parameters<typeof HTMLInputElement.prototype.setSelectionRange>) => this.inputElement.setSelectionRange(...args)
-	setRangeText = (...args: Parameters<typeof HTMLInputElement.prototype.setRangeText>) => this.inputElement.setRangeText(...args)
-	setCustomValidity = (...args: Parameters<typeof HTMLInputElement.prototype.setCustomValidity>) => this.inputElement.setCustomValidity(...args)
-	checkValidity = () => {
-		const isValid = this.inputElement?.checkValidity() ?? true
-		this.switchAttribute('invalid', isValid === false)
-		return isValid
+	override blur() {
+		this.inputElement.blur()
 	}
-	reportValidity = () => this.inputElement.reportValidity()
+
+	override focus() {
+		this.inputElement.focus()
+	}
+
+	select() {
+		this.inputElement.select()
+	}
+
+	setSelectionRange(...args: Parameters<typeof HTMLInputElement.prototype.setSelectionRange>) {
+		this.inputElement.setSelectionRange(...args)
+	}
+
+	setRangeText(...args: Parameters<typeof HTMLInputElement.prototype.setRangeText>) {
+		this.inputElement.setRangeText(...args)
+	}
+
+	setCustomValidity(...args: Parameters<typeof HTMLInputElement.prototype.setCustomValidity>) {
+		this.inputElement.setCustomValidity(...args)
+	}
+
+	checkValidity() {
+		return this.inputElement?.checkValidity() ?? true
+	}
+
+	reportValidity() {
+		this.inputElement.reportValidity()
+	}
+
+	private validate() {
+		const valid = this.checkValidity()
+		this.switchAttribute('invalid', valid === false)
+	}
 }
