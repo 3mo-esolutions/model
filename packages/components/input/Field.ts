@@ -1,4 +1,4 @@
-import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '../../library'
 import { SlotController } from '../../utilities'
 import { Input } from './Input'
 
@@ -105,6 +105,8 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) dense = false
 	@property({ type: Boolean, reflect: true }) active = false
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
+
+	@state({ updated(this: Field<T>, value: boolean) { this.switchAttribute('invalid', value) } }) protected invalid = false
 
 	@query('div[part="container"]') protected readonly divContainer!: HTMLDivElement
 
@@ -369,7 +371,6 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected async validate() {
-		const valid = await this.checkValidity()
-		this.switchAttribute('invalid', valid === false)
+		this.invalid = !(await this.checkValidity())
 	}
 }
