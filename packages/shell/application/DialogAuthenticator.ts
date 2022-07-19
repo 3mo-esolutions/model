@@ -63,29 +63,39 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	}
 
 	override async confirm(...args: Parameters<DialogComponent['confirm']>) {
+		const defaultToSuper = async () => {
+			await super.confirm(...args)
+			this.requestApplicationUpdate()
+		}
+
 		if (this.preventNextAutomaticAuthentication === true) {
 			this.preventNextAutomaticAuthentication = false
-			return super.confirm(...args)
+			return defaultToSuper()
 		}
 
 		const isAuthenticated = await this.isAuthenticated()
 
 		if (isAuthenticated) {
-			return Promise.resolve()
+			return
 		}
 
 		const shouldHaveRemembered = DialogAuthenticator.shallRemember.value
 
-		if (shouldHaveRemembered) {
-			try {
-				await this.authenticate()
-				return Promise.resolve()
-			} catch (error) {
-				return super.confirm()
-			}
+		if (!shouldHaveRemembered) {
+			return defaultToSuper()
 		}
 
-		return super.confirm()
+		try {
+			await this.authenticate()
+			return this.requestApplicationUpdate()
+		} catch (error) {
+			return defaultToSuper()
+		}
+	}
+
+	private requestApplicationUpdate() {
+		MoDeL.application.requestUpdate()
+		MoDeL.application.pageHost.currentPage?.requestUpdate()
 	}
 
 	static override get styles() {
