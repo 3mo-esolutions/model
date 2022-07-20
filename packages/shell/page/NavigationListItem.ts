@@ -20,10 +20,9 @@ export class NavigationListItem extends ListItem {
 	private readonly handlePageHostNavigation = () => {
 		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
 		const pageHost = this.pageHostGetter()
-		const isSelected = pageOrDialog instanceof PageComponent
-			? pageHost.currentPage ? Router.arePagesEqual(pageOrDialog, pageHost.currentPage) : false
-			: pageOrDialog.constructor as unknown as Constructor<NavigatableComponent> === this.componentConstructor?.[0]
-		this.selected = isSelected
+		this.selected = pageOrDialog instanceof PageComponent
+			&& !!pageHost.currentPage
+			&& Router.arePagesEqual(pageOrDialog, pageHost.currentPage, this.matchMode)
 	}
 
 	private componentConstructor?: [component: Constructor<NavigatableComponent>, parameters: Record<string, string | number | undefined>]
