@@ -7,17 +7,17 @@ type NavigatableComponent = PageComponent<any> | DialogComponent<any, any>
 
 @component('mo-navigation-list-item')
 export class NavigationListItem extends ListItem {
-	@property() matchMode = RouteMatchMode.All
+	@property() matchMode = RouteMatchMode.IgnoreParameters
 
 	@property({
 		type: Object,
 		updated(this: NavigationListItem, value: () => PageHost, oldValue?: () => PageHost) {
-			oldValue?.().navigate.unsubscribe(this.handlePageHostNavigation)
-			value().navigate.subscribe(this.handlePageHostNavigation)
+			oldValue?.().navigate.unsubscribe(this.updateSelected)
+			value().navigate.subscribe(this.updateSelected)
 		}
 	}) pageHostGetter = () => MoDeL.application.pageHost
 
-	private readonly handlePageHostNavigation = () => {
+	private readonly updateSelected = () => {
 		const pageOrDialog = this.componentConstructor?.[0] ? new this.componentConstructor[0](this.componentConstructor[1]) : undefined!
 		const pageHost = this.pageHostGetter()
 		this.selected = pageOrDialog instanceof PageComponent
