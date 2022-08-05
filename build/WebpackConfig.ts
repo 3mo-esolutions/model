@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const Global = require('glob')
-const Path = require('path')
 
 const sharedConfigs = {
 	stats: 'minimal',
