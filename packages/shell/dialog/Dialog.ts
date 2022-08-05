@@ -1,5 +1,5 @@
 import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, eventListener, state } from '../../library'
-import { NotificationHost } from '..'
+import { DialogCancelledError, NotificationHost } from '..'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
@@ -313,7 +313,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 			}
 		}
 
-		const cancellationAction = async () => this.close(this.cancellationAction ? await this.cancellationAction() : new Error('Dialog cancelled'))
+		const cancellationAction = async () => this.close(this.cancellationAction ? await this.cancellationAction() : new DialogCancelledError())
 
 		switch (actionKey) {
 			case 'primary':
