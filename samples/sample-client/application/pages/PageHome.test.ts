@@ -7,7 +7,7 @@ describe('PageHome', () => {
 	afterEach(() => page.remove())
 
 	it('should have been passed the default value of "sample-counter" on initialization', () => {
-		const counterElement = page.shadowRoot.querySelector('sample-counter')
+		const counterElement = page.renderRoot.querySelector('sample-counter')
 
 		expect(counterElement?.count).toBe(1)
 	})
@@ -16,7 +16,7 @@ describe('PageHome', () => {
 		const count = 11
 		spyOn(NotificationHost.instance, 'notify')
 
-		page.shadowRoot.querySelector('sample-counter')?.countChange.dispatch(count)
+		page.renderRoot.querySelector('sample-counter')?.countChange.dispatch(count)
 
 		expect(NotificationHost.instance.notifyInfo).toHaveBeenCalledWith(`countChange event intercepted with the value: ${count}`)
 	})

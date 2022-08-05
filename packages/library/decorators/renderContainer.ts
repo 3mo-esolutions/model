@@ -30,7 +30,7 @@ function renderAllTemplates(this: LitElement, customRenders: Map<string, Propert
 
 	for (const [containerQuery, descriptor] of customRenders) {
 		const template = extractTemplate(descriptor)
-		const container = this.shadowRoot?.querySelector<HTMLElement>(containerQuery)
+		const container = this.renderRoot.querySelector<HTMLElement>(containerQuery)
 		if (container) {
 			render(template, container)
 		}

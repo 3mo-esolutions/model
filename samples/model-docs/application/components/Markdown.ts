@@ -170,13 +170,13 @@ export class Markdown extends Component {
 	private _value = ''
 	get value() { return this._value }
 	set value(value) {
-		this.shadowRoot.innerHTML += Marked.parse(value)
+		this.renderRoot.innerHTML += Marked.parse(value)
 
-		const pageTitle = this.shadowRoot.querySelector('h1')?.textContent ?? ''
+		const pageTitle = this.renderRoot.querySelector('h1')?.textContent ?? ''
 		TopAppBar.title = pageTitle
 		document.title = `3MO MoDeL | ${pageTitle}`
 
-		this.shadowRoot.querySelectorAll('blockquote').forEach(quote => {
+		this.renderRoot.querySelectorAll('blockquote').forEach(quote => {
 			if (quote.firstElementChild) {
 				// @ts-expect-error first character of the text is always one of the quoteMapper keys
 				quote.className = Markdown.quoteMap[quote.firstElementChild.innerHTML.charAt(0)]
@@ -184,7 +184,7 @@ export class Markdown extends Component {
 			}
 		})
 
-		this.shadowRoot.querySelectorAll('pre').forEach(pre => {
+		this.renderRoot.querySelectorAll('pre').forEach(pre => {
 			const codeElement = pre.querySelector('code') as HTMLElement
 			codeElement.style.display = 'none'
 			const languageInline = codeElement.className.split('lang-')[1]

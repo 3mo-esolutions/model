@@ -6,7 +6,7 @@ import { nonInertable } from '..'
 @component('mo-context-menu-host')
 @nonInertable()
 export class ContextMenuHost extends Component {
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
+	static get instance() { return MoDeL.application.renderRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get openMenu() { return this.instance.openMenu }
 	static get openMenuOnElement() { return this.instance.openMenuOnElement }
 	static get closeMenu() { return this.instance.closeMenu }
@@ -56,7 +56,7 @@ export class ContextMenuHost extends Component {
 	}
 
 	get list() {
-		return this.contextMenu.shadowRoot?.querySelector('mwc-menu-surface')?.shadowRoot?.querySelector('div') ?? undefined
+		return this.contextMenu.renderRoot.querySelector('mwc-menu-surface')?.renderRoot.querySelector('div') ?? undefined
 	}
 
 	static override get styles() {

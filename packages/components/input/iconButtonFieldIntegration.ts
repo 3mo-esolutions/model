@@ -15,12 +15,12 @@ export const iconButtonFieldIntegration = {
 	`,
 	async slotChangedHandler<T>(this: Field<T>) {
 		await this.updateComplete
-		const elements = [...this.shadowRoot.querySelectorAll('*')]
-		const leadingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=leading]'))
-		const trailingSlotIndex = elements.findIndex(e => e === this.shadowRoot.querySelector('slot[name=trailing]'))
+		const elements = [...this.renderRoot.querySelectorAll('*')]
+		const leadingSlotIndex = elements.findIndex(e => e === this.renderRoot.querySelector('slot[name=leading]'))
+		const trailingSlotIndex = elements.findIndex(e => e === this.renderRoot.querySelector('slot[name=trailing]'))
 
-		const firstIconButton = this.shadowRoot.querySelector('mo-icon-button:first-of-type')
-		const lastIconButton = this.shadowRoot.querySelector('mo-icon-button:last-of-type')
+		const firstIconButton = this.renderRoot.querySelector('mo-icon-button:first-of-type')
+		const lastIconButton = this.renderRoot.querySelector('mo-icon-button:last-of-type')
 
 		const leadingIconButtons = [
 			!firstIconButton ? undefined : elements.indexOf(firstIconButton) < leadingSlotIndex ? firstIconButton : undefined,

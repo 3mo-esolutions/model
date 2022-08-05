@@ -13,7 +13,7 @@ describe(Card.name, () => {
 			card.requestUpdate()
 			await card.updateComplete
 
-			expect(card.shadowRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
+			expect(card.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
 		})
 	}
 
@@ -24,7 +24,7 @@ describe(Card.name, () => {
 
 			await card.updateComplete
 
-			expect(card.shadowRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
+			expect(card.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
 		})
 	}
 
@@ -44,8 +44,8 @@ describe(Card.name, () => {
 				card[propertyName] = content
 				await card.updateComplete
 
-				expect(card.shadowRoot.querySelector(elementSelector)).not.toBeNull()
-				expect(card.shadowRoot.querySelector(elementSelector)?.textContent).toBe(content)
+				expect(card.renderRoot.querySelector(elementSelector)).not.toBeNull()
+				expect(card.renderRoot.querySelector(elementSelector)?.textContent).toBe(content)
 			})
 		}
 	})
@@ -60,7 +60,7 @@ describe(Card.name, () => {
 
 			await card.updateComplete
 
-			expect(card.shadowRoot.querySelector('img')?.src).toBe(card.image)
+			expect(card.renderRoot.querySelector('img')?.src).toBe(card.image)
 		})
 	})
 

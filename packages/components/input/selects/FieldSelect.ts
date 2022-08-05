@@ -1,4 +1,4 @@
-import { element, html, property, state, css, event, component, PropertyValues } from '../../../library'
+import { html, property, state, css, event, component, PropertyValues, query } from '../../../library'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
 
@@ -75,7 +75,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 	@state() private manualClose = false
 
-	@element protected readonly menuOptions?: Menu | null
+	@query('#menuOptions') protected readonly menuOptions?: Menu | null
 
 	private programmaticSelection = false
 

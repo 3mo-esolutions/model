@@ -41,13 +41,13 @@ export class TopAppBar extends ComponentMixin(MwcTopAppBar) {
 			`
 		]
 	}
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-top-app-bar') as TopAppBar }
+	static get instance() { return MoDeL.application.renderRoot.querySelector('mo-top-app-bar') as TopAppBar }
 	static set title(value: string) { this.instance.title = value }
 
 	protected override initialized() {
-		this.shadowRoot.querySelector('#navigation')?.setAttribute('part', 'navigation')
-		this.shadowRoot.querySelector('#navigation+section')?.setAttribute('part', 'header')
-		this.shadowRoot.querySelector('#actions')?.setAttribute('part', 'actions')
+		this.renderRoot.querySelector('#navigation')?.setAttribute('part', 'navigation')
+		this.renderRoot.querySelector('#navigation+section')?.setAttribute('part', 'header')
+		this.renderRoot.querySelector('#actions')?.setAttribute('part', 'actions')
 	}
 }
 

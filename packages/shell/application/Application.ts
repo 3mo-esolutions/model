@@ -2,7 +2,7 @@ import { css, html, property, Component, nothing, query, event } from '../../lib
 import { DocumentHelper, PwaHelper } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, Router, NotificationHost } from '..'
+import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost } from '..'
 
 type View = 'desktop' | 'tablet'
 

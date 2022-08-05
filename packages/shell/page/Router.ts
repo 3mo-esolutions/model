@@ -28,7 +28,7 @@ export const routeHost = (routePageConstructor: PageComponentConstructor<any>, p
 			await page.updateComplete
 		}
 		const page = pageHost.currentPage as PageComponent<any>
-		return page.shadowRoot.querySelector(pageHostQuery) as PageHost
+		return page.renderRoot.querySelector(pageHostQuery) as PageHost
 	}
 	return (pageConstructor: Constructor<PageComponent<any>> | AbstractConstructor<PageComponent<any>>) => {
 		// @ts-expect-error getHost also exists in an abstract constructor of a PageComponent

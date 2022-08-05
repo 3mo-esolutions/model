@@ -5,7 +5,7 @@ import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStr
 @component('mo-dialog-host')
 export class DialogHost extends Component {
 	get dialogComponents() {
-		return Array.from(this.shadowRoot.querySelectorAll('*'))
+		return Array.from(this.renderRoot.querySelectorAll('*'))
 			.filter((element): element is DialogComponent<any, any> => element instanceof DialogComponent)
 	}
 
@@ -39,7 +39,7 @@ export class DialogHost extends Component {
 	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 
-		this.shadowRoot.append(dialog)
+		this.renderRoot.append(dialog)
 		return new Promise<TResult>((resolve, reject) => {
 			dialog.closed.subscribe(result => {
 				if (result instanceof Error) {

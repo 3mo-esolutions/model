@@ -49,7 +49,7 @@ class ConfettiParticle {
 
 @component('mo-confetti')
 export class Confetti extends Component {
-	static get instance() { return MoDeL.application.shadowRoot.querySelector('mo-confetti') as Confetti }
+	static get instance() { return MoDeL.application.renderRoot.querySelector('mo-confetti') as Confetti }
 
 	static get rain() { return this.instance.rain }
 

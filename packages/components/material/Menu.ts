@@ -48,7 +48,7 @@ export class Menu extends ComponentMixin(MwcMenu) {
 		// Here, the internals of menu and menu surface are manipulated to prevent automatic
 		// closings of the menu. Material team is aware of this problem and the issue is filed in this link:
 		// https://github.com/material-components/material-components-web-components/issues/1353
-		const surfaceElement = this.shadowRoot.querySelector('mwc-menu-surface')
+		const surfaceElement = this.renderRoot.querySelector('mwc-menu-surface')
 		surfaceElement?.['deregisterBodyClick']()
 		const fn = this['mdcFoundation']['adapter'].closeSurface
 		const menu = this

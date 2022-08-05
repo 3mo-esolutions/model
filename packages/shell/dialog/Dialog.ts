@@ -66,11 +66,11 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	}
 
 	override get primaryButton() {
-		return this.querySelector<HTMLElement>('[slot=primaryAction]') ?? this.shadowRoot.querySelector<HTMLElement>('slot[name=primaryAction] > *')
+		return this.querySelector<HTMLElement>('[slot=primaryAction]') ?? this.renderRoot.querySelector<HTMLElement>('slot[name=primaryAction] > *')
 	}
 
 	get secondaryButton() {
-		return this.querySelector<HTMLElement>('[slot=secondaryAction]') ?? this.shadowRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > *')
+		return this.querySelector<HTMLElement>('[slot=secondaryAction]') ?? this.renderRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > *')
 	}
 
 	static override get styles() {
@@ -214,7 +214,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 		this.createFooterSlot()
 		this['contentElement'].setAttribute('part', 'content')
 		this.footerElement.setAttribute('part', 'footer')
-		this.shadowRoot.querySelector('.mdc-dialog__scrim')?.setAttribute('part', 'scrim')
+		this.renderRoot.querySelector('.mdc-dialog__scrim')?.setAttribute('part', 'scrim')
 
 		this.changeCloseBehavior()
 
@@ -233,7 +233,7 @@ export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	private decideFooterVisibility() {
 		const hideFooter = !this.primaryButton
 			&& !this.secondaryButton
-			&& this.shadowRoot.querySelector<HTMLSlotElement>('slot[name=footer]')?.assignedElements().length === 0
+			&& this.renderRoot.querySelector<HTMLSlotElement>('slot[name=footer]')?.assignedElements().length === 0
 		this.switchAttribute('hideFooter', hideFooter)
 	}
 

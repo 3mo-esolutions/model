@@ -12,13 +12,13 @@ describe('CounterButton', () => {
 		component.count = count
 		await component.updateComplete
 
-		expect(component.shadowRoot.querySelector<Flex>('mo-flex[data-test-id=count]')?.innerText).toBe('11')
+		expect(component.renderRoot.querySelector<Flex>('mo-flex[data-test-id=count]')?.innerText).toBe('11')
 	})
 
 	it('should increment "count" property when increment button in clicked', () => {
 		const count = component.count
 
-		component.shadowRoot.querySelectorAll('mo-button')[1].click()
+		component.renderRoot.querySelectorAll('mo-button')[1].click()
 
 		expect(component.count).toBe(count + 1)
 	})
@@ -27,7 +27,7 @@ describe('CounterButton', () => {
 		const count = component.count
 		spyOn(component.countChange, 'dispatch')
 
-		component.shadowRoot.querySelectorAll('mo-button')[0].click()
+		component.renderRoot.querySelectorAll('mo-button')[0].click()
 
 		expect(component.countChange.dispatch).toHaveBeenCalledWith(count - 1)
 	})
@@ -36,7 +36,7 @@ describe('CounterButton', () => {
 		const count = component.count
 		spyOn(component.countChange, 'dispatch')
 
-		component.shadowRoot.querySelectorAll('mo-button')[1].click()
+		component.renderRoot.querySelectorAll('mo-button')[1].click()
 
 		expect(component.countChange.dispatch).toHaveBeenCalledWith(count + 1)
 	})
