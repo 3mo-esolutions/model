@@ -1,24 +1,4 @@
 /* eslint-disable import/export */
-/* eslint-disable import/no-internal-modules */
-export { CSSResult, html, css, unsafeCSS, CSSResultArray, TemplateResult, HTMLTemplateResult, SVGTemplateResult, PropertyValues, ReactiveControllerHost, ReactiveElement } from 'lit'
-export { customElement as component, queryAsync } from 'lit/decorators.js'
-export * from 'lit/directive.js'
-export { render } from 'lit-html'
-export { repeat } from 'lit/directives/repeat.js'
-export { cache } from 'lit/directives/cache.js'
-export { ifDefined } from 'lit/directives/if-defined.js'
-export { until } from 'lit/directives/until.js'
-export { live } from 'lit/directives/live.js'
-export { styleMap } from 'lit/directives/style-map.js'
-export { classMap, ClassInfo } from 'lit/directives/class-map.js'
-export { choose } from 'lit/directives/choose.js'
-export { join } from 'lit/directives/join.js'
-export { asyncAppend } from 'lit/directives/async-append.js'
-export { asyncReplace } from 'lit/directives/async-replace.js'
-export { ref, Ref } from 'lit/directives/ref.js'
-export { unsafeHTML } from 'lit/directives/unsafe-html.js'
-export { unsafeSVG } from 'lit/directives/unsafe-svg.js'
-export { when } from 'lit/directives/when.js'
 export * from '@lit-labs/task'
 export * from './helpers'
 export * from './decorators'
@@ -28,7 +8,3 @@ export * from './Component'
 export { Component } from './Component'
 export * from '@a11d/lit'
 import './global'
-
-import { TemplateResult, nothing as nothingTemplate } from 'lit-html'
-const nothing = nothingTemplate as unknown as TemplateResult<1>
-export { nothing }
