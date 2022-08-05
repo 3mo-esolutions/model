@@ -90,6 +90,7 @@ export const styles = css`
 		--mo-color-transparent-gray-3: rgba(var(--mo-color-foreground-base), calc(var(--mo-color-transparent-gray-alpha) * 3)); /* 12% */
 		--mo-color-transparent-gray: var(--mo-color-transparent-gray-1);
 		/* More info: https://css-tricks.com/css-variables-calc-rgb-enforcing-high-contrast-colors/ */
+		/* TODO: Replace with @color-contrast when available: https://caniuse.com/mdn-css_types_color_color-contrast */
 		--mo-color-accessible-base-value: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
 		--mo-color-accessible-base: var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value);
 		--mo-color-accessible: rgb(var(--mo-color-accessible-base));
