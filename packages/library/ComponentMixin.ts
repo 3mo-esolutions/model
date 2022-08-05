@@ -1,14 +1,8 @@
 import { LitElement, PropertyValues } from 'lit'
 import { StyleMixin } from '.'
 
-export interface IComponent {
-	readonly shadowRoot: ShadowRoot
-}
-
-export const ComponentMixin = <T extends Constructor<LitElement>>(Constructor: T) => {
+export const ComponentMixin = <T extends AbstractConstructor<LitElement>>(Constructor: T) => {
 	class ComponentMixinConstructor extends StyleMixin(Constructor) {
-		override readonly shadowRoot!: ShadowRoot
-
 		/** Invoked after first update i.e. render is completed */
 		protected initialized() { }
 

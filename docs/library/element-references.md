@@ -1,6 +1,6 @@
 # Reference DOM-Elements of a Component Template
 
-To save a reference to an element existing in the template through its **ID** use one of the `@query()`, `@queryAll()` or `@element` decorators which create getter properties in the component which point to those elements.
+To save a reference to an element existing in the template through its **ID** use one of the `@query()`, `@queryAll()` decorators which create getter properties in the component which point to those elements.
 
 > ✔ As the whole library is written in TypeScript use the correct types of element references.
 
@@ -9,12 +9,10 @@ To save a reference to an element existing in the template through its **ID** us
 ```typescript
 	import { Component, component, html, element, query, queryAll, Button, FieldSelect, Option } from '@3mo/model'
 
-
 	@component('app-page-name')
 	export class PageName extends Component {
 		@query('mo-field-select') private readonly fieldSelectElement!: FieldSelect<string>
 		@queryAll('mo-option') private readonly optionElements!: Array<Option<string>>
-		@element private readonly theButtonElement!: Button
 
 		protected override get template() {
 			return html`
@@ -25,7 +23,7 @@ To save a reference to an element existing in the template through its **ID** us
 						<mo-option value='c'>C</mo-option>
 					</mo-field-select>
 
-					<mo-button id='theButton'>Element with Id</mo-button>
+					<mo-button>Element with Id</mo-button>
 				</mo-page>
 			`
 		}

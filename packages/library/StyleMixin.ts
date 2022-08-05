@@ -5,7 +5,7 @@ import { property } from 'lit/decorators.js'
 import * as CSS from 'csstype'
 import { CssHelper } from '../..'
 
-export const StyleMixin = <T extends Constructor<HTMLElement>>(Constructor: T) => {
+export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Constructor: T) => {
 	abstract class StyleMixinConstructor extends Constructor {
 		@property()
 		get display() { return this.style.display as CSS.Property.Display }

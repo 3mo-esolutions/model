@@ -24,6 +24,7 @@
 		"test:ci": "npm run build && npm run test"
 	},
 	"dependencies": {
+		"@a11d/lit": "*",
 		"@lit-labs/task": "1.*",
 		"@lit-labs/virtualizer": "0.7.0-pre.3",
 		"@material/mwc-button": "0.25.*",
@@ -49,13 +50,13 @@
 		"@material/mwc-tab-bar": "0.25.*",
 		"@material/mwc-textarea": "0.25.*",
 		"@material/mwc-top-app-bar": "0.25.*",
+		"@types/jasmine": "*",
+		"@types/route-parser": "*",
+		"bowser": "*",
 		"csstype": "*",
 		"lit": "2.*",
 		"route-parser": "*",
-		"temporal-polyfill": "*",
-		"bowser": "*",
-		"@types/jasmine": "*",
-		"@types/route-parser": "*"
+		"temporal-polyfill": "*"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "*",
@@ -72,7 +73,7 @@
 		"karma-helpful-reporter": "*",
 		"karma-jasmine": "*",
 		"karma-parallel": "*",
-		"lit-analyzer": "*",
+		"lit-analyzer": "2.0.0-pre.2",
 		"terser-webpack-plugin": "*",
 		"ts-lit-plugin": "*",
 		"ts-loader": "*",

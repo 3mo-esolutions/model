@@ -109,7 +109,7 @@
 			}
 		],
 		"@typescript-eslint/naming-convention": [
-			"error",
+			"off",
 			{
 				"selector": [
 					"variable",

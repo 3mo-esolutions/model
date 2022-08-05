@@ -1,5 +1,5 @@
-import { LitElement } from 'lit'
-import { nothing, ComponentMixin } from '.'
+import { LitElement, Component as ComponentBase } from '@a11d/lit'
+import { StyleMixin } from '.'
 
 LitElement.enabledWarnings = []
 
@@ -8,12 +8,4 @@ LitElement.enabledWarnings = []
 // The following line would be then be `export abstract class Component extends ComponentMixin(LitElement)`
 // and the class won't need any implementation.
 
-export abstract class Component extends ComponentMixin(LitElement) {
-	protected get template() {
-		return nothing
-	}
-
-	protected override render() {
-		return this.template
-	}
-}
+export abstract class Component extends StyleMixin(ComponentBase) { }

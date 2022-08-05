@@ -33,24 +33,20 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	get primaryButton() {
-		return this.dialogElement?.primaryButton
+		return this.dialogElement.primaryButton
 	}
 
 	get secondaryButton() {
-		return this.dialogElement?.secondaryButton
+		return this.dialogElement.secondaryButton
 	}
 
 	protected close(result: TResult | Error) {
-		this.dialogElement?.close(result)
+		this.dialogElement.close(result)
 		this.open = false
 	}
 
-	private get open() { return this.dialogElement?.open ?? false }
-	private set open(value) {
-		if (this.dialogElement) {
-			this.dialogElement.open = value
-		}
-	}
+	private get open() { return this.dialogElement.open }
+	private set open(value) { this.dialogElement.open = value }
 
 	protected override firstUpdated(props: PropertyValues) {
 		if (this.dialogElement === undefined) {

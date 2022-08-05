@@ -1,7 +1,7 @@
 import { LocalizationHelper, Temporal } from '.'
 
 export class MoDate extends Date {
-	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/
 
 	static get weekStartDay() {
 		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
