@@ -36,5 +36,5 @@ export const enum HttpErrorCode {
 	InsufficientStorage = 507,
 	LoopDetected = 508,
 	NotExtended = 510,
-	NetworkAuthenticationRequired = 0x1FF
+	NetworkAuthenticationRequired = 511,
 }

@@ -40,7 +40,7 @@ export class PageHost extends Component {
 		MoDeL.application.closeDrawerIfDismissible()
 		this.currentPage = page
 		Router.setPathByPage(page)
-		this.navigate.dispatch(this.currentPage)
+		this.navigate.dispatch(page)
 		page.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}
 

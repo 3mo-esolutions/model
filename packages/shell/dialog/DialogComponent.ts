@@ -11,7 +11,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	@event() readonly closed!: EventDispatcher<TResult | Error>
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@query('mo-dialog') readonly dialogElement?: Dialog<TResult>
+	@query('mo-dialog') readonly dialogElement!: Dialog<TResult>
 
 	constructor(readonly parameters: T) {
 		super()

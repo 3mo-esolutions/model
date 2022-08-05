@@ -15,12 +15,12 @@ describe(DialogAcknowledge.name, () => {
 	}
 
 	it('should have used parameters to customize dialog', () => {
-		expect(dialog.dialogElement?.heading).toBe(parameters.heading)
-		expect(dialog.dialogElement?.innerText).toBe(parameters.content as string)
-		expect(dialog.dialogElement?.primaryButtonText).toBe(parameters.primaryButtonText)
-		expect(dialog.dialogElement?.blocking).toBe(parameters.blocking)
-		expect(dialog.dialogElement?.size).toBe(parameters.size)
-		expect(dialog.dialogElement?.secondaryButtonText).toBe(parameters.secondaryButtonText)
+		expect(dialog.dialogElement.heading).toBe(parameters.heading)
+		expect(dialog.dialogElement.innerText).toBe(parameters.content as string)
+		expect(dialog.dialogElement.primaryButtonText).toBe(parameters.primaryButtonText!)
+		expect(dialog.dialogElement.blocking).toBe(parameters.blocking!)
+		expect(dialog.dialogElement.size).toBe(parameters.size!)
+		expect(dialog.dialogElement.secondaryButtonText).toBe(parameters.secondaryButtonText)
 	})
 
 	it('should return "true" if primary button is clicked', async () => {

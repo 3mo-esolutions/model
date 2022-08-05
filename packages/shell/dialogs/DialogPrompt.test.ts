@@ -12,10 +12,10 @@ describe(DialogPrompt.name, () => {
 		blocking: true,
 		size: 'large',
 		value: 'Initial value',
-	}
+	} as const
 
 	it('should set "primaryOnEnter" dialog property to true', () => {
-		expect(dialog.dialogElement?.primaryOnEnter).toBe(true)
+		expect(dialog.dialogElement.primaryOnEnter).toBe(true)
 	})
 
 	it('should not have secondary button', () => {
@@ -23,11 +23,11 @@ describe(DialogPrompt.name, () => {
 	})
 
 	it('should have used parameters to customize dialog', () => {
-		expect(dialog.dialogElement?.heading).toBe(parameters.heading)
-		expect(dialog.dialogElement?.innerText).toBe(parameters.content as string)
-		expect(dialog.dialogElement?.primaryButtonText).toBe(parameters.primaryButtonText)
-		expect(dialog.dialogElement?.blocking).toBe(parameters.blocking)
-		expect(dialog.dialogElement?.size).toBe(parameters.size)
+		expect(dialog.dialogElement.heading).toBe(parameters.heading)
+		expect(dialog.dialogElement.innerText).toBe(parameters.content as string)
+		expect(dialog.dialogElement.primaryButtonText).toBe(parameters.primaryButtonText!)
+		expect(dialog.dialogElement.blocking).toBe(parameters.blocking!)
+		expect(dialog.dialogElement.size).toBe(parameters.size!)
 	})
 
 	const parametersVariations: Array<DialogPrompt['parameters']> = [
