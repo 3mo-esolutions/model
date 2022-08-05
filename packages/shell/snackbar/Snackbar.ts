@@ -134,8 +134,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	}
 
 	protected override initialized() {
-		const snackbarElement = this.shadowRoot.querySelector('.mdc-snackbar')
-		const surfaceElement = this.shadowRoot.querySelector('.mdc-snackbar__surface')
+		const surfaceElement = this.renderRoot.querySelector('.mdc-snackbar__surface')
 
 		window.setInterval(() => this.requestUpdate(), 100)
 
@@ -145,7 +144,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 
 		const progressBarDiv = document.createElement('div')
 		progressBarDiv.id = 'progress'
-		snackbarElement?.append(progressBarDiv)
+		surfaceElement?.append(progressBarDiv)
 	}
 
 	override async show() {
