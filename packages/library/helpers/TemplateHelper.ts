@@ -1,27 +1,23 @@
-import { TemplateResult, render } from 'lit-html'
+import { TemplateResult, render } from 'lit'
 
 export class TemplateHelper {
+	private static readonly div = document.createElement('div')
+
 	static extractHTML(template: TemplateResult) {
-		const div = document.createElement('div')
-		render(template, div)
-		const html = div.innerHTML
-		div.remove()
-		return html
+		return this.renderAndExtract(template, div => div.innerHTML)
 	}
 
 	static extractBySelector<K extends keyof HTMLElementTagNameMap>(template: TemplateResult, querySelector: K) {
-		const div = document.createElement('div')
-		render(template, div)
-		const result = div.querySelector(querySelector)
-		div.remove()
-		return result as HTMLElementTagNameMap[K]
+		return this.renderAndExtract(template, div => div.querySelector(querySelector)!)
 	}
 
 	static extractAllBySelector<K extends keyof HTMLElementTagNameMap>(template: TemplateResult, querySelector: K) {
-		const div = document.createElement('div')
-		render(template, div)
-		const result = Array.from(div.querySelectorAll(querySelector))
-		div.remove()
-		return result as Array<HTMLElementTagNameMap[K]>
+		return this.renderAndExtract(template, div => [...div.querySelectorAll(querySelector)])
+	}
+
+	private static renderAndExtract<T>(template: TemplateResult, extractor: (div: HTMLElement) => T) {
+		this.div.innerHTML = ''
+		render(template, this.div)
+		return extractor(this.div)
 	}
 }
