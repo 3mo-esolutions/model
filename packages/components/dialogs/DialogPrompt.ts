@@ -1,6 +1,6 @@
 import { state, component, html, ifDefined, query } from '../../library'
-import { FieldText, FieldTextArea } from '../../components'
-import { DialogComponent } from '..'
+import { FieldText, FieldTextArea } from '..'
+import { DialogComponent } from '../../shell'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
 type Parameters = BaseDialogParameters & {
@@ -48,5 +48,5 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 		`
 	}
 
-	protected override primaryButtonAction = () => this.value
+	protected override primaryAction = () => this.value
 }

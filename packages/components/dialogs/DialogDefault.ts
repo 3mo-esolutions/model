@@ -1,11 +1,11 @@
 import { component, html, ifDefined } from '../../library'
-import { DialogComponent } from '..'
+import { DialogComponent } from '../../shell'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
 type Parameters<TResult> = BaseDialogParameters & { readonly secondaryButtonText?: string } & {
-	readonly primaryButtonAction?: () => TResult | PromiseLike<TResult>
+	readonly primaryAction?: () => TResult | PromiseLike<TResult>
 	readonly secondaryButtonText?: string
-	readonly secondaryButtonAction?: () => TResult | PromiseLike<TResult>
+	readonly secondaryAction?: () => TResult | PromiseLike<TResult>
 }
 
 @component('mo-dialog-default')
@@ -25,10 +25,11 @@ export class DialogDefault<TResult = void> extends DialogComponent<Parameters<TR
 		`
 	}
 
-	protected override primaryButtonAction() {
-		return this.parameters.primaryButtonAction ? this.parameters.primaryButtonAction() : super.primaryButtonAction()
+	protected override primaryAction() {
+		return this.parameters.primaryAction ? this.parameters.primaryAction() : super.primaryAction()
 	}
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	protected override secondaryButtonAction = this.parameters.secondaryButtonAction?.bind(this)
+	protected override secondaryAction() {
+		return this.parameters.secondaryAction ? this.parameters.secondaryAction() : super.secondaryAction()
+	}
 }

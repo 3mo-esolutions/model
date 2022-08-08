@@ -11,9 +11,9 @@ describe(DialogDefault.name, () => {
 		blocking: true,
 		size: 'medium',
 		primaryButtonText: 'Primary Button',
-		primaryButtonAction: jasmine.createSpy('primaryButtonAction').and.returnValue('Primary Button Clicked!'),
+		primaryAction: jasmine.createSpy('primaryAction').and.returnValue('Primary Button Clicked!'),
 		secondaryButtonText: 'Secondary Button',
-		secondaryButtonAction: jasmine.createSpy('secondaryButtonAction').and.returnValue('Secondary Button Clicked!'),
+		secondaryAction: jasmine.createSpy('secondaryAction').and.returnValue('Secondary Button Clicked!'),
 	}
 
 	it('should set "primaryOnEnter" dialog property to true', () => {
@@ -29,17 +29,17 @@ describe(DialogDefault.name, () => {
 		expect(dialog.dialogElement.size).toBe(parameters.size!)
 	})
 
-	it('should call "primaryButtonAction" parameter and return its value when the primary button is clicked', async () => {
+	it('should call "primaryAction" parameter and return its value when the primary button is clicked', async () => {
 		const confirmationPromise = dialog.confirm()
 		dialog.primaryButton?.click()
-		expect(parameters.primaryButtonAction).toHaveBeenCalledOnceWith()
+		expect(parameters.primaryAction).toHaveBeenCalledOnceWith()
 		await expectAsync(confirmationPromise).toBeResolvedTo('Primary Button Clicked!')
 	})
 
-	it('should call "secondaryButtonAction" parameter and return its value when the secondary button is clicked', async () => {
+	it('should call "secondaryAction" parameter and return its value when the secondary button is clicked', async () => {
 		const confirmationPromise = dialog.confirm()
 		dialog.secondaryButton?.click()
-		expect(parameters.secondaryButtonAction).toHaveBeenCalledOnceWith()
+		expect(parameters.secondaryAction).toHaveBeenCalledOnceWith()
 		await expectAsync(confirmationPromise).toBeResolvedTo('Secondary Button Clicked!')
 	})
 })

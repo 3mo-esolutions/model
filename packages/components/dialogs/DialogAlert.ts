@@ -1,17 +1,14 @@
 import { component, html, ifDefined } from '../../library'
-import { DialogComponent } from '..'
+import { DialogComponent } from '../../shell'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
-type Parameters = BaseDialogParameters & { readonly secondaryButtonText?: string }
-
-@component('mo-dialog-acknowledge')
-export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
+@component('mo-dialog-alert')
+export class DialogAlert extends DialogComponent<BaseDialogParameters> {
 	protected override get template() {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
 				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
-				secondaryButtonText=${this.parameters.secondaryButtonText ?? 'Abbrechen'}
 				?blocking=${this.parameters.blocking}
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
@@ -21,7 +18,5 @@ export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 		`
 	}
 
-	protected override primaryButtonAction = () => true
-
-	protected override secondaryButtonAction = () => false
+	protected override primaryAction() { }
 }
