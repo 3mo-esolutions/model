@@ -1,8 +1,6 @@
 import { TemplateResult, render } from 'lit'
 
 export class TemplateHelper {
-	private static div?: HTMLDivElement
-
 	static extractHTML(template: TemplateResult) {
 		return this.renderAndExtract(template, div => div.innerHTML)
 	}
@@ -16,8 +14,8 @@ export class TemplateHelper {
 	}
 
 	private static renderAndExtract<T>(template: TemplateResult, extractor: (div: HTMLElement) => T) {
-		this.div = document.createElement('div')
-		render(template, this.div)
-		return extractor(this.div)
+		const div = document.createElement('div')
+		render(template, div)
+		return extractor(div)
 	}
 }

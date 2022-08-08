@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from '../../library'
-import { DocumentHelper, LocalStorageEntry, Color } from '../../utilities'
+import { LocalStorageEntry, Color, RootCssInjector } from '../../utilities'
 import { Background } from '.'
 
 export class ThemeHelper {
@@ -37,7 +37,7 @@ export class ThemeHelper {
 		}
 
 		injectCss() {
-			this.styleElement = DocumentHelper.injectCSS(css`
+			this.styleElement = RootCssInjector.inject(css`
 				[application] {
 					--mo-accent-base-r:${unsafeCSS(this.value.baseColor[0])};
 					--mo-accent-base-g:${unsafeCSS(this.value.baseColor[1])};

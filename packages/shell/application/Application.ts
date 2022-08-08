@@ -1,5 +1,5 @@
 import { css, html, property, Component, nothing, query, event } from '../../library'
-import { DocumentHelper, PwaHelper } from '../../utilities'
+import { PwaHelper, RootCssInjectorController } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
 import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost } from '..'
@@ -11,6 +11,10 @@ export const application = () => <T extends Application>(ApplicationConstructor:
 }
 
 export abstract class Application extends Component {
+	static get rootStyles() {
+		return css`${styles}`
+	}
+
 	@event() readonly viewChange!: EventDispatcher<View>
 
 	@property({ updated: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
@@ -24,12 +28,13 @@ export abstract class Application extends Component {
 	@query('mo-notification-host') readonly notificationHost!: NotificationHost
 	@query('mo-drawer') readonly drawer!: Drawer
 
+	protected readonly rootCssInjector = new RootCssInjectorController(this, Application.rootStyles)
+
 	constructor() {
 		super()
 		this.switchAttribute('application', true)
 		this.setupViews()
-		DocumentHelper.injectCSS(styles)
-		DocumentHelper.disableDefaultContextMenu()
+		document.body.oncontextmenu = () => false
 		PwaHelper.registerServiceWorker()
 	}
 
