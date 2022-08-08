@@ -1,4 +1,5 @@
 import { component, html, css, property, Component, event } from '../../library'
+import { PageComponent } from './PageComponent'
 
 /**
  * @slot
@@ -6,6 +7,7 @@ import { component, html, css, property, Component, event } from '../../library'
  * @slot pageHeadingDetails
  */
 @component('mo-page')
+@PageComponent.pageElement()
 export class Page extends Component {
 	@event() readonly headingChange!: EventDispatcher<string>
 

@@ -1,6 +1,7 @@
-import { PropertyValues, Component, event, query } from '../../library'
+import { PropertyValues, Component, event } from '../../library'
 import { Page } from './Page'
 import type { PageHost } from './PageHost'
+import { querySymbolizedElement } from '../../utilities'
 
 export type PageParameters = void | Record<string, string | number | undefined>
 
@@ -11,13 +12,21 @@ export interface PageComponentConstructor<T extends PageParameters> extends Cons
 }
 
 export abstract class PageComponent<T extends PageParameters = void> extends Component {
+	private static readonly pageElementConstructorSymbol = Symbol('PageComponent.PageElementConstructor')
+
+	static pageElement() {
+		return (constructor: Constructor<Page>) => {
+			(constructor as any)[PageComponent.pageElementConstructorSymbol] = true
+		}
+	}
+
 	static getHost() {
 		return Promise.resolve(MoDeL.application.pageHost)
 	}
 
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@query('mo-page') protected readonly pageElement?: Page
+	@querySymbolizedElement(PageComponent.pageElementConstructorSymbol) readonly pageElement!: Page
 
 	override['constructor']!: PageComponentConstructor<T>
 
@@ -26,7 +35,7 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		// The router always returns an empty record
 		// whenever no parameters are found in the URL
 		// Not doing this, therefore, leads to 2 page renders.
-		this.parameters = this.parameters || {} as T
+		this.parameters ||= {} as T
 	}
 
 	getHost() {
@@ -44,9 +53,6 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
-		if (this.pageElement === undefined) {
-			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-page' element`)
-		}
 		this.headingChange.dispatch(this.pageElement.heading)
 		this.pageElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}

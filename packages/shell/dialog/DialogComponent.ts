@@ -1,5 +1,5 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, LocalStorageEntry, PageDialog, query } from '../..'
+import { Dialog, LocalStorageEntry, PageDialog, querySymbolizedElement } from '../..'
 
 export type DialogParameters = void | Record<string, any>
 
@@ -7,11 +7,18 @@ export const enum DialogConfirmationStrategy { Dialog, Tab, Window }
 
 export abstract class DialogComponent<T extends DialogParameters = void, TResult = void> extends Component {
 	static readonly poppableConfirmationStrategy = new LocalStorageEntry<DialogConfirmationStrategy>('MoDeL.Components.DialogComponent.PoppableConfirmationStrategy', DialogConfirmationStrategy.Dialog)
+	private static readonly dialogElementConstructorSymbol = Symbol('DialogComponent.DialogElementConstructor')
+
+	static dialogElement() {
+		return (constructor: Constructor<Dialog>) => {
+			(constructor as any)[DialogComponent.dialogElementConstructorSymbol] = true
+		}
+	}
 
 	@event() readonly closed!: EventDispatcher<TResult | Error>
 	@event() readonly headingChange!: EventDispatcher<string>
 
-	@query('mo-dialog') readonly dialogElement!: Dialog<TResult>
+	@querySymbolizedElement(DialogComponent.dialogElementConstructorSymbol) readonly dialogElement!: Dialog<TResult>
 
 	constructor(readonly parameters: T) {
 		super()
@@ -32,13 +39,9 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 		this.close(value)
 	}
 
-	get primaryButton() {
-		return this.dialogElement.primaryButton
-	}
+	get primaryButton() { return this.dialogElement.primaryButton }
 
-	get secondaryButton() {
-		return this.dialogElement.secondaryButton
-	}
+	get secondaryButton() { return this.dialogElement.secondaryButton }
 
 	protected close(result: TResult | Error) {
 		this.dialogElement.close(result)
@@ -49,10 +52,6 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	private set open(value) { this.dialogElement.open = value }
 
 	protected override firstUpdated(props: PropertyValues) {
-		if (this.dialogElement === undefined) {
-			throw new Error(`${this.constructor.name} does not wrap its content in a 'mo-dialog' element`)
-		}
-
 		this.dialogElement.primaryAction = this.primaryButtonAction.bind(this)
 		this.dialogElement.secondaryAction = this.secondaryButtonAction?.bind(this)
 		this.dialogElement.cancellationAction = this.cancellationAction?.bind(this)

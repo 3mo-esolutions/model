@@ -1,5 +1,6 @@
 import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, eventListener, state } from '../../library'
 import { DialogCancelledError, NotificationHost } from '..'
+import { DialogComponent } from '../dialog'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 
 export type DialogSize = 'large' | 'medium' | 'small'
@@ -21,6 +22,7 @@ type DialogAction<TResult = void> = TResult | PromiseLike<TResult>
  * @slot footer
  */
 @component('mo-dialog')
+@DialogComponent.dialogElement()
 export class Dialog<TResult = void> extends ComponentMixin(MwcDialog) {
 	static readonly executingActionAdaptersByComponent = new Map<Constructor<HTMLElement>, (actionElement: HTMLElement, isExecuting: boolean) => void>()
 
