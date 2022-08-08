@@ -1,4 +1,4 @@
-import { Component, component, css, html, event, state } from '../../library'
+import { Component, component, css, html, event, state, eventListener } from '../../library'
 import { HttpErrorCode, WindowHelper, WindowOpenMode } from '../../utilities'
 import { PageComponent, PageError } from '.'
 import { AuthorizationHelper } from '..'
@@ -15,6 +15,12 @@ export class PageHost extends Component {
 	@event() readonly headingChange!: EventDispatcher<string>
 
 	@state() currentPage?: PageComponent<any>
+
+	@eventListener('pageHeadingChange')
+	protected handlePageHeadingChange(event: CustomEvent<string>) {
+		event.stopImmediatePropagation()
+		this.headingChange.dispatch(event.detail)
+	}
 
 	readonly navigateToPage = async (page: PageComponent<any>, strategy = PageNavigationStrategy.Page, force = false) => {
 		if (this.currentPage && Router.arePagesEqual(this.currentPage, page) && force === false) {
@@ -41,7 +47,6 @@ export class PageHost extends Component {
 		this.currentPage = page
 		Router.setPathByPage(page)
 		this.navigate.dispatch(page)
-		page.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}
 
 	static override get styles() {

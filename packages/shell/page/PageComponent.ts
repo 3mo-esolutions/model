@@ -1,4 +1,4 @@
-import { PropertyValues, Component, event } from '../../library'
+import { Component } from '../../library'
 import { Page } from './Page'
 import type { PageHost } from './PageHost'
 import { querySymbolizedElement } from '../../utilities'
@@ -24,8 +24,6 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 		return Promise.resolve(MoDeL.application.pageHost)
 	}
 
-	@event() readonly headingChange!: EventDispatcher<string>
-
 	@querySymbolizedElement(PageComponent.pageElementConstructorSymbol) readonly pageElement!: Page
 
 	override['constructor']!: PageComponentConstructor<T>
@@ -49,11 +47,5 @@ export abstract class PageComponent<T extends PageParameters = void> extends Com
 
 	protected refresh(parameters = this.parameters) {
 		return new this.constructor(parameters).navigate(PageNavigationStrategy.Page, true)
-	}
-
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
-		this.headingChange.dispatch(this.pageElement.heading)
-		this.pageElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
 	}
 }
