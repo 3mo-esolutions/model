@@ -1,7 +1,12 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, LocalStorageEntry, PageDialog, querySymbolizedElement } from '../..'
+import { Dialog, DialogCancelledError, LocalStorageEntry, PageDialog, querySymbolizedElement } from '../..'
+import { DialogActionKey } from './Dialog'
 
 export type DialogParameters = void | Record<string, any>
+
+export type DialogResult<TResult> = TResult | Error
+
+export type DialogAction<TResult> = DialogResult<TResult> | PromiseLike<DialogResult<TResult>>
 
 export const enum DialogConfirmationStrategy { Dialog, Tab, Window }
 
@@ -16,9 +21,11 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 	}
 
 	@event() readonly closed!: EventDispatcher<TResult | Error>
-	@event() readonly headingChange!: EventDispatcher<string>
 
-	@querySymbolizedElement(DialogComponent.dialogElementConstructorSymbol) readonly dialogElement!: Dialog<TResult>
+	@querySymbolizedElement(DialogComponent.dialogElementConstructorSymbol) readonly dialogElement!: Dialog
+	get primaryActionElement() { return this.dialogElement.primaryActionElement }
+	get secondaryActionElement() { return this.dialogElement.secondaryActionElement }
+	get cancellationActionElement() { return this.dialogElement.cancellationActionElement }
 
 	constructor(readonly parameters: T) {
 		super()
@@ -39,37 +46,19 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 		this.close(value)
 	}
 
-	get primaryButton() { return this.dialogElement.primaryButton }
-
-	get secondaryButton() { return this.dialogElement.secondaryButton }
-
 	protected close(result: TResult | Error) {
-		this.dialogElement.close(result)
-		this.open = false
+		if (this._minimized === false) {
+			this.open = false
+			this.closed.dispatch(result)
+		}
 	}
 
 	private get open() { return this.dialogElement.open }
 	private set open(value) { this.dialogElement.open = value }
 
 	protected override firstUpdated(props: PropertyValues) {
-		this.dialogElement.primaryAction = this.primaryButtonAction.bind(this)
-		this.dialogElement.secondaryAction = this.secondaryButtonAction?.bind(this)
-		this.dialogElement.cancellationAction = this.cancellationAction?.bind(this)
-		this.dialogElement.headingChange.subscribe(heading => this.headingChange.dispatch(heading))
-		this.dialogElement.requestPopup.subscribe(() => this.pop())
-		this.dialogElement.addEventListener<any>('closed', (e: CustomEvent<TResult>) => {
-			// Google MWC has events in some of their components
-			// which dispatch a "closed" event with "bubbles" option set to true
-			// thus reaching the DialogComponent. This is blocked here.
-			const eventSourceWasNotDialog = (e.source instanceof Dialog) === false
-
-			if (eventSourceWasNotDialog || this._minimized) {
-				e.stopImmediatePropagation()
-				return
-			}
-
-			this.closed.dispatch(e.detail)
-		})
+		this.dialogElement.handleAction = this.handleAction
+		this.dialogElement.requestPopup?.subscribe(() => this.pop())
 
 		if (this.dialogElement.poppable &&
 			Router.path !== PageDialog.route &&
@@ -83,11 +72,43 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 		super.firstUpdated(props)
 	}
 
-	protected primaryButtonAction(): TResult | PromiseLike<TResult> {
-		throw new Error('Not implemented')
+	protected primaryAction(): DialogAction<TResult> {
+		throw new NotImplementedError()
 	}
 
-	protected secondaryButtonAction?(): TResult | PromiseLike<TResult>
+	protected secondaryAction(): DialogAction<TResult> {
+		return this.cancellationAction()
+	}
 
-	protected cancellationAction?(): TResult | PromiseLike<TResult>
+	protected cancellationAction(): DialogAction<TResult> {
+		return new DialogCancelledError()
+	}
+
+	private readonly handleAction = async (actionKey: DialogActionKey) => {
+		const actionByKey = new Map([
+			[DialogActionKey.Primary, this.primaryAction],
+			[DialogActionKey.Secondary, this.secondaryAction],
+			[DialogActionKey.Cancellation, this.cancellationAction],
+		])
+
+		// eslint-disable-next-line no-restricted-syntax
+		const action = actionByKey.get(actionKey)?.bind(this)
+
+		if (!action) {
+			throw new Error(`No action for key ${actionKey}`)
+		}
+
+		try {
+			this.dialogElement.executingAction = actionKey
+			const result = await action()
+			if (!this.dialogElement.manualClose) {
+				this.close(result)
+			}
+		} catch (e: any) {
+			MoDeL.application.notificationHost.notifyError(e.message)
+			throw e
+		} finally {
+			this.dialogElement.executingAction = undefined
+		}
+	}
 }

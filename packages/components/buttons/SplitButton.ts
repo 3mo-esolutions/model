@@ -1,6 +1,6 @@
 import { LoadingButton } from '.'
 import { component, css, Component, html, property } from '../../library'
-import { Dialog } from '../../shell'
+import { MaterialDialog } from '../MaterialDialog'
 
 @component('mo-split-button')
 export class SplitButton extends Component {
@@ -48,7 +48,7 @@ export class SplitButton extends Component {
 	}
 }
 
-Dialog.executingActionAdaptersByComponent.set(SplitButton, (button, isExecuting) => {
+MaterialDialog.executingActionAdaptersByComponent.set(SplitButton, (button, isExecuting) => {
 	if (button.firstElementChild instanceof LoadingButton) {
 		button.firstElementChild.loading = isExecuting
 	}

@@ -15,13 +15,11 @@ export class PageDialog extends PageComponent {
 	}
 
 	async confirmDialog<T>(dialog: DialogComponent<any, T>) {
-		dialog.headingChange.subscribe(heading => this.heading = heading)
 		const confirmPromise = dialog.confirm()
 		await dialog.updateComplete
-		if (dialog.dialogElement) {
-			dialog.dialogElement.boundToWindow = true
-			this.heading = dialog.dialogElement.heading
-		}
+		dialog.dialogElement.dialogHeadingChange.subscribe(heading => this.heading = heading)
+		dialog.dialogElement.boundToWindow = true
+		this.heading = dialog.dialogElement.heading
 		return confirmPromise
 	}
 }

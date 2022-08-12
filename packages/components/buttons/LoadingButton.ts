@@ -1,6 +1,6 @@
 import { component, css, extractEventHandler, html, nothing, property, styleMap } from '../../library'
 import { Button } from '../material'
-import { Dialog } from '../../shell'
+import { MaterialDialog } from '../MaterialDialog'
 
 @component('mo-loading-button')
 export class LoadingButton extends Button {
@@ -94,7 +94,7 @@ export class LoadingButton extends Button {
 	}
 }
 
-Dialog.executingActionAdaptersByComponent.set(LoadingButton, (button, isExecuting) => {
+MaterialDialog.executingActionAdaptersByComponent.set(LoadingButton, (button, isExecuting) => {
 	(button as LoadingButton).loading = isExecuting
 })
 

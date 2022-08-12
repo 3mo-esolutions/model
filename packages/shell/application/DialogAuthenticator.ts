@@ -176,7 +176,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		`
 	}
 
-	protected override async primaryButtonAction() {
+	protected override async primaryAction() {
 		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
 		if (DialogAuthenticator.shallRemember.value) {
 			DialogAuthenticator.username.value = this.username
