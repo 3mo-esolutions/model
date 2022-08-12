@@ -93,7 +93,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		}
 	}
 
-	private requestApplicationUpdate() {
+	protected requestApplicationUpdate() {
 		MoDeL.application.requestUpdate()
 		MoDeL.application.pageHost.currentPage?.requestUpdate()
 	}
