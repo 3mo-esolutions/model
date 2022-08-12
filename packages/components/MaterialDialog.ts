@@ -1,5 +1,5 @@
-import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, eventListener, state } from '../../library'
-import { DialogActionKey, DialogComponent } from '../shell'
+import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, state } from '../../library'
+import { DialogActionKey, DialogComponent, isDialogActionKey } from '../shell'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import type { IconButton } from './material'
 
@@ -37,7 +37,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 	@property() secondaryButtonText?: string
 	@property() override initialFocusAttribute = 'data-focus'
 	@property() override scrimClickAction: DialogActionKey | '' = ''
-	@property() override escapeKeyAction = DialogActionKey.Cancellation
+	@property({ type: Boolean }) preventCancellationOnEscape = false
 	@property({ type: Boolean }) poppable = false
 	@property({ type: Boolean, reflect: true }) boundToWindow = false
 
@@ -45,12 +45,12 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 		updated(this: MaterialDialog) {
 			if (this.primaryActionElement) {
 				const PrimaryButtonConstructor = this.primaryActionElement.constructor as Constructor<HTMLElement>
-				MaterialDialog.executingActionAdaptersByComponent.get(PrimaryButtonConstructor)?.(this.primaryActionElement, this.executingAction === 'primary')
+				MaterialDialog.executingActionAdaptersByComponent.get(PrimaryButtonConstructor)?.(this.primaryActionElement, this.executingAction === DialogActionKey.Primary)
 			}
 
 			if (this.secondaryActionElement) {
 				const SecondaryButtonConstructor = this.secondaryActionElement.constructor as Constructor<HTMLElement>
-				MaterialDialog.executingActionAdaptersByComponent.get(SecondaryButtonConstructor)?.(this.secondaryActionElement, this.executingAction === 'secondary')
+				MaterialDialog.executingActionAdaptersByComponent.get(SecondaryButtonConstructor)?.(this.secondaryActionElement, this.executingAction === DialogActionKey.Secondary)
 			}
 		}
 	}) executingAction?: DialogActionKey
@@ -62,16 +62,15 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 
 	handleAction!: (key: DialogActionKey) => void | Promise<void>
 
+	override readonly escapeKeyAction = ''
+	override readonly defaultAction = ''
+
 	get primaryActionElement() {
 		return this.querySelector<HTMLElement>('[slot=primaryAction]') ?? this.renderRoot.querySelector<HTMLElement>('slot[name=primaryAction] > *') ?? undefined
 	}
 
 	get secondaryActionElement() {
 		return this.querySelector<HTMLElement>('[slot=secondaryAction]') ?? this.renderRoot.querySelector<HTMLElement>('slot[name=secondaryAction] > *') ?? undefined
-	}
-
-	get isActiveDialog(): boolean {
-		return MoDeL.application.dialogHost.focusedDialogComponent?.dialogElement === this
 	}
 
 	static override get styles() {
@@ -193,23 +192,6 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 	// 	`
 	// }
 
-	@eventListener({ target: document, type: 'keydown' })
-	protected async handleKeyDown(e: KeyboardEvent) {
-		if (this.isActiveDialog) {
-			if (this.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
-				(document.deepActiveElement as HTMLElement).blur()
-				await this.handleAction(DialogActionKey.Primary)
-			}
-		}
-	}
-
-	@eventListener({ target: window, type: 'beforeunload' })
-	protected handleBeforeUnload() {
-		if (this.boundToWindow) {
-			this.handleAction(DialogActionKey.Cancellation)
-		}
-	}
-
 	protected override initialized() {
 		this.createHeaderSlot()
 		this.createFooterSlot()
@@ -259,10 +241,10 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 
 	private changeCloseBehavior() {
 		const closeBase = this.mdcFoundation.close
-		this.mdcFoundation.close = (action?: DialogActionKey) => {
-			if (this.isActiveDialog) {
+		this.mdcFoundation.close = (action?: string) => {
+			if (MoDeL.application.dialogHost.focusedDialogComponent?.dialogElement === this && isDialogActionKey(action)) {
 				closeBase.call(this.mdcFoundation, action)
-				this.handleAction(action as DialogActionKey)
+				this.handleAction(action)
 			}
 		}
 	}
@@ -296,14 +278,6 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				${this.secondaryButtonText}
 			</mo-loading-button>
 		`
-	}
-
-	// @ts-expect-error The base close method is a utility method and won't be called
-	override close(result: TResult | Error) {
-		super.close()
-		if (this.boundToWindow) {
-			window.close()
-		}
 	}
 }
 

@@ -28,6 +28,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitOverride": true,
 		"resolveJsonModule": true,
+		"noUncheckedIndexedAccess": true,
 		"plugins": [
 			{
 				"name": "ts-lit-plugin",

@@ -1,17 +1,14 @@
-import { Component, component, css } from '../../library'
+import { Component, component, css, html } from '../../library'
 import { WindowHelper, WindowOpenMode } from '../../utilities'
 import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, NotificationHost } from '..'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
-	get dialogComponents() {
-		return Array.from(this.renderRoot.querySelectorAll('*'))
-			.filter((element): element is DialogComponent<any, any> => element instanceof DialogComponent)
+	static override get styles() {
+		return css`:host { z-index: 7; }`
 	}
 
-	get focusedDialogComponent() {
-		return this.dialogComponents.length === 0 ? undefined : this.dialogComponents[this.dialogComponents.length - 1]
-	}
+	private readonly dialogComponents = new Set<DialogComponent<any, any>>()
 
 	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
@@ -36,31 +33,34 @@ export class DialogHost extends Component {
 		return page.confirmDialog(dialogComponent)
 	}
 
-	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T) {
+	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialogComponent: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 
-		this.renderRoot.append(dialog)
+		this.dialogComponents.add(dialogComponent)
+		this.requestUpdate()
+
 		return new Promise<TResult>((resolve, reject) => {
-			dialog.closed.subscribe(result => {
+			dialogComponent.closed.subscribe(result => {
 				if (result instanceof Error) {
 					reject(result)
 				} else {
 					resolve(result)
 				}
-				dialog.remove()
-				if (this.dialogComponents.length === 0) {
+				this.dialogComponents.delete(dialogComponent)
+				this.requestUpdate()
+				if (this.dialogComponents.size === 0) {
 					document.body.style.removeProperty('overflow')
 				}
 			})
 		})
 	}
 
-	static override get styles() {
-		return css`
-			:host {
-				z-index: 7;
-			}
-		`
+	get focusedDialogComponent() {
+		return [...this.dialogComponents][this.dialogComponents.size - 1]
+	}
+
+	protected override get template() {
+		return html`${this.dialogComponents}`
 	}
 }
 

@@ -1,5 +1,5 @@
 import { Component, PropertyValues, event, } from '../../library'
-import { Dialog, DialogCancelledError, LocalStorageEntry, PageDialog, querySymbolizedElement } from '../..'
+import { Dialog, DialogCancelledError, eventListener, LocalStorageEntry, PageDialog, querySymbolizedElement } from '../..'
 import { DialogActionKey } from './Dialog'
 
 export type DialogParameters = void | Record<string, any>
@@ -29,6 +29,27 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 
 	constructor(readonly parameters: T) {
 		super()
+	}
+
+	@eventListener({ target: window, type: 'beforeunload' })
+	protected async handleBeforeUnload() {
+		if (this.dialogElement.boundToWindow) {
+			await this.handleAction(DialogActionKey.Cancellation)
+		}
+	}
+
+	@eventListener({ target: document, type: 'keydown' })
+	protected async handleKeyDown(e: KeyboardEvent) {
+		if (MoDeL.application.dialogHost.focusedDialogComponent === this) {
+			if (this.dialogElement.primaryOnEnter === true && e.key === KeyboardKey.Enter) {
+				(document.deepActiveElement as HTMLElement).blur()
+				await this.handleAction(DialogActionKey.Primary)
+			}
+
+			if (!this.dialogElement.preventCancellationOnEscape && e.key === KeyboardKey.Escape) {
+				await this.handleAction(DialogActionKey.Cancellation)
+			}
+		}
 	}
 
 	confirm(strategy?: DialogConfirmationStrategy): Promise<TResult> {
@@ -103,6 +124,9 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 			const result = await action()
 			if (!this.dialogElement.manualClose) {
 				this.close(result)
+				if (this.dialogElement.boundToWindow) {
+					window.close()
+				}
 			}
 		} catch (e: any) {
 			MoDeL.application.notificationHost.notifyError(e.message)
