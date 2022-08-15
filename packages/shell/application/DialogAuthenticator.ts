@@ -1,4 +1,4 @@
-import { html, css, state } from '../../library'
+import { html, css, state, nothing } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
 import { NotificationHost, User } from '..'
@@ -104,10 +104,6 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				--mdc-dialog-scrim-color: var(--mo-color-background)
 			}
 
-			mo-dialog::part(footer) {
-				justify-content: center;
-			}
-
 			a {
 				font-size: small;
 				opacity: 0.85;
@@ -128,6 +124,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return html`
 			<mo-dialog blocking primaryOnEnter>
 				<mo-loading-button slot='primaryAction' justifyContent='center' type='raised'>${this.primaryButtonText}</mo-loading-button>
+				${this.additionalTemplate}
 				<mo-flex alignItems='center' minWidth='350px'>
 					${this.headerTemplate}
 					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
@@ -136,6 +133,10 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				</mo-flex>
 			</mo-dialog>
 		`
+	}
+
+	protected get additionalTemplate() {
+		return nothing
 	}
 
 	protected get headerTemplate() {
