@@ -89,11 +89,13 @@ export type FieldAutoComplete =
  * @slot leading
  * @slot trailing
  * @fires input {CustomEvent<T | undefined>}
+ * @fires validityChange {CustomEvent<boolean>}
  */
 export abstract class Field<T> extends Input<T> {
 	static readonly slotIntegrations = new Set<{ slotChangedHandler?: () => void, styles?: CSSResult }>()
 
 	@event() readonly input!: EventDispatcher<T | undefined>
+	@event() readonly validityChange!: EventDispatcher<boolean>
 
 	@property({ reflect: true }) label = ''
 	@property({ reflect: true }) pattern?: string
@@ -371,6 +373,8 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected async validate() {
-		this.invalid = !(await this.checkValidity())
+		const validity = await this.checkValidity()
+		this.invalid = !validity
+		this.validityChange.dispatch(validity)
 	}
 }
