@@ -1,4 +1,4 @@
-import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, state } from '../../library'
+import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, state, eventListener } from '../../library'
 import { DialogActionKey, DialogComponent, isDialogActionKey } from '../shell'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import type { IconButton } from './material'
@@ -64,6 +64,17 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 
 	override readonly escapeKeyAction = ''
 	override readonly defaultAction = ''
+
+	@eventListener('closed')
+	protected handleClosed(e: Event) {
+		// Google MWC has events in some of their components
+		// which dispatch a "closed" event with "bubbles" option set to true
+		// thus reaching the MaterialDialog. This is blocked here.
+		if ((e.target instanceof MaterialDialog) === false) {
+			e.stopImmediatePropagation()
+			return
+		}
+	}
 
 	get primaryActionElement() {
 		return this.querySelector<HTMLElement>('[slot=primaryAction]') ?? this.renderRoot.querySelector<HTMLElement>('slot[name=primaryAction] > *') ?? undefined
