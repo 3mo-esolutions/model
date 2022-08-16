@@ -1,4 +1,4 @@
-import { LocalizationHelper, Temporal } from '.'
+import { Localizer, Temporal } from '..'
 
 export class MoDate extends Date {
 	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/
@@ -6,7 +6,7 @@ export class MoDate extends Date {
 	static get weekStartDay() {
 		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo
-		return new Intl.Locale(LocalizationHelper.language.value).weekInfo?.firstDay ?? 1
+		return new Intl.Locale(Localizer.currentLanguage).weekInfo?.firstDay ?? 1
 	}
 
 	static getWeekRange([year, weekNumber]: DateWeek) {
@@ -87,7 +87,7 @@ export class MoDate extends Date {
 	static get weekDayNames() {
 		return new Array(7)
 			.fill(undefined)
-			.map((_, i) => new Date(1970, 0, i - 2).toLocaleString(LocalizationHelper.language.value, { weekday: 'long' }))
+			.map((_, i) => new Date(1970, 0, i - 2).toLocaleString(Localizer.currentLanguage, { weekday: 'long' }))
 	}
 
 	get day() {
@@ -134,7 +134,7 @@ export class MoDate extends Date {
 
 	//#region Month
 	static get monthNames() {
-		const format = new Intl.DateTimeFormat(LocalizationHelper.language.value, { month: 'long' })
+		const format = new Intl.DateTimeFormat(Localizer.currentLanguage, { month: 'long' })
 		return new Array(12)
 			.fill(undefined)
 			.map((_, i) => format.format(new Date(Date.UTC(2000, i, 1, 0, 0, 0))))
@@ -164,7 +164,7 @@ export class MoDate extends Date {
 
 	get monthWeeks() {
 		return this.monthRange
-			.map(date => [date.weekStart.year, date.week] as const)
+			.map(date => [date.weekStart!.year, date.week] as const)
 			.reduce((acc, [year, week]) =>
 				acc = acc.some(([y, w]) => y === year && w === week) ? acc : [...acc, [year, week]],
 				[] as Array<DateWeek>
@@ -227,7 +227,7 @@ export class TimeSpan {
 	valueOf() { return this.milliseconds }
 
 	toString(options: Intl.RelativeTimeFormatOptions = { style: 'long' }) {
-		const formatter = new Intl.RelativeTimeFormat(LocalizationHelper.language.value, options)
+		const formatter = new Intl.RelativeTimeFormat(Localizer.currentLanguage, options)
 		const format = (value: number, unit: Intl.RelativeTimeFormatUnit) => formatter.format(Math.sign(value) * Math.floor(Math.abs(value)), unit)
 		switch (true) {
 			case Math.abs(this.years) >= 1:

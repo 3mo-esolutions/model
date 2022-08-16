@@ -1,17 +1,17 @@
-import { LocalizationHelper } from '.'
+import { Localizer } from '..'
 
 export class FormatHelper {
 	static readonly dateRangeSeparator = ' – '
 
-	static getDateSeparator(language = LocalizationHelper.language.value) {
+	static getDateSeparator(language = Localizer.currentLanguage) {
 		return Intl.DateTimeFormat(language).format(new Date).replace(/\p{Number}/gu, '')[0]
 	}
 
-	static getDecimalSeparator(language = LocalizationHelper.language.value) {
+	static getDecimalSeparator(language = Localizer.currentLanguage) {
 		return Intl.NumberFormat(language).format(1.1).replace(/\p{Number}/gu, '')
 	}
 
-	static getThousandSeparator(language = LocalizationHelper.language.value) {
+	static getThousandSeparator(language = Localizer.currentLanguage) {
 		return Intl.NumberFormat(language).format(11111).replace(/\p{Number}/gu, '')
 	}
 
@@ -25,7 +25,7 @@ export class FormatHelper {
 
 	static number(value: number, options: Intl.NumberFormatOptions = { maximumFractionDigits: 16, minimumFractionDigits: 0, useGrouping: false }): string {
 		try {
-			return Intl.NumberFormat(LocalizationHelper.language.value, options).format(value || 0)
+			return Intl.NumberFormat(Localizer.currentLanguage, options).format(value || 0)
 		} catch {
 			return this.number(0, options)
 		}
@@ -46,7 +46,7 @@ export class FormatHelper {
 		return this.number(value, { style: 'currency', currency: currency, minimumFractionDigits: 2, maximumFractionDigits: 2 })
 	}
 
-	static localNumberToNumber(value: string, language = LocalizationHelper.language.value) {
+	static localNumberToNumber(value: string, language = Localizer.currentLanguage) {
 		const numberString = String(value || '0').replace(/ /g, '')
 
 		const thousandSeparator = this.getThousandSeparator(language)
@@ -59,14 +59,14 @@ export class FormatHelper {
 		return Number.isNaN(number) ? undefined : number
 	}
 
-	static localAmountWithSymbolToNumber(value: string, language = LocalizationHelper.language.value) {
+	static localAmountWithSymbolToNumber(value: string, language = Localizer.currentLanguage) {
 		const amountString = String(value || '0').replace(/ /g, '')
 		return this.localNumberToNumber(amountString.substring(0, amountString.length - 1), language)
 	}
 
 	static dateTime(value: Date, options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric' }) {
 		try {
-			return Intl.DateTimeFormat(LocalizationHelper.language.value, options).format(value)
+			return Intl.DateTimeFormat(Localizer.currentLanguage, options).format(value)
 		} catch {
 			return undefined
 		}
@@ -76,7 +76,7 @@ export class FormatHelper {
 		return this.dateTime(value, { year: 'numeric', month: '2-digit', day: '2-digit' })
 	}
 
-	static localDateToDate(value: string, language = LocalizationHelper.language.value) {
+	static localDateToDate(value: string, language = Localizer.currentLanguage) {
 		language // No need for now. Will be needed for non-latin langauges.
 		const date = new Date(value)
 		return String(date) === 'Invalid Date' ? undefined : date

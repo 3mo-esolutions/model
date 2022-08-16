@@ -1,4 +1,5 @@
 // export * from './localization'
+export * from './localization'
 export * from './utilities'
 export * from './library'
 export * from './components'
