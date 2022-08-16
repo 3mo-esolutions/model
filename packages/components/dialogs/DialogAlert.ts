@@ -8,7 +8,7 @@ export class DialogAlert extends DialogComponent<BaseDialogParameters> {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
-				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
+				primaryButtonText=${this.parameters.primaryButtonText ?? _('OK')}
 				?blocking=${this.parameters.blocking}
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter

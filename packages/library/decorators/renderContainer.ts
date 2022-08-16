@@ -1,4 +1,4 @@
-import { LitElement, nothing, render } from 'lit'
+import { LitElement, nothing, render } from '@a11d/lit'
 import { decorateLitElement } from './decorateLitElement'
 
 export const renderContainer = (containerQuery: string) => {

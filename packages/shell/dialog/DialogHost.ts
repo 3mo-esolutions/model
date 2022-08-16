@@ -12,7 +12,7 @@ export class DialogHost extends Component {
 
 	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
-			NotificationHost.instance.notifyAndThrowError('🔒 Access denied')
+			NotificationHost.instance.notifyAndThrowError(`🔒 ${_('Access Denied')}`)
 		}
 
 		if (strategy === DialogConfirmationStrategy.Dialog) {

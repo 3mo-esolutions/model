@@ -8,13 +8,15 @@ type TranslationPropertyKeys<T extends string> =
 	T extends `${string}${'${'}${infer P}${'}'}${infer Rest}` ? P | TranslationPropertyKeys<Rest> : never
 
 export class Localizer {
+	static readonly defaultLanguage = LanguageCode.English
+
 	static get currentLanguage() {
 		return Localizer.languageCodeStorage.value
 			?? navigator.language.split('-')[0] as LanguageCode | undefined
 			?? LanguageCode.English
 	}
 
-	private static readonly languageCodeStorage = new LocalStorageEntry<LanguageCode | undefined>('MoDeL.Localizer.LanguageCode', undefined)
+	private static readonly languageCodeStorage = new LocalStorageEntry<LanguageCode | undefined>('MoDeL.Localizer.Language', undefined)
 	private static readonly dictionariesByLanguageCode = new Map<LanguageCode, Dictionary>()
 
 	private static readonly regex = /\${(.+?)(?::(.+?))?}/g
@@ -31,11 +33,13 @@ export class Localizer {
 		return Localizer.dictionariesByLanguageCode.get(Localizer.currentLanguage)
 	}
 
-	static localize<TKey extends string>(key: TKey, parameters: Record<TranslationPropertyKeys<TKey>, string>) {
-		if (!Localizer.currentLanguageDictionary) {
-			console.warn(`[Localizer] No dictionary found for current language "${Localizer.currentLanguage}".`)
-		} else if (!Localizer.currentLanguageDictionary.has(key)) {
-			console.warn(`[Localizer] Dictionary ${Localizer.currentLanguage} has no localization for "${key}".`)
+	static localize<TKey extends string>(key: TKey, parameters?: Record<TranslationPropertyKeys<TKey>, string>) {
+		if (Localizer.currentLanguage !== Localizer.defaultLanguage) {
+			if (!Localizer.currentLanguageDictionary) {
+				console.warn(`[Localizer] No dictionary found for current language "${Localizer.currentLanguage}".`)
+			} else if (!Localizer.currentLanguageDictionary.has(key)) {
+				console.warn(`[Localizer] Dictionary ${Localizer.currentLanguage} has no localization for "${key}".`)
+			}
 		}
 
 		return Localizer.getLocalization(key, parameters)
@@ -46,7 +50,7 @@ export class Localizer {
 			.map(([group, key, type]) => ({ group, key, type }))
 	}
 
-	static getLocalization<TKey extends string>(key: TKey, parameters: Record<TranslationPropertyKeys<TKey>, string>) {
+	static getLocalization<TKey extends string>(key: TKey, parameters?: Record<TranslationPropertyKeys<TKey>, string>) {
 		const matchedParameters = Localizer.matchLocalizationParameters(key)
 
 		const replace = (text: string, parameterKey: string, parameterValue: string) => {

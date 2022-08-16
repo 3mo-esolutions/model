@@ -2,6 +2,21 @@ import { html, css, state, nothing } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
 import { NotificationHost, User } from '..'
+import { Localizer } from '../..'
+
+Localizer.register(LanguageCode.German, {
+	'Authenticated successfully': 'Erfolgreich authentifiziert',
+	'Incorrect Credentials': 'Ungültige Anmeldeinformationen',
+	'Password reset instructions have been sent to your email address': 'Anweisungen zum Zurücksetzen des Passworts wurden an Ihre E-Mail-Adresse gesendet',
+	'Password could not be reset': 'Passwort konnte nicht zurückgesetzt werden',
+	'Something went wrong. Try again.': 'Etwas ist schief gelaufen. Versuche nochmal.',
+	'Username': 'Benutzer',
+	'Password': 'Passwort',
+	'Remember Password': 'Passwort merken',
+	'Reset Password': 'Passwort zurücksetzen',
+	'Welcome': 'Willkommen',
+	'Login': 'Anmelden'
+})
 
 export abstract class DialogAuthenticator extends DialogComponent {
 	static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
@@ -12,7 +27,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	@state() shallRememberPassword = DialogAuthenticator.shallRemember.value
 	@state() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
 	@state() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
-	@state() primaryButtonText = 'Login'
+	@state() primaryButtonText = _('Login')
 
 	private preventNextAutomaticAuthentication = false
 
@@ -33,11 +48,11 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			DialogAuthenticator.authenticatedUser.value = user
 			const isAuthenticated = await this.isAuthenticated()
 			if (isAuthenticated === false) {
-				throw new Error('Something went wrong.\nTry again.')
+				throw new Error(_('Something went wrong. Try again.'))
 			}
-			NotificationHost.instance.notifySuccess('Authenticated successfully')
+			NotificationHost.instance.notifySuccess(_('Authenticated successfully'))
 		} catch (error: any) {
-			throw new Error(error.message ?? 'Incorrect Credentials')
+			throw new Error(error.message ?? _('Incorrect Credentials'))
 		}
 	}
 
@@ -45,7 +60,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		try {
 			await this.unauthenticateProcess()
 		} finally {
-			NotificationHost.instance.notifySuccess('Unauthenticated successfully')
+			NotificationHost.instance.notifySuccess(_('Unauthenticated successfully'))
 			DialogAuthenticator.authenticatedUser.value = undefined
 			this.preventNextAutomaticAuthentication = true
 			this.confirm()
@@ -55,9 +70,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	async resetPassword() {
 		try {
 			await this.resetPasswordProcess()
-			NotificationHost.instance.notifyInfo('Password reset instructions have been sent to your email address')
+			NotificationHost.instance.notifyInfo(_('Password reset instructions have been sent to your email address'))
 		} catch (error: any) {
-			NotificationHost.instance.notifyError(error.message ?? 'Password could not be reset')
+			NotificationHost.instance.notifyError(error.message ?? _('Password could not be reset'))
 			throw error
 		}
 	}
@@ -143,7 +158,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return html`
 			<mo-flex height='100px' alignItems='center' gap='10px'>
 				${this.logoTemplate}
-				<mo-heading typography='heading3'>${Manifest.short_name || 'Welcome'}</mo-heading>
+				<mo-heading typography='heading3'>${Manifest.short_name || _('Welcome')}</mo-heading>
 			</mo-flex>
 		`
 	}
@@ -156,23 +171,26 @@ export abstract class DialogAuthenticator extends DialogComponent {
 
 	protected get contentTemplate() {
 		return html`
-			<mo-field-text data-focus label='Username'
+			<mo-field-text data-focus
+				label=${_('Username')}
 				.value=${this.username}
 				@input=${(e: CustomEvent<string>) => this.username = e.detail}
 			></mo-field-text>
 
-			<mo-field-password label='Password'
+			<mo-field-password
+				label=${_('Password')}
 				.value=${this.password}
 				@input=${(e: CustomEvent<string>) => this.password = e.detail}
 			></mo-field-password>
 
 			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
 				<mo-checkbox
+					label=${_('Remember Password')}
 					?checked=${this.shallRememberPassword}
 					@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
-				>Remember Password</mo-checkbox>
+				></mo-checkbox>
 
-				<a @click=${() => this.resetPassword()}>Reset Password</a>
+				<a @click=${() => this.resetPassword()}>${_('Reset Password')}</a>
 			</mo-flex>
 		`
 	}

@@ -2,6 +2,14 @@ import { state, component, html, ifDefined, query } from '../../library'
 import { FieldText, FieldTextArea } from '..'
 import { DialogComponent } from '../../shell'
 import { BaseDialogParameters } from './BaseDialogParameters'
+import { Localizer } from '../..'
+
+Localizer.register(LanguageCode.German, {
+	'OK': 'OK',
+	'Cancel': 'Abbrechen',
+	'Apply': 'Übernehmen',
+	'Input': 'Eingabe'
+})
 
 type Parameters = BaseDialogParameters & {
 	readonly inputLabel?: string
@@ -19,7 +27,7 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
-				primaryButtonText=${this.parameters.primaryButtonText ?? 'Übernehmen'}
+				primaryButtonText=${this.parameters.primaryButtonText ?? _('Apply')}
 				?blocking=${this.parameters.blocking}
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
@@ -35,13 +43,13 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 	private get textFieldTemplate() {
 		return this.parameters.isTextArea ? html`
 			<mo-field-text-area id='inputElement' data-focus
-				label=${this.parameters.inputLabel ?? 'Input'}
+				label=${this.parameters.inputLabel ?? _('Input')}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}
 			></mo-field-text-area>
 		` : html`
 			<mo-field-text id='inputElement' data-focus
-				label=${this.parameters.inputLabel ?? 'Input'}
+				label=${this.parameters.inputLabel ?? _('Input')}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}
 			></mo-field-text>

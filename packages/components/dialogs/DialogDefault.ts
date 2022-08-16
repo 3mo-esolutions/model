@@ -15,8 +15,8 @@ export class DialogDefault<TResult = void> extends DialogComponent<Parameters<TR
 			<mo-dialog
 				heading=${this.parameters.heading}
 				size=${ifDefined(this.parameters.size)}
-				primaryButtonText=${this.parameters.primaryButtonText ?? 'OK'}
-				secondaryButtonText=${this.parameters.secondaryButtonText ?? 'Abbrechen'}
+				primaryButtonText=${this.parameters.primaryButtonText ?? _('OK')}
+				secondaryButtonText=${this.parameters.secondaryButtonText ?? _('Cancel')}
 				?blocking=${this.parameters.blocking}
 				primaryOnEnter
 			>
