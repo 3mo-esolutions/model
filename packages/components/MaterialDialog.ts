@@ -33,7 +33,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 	@property({ type: Boolean }) blocking = false
 	@property({ type: Boolean }) primaryOnEnter = false
 	@property({ type: Boolean }) manualClose = false
-	@property() primaryButtonText = 'OK'
+	@property() primaryButtonText?: string
 	@property() secondaryButtonText?: string
 	@property() override initialFocusAttribute = 'data-focus'
 	@property() override scrimClickAction: DialogActionKey | '' = ''
