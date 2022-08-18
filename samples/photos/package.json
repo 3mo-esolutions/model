@@ -1,0 +1,17 @@
+{
+	"name": "@3mo/photos",
+	"scripts": {
+		"start": "webpack serve --mode=development"
+	},
+	"license": "UNLICENSED",
+	"dependencies": {
+		"@3mo/model": "file:../.."
+	},
+	"devDependencies": {
+		"ts-lit-plugin": "*",
+		"typescript": "4.*",
+		"webpack": "5.*",
+		"webpack-cli": "*",
+		"webpack-dev-server": "^4.10.0"
+	}
+}

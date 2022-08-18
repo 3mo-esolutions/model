@@ -1,0 +1,5 @@
+import '@3mo/model'
+import './Photos'
+import './components'
+import './dialogs'
+import './pages'
