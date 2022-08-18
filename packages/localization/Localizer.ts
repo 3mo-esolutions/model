@@ -4,11 +4,36 @@ import { CardinalPluralizationRulesByLanguage } from './CardinalPluralizationRul
 
 type Dictionary = Map<string, string | Array<string>>
 
-type TranslationPropertyKeys<T extends string> =
-	T extends `${string}${'${'}${infer P}${'}'}${infer Rest}` ? P | TranslationPropertyKeys<Rest> : never
+type ExtractProperties<T extends string> =
+	T extends `${string}${'${'}${infer P}${'}'}${infer Rest}` ? P | ExtractProperties<Rest> : never
+
+type ExtractKey<TProperty extends string> =
+	TProperty extends `${infer Key}:${string}` ? Key : TProperty
+
+type ExtractType<T extends string> =
+	T extends `${string}:${infer Type}:${string}`
+		? GetMatchedType<Type>
+		: T extends `${string}:${infer Type}`
+			? GetMatchedType<Type>
+			: GetMatchedType<''>
+
+type GetMatchedType<T extends string> = T extends keyof LocalizationFormatterTypeMap ? LocalizationFormatterTypeMap[T] : string
+
+interface LocalizationFormatterTypeMap {
+	[Localizer.pluralityIdentityType]: number
+	'string': string
+	'number': number
+	'Date': Date
+	'': string
+}
+
+type LocalizationParameters<T extends string> = {
+	[P in ExtractProperties<T> as ExtractKey<P>]: ExtractType<P>
+}
 
 export class Localizer {
 	static readonly defaultLanguage = LanguageCode.English
+	static readonly pluralityIdentityType = 'pluralityNumber'
 
 	static get currentLanguage() {
 		return Localizer.languageCodeStorage.value
@@ -20,7 +45,6 @@ export class Localizer {
 	private static readonly dictionariesByLanguageCode = new Map<LanguageCode, Dictionary>()
 
 	private static readonly regex = /\${(.+?)(?::(.+?))?}/g
-	private static readonly pluralityIdentityType = 'pluralityNumber'
 
 	static register(languageCode: LanguageCode, dictionary: Dictionary | Record<string, string | Array<string>>) {
 		const d = typeof dictionary === 'object' ? new Map(Object.entries(dictionary)) : dictionary
@@ -33,7 +57,7 @@ export class Localizer {
 		return Localizer.dictionariesByLanguageCode.get(Localizer.currentLanguage)
 	}
 
-	static localize<TKey extends string>(key: TKey, parameters?: Record<TranslationPropertyKeys<TKey>, string>) {
+	static localize<T extends string>(key: T, parameters?: LocalizationParameters<T>) {
 		if (Localizer.currentLanguage !== Localizer.defaultLanguage) {
 			if (!Localizer.currentLanguageDictionary) {
 				console.warn(`[Localizer] No dictionary found for current language "${Localizer.currentLanguage}".`)
@@ -50,12 +74,12 @@ export class Localizer {
 			.map(([group, key, type]) => ({ group, key, type }))
 	}
 
-	static getLocalization<TKey extends string>(key: TKey, parameters?: Record<TranslationPropertyKeys<TKey>, string>) {
+	static getLocalization<T extends string>(key: T, parameters?: LocalizationParameters<T>) {
 		const matchedParameters = Localizer.matchLocalizationParameters(key)
 
 		const replace = (text: string, parameterKey: string, parameterValue: string) => {
 			const match = matchedParameters.find(p => p.key === parameterKey)
-			return !match?.group ? text : text.replace(match.group, parameterValue)
+			return !match?.group ? text : text.replace(match.group, parameterValue).replace(`\${${match.key}}`, parameterValue)
 		}
 
 		const replaceAll = (text: string) => {
