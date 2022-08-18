@@ -95,6 +95,7 @@ export const styles = css`
 		--mo-color-accessible-base: var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value);
 		--mo-color-accessible: rgb(var(--mo-color-accessible-base));
 		--mo-scrim: rgba(0, 0, 0, 0.5);
+		/* TODO: Rename to mo-color-accent again */
 		--mo-accent-base: var(--mo-accent-base-r), var(--mo-accent-base-g), var(--mo-accent-base-b);
 		--mo-accent: rgb(var(--mo-accent-base));
 		--mo-accent-transparent: rgba(var(--mo-accent-base), 0.25);

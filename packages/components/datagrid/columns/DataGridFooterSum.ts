@@ -1,0 +1,40 @@
+import { component, property, Component, html, css } from '../../../library'
+
+@component('mo-data-grid-footer-sum')
+export class DataGridFooterSum extends Component {
+	@property() heading = ''
+
+	static override get styles() {
+		return css`
+			:host {
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				max-height: 100%;
+				line-height: 1em;
+			}
+
+			mo-div {
+				color: var(--mo-color-foreground-transparent);
+				font-size: var(--mo-font-size-xs);
+				text-transform: uppercase;
+				text-align: center;
+			}
+		`
+	}
+
+	protected override get template() {
+		return html`
+			<mo-div>${this.heading}</mo-div>
+			<mo-flex direction='horizontal' justifyContent='center'>
+				<slot></slot>
+			</mo-flex>
+		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'mo-data-grid-footer-sum': DataGridFooterSum
+	}
+}

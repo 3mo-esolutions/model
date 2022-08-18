@@ -14,7 +14,7 @@
 	},
 	"homepage": "https://github.com/3mo-esolutions/model#readme",
 	"scripts": {
-		"start": "cd ./samples/sample-client && npm start",
+		"start": "cd ./samples/photos && npm install && npm start",
 		"dev": "npm run build && concurrently --raw \"npm run build:watch\" \"npm run test:watch\" --restart-tries -1",
 		"lint": "eslint . && lit-analyzer ./packages/**/* --strict --rules.no-missing-import off",
 		"build": "webpack",
