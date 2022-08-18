@@ -8,11 +8,15 @@ import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenu
 export class DataGridRow<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
 	@queryAll('mo-data-grid-cell') readonly cells!: Array<DataGridCell<any, TData, TDetailsElement>>
 
-	@property({ type: Object }) dataGrid!: DataGrid<TData>
+	@property({ type: Object }) dataGrid!: DataGrid<TData, TDetailsElement>
 	@property({ type: Object }) data!: TData
 	@property({ type: Boolean, reflect: true }) selected = false
 	@property({ type: Boolean, reflect: true }) detailsOpen = false
 	@state() private editing = false
+
+	get detailsElement() {
+		return this.renderRoot.querySelector('#details')?.firstElementChild as TDetailsElement as TDetailsElement | undefined
+	}
 
 	protected override connected() {
 		super.connected()
