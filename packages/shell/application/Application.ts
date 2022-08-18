@@ -34,7 +34,6 @@ export abstract class Application extends Component {
 		super()
 		this.switchAttribute('application', true)
 		this.setupViews()
-		document.body.oncontextmenu = () => false
 		PwaHelper.registerServiceWorker()
 	}
 
