@@ -122,7 +122,7 @@ export abstract class DialogComponent<T extends DialogParameters = void, TResult
 		try {
 			this.dialogElement.executingAction = actionKey
 			const result = await action()
-			if (!this.dialogElement.manualClose) {
+			if (!this.dialogElement.manualClose || actionKey === DialogActionKey.Cancellation) {
 				this.close(result)
 				if (this.dialogElement.boundToWindow) {
 					window.close()

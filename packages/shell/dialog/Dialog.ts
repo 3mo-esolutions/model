@@ -12,7 +12,8 @@ export function isDialogActionKey(value: unknown): value is DialogActionKey {
 }
 
 export interface Dialog extends LitElement {
-	/** The event must be "composed", "bubbles" and "cancellable" */ readonly dialogHeadingChange: EventDispatcher<string>
+	/** The event must be "composed", "bubbles" and "cancellable" */
+	readonly dialogHeadingChange: EventDispatcher<string>
 
 	heading: string
 
@@ -30,5 +31,6 @@ export interface Dialog extends LitElement {
 	boundToWindow?: boolean
 	readonly requestPopup?: EventDispatcher<void>
 
+	/** Indicated whether dialog is automatically closed after **non-cancellation** actions */
 	manualClose?: boolean
 }
