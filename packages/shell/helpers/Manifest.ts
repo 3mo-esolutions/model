@@ -1,4 +1,5 @@
 export type Manifest = {
+	readonly version: string
 	readonly name: string
 	// eslint-disable-next-line
 	readonly short_name: string
