@@ -27,11 +27,12 @@ export class Color {
 			throw new Error('Invalid color')
 		}
 
-		return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] as RgbTuple
+		const [, r, g, b] = result
+		return [parseInt(r!, 16), parseInt(g!, 16), parseInt(b!, 16)] as RgbTuple
 	}
 
 	static rgbToRgbColor(cssRgb: Rgb) {
-		return cssRgb.split('rgb(')[1].split(',').map(s => parseInt(s)) as RgbTuple
+		return cssRgb.split('rgb(')[1]!.split(',').map(s => parseInt(s)) as RgbTuple
 	}
 
 	readonly colors = new Array<RgbTuple>()
@@ -47,7 +48,8 @@ export class Color {
 			}
 
 			if (Color.isCssProperty(color)) {
-				const rgb = getComputedStyle(MoDeL.application).getPropertyValue(color.split('(')[1].substring(0, color.split('(')[1].length - 1)) as Rgb
+				const c = color.split('(')[1]!
+				const rgb = getComputedStyle(MoDeL.application).getPropertyValue(c.substring(0, c.length - 1)) as Rgb
 				return Color.rgbToRgbColor(rgb)
 			}
 
@@ -67,7 +69,7 @@ export class Color {
 	}
 
 	get baseRgb() {
-		return `rgb(${this.baseColor.join(',')})` as Rgb
+		return `rgb(${this.baseColor!.join(',')})` as Rgb
 	}
 
 	get baseHex() {
@@ -75,6 +77,6 @@ export class Color {
 			const hex = c.toString(16)
 			return hex.length === 1 ? `0${hex}` : hex
 		}
-		return `#${this.baseColor.map(component => componentToHex(component)).join('')}` as Hex
+		return `#${this.baseColor!.map(component => componentToHex(component)).join('')}` as Hex
 	}
 }

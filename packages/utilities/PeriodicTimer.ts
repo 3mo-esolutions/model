@@ -42,7 +42,7 @@ export class PeriodicTimer {
 
 	run() {
 		if (this.isPaused) {
-			const lastPause = this.pauses[this.pauses.length - 1]
+			const lastPause = this.pauses[this.pauses.length - 1]!
 			lastPause[1] = new MoDate
 			const remainingTimeToNextTick = this.remainingTimeToNextTick
 

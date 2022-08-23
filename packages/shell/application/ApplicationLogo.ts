@@ -17,7 +17,7 @@ export class ApplicationLogo extends Component {
 			return
 		}
 		const isColorCssVariable = this.color.includes('var(')
-		const colorPropertyName = isColorCssVariable ? this.color.split('(')[1].substring(0, this.color.split('(')[1].length - 1) : ''
+		const colorPropertyName = isColorCssVariable ? this.color.split('(')[1]!.substring(0, this.color.split('(')[1]!.length - 1) : ''
 		let color = ''
 		const tryCount = 10
 		const failWaitTimeInMs = 10

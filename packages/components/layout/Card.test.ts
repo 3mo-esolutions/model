@@ -2,29 +2,26 @@ import { html, render } from '../../library'
 import { Card } from './Card'
 
 describe(Card.name, () => {
-	let card: Card
-	beforeEach(async () => card = await initializeTestComponent(new Card))
-	afterEach(() => card.remove())
+	const fixture = setupFixture(() => new Card)
 
 	function testSlotRendersIfContentAvailable(toBeRenderSlotName: string, contentSlotName: string) {
 		it(`should render slot "${toBeRenderSlotName}" if the content of slot "${contentSlotName}" is available`, async () => {
-			render(html`<mo-div slot=${contentSlotName}>Content</mo-div>`, card)
+			render(html`<mo-div slot=${contentSlotName}>Content</mo-div>`, fixture.component)
 
-			card.requestUpdate()
-			await card.updateComplete
+			await fixture.update()
 
-			expect(card.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
+			expect(fixture.component.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
 		})
 	}
 
 	function testSlotRendersIfPropertyIsSet(toBeRenderSlotName: string, property: keyof Card) {
 		it(`should render slot "${toBeRenderSlotName}" if property "${property}" is set`, async () => {
 			// @ts-expect-error - property is writable
-			card[property] = 'test'
+			fixture.component[property] = 'test'
 
-			await card.updateComplete
+			await fixture.update()
 
-			expect(card.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
+			expect(fixture.component.renderRoot.querySelector(`slot[part=${toBeRenderSlotName}]`)).not.toBeNull()
 		})
 	}
 
@@ -41,11 +38,11 @@ describe(Card.name, () => {
 			it(`should render the ${elementSelector} element if ${propertyName} is set`, async () => {
 				const content = 'Content'
 
-				card[propertyName] = content
-				await card.updateComplete
+				fixture.component[propertyName] = content
+				await fixture.update()
 
-				expect(card.renderRoot.querySelector(elementSelector)).not.toBeNull()
-				expect(card.renderRoot.querySelector(elementSelector)?.textContent).toBe(content)
+				expect(fixture.component.renderRoot.querySelector(elementSelector)).not.toBeNull()
+				expect(fixture.component.renderRoot.querySelector(elementSelector)?.textContent).toBe(content)
 			})
 		}
 	})
@@ -56,11 +53,11 @@ describe(Card.name, () => {
 		testSlotRendersIfPropertyIsSet('media', 'image')
 
 		it('should set the source of the image element when "image" property is set', async () => {
-			card.image = 'https://example.com/image.jpg'
+			fixture.component.image = 'https://example.com/image.jpg'
 
-			await card.updateComplete
+			await fixture.component.updateComplete
 
-			expect(card.renderRoot.querySelector('img')?.src).toBe(card.image)
+			expect(fixture.component.renderRoot.querySelector('img')?.src).toBe(fixture.component.image)
 		})
 	})
 

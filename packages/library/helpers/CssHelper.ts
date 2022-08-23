@@ -6,7 +6,7 @@ export class CssHelper {
 	static getFlexGrowFromAsteriskSyntax(length: string) {
 		return length === '*'
 			? 1
-			: parseInt(length.split('*')[0])
+			: parseInt(length.split('*')[0]!)
 	}
 
 	static getAlignmentFromTextAlign(textAlign: string) {

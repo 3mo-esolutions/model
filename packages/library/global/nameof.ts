@@ -23,7 +23,7 @@ function getPropertyByKeyPath<T, KeyPath extends KeyPathOf<T>>(object: T, keyPat
 
 function setPropertyByKeyPath<T, KeyPath extends KeyPathOf<T>>(object: T, keyPath: KeyPath, value: KeyPathValueOf<T, KeyPath>) {
 	const keys = keyPath.split('.')
-	const lastKey = keys[keys.length - 1]
+	const lastKey = keys[keys.length - 1]!
 	const otherKeysButLast = keys.slice(0, keys.length - 1)
 	const lastObject = getPropertyByKeyPath(object, otherKeysButLast.join('.') as KeyPath) ?? object as any
 	if (lastObject !== undefined || lastObject !== null) {

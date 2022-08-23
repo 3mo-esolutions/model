@@ -2,12 +2,10 @@ import { NotificationHost } from '@3mo/model'
 import { PageHome } from './PageHome'
 
 describe('PageHome', () => {
-	let page: PageHome
-	beforeEach(async () => page = await initializeTestComponent(new PageHome))
-	afterEach(() => page.remove())
+	const fixture = setupFixture(() => new PageHome)
 
 	it('should have been passed the default value of "sample-counter" on initialization', () => {
-		const counterElement = page.renderRoot.querySelector('sample-counter')
+		const counterElement = fixture.component.renderRoot.querySelector('sample-counter')
 
 		expect(counterElement?.count).toBe(1)
 	})
@@ -16,7 +14,7 @@ describe('PageHome', () => {
 		const count = 11
 		spyOn(NotificationHost.instance, 'notify')
 
-		page.renderRoot.querySelector('sample-counter')?.countChange.dispatch(count)
+		fixture.component.renderRoot.querySelector('sample-counter')?.countChange.dispatch(count)
 
 		expect(NotificationHost.instance.notifyInfo).toHaveBeenCalledWith(`countChange event intercepted with the value: ${count}`)
 	})

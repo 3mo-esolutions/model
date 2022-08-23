@@ -3,7 +3,7 @@ import { Downloader } from '.'
 export class ExcelHelper {
 	static generate<TData>(
 		data: Array<TData>,
-		keys = Object.keys(data[0]) as Array<KeyPathOf<TData>>,
+		keys = Object.keys(data[0]!) as Array<KeyPathOf<TData>>,
 		title = 'Export'
 	) {
 		const dataClone = data.map((data: TData) => {

@@ -277,8 +277,8 @@ export class FieldSelect<T> extends Field<Value> {
 	protected async selectByIndex(index?: Index) {
 		await this.updateComplete
 		this.value = !(index instanceof Array)
-			? this.options[Number(index)].value
-			: index.map(i => this.options[i].value)
+			? this.options[Number(index)]!.value
+			: index.map(i => this.options[i]!.value)
 	}
 
 	protected async selectByValue(value?: Value) {

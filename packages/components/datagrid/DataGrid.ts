@@ -798,7 +798,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			}
 		}
 		const sampleData = this.data[0]
-		return Object.keys(sampleData)
+		return Object.keys(sampleData!)
 			.filter(key => !key.startsWith('_'))
 			.map(key => {
 				const columnElement = document.createElement(getDefaultColumnElement(getPropertyByKeyPath(sampleData, key as any)))

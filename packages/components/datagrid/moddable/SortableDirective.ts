@@ -107,25 +107,25 @@ class SortableDirective<T> extends Directive {
 	private moveData(fromIndex: number, toIndex: number) {
 		const clone = [...this.data]
 		const element = clone.splice(fromIndex, 1)[0]
-		clone.splice(toIndex, 0, element)
+		clone.splice(toIndex, 0, element!)
 		return clone
 	}
 
 	private getElementIndexToMoveTo(e: DragEvent) {
-		const firstElementX = this.elements[0].getBoundingClientRect().left
+		const firstElementX = this.elements[0]!.getBoundingClientRect().left
 		if (e.clientX < firstElementX) {
 			return 0
 		}
 
-		const lastElementX = this.elements[this.elements.length - 1].getBoundingClientRect().left
+		const lastElementX = this.elements[this.elements.length - 1]!.getBoundingClientRect().left
 		if (e.clientX > lastElementX) {
 			return this.elements.length - 1
 		}
 
 		const isLeftInteraction = this.isLeftInteraction(e)
 		const index = this.drag?.elementRects.findIndex((rect, index, rects) => {
-			const leftGap = index === 0 ? 0 : rect.left - rects[index - 1].left - rects[index - 1].width
-			const rightGap = index === rects.length - 1 ? 0 : rects[index + 1].left - rect.left - rect.width
+			const leftGap = index === 0 ? 0 : rect.left - rects[index - 1]!.left - rects[index - 1]!.width
+			const rightGap = index === rects.length - 1 ? 0 : rects[index + 1]!.left - rect.left - rect.width
 			return isLeftInteraction
 				? e.clientX >= rect.left - rect.width / 2 - leftGap && e.clientX <= rect.left + rect.width / 2
 				: e.clientX >= rect.right - rect.width / 2 && e.clientX <= rect.right + rect.width / 2 + rightGap

@@ -2,42 +2,40 @@ import { Flex } from '@3mo/model'
 import { Counter } from './Counter'
 
 describe('CounterButton', () => {
-	let component: Counter
-	beforeEach(async () => component = await initializeTestComponent(new Counter))
-	afterEach(() => component.remove())
+	const fixture = setupFixture(() => new Counter)
 
 	it('should change button inner text when count is changed', async () => {
 		const count = 11
 
-		component.count = count
-		await component.updateComplete
+		fixture.component.count = count
+		await fixture.component.updateComplete
 
-		expect(component.renderRoot.querySelector<Flex>('mo-flex[data-test-id=count]')?.innerText).toBe('11')
+		expect(fixture.component.renderRoot.querySelector<Flex>('mo-flex[data-test-id=count]')?.innerText).toBe('11')
 	})
 
 	it('should increment "count" property when increment button in clicked', () => {
-		const count = component.count
+		const count = fixture.component.count
 
-		component.renderRoot.querySelectorAll('mo-button')[1].click()
+		fixture.component.renderRoot.querySelectorAll('mo-button')[1].click()
 
-		expect(component.count).toBe(count + 1)
+		expect(fixture.component.count).toBe(count + 1)
 	})
 
 	it('should dispatch "counterChange" event with decreased count when decrease button in clicked', () => {
-		const count = component.count
-		spyOn(component.countChange, 'dispatch')
+		const count = fixture.component.count
+		spyOn(fixture.component.countChange, 'dispatch')
 
-		component.renderRoot.querySelectorAll('mo-button')[0].click()
+		fixture.component.renderRoot.querySelectorAll('mo-button')[0].click()
 
-		expect(component.countChange.dispatch).toHaveBeenCalledWith(count - 1)
+		expect(fixture.component.countChange.dispatch).toHaveBeenCalledWith(count - 1)
 	})
 
 	it('should dispatch "counterChange" event with increased count when increase button in clicked', () => {
-		const count = component.count
-		spyOn(component.countChange, 'dispatch')
+		const count = fixture.component.count
+		spyOn(fixture.component.countChange, 'dispatch')
 
-		component.renderRoot.querySelectorAll('mo-button')[1].click()
+		fixture.component.renderRoot.querySelectorAll('mo-button')[1].click()
 
-		expect(component.countChange.dispatch).toHaveBeenCalledWith(count + 1)
+		expect(fixture.component.countChange.dispatch).toHaveBeenCalledWith(count + 1)
 	})
 })

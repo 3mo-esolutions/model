@@ -19,7 +19,7 @@ export class DateHelper {
 			return DateHelper.parseDateFromOperation(dateText, referenceDate)
 		}
 
-		if (dateText.includes(FormatHelper.getDateSeparator())) {
+		if (dateText.includes(FormatHelper.getDateSeparator()!)) {
 			return DateHelper.parseDateFromLocalDate(dateText, referenceDate)
 		}
 
@@ -55,21 +55,21 @@ export class DateHelper {
 
 		const [startDateText, endDateText] = dateRangeText.toLowerCase().split(separator)
 
-		const startDate = DateHelper.parseDateFromText(startDateText, referenceDate)
-		const endDate = DateHelper.parseDateFromText(endDateText, referenceDate)
+		const startDate = DateHelper.parseDateFromText(startDateText!, referenceDate)
+		const endDate = DateHelper.parseDateFromText(endDateText!, referenceDate)
 
 		return [startDate, endDate] as DateRange
 	}
 
 	private static parseDateFromLocalDate(dateText: string, referenceDate = new MoDate) {
-		const dateParts = dateText.split(FormatHelper.getDateSeparator())
+		const dateParts = dateText.split(FormatHelper.getDateSeparator()!)
 
 		if (dateParts.length === 2) {
-			return new MoDate(referenceDate.getFullYear(), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
+			return new MoDate(referenceDate.getFullYear(), parseInt(dateParts[1]!) - 1, parseInt(dateParts[0]!))
 		}
 
 		if (dateParts.length === 3) {
-			return new MoDate(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]))
+			return new MoDate(parseInt(dateParts[2]!), parseInt(dateParts[1]!) - 1, parseInt(dateParts[0]!))
 		}
 
 		return undefined

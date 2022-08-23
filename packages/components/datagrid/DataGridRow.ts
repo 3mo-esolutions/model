@@ -255,7 +255,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 					this.dataGrid.data.findIndex(data => data === lastActiveSelection.data),
 					this.dataGrid.data.findIndex(data => data === this.data),
 				].sort((a, b) => a - b)
-				const range = this.dataGrid.data.slice(indexes[0], indexes[1] + 1)
+				const range = this.dataGrid.data.slice(indexes[0]!, indexes[1]! + 1)
 				dataToSelect = lastActiveSelection.selected
 					? [...dataToSelect, ...range]
 					: dataToSelect.filter(d => range.includes(d) === false)

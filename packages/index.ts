@@ -2,5 +2,6 @@
 export * from './localization'
 export * from './utilities'
 export * from './library'
+export * from './test'
 export * from './components'
 export * from './shell'
