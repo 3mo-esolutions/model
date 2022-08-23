@@ -1,11 +1,14 @@
 import { LitElement, nothing, render } from '@a11d/lit'
-import { decorateLitElement } from './decorateLitElement'
+// eslint-disable-next-line import/no-internal-modules
+import { decorateLitElement } from '@a11d/lit/dist/decorateLitElement'
+
+export const customRendersSymbol = Symbol('customRenders')
 
 export const renderContainer = (containerQuery: string) => {
 	return (prototype: LitElement, _property: string, descriptor: PropertyDescriptor) => {
 		decorateLitElement({
 			prototype,
-			constructorPropertyName: '$customRenders$',
+			constructorPropertyKey: customRendersSymbol,
 			initialValue: new Map,
 			lifecycleHooks: new Map([
 				['firstUpdated', renderAllTemplates],
