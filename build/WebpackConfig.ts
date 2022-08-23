@@ -73,7 +73,7 @@ module.exports = (environment, config, plugins = []) => {
 		: { ...sharedConfigs, ...productionConfigs }
 
 	if (environment === 'test') {
-		config.entry = [config.entry, ...Global.sync('./**/*.test.ts').filter(path => path.includes('node_modules') === false)]
+		config.entry = [...(config.entry instanceof Array ? config.entry : [config.entry]), ...Global.sync('./**/*.test.ts').filter(path => path.includes('node_modules') === false)]
 		config.devtool = false
 	}
 
