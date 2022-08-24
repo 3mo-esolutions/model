@@ -1,6 +1,6 @@
 
 import { component, property } from '../../../../library'
-import { FormatHelper, DateHelper, ClassInfo, classMap, css, html, state, ifDefined } from '../../../..'
+import { FormatHelper, DateHelper, ClassInfo, classMap, css, html, state, ifDefined, style } from '../../../..'
 import { FieldDateBase } from './FieldDateBase'
 import { MaterialIcon } from '../../../helpers'
 import { CalendarSelectionAdapter } from '../../calendar'
@@ -112,14 +112,14 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 		return html`
 			<mo-flex>
 				<mo-flex direction='horizontal' alignItems='center' textAlign='center' height='30px'>
-						<mo-div width='*' fontWeight='500' cursor='pointer'
+						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
 							foreground=${ifDefined(this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate ? 'var(--mo-accent)' : undefined)}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.StartDate}
 						>${!startDate ? 'Start' : FormatHelper.date(startDate)}</mo-div>
 
-						<mo-div foreground='var(--mo-color-gray)'>bis</mo-div>
+						<mo-div ${style({ color: 'var(--mo-color-gray)' })}>bis</mo-div>
 
-						<mo-div width='*' fontWeight='500' cursor='pointer'
+						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
 							foreground=${ifDefined(this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.EndDate ? 'var(--mo-accent)' : undefined)}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.EndDate}
 						>${!endDate ? 'Ende' : FormatHelper.date(endDate)}</mo-div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, event, html, nothing, property } from '../../library'
+import { component, css, event, html, nothing, property, style } from '../../library'
 import { Localizer } from '../../localization'
 import { Debouncer, Enqueuer } from '../../utilities'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
@@ -191,7 +191,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected override get toolbarActionsTemplate() {
 		return html`
 			<mo-icon-button icon='refresh'
-				foreground=${this.fetching ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}
+				${style({ color: this.fetching ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.refetchData()}
 			></mo-icon-button>
 			${super.toolbarActionsTemplate}

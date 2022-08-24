@@ -71,7 +71,7 @@ export class Confetti extends Component {
 			}
 		}
 
-		this.display = ''
+		this.hidden = false
 		this.canvasWidth = window.innerWidth
 		this.canvasHeight = window.innerHeight
 
@@ -87,13 +87,13 @@ export class Confetti extends Component {
 			await Promise.sleep(500)
 		}
 
-		this.display = 'none'
+		this.hidden = true
 	}
 
 	private get canvasParticleContext() { return this.canvasParticle.getContext('2d') as CanvasRenderingContext2D }
 
 	protected override initialized() {
-		this.display = 'none'
+		this.hidden = true
 	}
 
 	static override get styles() {

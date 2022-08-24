@@ -15,10 +15,10 @@ export class PageField extends PageComponent {
 				}
 				.error{
 					color: var(--mo-color-error);
-				} 
+				}
 			</style>
 			<mo-page heading='Field' fullHeight>
-				<mo-grid columnGap='var(--mo-thickness-xl)' rowGap='var(--mo-thickness-xl)' height='*' width='100%' columns='* *'>
+				<mo-grid gap='var(--mo-thickness-xl)' columns='* *' ${style({ width: '100%', height: '*' })}>
 					<mo-flex>
 						<mo-card heading='Textfelder'>
 							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder'>
@@ -46,13 +46,13 @@ export class PageField extends PageComponent {
 									<mo-field-email label="E-Mail readonly" readonly></mo-field-email>
 									<mo-field-email label="E-Mail required" required></mo-field-email>
 									<mo-field-email label="E-Mail error" error></mo-field-email>
-								
+
 								</mo-grid>
 							</mo-section>
 
 							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder mit Icons'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>
-																		
+
 									<mo-field-amount label='Betrag'></mo-field-amount>
 									<mo-field-amount label='Betrag disabled' disabled></mo-field-amount>
 									<mo-field-amount label='Betrag readonly' readonly></mo-field-amount>
@@ -157,7 +157,7 @@ export class PageField extends PageComponent {
 										<mo-icon icon='person_add' slot='trailing'></mo-icon>
 									</mo-field-text>
 
-									
+
 								</mo-grid>
 							</mo-section>
 
@@ -180,7 +180,7 @@ export class PageField extends PageComponent {
 									<mo-field-password label='Passwort readonly' readonly dense></mo-field-password>
 									<mo-field-password label='Passwort required' required dense></mo-field-password>
 									<mo-field-password label='Passwort error' error dense></mo-field-password>
-									
+
 								</mo-grid>
 							</mo-section>
 						</mo-card>

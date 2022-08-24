@@ -2,30 +2,25 @@
 /* eslint-disable import/no-internal-modules */
 /* eslint-disable import/no-unresolved */
 import { property } from 'lit/decorators.js'
+import { LitElement } from 'lit'
 import * as CSS from 'csstype'
 import { CssHelper } from '../..'
 
+const displayBeforeHiddenKey = Symbol('displayBeforeHidden')
+
+property({ type: Boolean })(LitElement.prototype, 'hidden')
+Object.defineProperty(LitElement.prototype, 'hidden', {
+	get(this: LitElement) { return this.style.display === 'none' },
+	set(this: LitElement, value: boolean) {
+		if (value) {
+			(this as any).displayBeforeHiddenKey = this.style.display
+		}
+		this.style.display = value ? 'none' : (this as any)[displayBeforeHiddenKey] ?? ''
+	}
+})
+
 export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Constructor: T) => {
 	abstract class StyleMixinConstructor extends Constructor {
-		@property()
-		get display() { return this.style.display as CSS.Property.Display }
-		set display(value) { this.style.display = value }
-
-		private displayBeforeHidden?: CSS.Property.Display
-
-		@property({ type: Boolean })
-		override get hidden() { return this.display === 'none' }
-		override set hidden(value) {
-			if (value) {
-				this.displayBeforeHidden = this.display
-			}
-			this.display = value ? 'none' : this.displayBeforeHidden ?? ''
-		}
-
-		@property()
-		get opacity() { return this.style.opacity as CSS.Property.Opacity }
-		set opacity(value) { this.style.opacity = value.toString() }
-
 		@property()
 		get position() { return this.style.position as CSS.Property.Position }
 		set position(value) { this.style.position = value }
@@ -39,14 +34,10 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set padding(value) { this.style.padding = value }
 
 		@property()
-		get cursor() { return this.style.cursor as CSS.Property.Cursor }
-		set cursor(value) { this.style.cursor = value }
-
-		@property()
 		get width() { return this.style.width as CSS.Property.Width<string> }
 		set width(value) {
 			if (CssHelper.isAsteriskSyntax(value)) {
-				this.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
+				this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
 				return
 			}
 			this.style.width = value
@@ -64,7 +55,7 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		get height() { return this.style.height as CSS.Property.Height<string> }
 		set height(value) {
 			if (CssHelper.isAsteriskSyntax(value)) {
-				this.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
+				this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
 				return
 			}
 			this.style.height = value
@@ -87,18 +78,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set fontWeight(value) { this.style.fontWeight = value.toString() }
 
 		@property()
-		get lineHeight() { return this.style.lineHeight as CSS.Property.LineHeight<string> }
-		set lineHeight(value) { this.style.lineHeight = value.toString() }
-
-		@property()
-		get flexGrow() { return this.style.flexGrow as CSS.Property.FlexGrow | (string | {}) }
-		set flexGrow(value) { this.style.flex = `${value} 0 0` }
-
-		@property()
-		get flexBasis() { return this.style.flexBasis as CSS.Property.FlexBasis<string> }
-		set flexBasis(value) { this.style.flexBasis = value }
-
-		@property()
 		get gridRow() { return this.style.gridRow as CSS.Property.GridRow }
 		set gridRow(value) { this.style.gridRow = value.toString() }
 
@@ -115,10 +94,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set border(value) { this.style.border = value }
 
 		@property()
-		get borderRadius() { return this.style.borderRadius as CSS.Property.BorderRadius<string> }
-		set borderRadius(value) { this.style.borderRadius = value }
-
-		@property()
 		get background() { return this.style.background as CSS.Property.Background<string> }
 		set background(value) { this.style.background = value }
 
@@ -131,20 +106,8 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set justifyContent(value) { this.style.justifyContent = value }
 
 		@property()
-		get justifyItems() { return this.style.justifyItems as CSS.Property.JustifyItems }
-		set justifyItems(value) { this.style.justifyItems = value }
-
-		@property()
-		get alignContent() { return this.style.alignContent as CSS.Property.AlignContent }
-		set alignContent(value) { this.style.alignContent = value }
-
-		@property()
 		get alignItems() { return this.style.alignItems as CSS.Property.AlignItems }
 		set alignItems(value) { this.style.alignItems = value }
-
-		@property()
-		get userSelect() { return this.style.userSelect as CSS.Property.UserSelect }
-		set userSelect(value) { this.style.userSelect = value }
 	}
 	return StyleMixinConstructor
 }

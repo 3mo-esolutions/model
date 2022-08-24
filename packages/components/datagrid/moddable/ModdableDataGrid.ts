@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { css, html, nothing, property, event } from '../../../library'
+import { css, html, nothing, property, event, style } from '../../../library'
 import { ContextMenuHost } from '../../../shell'
 import { LocalStorageEntry } from '../../../utilities'
 import { DataGrid, FetchableDataGridParametersType, FetchableDataGrid } from '..'
@@ -118,7 +118,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 		`
 		return html`
 			<mo-flex width='*' direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)'>
-				<mo-scroll maxWidth='calc(100% - 40px)' overflow='auto hidden'>
+				<mo-scroll maxWidth='calc(100% - 40px)' ${style({ overflow: 'auto hidden' })}>
 					<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
 						${this.modes.map(getModeChipTemplate)}
 						${this.temporarySelectedModeTab}

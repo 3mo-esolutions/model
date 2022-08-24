@@ -1,4 +1,4 @@
-import { component, Component, css, html, ifDefined, property, event, join } from '../../library'
+import { component, Component, css, html, ifDefined, property, event, join, style } from '../../library'
 import { Checkbox } from '..'
 import { DataGridSelectionMode, DataGridSortingStrategy, ColumnDefinition, DataGrid, DataGridSidePanelTab } from '.'
 
@@ -97,7 +97,7 @@ export class DataGridHeader<TData> extends Component {
 			<mo-flex justifyContent='center' alignItems='center' ?hidden=${this.dataGrid.hasDetails === false}>
 				<mo-icon-button small margin='-10px 0px 0 -10px'
 					?hidden=${(this.dataGrid.hasDetails && this.dataGrid.multipleDetails) === false}
-					display='inherit'
+					${style({ display: 'inherit' })}
 					icon=${this.areAllDetailsOpen ? 'unfold_less' : 'unfold_more'}
 					@click=${() => this.toggleAllDetails()}
 				></mo-icon-button>
@@ -135,23 +135,14 @@ export class DataGridHeader<TData> extends Component {
 			: this.dataGrid.sorting.strategy === DataGridSortingStrategy.Ascending ? 'arrow_upward' : 'arrow_downward'
 
 		return html`
-			<mo-flex
-				style='overflow: hidden'
-				position='relative'
-				cursor='pointer'
-				direction=${column.alignment === 'right' ? 'horizontal-reversed' : 'horizontal'}
-				userSelect='none'
+			<mo-flex direction=${column.alignment === 'right' ? 'horizontal-reversed' : 'horizontal'}
+				${style({ overflow: 'hidden', position: 'relative', cursor: 'pointer', userSelect: 'none' })}
 				@click=${() => this.sort(column)}
 			>
-				<mo-div class='headerContent' width='100%'
-					textAlign=${ifDefined(column.alignment)}
-					title=${column.title || column.heading}
-				>${column.heading}</mo-div>
+				<mo-div class='headerContent' ${style({ width: '100%', textAlign: column.alignment })} title=${column.title || column.heading}>${column.heading}</mo-div>
 
 				<mo-icon
-					foreground='var(--mo-accent)'
-					margin='0 3px 3px 3px'
-					lineHeight='calc(var(--mo-data-grid-header-height) - 3px)'
+					${style({ color: 'var(--mo-accent)', margin: '0 3px 3px 3px', lineHeight: 'calc(var(--mo-data-grid-header-height) - 3px)' })}
 					?hidden=${sortIcon === undefined}
 					icon=${ifDefined(sortIcon)}
 				></mo-icon>
@@ -161,7 +152,7 @@ export class DataGridHeader<TData> extends Component {
 
 	private get moreTemplate() {
 		return html`
-			<mo-flex position='relative' alignItems='center' justifyContent='center' margin='0px 8px 0px 0px' cursor='pointer'
+			<mo-flex alignItems='center' justifyContent='center' ${style({ margin: '0px 8px 0px 0px', cursor: 'pointer', position: 'relative' })}
 				?hidden=${this.dataGrid.hasToolbar || this.dataGrid.sidePanelHidden || this.dataGrid.isSubDataGrid}
 			>
 				<mo-icon-button small foreground='var(--mo-accent)' fontSize='var(--mo-font-size-l)' icon='settings'

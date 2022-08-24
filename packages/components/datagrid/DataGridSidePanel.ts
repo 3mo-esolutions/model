@@ -1,6 +1,6 @@
 import { component, Component, css, html, ifDefined, property } from '../../library'
 import { Localizer } from '../../localization'
-import { Checkbox } from '../..'
+import { Checkbox, style } from '../..'
 import { ColumnDefinition } from './ColumnDefinition'
 import { DataGrid } from './DataGrid'
 
@@ -82,8 +82,8 @@ export class DataGridSidePanel<TData> extends Component {
 				</mo-tab-bar>
 
 				<mo-flex id='flexHeading' direction='horizontal' alignItems='center' ?hidden=${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true}>
-					<mo-heading width='*' typography='heading6' foreground='var(--mo-color-on-surface)'>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Filters' : 'Settings')}</mo-heading>
-					<mo-icon-button icon='close' small cursor='pointer' foreground='var(--mo-color-gray)' @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
+					<mo-heading width='*' typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Filters' : 'Settings')}</mo-heading>
+					<mo-icon-button icon='close' small ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
 				</mo-flex>
 
 				<mo-scroll height='*'>

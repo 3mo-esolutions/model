@@ -1,4 +1,4 @@
-import { component, html, property } from '../../../library'
+import { component, html, property, style } from '../../../library'
 import { MaterialIcon } from '../..'
 import { DataGridColumn } from '.'
 
@@ -13,7 +13,7 @@ export class DataGridColumnBoolean<TData> extends DataGridColumn<TData, boolean>
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	getContentTemplate(value: boolean | undefined, _data: TData) {
 		return html`
-			<mo-icon foreground=${value ? this.trueIconColor : this.falseIconColor} icon=${value ? this.trueIcon : this.falseIcon}></mo-icon>
+			<mo-icon icon=${value ? this.trueIcon : this.falseIcon} ${style({ color: value ? this.trueIconColor : this.falseIconColor })}></mo-icon>
 		`
 	}
 

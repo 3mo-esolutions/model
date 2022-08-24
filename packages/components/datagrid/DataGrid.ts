@@ -1,4 +1,4 @@
-import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll } from '../../library'
+import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style } from '../../library'
 import { ContextMenuHost, NotificationHost } from '../../shell'
 import { observeMutation, LocalStorageEntry, SlotController, ExcelHelper, observeResize } from '../../utilities'
 import { Localizer } from '../../localization'
@@ -556,9 +556,9 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.provideCssColumnsProperties()
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return !this.isSubDataGrid && !this.preventContentScroll ? html`
-			<mo-grid height='*' rows='* auto'>
+			<mo-grid ${style({ height: '*' })} rows='* auto'>
 				<mo-scroll>
-					<mo-grid height='100%' rows='auto *'>
+					<mo-grid ${style({ height: '100%' })} rows='auto *'>
 						${this.headerTemplate}
 						${this.rowsTemplate}
 					</mo-grid>
@@ -566,7 +566,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				${this.footerTemplate}
 			</mo-grid>
 		` : html`
-			<mo-grid height='*' rows='auto * auto'>
+			<mo-grid ${style({ height: '*' })} rows='auto * auto'>
 				${this.headerTemplate}
 				${this.rowsTemplate}
 				${this.footerTemplate}
@@ -643,7 +643,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					</mo-div>
 					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
 						<mo-div width='*'>${_('Options')}</mo-div>
-						<mo-icon-button small icon='arrow_drop_down' display='flex' alignItems='center' justifyContent='center'></mo-icon-button>
+						<mo-icon-button small icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
 					</mo-flex>
 					<mo-div width='*'></mo-div>
 					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>

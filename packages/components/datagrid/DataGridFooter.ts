@@ -1,5 +1,5 @@
 import { component, property, Component, css, state, html, nothing, event, query, ifDefined } from '../../library'
-import { FieldNumber } from '../..'
+import { FieldNumber, style } from '../..'
 import { ColumnDefinition, DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
 /**
@@ -99,8 +99,8 @@ export class DataGridFooter<TData> extends Component {
 					@click=${() => this.setPage(this.page - 1)}
 				></mo-icon-button>
 
-				<mo-div cursor='pointer' width=${hasUnknownDataLength ? '40px' : '75px'} textAlign='center'>
-					<mo-div fontSize='var(--mo-font-size-s)'
+				<mo-div ${style({ cursor: 'pointer', width: hasUnknownDataLength ? '40px' : '75px', textAlign: 'center' })}>
+					<mo-div ${style({ fontSize: 'var(--mo-font-size-s)' })}
 						?hidden=${this.manualPagination === true}
 						@click=${() => this.manualPagination = hasUnknownDataLength === false}
 					>${pageText}</mo-div>
@@ -122,10 +122,10 @@ export class DataGridFooter<TData> extends Component {
 				></mo-icon-button>
 			</mo-flex>
 
-			<mo-div width='1px' height='50%' background='var(--mo-color-transparent-gray-3)'></mo-div>
+			<mo-div width='1px' height='50%' ${style({ background: 'var(--mo-color-transparent-gray-3)' })}></mo-div>
 
-			<mo-div foreground='var(--mo-color-gray)' margin='0 0 0 var(--mo-thickness-l)'>
-				<mo-div fontSize='var(--mo-font-size-s)'
+			<mo-div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
+				<mo-div ${style({ fontSize: 'var(--mo-font-size-s)' })}
 					?hidden=${this.manualPageSize === true}
 					@click=${() => this.manualPageSize = true}
 				>${pageSizeText}</mo-div>

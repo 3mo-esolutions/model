@@ -1,4 +1,4 @@
-import { Component, css, component, html, state, nothing, property, query, classMap } from '../../../library'
+import { Component, css, component, html, state, nothing, property, query, classMap, style } from '../../../library'
 import { Flex } from '../..'
 
 @component('mo-calendar')
@@ -111,8 +111,7 @@ export class Calendar extends Component {
 			<mo-grid class='month'
 				rows='repeat(auto-fill, var(--mo-calendar-day-size))'
 				columns=${this.includeWeekNumbers ? 'var(--mo-calendar-week-number-width) repeat(7, var(--mo-calendar-day-size))' : 'repeat(7, var(--mo-calendar-day-size))'}
-				alignItems='center'
-				justifyItems='center'
+				${style({ alignItems: 'center', justifyItems: 'center' })}
 			>
 				${this.includeWeekNumbers === false ? nothing : html`<mo-div></mo-div>`}
 

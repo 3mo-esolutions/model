@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, property, html, ifDefined } from '../../library'
+import { component, property, html, ifDefined, style } from '../../library'
 import { PageComponent, DialogComponent, RouteMatchMode, PageHost } from '..'
 import { ListItem } from '../../components'
 
@@ -61,7 +61,7 @@ export class NavigationListItem extends ListItem {
 
 	protected override renderGraphic = () => html`
 		<span class='mdc-deprecated-list-item__graphic'>
-			<mo-icon icon=${ifDefined(this.icon)} opacity='0.75'></mo-icon>
+			<mo-icon icon=${ifDefined(this.icon)} ${style({ opacity: '0.75' })}></mo-icon>
 		</span>
 	`
 }

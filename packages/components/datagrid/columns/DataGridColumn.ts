@@ -12,7 +12,6 @@ export abstract class DataGridColumn<TData, TValue> extends Component {
 	@property({ type: Boolean, reflect: true }) nonEditable = false
 
 	@property({ type: Boolean })
-	// @ts-expect-error For some reason the hidden getter is not recognized.
 	override get hidden() { return super.hidden }
 	override set hidden(value: boolean) {
 		super.hidden = value

@@ -1,4 +1,4 @@
-import { render, query, css, html, event, CSSResult, property } from '../../library'
+import { render, query, css, html, event, CSSResult, property, style } from '../../library'
 import { MaterialIcon } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
@@ -61,7 +61,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 			}
 
 			await this.updateComplete
-			render(html`<mo-icon icon=${this.icon} foreground='var(--mo-list-item-icon-color)' opacity='0.75'></mo-icon>`, this.graphicSlot)
+			render(html`<mo-icon icon=${this.icon} ${style({ color: 'var(--mo-list-item-icon-color)', opacity: '0.75' })}></mo-icon>`, this.graphicSlot)
 		}
 
 		private async renderMetaIcon() {
@@ -76,7 +76,7 @@ export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T
 				return
 			}
 
-			render(html`<mo-icon icon=${this.metaIcon} foreground='var(--mo-list-item-meta-icon-color)' opacity='0.75'></mo-icon>`, this.metaSlot)
+			render(html`<mo-icon icon=${this.metaIcon} ${style({ color: 'var(--mo-list-item-meta-icon-color)', opacity: '0.75' })}></mo-icon>`, this.metaSlot)
 		}
 	}
 	return ListItemMixinConstructor
