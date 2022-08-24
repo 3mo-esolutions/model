@@ -7,6 +7,22 @@ export class LoadingButton extends Button {
 	@property({ type: Boolean }) preventClickEventInference = false
 	@property({ type: Boolean, reflect: true }) loading = false
 
+	private readonly eventHandlers = new Array<{ readonly name: string, readonly eventListener: EventListenerOrEventListenerObject }>()
+
+	override addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) {
+		this.eventHandlers.push({ name: type, eventListener: listener })
+		super.addEventListener(type, listener, options)
+	}
+
+	override removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions) {
+		this.eventHandlers.forEach(({ eventListener, name }, i) => {
+			if (name === type && eventListener === listener) {
+				delete this.eventHandlers[i]
+			}
+		})
+		super.removeEventListener(type, listener, options)
+	}
+
 	protected override initialized(): void {
 		this.buttonElement.addEventListener('click', this.clickHandler)
 	}
