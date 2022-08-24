@@ -2,6 +2,7 @@
 import { css, html, nothing, property, event, style } from '@a11d/lit'
 import { LocalStorageEntry } from '@a11d/lit-application'
 import { ContextMenuHost } from '../../../shell'
+import { tooltip } from '../../..'
 import { DataGrid, FetchableDataGridParametersType, FetchableDataGrid } from '..'
 import { DialogDataGridMode, Mode, ModeRepository, sortable } from '.'
 
@@ -166,7 +167,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	protected override get toolbarActionsTemplate() {
 		return html`
-			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode}></mo-icon-button>`}
+			<mo-icon-button icon='visibility' ?hidden=${this.hasModebar} @click=${this.createNewMode} ${tooltip(this, _('New Mode'))}></mo-icon-button>
 			${super.toolbarActionsTemplate}
 		`
 	}

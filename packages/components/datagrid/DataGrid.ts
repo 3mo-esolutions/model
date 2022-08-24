@@ -7,6 +7,7 @@ import { ContextMenuHost } from '../../shell'
 import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
+import { tooltip } from '../tooltip'
 
 Localizer.register(LanguageCode.English, {
 	'${count:pluralityNumber} entries selected': [
@@ -733,8 +734,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				></mo-icon-button>
 			`}
 
+<<<<<<< HEAD
 			<mo-icon-button icon='settings'
 				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
+=======
+			<mo-icon-button
+				${tooltip(this, _('Settings'))}
+				icon='settings'
+				foreground=${this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}
+>>>>>>> 732bb04 ([PoC])
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>
 		`
