@@ -1,4 +1,4 @@
-import { component, css, Component, html, property, ifDefined, nothing } from '../library'
+import { component, css, Component, html, property, ifDefined, nothing, style } from '../library'
 import { MaterialIcon } from '.'
 
 export const enum AlertType {
@@ -100,7 +100,7 @@ export class Alert extends Component {
 	protected get iconTemplate() {
 		return html`
 			<mo-icon
-				alignSelf=${this.collapsible ? 'center' : 'start'}
+				${style({ alignSelf: this.collapsible ? 'center' : 'start' })}
 				icon=${ifDefined(Alert.iconByType.get(this.type))}
 			></mo-icon>
 		`
@@ -114,7 +114,7 @@ export class Alert extends Component {
 
 	protected get expandIconTemplate() {
 		return !this.isCollapsible ? nothing : html`
-			<mo-icon-button small alignSelf='center'
+			<mo-icon-button small ${style({ alignSelf: 'center' })}
 				icon=${this.open ? 'expand_less' : 'expand_more'}
 				@click=${() => this.open = !this.open}
 			></mo-icon-button>

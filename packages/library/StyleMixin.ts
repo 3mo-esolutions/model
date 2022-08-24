@@ -151,20 +151,12 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set justifyItems(value) { this.style.justifyItems = value }
 
 		@property()
-		get justifySelf() { return this.style.justifySelf as CSS.Property.JustifySelf }
-		set justifySelf(value) { this.style.justifySelf = value }
-
-		@property()
 		get alignContent() { return this.style.alignContent as CSS.Property.AlignContent }
 		set alignContent(value) { this.style.alignContent = value }
 
 		@property()
 		get alignItems() { return this.style.alignItems as CSS.Property.AlignItems }
 		set alignItems(value) { this.style.alignItems = value }
-
-		@property()
-		get alignSelf() { return this.style.alignSelf as CSS.Property.AlignSelf }
-		set alignSelf(value) { this.style.alignSelf = value }
 
 		@property()
 		get userSelect() { return this.style.userSelect as CSS.Property.UserSelect }
