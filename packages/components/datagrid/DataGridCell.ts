@@ -1,4 +1,4 @@
-import { component, Component, html, property, nothing, css } from '../../library'
+import { component, Component, html, property, nothing, css, style } from '../../library'
 import { Localizer } from '../../../localization'
 import { NotificationHost } from '../../../shell'
 import { ColumnDefinition, DataGridRow } from '.'
@@ -116,8 +116,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 		return !window.isSecureContext ? nothing : html`
 			<mo-icon-button id='copyIconButton' icon='copy' small
 				title=${`${this.column.heading} kopieren`}
-				right=${this.column.alignment === 'right' ? 'unset' : '4px'}
-				left=${this.column.alignment !== 'right' ? 'unset' : '4px'}
+				${style({ right: this.column.alignment === 'right' ? 'unset' : '4px', left: this.column.alignment !== 'right' ? 'unset' : '4px' })}
 				@click=${this.copyIconButtonClick}
 			></mo-icon-button>
 		`

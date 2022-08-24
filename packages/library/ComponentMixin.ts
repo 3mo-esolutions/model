@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues } from 'lit'
+import { LitElement, PropertyValues } from '@a11d/lit'
 import { StyleMixin } from '.'
 
 export const ComponentMixin = <T extends AbstractConstructor<LitElement>>(Constructor: T) => {

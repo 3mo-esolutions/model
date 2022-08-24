@@ -1,4 +1,4 @@
-import { html, component, Component, css, property, eventListener } from '../../library'
+import { html, component, Component, css, property, eventListener, style } from '../../library'
 import { Fab } from '.'
 
 @component('mo-fab-group')
@@ -63,7 +63,7 @@ export class FabGroup extends Component {
 				@click=${this.handleClick}
 			></mo-fab>
 
-			<mo-div position='absolute' bottom='0' right='0'>
+			<mo-div ${style({ position: 'absolute', bottom: '0', right: '0' })}>
 				<mo-flex direction='vertical-reversed' alignItems='end' gap='8px'>
 					<slot @slotchange=${() => this.updateFabElements()}></slot>
 				</mo-flex>

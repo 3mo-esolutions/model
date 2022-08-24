@@ -79,22 +79,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		set maxHeight(value) { this.style.maxHeight = value }
 
 		@property()
-		get right() { return this.style.right as CSS.Property.Right<string> }
-		set right(value) { this.style.right = value }
-
-		@property()
-		get left() { return this.style.left as CSS.Property.Left<string> }
-		set left(value) { this.style.left = value }
-
-		@property()
-		get top() { return this.style.top as CSS.Property.Top<string> }
-		set top(value) { this.style.top = value }
-
-		@property()
-		get bottom() { return this.style.bottom as CSS.Property.Bottom<string> }
-		set bottom(value) { this.style.bottom = value }
-
-		@property()
 		get fontSize() { return this.style.fontSize as CSS.Property.FontSize<string> }
 		set fontSize(value) { this.style.fontSize = value }
 

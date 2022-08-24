@@ -30,14 +30,14 @@ export class ContextMenuItem extends ListItem {
 			const totalRightDistance = document.documentElement.scrollWidth - selfBoundingRect.right
 			const totalLeftDistance = selfBoundingRect.left
 			const shallBeAttachedLeft = flexBoundingRect.width > totalRightDistance && totalLeftDistance > totalRightDistance
-			this.flexDetails.left = shallBeAttachedLeft ? '' : '100%'
-			this.flexDetails.right = shallBeAttachedLeft ? '100%' : ''
+			this.flexDetails.style.left = shallBeAttachedLeft ? '' : '100%'
+			this.flexDetails.style.right = shallBeAttachedLeft ? '100%' : ''
 
 			const totalBottomDistance = document.documentElement.scrollHeight - selfBoundingRect.bottom
 			const totalTopDistance = selfBoundingRect.top
 			const shallBeOpenedTop = flexBoundingRect.height > totalBottomDistance && totalTopDistance > totalBottomDistance
-			this.flexDetails.top = shallBeOpenedTop ? '' : '0px'
-			this.flexDetails.bottom = shallBeOpenedTop ? '0px' : ''
+			this.flexDetails.style.top = shallBeOpenedTop ? '' : '0px'
+			this.flexDetails.style.bottom = shallBeOpenedTop ? '0px' : ''
 		}
 	}) open = false
 
