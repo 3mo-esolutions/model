@@ -1,42 +1,20 @@
-import { component, html, property, Component, css } from '../../library'
+import { component, html, property, css } from '../../library'
 import { CSSDirection } from '..'
 import type * as CSS from 'csstype'
+import { LayoutComponent } from './LayoutComponent'
 
 @component('mo-flex')
-export class Flex extends Component {
-	@property()
-	get flexDirection() { return this.style.flexDirection as CSS.Property.FlexDirection }
-	set flexDirection(value) { this.style.flexDirection = value }
+export class Flex extends LayoutComponent {
+	private static readonly flexDirectionByDirections = new Map<CSSDirection, string>([
+		['horizontal', 'row'],
+		['horizontal-reversed', 'row-reverse'],
+		['vertical', 'column'],
+		['vertical-reversed', 'column-reverse'],
+	])
 
 	@property()
-	get direction(): CSSDirection {
-		switch (this.flexDirection) {
-			case 'column-reverse':
-				return 'vertical-reversed'
-			case 'row-reverse':
-				return 'horizontal-reversed'
-			case 'row':
-				return 'horizontal'
-			default:
-				return 'vertical'
-		}
-	}
-	set direction(value) {
-		switch (value) {
-			case 'horizontal':
-				this.flexDirection = 'row'
-				break
-			case 'vertical':
-				this.flexDirection = 'column'
-				break
-			case 'horizontal-reversed':
-				this.flexDirection = 'row-reverse'
-				break
-			case 'vertical-reversed':
-				this.flexDirection = 'column-reverse'
-				break
-		}
-	}
+	get direction() { return [...Flex.flexDirectionByDirections].find(([, flexDirection]) => this.style.flexDirection === flexDirection)?.[0] || 'vertical' }
+	set direction(value) { this.style.flexDirection = Flex.flexDirectionByDirections.get(value) || 'column' }
 
 	@property()
 	get wrap() { return this.style.flexWrap as CSS.Property.FlexWrap }

@@ -1,8 +1,11 @@
-import { component, html, property, Component, css } from '../../library'
+import { component, html, css, property } from '../../library'
 import type * as CSS from 'csstype'
+import { LayoutComponent } from './LayoutComponent'
 
 @component('mo-grid')
-export class Grid extends Component {
+export class Grid extends LayoutComponent {
+	private static readonly asteriskSyntaxConverter = (value: unknown) => ` ${value}`.split('*').join('fr').split(' fr').join(' 1fr').substring(1)
+
 	@property()
 	get rowGap() { return this.style.rowGap as CSS.Property.RowGap<string> }
 	set rowGap(value) { this.style.rowGap = value }
@@ -16,12 +19,12 @@ export class Grid extends Component {
 	set gap(value) { this.style.gap = value }
 
 	@property()
-	get rows() { return this.style.gridTemplateRows.split('fr').join('*') }
+	get rows() { return this.style.gridTemplateRows }
 	set rows(value) { this.style.gridTemplateRows = ` ${value}`.split('*').join('fr').split(' fr').join(' 1fr').substring(1) }
 
 	@property()
-	get columns() { return this.style.gridTemplateColumns.split('fr').join('*') }
-	set columns(value) { this.style.gridTemplateColumns = ` ${value}`.split('*').join('fr').split(' fr').join(' 1fr').substring(1) }
+	get columns() { return this.style.gridTemplateColumns }
+	set columns(value) { this.style.gridTemplateColumns = Grid.asteriskSyntaxConverter(value) }
 
 	@property()
 	get autoRows() { return this.style.gridAutoRows as CSS.Property.GridAutoRows<string> }
