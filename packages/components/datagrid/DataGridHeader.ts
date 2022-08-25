@@ -108,7 +108,7 @@ export class DataGridHeader<TData> extends Component {
 	private get selectionTemplate() {
 		return html`
 			<mo-flex justifyContent='center' alignItems='center' ?hidden=${this.dataGrid.hasSelection === false}>
-				<mo-checkbox position='absolute' reducedTouchTarget value=${this.selection}
+				<mo-checkbox ${style({ position: 'absolute' })} reducedTouchTarget value=${this.selection}
 					?hidden=${this.dataGrid.selectionMode !== DataGridSelectionMode.Multiple}
 					@change=${this.handleSelectionChange}
 				></mo-checkbox>

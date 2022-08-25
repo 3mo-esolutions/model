@@ -1,4 +1,4 @@
-import { Component, component, css, html, property } from '../../library'
+import { Component, component, css, html, property, style } from '../../library'
 import { CSSDirection } from '../helpers'
 import type * as CSS from 'csstype'
 import { SlotController } from '../../utilities'
@@ -32,7 +32,7 @@ export class Section extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex width='100%' height='100%' gap='var(--mo-thickness-l)'>
-				<mo-flex minHeight='30px' direction='horizontal' alignItems='center'>
+				<mo-flex direction='horizontal' alignItems='center' ${style({ minHeight: '30px' })}>
 					<slot name='heading'>
 						${this.headingTemplate}
 					</slot>

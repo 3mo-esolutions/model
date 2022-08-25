@@ -514,8 +514,8 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					</mo-splitter-item>
 				`}
 
-				<mo-splitter-item position='relative'>
-					<mo-flex width='*' position='relative'>
+				<mo-splitter-item ${style({ position: 'relative' })}>
+					<mo-flex width='*' ${style({ position: 'relative' })}>
 						<!-- Do not try to cache the content via "cache" directive as it is problematic for virtualized DataGrids -->
 						${this.contentTemplate}
 						<mo-flex id='flexFab' direction='vertical-reversed' gap='var(--mo-thickness-l)'>

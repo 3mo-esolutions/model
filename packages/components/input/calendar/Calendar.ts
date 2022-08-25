@@ -87,7 +87,7 @@ export class Calendar extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex width='var(--mo-calendar-max-width)' minHeight='var(--mo-calendar-min-height)' alignItems='center' justifyContent='center'>
+			<mo-flex alignItems='center' justifyContent='center' ${style({ width: 'var(--mo-calendar-max-width)', minHeight: 'var(--mo-calendar-min-height)' })}>
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' width='100%'>
 					<mo-icon-button icon='keyboard_arrow_left'
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}

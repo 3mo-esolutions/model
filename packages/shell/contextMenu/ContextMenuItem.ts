@@ -1,4 +1,4 @@
-import { component, css, property, html, PropertyValues, event, query } from '../../library'
+import { component, css, property, html, PropertyValues, event, query, style } from '../../library'
 import { Flex, ListItem, Menu } from '../../components'
 import { ContextMenu } from '..'
 
@@ -110,7 +110,7 @@ export class ContextMenuItem extends ListItem {
 	override render() {
 		return html`
 			${super.render()}
-			<mo-flex position='absolute'>
+			<mo-flex ${style({ position: 'absolute' })}>
 				<slot name='details'></slot>
 			</mo-flex>
 		`

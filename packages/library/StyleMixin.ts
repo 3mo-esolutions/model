@@ -22,10 +22,6 @@ Object.defineProperty(LitElement.prototype, 'hidden', {
 export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Constructor: T) => {
 	abstract class StyleMixinConstructor extends Constructor {
 		@property()
-		get position() { return this.style.position as CSS.Property.Position }
-		set position(value) { this.style.position = value }
-
-		@property()
 		get margin() { return this.style.margin as CSS.Property.Margin<string> }
 		set margin(value) { this.style.margin = value }
 
@@ -44,14 +40,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		}
 
 		@property()
-		get minWidth() { return this.style.minWidth as CSS.Property.MinWidth<string> }
-		set minWidth(value) { this.style.minWidth = value }
-
-		@property()
-		get maxWidth() { return this.style.maxWidth as CSS.Property.MaxWidth<string> }
-		set maxWidth(value) { this.style.maxWidth = value }
-
-		@property()
 		get height() { return this.style.height as CSS.Property.Height<string> }
 		set height(value) {
 			if (CssHelper.isAsteriskSyntax(value)) {
@@ -60,14 +48,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 			}
 			this.style.height = value
 		}
-
-		@property()
-		get minHeight() { return this.style.minHeight as CSS.Property.MinHeight<string> }
-		set minHeight(value) { this.style.minHeight = value }
-
-		@property()
-		get maxHeight() { return this.style.maxHeight as CSS.Property.MaxHeight<string> }
-		set maxHeight(value) { this.style.maxHeight = value }
 
 		@property()
 		get fontSize() { return this.style.fontSize as CSS.Property.FontSize<string> }
@@ -88,10 +68,6 @@ export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Construct
 		@property()
 		get textAlign() { return this.style.textAlign as CSS.Property.TextAlign | (string & {}) }
 		set textAlign(value) { this.style.textAlign = value }
-
-		@property()
-		get border() { return this.style.border as CSS.Property.Border<string> }
-		set border(value) { this.style.border = value }
 
 		@property()
 		get background() { return this.style.background as CSS.Property.Background<string> }

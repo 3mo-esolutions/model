@@ -118,7 +118,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 		`
 		return html`
 			<mo-flex width='*' direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)'>
-				<mo-scroll maxWidth='calc(100% - 40px)' ${style({ overflow: 'auto hidden' })}>
+				<mo-scroll ${style({ overflow: 'auto hidden', maxWidth: 'calc(100% - 40px)' })}>
 					<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
 						${this.modes.map(getModeChipTemplate)}
 						${this.temporarySelectedModeTab}

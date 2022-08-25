@@ -2,7 +2,7 @@ import { html, css, state, nothing } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
 import { NotificationHost, User } from '..'
-import { Localizer } from '../..'
+import { Localizer, style } from '../..'
 
 Localizer.register(LanguageCode.German, {
 	'Authenticated successfully': 'Erfolgreich authentifiziert',
@@ -140,9 +140,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			<mo-dialog blocking primaryOnEnter>
 				<mo-loading-button slot='primaryAction' justifyContent='center' type='raised'>${this.primaryButtonText}</mo-loading-button>
 				${this.additionalTemplate}
-				<mo-flex alignItems='center' minWidth='350px'>
+				<mo-flex alignItems='center' ${style({ minWidth: '350px' })}>
 					${this.headerTemplate}
-					<mo-flex height='*' width='100%' minHeight='250px' alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)'>
+					<mo-flex alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)' ${style({ height: '*', width: '100%', minHeight: '250px' })}>
 						${this.contentTemplate}
 					</mo-flex>
 				</mo-flex>
