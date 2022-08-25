@@ -19,6 +19,7 @@ export class Tooltip extends Component {
 	@property({ type: Boolean, reflect: true }) protected visible = false
 	private hover = false
 	private anchorHover = false
+	private anchorFocused = false
 
 	constructor(anchor?: Element) {
 		super()
@@ -29,33 +30,52 @@ export class Tooltip extends Component {
 	protected handlePointerEnter() {
 		if (this.anchorHover) {
 			this.hover = true
-			this.updateVisibilityAndNotifyOthers()
+			this.updatePositionAndVisibility()
 		}
 	}
 
 	@eventListener('pointerleave')
 	protected handlePointerLeave() {
 		this.hover = false
-		this.updateVisibilityAndNotifyOthers()
+		this.updatePositionAndVisibility()
 	}
 
 	override connected() {
 		Tooltip.instancesContainer.add(this)
+		this.anchor?.addEventListener<any>('focus', this.handleAnchorFocus)
+		this.anchor?.addEventListener<any>('blur', this.handleAnchorBlur)
 		this.anchor?.addEventListener<any>('pointerenter', this.handleAnchorPointerEnter)
 		this.anchor?.addEventListener<any>('pointermove', this.handleAnchorPointerMove)
 		this.anchor?.addEventListener<any>('pointerleave', this.handleAnchorPointerLeave)
+		this.anchor?.addEventListener<any>('pointerup', this.handleAnchorPointerLeave)
+		this.anchor?.addEventListener<any>('click', this.handleAnchorPointerLeave)
 	}
 
 	override disconnected() {
 		Tooltip.instancesContainer.delete(this)
+		this.anchor?.removeEventListener<any>('focus', this.handleAnchorFocus)
+		this.anchor?.removeEventListener<any>('blur', this.handleAnchorBlur)
 		this.anchor?.removeEventListener<any>('pointerenter', this.handleAnchorPointerEnter)
 		this.anchor?.removeEventListener<any>('pointermove', this.handleAnchorPointerMove)
 		this.anchor?.removeEventListener<any>('pointerleave', this.handleAnchorPointerLeave)
+		this.anchor?.removeEventListener<any>('pointerend', this.handleAnchorPointerLeave)
+	}
+
+	private readonly handleAnchorFocus = (e: any) => {
+		if (e.sourceCapabilities?.firesTouchEvents) {
+			this.anchorFocused = true
+			this.updatePositionAndVisibility()
+		}
+	}
+
+	private readonly handleAnchorBlur = () => {
+		this.anchorFocused = false
+		this.updatePositionAndVisibility()
 	}
 
 	private readonly handleAnchorPointerEnter = () => {
 		this.anchorHover = true
-		this.updateVisibilityAndNotifyOthers()
+		this.updatePositionAndVisibility()
 	}
 
 	private readonly handleAnchorPointerMove = () => {
@@ -64,21 +84,23 @@ export class Tooltip extends Component {
 
 	private readonly handleAnchorPointerLeave = () => {
 		this.anchorHover = false
-		this.updateVisibilityAndNotifyOthers()
+		this.updatePositionAndVisibility()
 	}
 
-	private updateVisibilityAndNotifyOthers() {
+	private updatePositionAndVisibility() {
+		this.updatePosition()
 		this.updateVisibility()
-		for (const tooltip of [...Tooltip.instancesContainer.values()].filter(t => t !== this)) {
-			tooltip.visible = Tooltip.visibleInstance === tooltip
-		}
 	}
 
 	private updateVisibility() {
-		const visible = this.anchorHover || this.hover
+		const visible = this.anchorHover || this.hover || this.anchorFocused
+
 		this.visible = visible
 		if (visible) {
 			Tooltip.visibleInstance = this
+		}
+		for (const tooltip of [...Tooltip.instancesContainer.values()].filter(t => t !== this)) {
+			tooltip.visible = Tooltip.visibleInstance === tooltip
 		}
 	}
 
