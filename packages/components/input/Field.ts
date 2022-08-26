@@ -194,7 +194,7 @@ export abstract class Field<T> extends Input<T> {
 			}
 
 			:host(:focus), :host([active]), :host([open]) {
-				border-bottom: 1px solid var(--mo-accent);
+				border-bottom: 1px solid var(--mo-color-accent);
 			}
 
 			div[part=container] {
@@ -229,7 +229,7 @@ export abstract class Field<T> extends Input<T> {
 				left: calc(calc(100% - var(--mo-field-initial-outline-width)) / 2);
 				width: var(--mo-field-initial-outline-width);
 				visibility: hidden;
-				background-color: var(--mo-accent);
+				background-color: var(--mo-color-accent);
 				transition: 0.2s ease all;
 			}
 
@@ -249,7 +249,7 @@ export abstract class Field<T> extends Input<T> {
 				color: var(--mo-color-foreground);
 				transition: 0.1s ease-out;
 				background-color: transparent;
-				caret-color: var(--mo-accent);
+				caret-color: var(--mo-color-accent);
 				text-align: inherit;
 			}
 
@@ -267,7 +267,7 @@ export abstract class Field<T> extends Input<T> {
 			}
 
 			:host(:focus) label, input:focus ~ label, :host([open]) label {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				top: var(--mo-field-label-top-on-focus);
 				transform: var(--mo-field-label-transform-on-focus);
 			}

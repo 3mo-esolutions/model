@@ -33,14 +33,14 @@ export class Markdown extends Component {
 			code {
 				font-weight: bolder;
 				font-family: 'Fira Code Light', monospace;
-				background: var(--mo-accent-gradient-transparent);
+				background: var(--mo-color-accent-gradient-transparent);
 				padding: 2px 4px;
 			}
 
 			a,
 			a:visited {
 				text-decoration: none;
-				border-bottom: var(--mo-accent) 2px dashed;
+				border-bottom: var(--mo-color-accent) 2px dashed;
 				color: unset;
 			}
 
@@ -51,7 +51,7 @@ export class Markdown extends Component {
 
 			strong {
 				font-weight: 900;
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			table {
@@ -81,7 +81,7 @@ export class Markdown extends Component {
 			h3 {
 				font-family: Google Sans;
 				font-weight: 500;
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				line-height: 150%;
 			}
 

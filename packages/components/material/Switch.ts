@@ -14,19 +14,19 @@ export class Switch extends InputMixin(LabelMixin(ComponentMixin(MwcSwitch))) {
 			...super.styles,
 			css`
 				:host {
-					--mdc-switch-selected-handle-color: var(--mo-accent-gradient);
+					--mdc-switch-selected-handle-color: var(--mo-color-accent-gradient);
 					--mdc-switch-selected-focus-handle-color: var(--mdc-switch-selected-handle-color);
 					--mdc-switch-selected-hover-handle-color: var(--mdc-switch-selected-handle-color);
 					--mdc-switch-selected-pressed-handle-color: var(--mdc-switch-selected-handle-color);
 
-					--mdc-switch-selected-track-color: rgba(var(--mo-accent-base), 0.5);
+					--mdc-switch-selected-track-color: rgba(var(--mo-color-accent-base), 0.5);
 					--mdc-switch-selected-focus-track-color: var(--mdc-switch-selected-track-color);
 					--mdc-switch-selected-hover-track-color: var(--mdc-switch-selected-track-color);
 					--mdc-switch-selected-pressed-track-color: var(--mdc-switch-selected-track-color);
 
-					--mdc-switch-selected-focus-state-layer-color: var(--mo-accent);
-					--mdc-switch-selected-hover-state-layer-color: var(--mo-accent);
-					--mdc-switch-selected-pressed-state-layer-color: var(--mo-accent);
+					--mdc-switch-selected-focus-state-layer-color: var(--mo-color-accent);
+					--mdc-switch-selected-hover-state-layer-color: var(--mo-color-accent);
+					--mdc-switch-selected-pressed-state-layer-color: var(--mo-color-accent);
 
 					--mdc-switch-selected-icon-color: var(--mo-color-accessible);
 

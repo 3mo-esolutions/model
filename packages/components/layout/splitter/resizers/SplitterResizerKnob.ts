@@ -13,7 +13,7 @@ export class SplitterResizerKnob extends SplitterResizer {
 			}
 
 			:host([hostHover]), :host([hostResizing]) {
-				background: var(--mo-accent);
+				background: var(--mo-color-accent);
 			}
 
 			:host([hostDirection=vertical]), :host([hostDirection=vertical-reversed]) {

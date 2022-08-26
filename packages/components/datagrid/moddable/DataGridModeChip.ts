@@ -52,11 +52,11 @@ export class DataGridModeChip extends Chip {
 			}
 
 			:host(:hover) {
-				--mdc-theme-primary: var(--mo-accent-transparent);
+				--mdc-theme-primary: var(--mo-color-accent-transparent);
 			}
 
 			:host([selected]) {
-				--mdc-theme-primary: var(--mo-accent);
+				--mdc-theme-primary: var(--mo-color-accent);
 				--mdc-theme-on-primary: var(--mo-color-accessible);
 			}
 

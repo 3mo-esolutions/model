@@ -24,7 +24,7 @@ export class TopAppBar extends ComponentMixin(MwcTopAppBar) {
 				}
 
 				header {
-					background: var(--mo-accent-gradient);
+					background: var(--mo-color-accent-gradient);
 				}
 
 				header+div {

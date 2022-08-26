@@ -96,7 +96,7 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 				}
 
 				.code span {
-					color: var(--mo-accent);
+					color: var(--mo-color-accent);
 				}
 			</style>
 

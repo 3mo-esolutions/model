@@ -191,7 +191,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected override get toolbarActionsTemplate() {
 		return html`
 			<mo-icon-button icon='refresh'
-				${style({ color: this.fetching ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
+				${style({ color: this.fetching ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.refetchData()}
 			></mo-icon-button>
 			${super.toolbarActionsTemplate}

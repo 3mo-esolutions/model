@@ -41,7 +41,7 @@ export class DataGridHeaderSeparator extends Component {
 			.separator:hover .knob {
 				--mo-data-grid-header-separator-height: 30px;
 				--mo-data-grid-header-separator-width: 8px;
-				background-color: var(--mo-accent);
+				background-color: var(--mo-color-accent);
 				cursor: col-resize;
 			}
 

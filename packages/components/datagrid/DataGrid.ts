@@ -374,7 +374,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				--mo-details-data-grid-left-margin: 26px;
 				--mo-data-grid-cell-padding: 3px;
 
-				--mo-data-grid-selection-background: rgba(var(--mo-accent-base), 0.5);
+				--mo-data-grid-selection-background: rgba(var(--mo-color-accent-base), 0.5);
 
 				--mo-data-grid-row-height: ${DataGrid.rowHeight.value}px;
 				display: flex;
@@ -459,7 +459,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				padding: 0 var(--mo-thickness-m) 0 var(--mo-thickness-xl);
 				margin: var(--mo-thickness-m) 0;
 				cursor: pointer;
-				background: var(--mo-accent-transparent);
+				background: var(--mo-color-accent-transparent);
 				height: calc(100% - calc(2 * var(--mo-thickness-m)));
 				max-height: 45px;
 			}
@@ -656,12 +656,12 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			<mo-icon-button icon='filter_list'
 				?hidden=${this.hasFilters === false}
-				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
+				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
 			></mo-icon-button>
 
 			<mo-icon-button icon='settings'
-				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
+				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>
 		`

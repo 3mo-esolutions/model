@@ -91,21 +91,21 @@ export const styles = css`
 		--mo-color-transparent-gray: var(--mo-color-transparent-gray-1);
 		/* More info: https://css-tricks.com/css-variables-calc-rgb-enforcing-high-contrast-colors/ */
 		/* TODO: Replace with @color-contrast when available: https://caniuse.com/mdn-css_types_color_color-contrast */
-		--mo-color-accessible-base-value: calc(((((var(--mo-accent-base-r) * 299) + (var(--mo-accent-base-g) * 587) + (var(--mo-accent-base-b) * 114)) / 1000) - 128) * -1000);
+		--mo-color-accessible-base-value: calc(((((var(--mo-color-accent-base-r) * 299) + (var(--mo-color-accent-base-g) * 587) + (var(--mo-color-accent-base-b) * 114)) / 1000) - 128) * -1000);
 		--mo-color-accessible-base: var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value), var(--mo-color-accessible-base-value);
 		--mo-color-accessible: rgb(var(--mo-color-accessible-base));
 		--mo-scrim: rgba(0, 0, 0, 0.5);
 		/* TODO: Rename to mo-color-accent again */
-		--mo-accent-base: var(--mo-accent-base-r), var(--mo-accent-base-g), var(--mo-accent-base-b);
-		--mo-accent: rgb(var(--mo-accent-base));
-		--mo-accent-transparent: rgba(var(--mo-accent-base), 0.25);
-		--mo-accent-gradient: linear-gradient(135deg, rgb(var(--mo-accent-gradient-1)), rgb(var(--mo-accent-gradient-2)), rgb(var(--mo-accent-gradient-3)));
-		--mo-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-accent-gradient-1), 0.25), rgba(var(--mo-accent-gradient-2), 0.25), rgba(var(--mo-accent-gradient-3), 0.25));
+		--mo-color-accent-base: var(--mo-color-accent-base-r), var(--mo-color-accent-base-g), var(--mo-color-accent-base-b);
+		--mo-color-accent: rgb(var(--mo-color-accent-base));
+		--mo-color-accent-transparent: rgba(var(--mo-color-accent-base), 0.25);
+		--mo-color-accent-gradient: linear-gradient(135deg, rgb(var(--mo-color-accent-gradient-1)), rgb(var(--mo-color-accent-gradient-2)), rgb(var(--mo-color-accent-gradient-3)));
+		--mo-color-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-color-accent-gradient-1), 0.25), rgba(var(--mo-color-accent-gradient-2), 0.25), rgba(var(--mo-color-accent-gradient-3), 0.25));
 		/* Override Material Web Components variables */
 		--mdc-icon-font: Material Icons Sharp !important;
-		--mdc-theme-primary: var(--mo-accent) !important;
+		--mdc-theme-primary: var(--mo-color-accent) !important;
 		--mdc-theme-on-primary: var(--mo-color-accessible) !important;
-		--mdc-theme-secondary: var(--mo-accent) !important;
+		--mdc-theme-secondary: var(--mo-color-accent) !important;
 		--mdc-theme-on-secondary: var(--mo-color-accessible) !important;
 		--mdc-theme-text-secondary-on-background: var(--mo-color-gray) !important;
 		--mdc-theme-surface: var(--mo-color-surface) !important;

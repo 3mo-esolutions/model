@@ -24,7 +24,7 @@ export class Section extends Component {
 			}
 
 			slot[name=action], slot[name=heading], slot[name=heading]::slotted(*) {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 		`
 	}

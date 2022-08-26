@@ -25,7 +25,7 @@ class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRan
 			}
 
 			.day.inDateRange:not(.selected) {
-				background: var(--mo-accent-transparent);
+				background: var(--mo-color-accent-transparent);
 			}
 
 			.day.inDateRange {
@@ -113,14 +113,14 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 			<mo-flex>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ textAlign: 'center', height: '30px' })}>
 						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
-							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate ? 'var(--mo-accent)' : 'unset' })}
+							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate ? 'var(--mo-color-accent)' : 'unset' })}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.StartDate}
 						>${!startDate ? 'Start' : FormatHelper.date(startDate)}</mo-div>
 
 						<mo-div ${style({ color: 'var(--mo-color-gray)' })}>bis</mo-div>
 
 						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
-							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.EndDate ? 'var(--mo-accent)' : 'unset' })}
+							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.EndDate ? 'var(--mo-color-accent)' : 'unset' })}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.EndDate}
 						>${!endDate ? 'Ende' : FormatHelper.date(endDate)}</mo-div>
 				</mo-flex>

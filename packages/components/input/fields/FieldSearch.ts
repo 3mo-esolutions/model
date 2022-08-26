@@ -7,7 +7,7 @@ export class FieldSearch extends FieldTextBase {
 
 	protected override get template() {
 		return html`
-			<mo-icon icon='search' ${style({ color: this.active ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}></mo-icon>
+			<mo-icon icon='search' ${style({ color: this.active ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}></mo-icon>
 			${super.template}
 			<mo-icon-button icon='cancel' small ${style({ color: 'var(--mo-color-gray)' })}
 				?hidden=${!this.value} @click=${() => this.clear()}

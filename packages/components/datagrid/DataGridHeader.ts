@@ -142,7 +142,7 @@ export class DataGridHeader<TData> extends Component {
 				<mo-div class='headerContent' ${style({ width: '100%', textAlign: column.alignment })} title=${column.title || column.heading}>${column.heading}</mo-div>
 
 				<mo-icon
-					${style({ color: 'var(--mo-accent)', margin: '0 3px 3px 3px', lineHeight: 'calc(var(--mo-data-grid-header-height) - 3px)' })}
+					${style({ color: 'var(--mo-color-accent)', margin: '0 3px 3px 3px', lineHeight: 'calc(var(--mo-data-grid-header-height) - 3px)' })}
 					?hidden=${sortIcon === undefined}
 					icon=${ifDefined(sortIcon)}
 				></mo-icon>
@@ -155,7 +155,7 @@ export class DataGridHeader<TData> extends Component {
 			<mo-flex alignItems='center' justifyContent='center' ${style({ margin: '0px 8px 0px 0px', cursor: 'pointer', position: 'relative' })}
 				?hidden=${this.dataGrid.hasToolbar || this.dataGrid.sidePanelHidden || this.dataGrid.isSubDataGrid}
 			>
-				<mo-icon-button small icon='settings' ${style({ color: 'var(--mo-accent)', fontSize: 'var(--mo-font-size-l)' })}
+				<mo-icon-button small icon='settings' ${style({ color: 'var(--mo-color-accent)', fontSize: 'var(--mo-font-size-l)' })}
 					@click=${() => this.dataGrid.navigateToSidePanelTab(this.dataGrid.sidePanelTab ? undefined : DataGridSidePanelTab.Settings)}
 				></mo-icon-button>
 			</mo-flex>

@@ -42,7 +42,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	private get cardTemplate() {
 		return html`
 			<mo-flex direction='horizontal' height='40px' alignItems='center'>
-				<mo-heading typography='heading4' ${style({ color: 'var(--mo-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
+				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
 				<mo-icon-button icon='edit' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>
 				<mo-icon-button icon='delete' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>
 			</mo-flex>
@@ -62,6 +62,13 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	private get dataGridTemplate() {
 		return html`
 			<mo-flex>
+				<mo-div ${style({ display: 'block' })}>
+					<mo-icon icon='settings' ${style({ fontSize: '15px' })}></mo-icon>
+					<mo-icon icon='settings'></mo-icon>
+					<mo-icon icon='settings' ${style({ fontSize: '32px' })}></mo-icon>
+					<mo-icon-button icon='settings'></mo-icon-button>
+					<mo-icon-button small icon='settings'></mo-icon-button>
+				</mo-div>
 				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
 					.parameters=${this.dataGridParameters}
 					.selectedData=${this.selectedPhotos}

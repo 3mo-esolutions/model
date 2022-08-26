@@ -39,12 +39,12 @@ export class ThemeHelper {
 		injectCss() {
 			this.styleElement = RootCssInjector.inject(css`
 				[application] {
-					--mo-accent-base-r:${unsafeCSS(this.value.baseColor![0])};
-					--mo-accent-base-g:${unsafeCSS(this.value.baseColor![1])};
-					--mo-accent-base-b:${unsafeCSS(this.value.baseColor![2])};
-					--mo-accent-gradient-1: ${unsafeCSS(this.value.colors[0])};
-					--mo-accent-gradient-2: ${unsafeCSS(this.value.colors[1] ?? this.value.colors[0])};
-					--mo-accent-gradient-3: ${unsafeCSS(this.value.colors[2] ?? this.value.colors[1] ?? this.value.colors[0])};
+					--mo-color-accent-base-r:${unsafeCSS(this.value.baseColor![0])};
+					--mo-color-accent-base-g:${unsafeCSS(this.value.baseColor![1])};
+					--mo-color-accent-base-b:${unsafeCSS(this.value.baseColor![2])};
+					--mo-color-accent-gradient-1: ${unsafeCSS(this.value.colors[0])};
+					--mo-color-accent-gradient-2: ${unsafeCSS(this.value.colors[1] ?? this.value.colors[0])};
+					--mo-color-accent-gradient-3: ${unsafeCSS(this.value.colors[2] ?? this.value.colors[1] ?? this.value.colors[0])};
 				}
 			`, this.styleElement)
 		}

@@ -126,7 +126,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			}
 
 			a:hover {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			h2 {

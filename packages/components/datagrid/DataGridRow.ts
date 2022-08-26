@@ -57,7 +57,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 
 			:host(:hover) {
 				color: inherit;
-				background: var(--mo-accent-transparent) !important;
+				background: var(--mo-color-accent-transparent) !important;
 			}
 
 			:host(:hover) mo-grid::before, #details::before {
@@ -67,7 +67,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 				top: 0;
 				left: 0;
 				position: absolute;
-				background-color: var(--mo-accent);
+				background-color: var(--mo-color-accent);
 			}
 
 			mo-grid {
@@ -77,7 +77,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 			}
 
 			:host([detailsOpen]) mo-grid {
-				background: var(--mo-data-grid-row-background-on-opened-detail-element, var(--mo-accent-transparent));
+				background: var(--mo-data-grid-row-background-on-opened-detail-element, var(--mo-color-accent-transparent));
 			}
 
 			:host([selected]) mo-grid {
@@ -96,7 +96,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 			#iconMore {
 				transition: var(--mo-duration-quick);
 				opacity: 0;
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			:host([selected]) #iconMore {
@@ -119,7 +119,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 			}
 
 			#iconDetails:hover {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			:host([detailsOpen]) #iconDetails {

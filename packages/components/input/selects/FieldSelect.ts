@@ -110,7 +110,7 @@ export class FieldSelect<T> extends Field<Value> {
 			}
 
 			:host([open]) mo-icon-button[part=dropDownIcon], :host([active]) mo-icon-button[part=dropDownIcon] {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			mo-menu {

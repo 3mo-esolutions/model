@@ -7,7 +7,7 @@ export class DataGridColumnBoolean<TData> extends DataGridColumn<TData, boolean>
 	@property() trueIcon: MaterialIcon = 'done'
 	@property() falseIcon: MaterialIcon = 'clear'
 
-	@property() trueIconColor = 'var(--mo-accent)'
+	@property() trueIconColor = 'var(--mo-color-accent)'
 	@property() falseIconColor = 'var(--mo-color-gray)'
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

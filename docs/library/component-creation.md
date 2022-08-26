@@ -40,7 +40,7 @@ export class HelloWorld extends Component {
 		return html`
 			<style>
 				h1 {
-					color: var(--mo-accent);
+					color: var(--mo-color-accent);
 				}
 			</style>
 

@@ -38,7 +38,7 @@ export class Calendar extends Component {
 			}
 
 			.navigatingYear:hover {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				cursor: pointer;
 			}
 
@@ -63,7 +63,7 @@ export class Calendar extends Component {
 			}
 
 			.selected {
-				background: var(--mo-accent);
+				background: var(--mo-color-accent);
 				color: var(--mo-color-accessible) !important;
 			}
 
@@ -80,7 +80,7 @@ export class Calendar extends Component {
 			}
 
 			.day.today {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 		`
 	}
