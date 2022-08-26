@@ -95,7 +95,7 @@ export class DataGridHeader<TData> extends Component {
 	private get detailsExpanderTemplate() {
 		return html`
 			<mo-flex justifyContent='center' alignItems='center' ?hidden=${this.dataGrid.hasDetails === false}>
-				<mo-icon-button small margin='-10px 0px 0 -10px'
+				<mo-icon-button small ${style({ padding: '-10px 0px 0 -10px'})}
 					?hidden=${(this.dataGrid.hasDetails && this.dataGrid.multipleDetails) === false}
 					${style({ display: 'inherit' })}
 					icon=${this.areAllDetailsOpen ? 'unfold_less' : 'unfold_more'}
@@ -155,7 +155,7 @@ export class DataGridHeader<TData> extends Component {
 			<mo-flex alignItems='center' justifyContent='center' ${style({ margin: '0px 8px 0px 0px', cursor: 'pointer', position: 'relative' })}
 				?hidden=${this.dataGrid.hasToolbar || this.dataGrid.sidePanelHidden || this.dataGrid.isSubDataGrid}
 			>
-				<mo-icon-button small foreground='var(--mo-accent)' fontSize='var(--mo-font-size-l)' icon='settings'
+				<mo-icon-button small icon='settings' ${style({ color: 'var(--mo-accent)', fontSize: 'var(--mo-font-size-l)' })}
 					@click=${() => this.dataGrid.navigateToSidePanelTab(this.dataGrid.sidePanelTab ? undefined : DataGridSidePanelTab.Settings)}
 				></mo-icon-button>
 			</mo-flex>

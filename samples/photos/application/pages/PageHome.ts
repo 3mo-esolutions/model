@@ -1,4 +1,4 @@
-import { PageComponent, component, html, route, state, ContextMenuHost, cache, homePage } from '@3mo/model'
+import { PageComponent, component, html, route, state, ContextMenuHost, cache, homePage, style } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 const enum Tab {
@@ -42,7 +42,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	private get cardTemplate() {
 		return html`
 			<mo-flex direction='horizontal' height='40px' alignItems='center'>
-				<mo-heading width='*' typography='heading4' foreground='var(--mo-accent)'>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
+				<mo-heading typography='heading4' ${style({ color: 'var(--mo-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
 				<mo-icon-button icon='edit' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>
 				<mo-icon-button icon='delete' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>
 			</mo-flex>
@@ -61,20 +61,28 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 	private get dataGridTemplate() {
 		return html`
-			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
-				.parameters=${this.dataGridParameters}
-				.selectedData=${this.selectedPhotos}
-				@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}
-				@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
-				@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
-			>
-				<app-field-select-album multiple slot='toolbar' default='All'
-					.value=${this.dataGridParameters.albumIds}
-					@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
-				</app-field-select-album>
+			<mo-flex>
+				<mo-div ${style({ display: 'block' })}>
+					<mo-icon icon='done_all' ${style({ fontSize: '15px' })}></mo-icon>
+					<mo-icon icon='done_all'></mo-icon>
+					<mo-icon icon='done_all' ${style({ fontSize: '32px' })}></mo-icon>
+					<mo-icon-button icon='done_all'></mo-icon-button>
+				</mo-div>
+				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
+					.parameters=${this.dataGridParameters}
+					.selectedData=${this.selectedPhotos}
+					@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}
+					@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
+					@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
+				>
+					<app-field-select-album multiple slot='toolbar' default='All'
+						.value=${this.dataGridParameters.albumIds}
+						@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
+					</app-field-select-album>
 
-				<mo-fab slot='fab' icon='add'></mo-fab>
-			</photos-data-grid-photo>
+					<mo-fab slot='fab' icon='add'></mo-fab>
+				</photos-data-grid-photo>
+			</mo-flex>
 		`
 	}
 

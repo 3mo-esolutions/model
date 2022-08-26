@@ -1,4 +1,4 @@
-import { component, html, PageComponent, homePage, route, NotificationHost } from '@3mo/model'
+import { component, html, PageComponent, homePage, route, NotificationHost, style } from '@3mo/model'
 import { DialogSample } from './DialogSample'
 
 @homePage()
@@ -9,8 +9,8 @@ export class PageHome extends PageComponent {
 		return html`
 			<mo-page heading='Home' fullHeight>
 				<mo-card>
-					<mo-flex height='100%' alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)'>
-						<mo-heading foreground='var(--mo-accent)'>Welcome to 3MO Design Library</mo-heading>
+					<mo-flex alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)' ${style({ height: '100%' })}>
+						<mo-heading ${style({ color: 'var(--mo-accent)' })}>Welcome to 3MO Design Library</mo-heading>
 						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
 						<mo-button @click=${() => new DialogSample().confirm()}>Open Dialog</mo-button>
 						<mo-field-select>

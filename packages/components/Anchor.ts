@@ -22,9 +22,22 @@ export class Anchor extends Component {
 		`
 	}
 
+	// target
+	/**
+	 _self: the current browsing context. (Default)
+	_blank: usually a new tab, but users can configure browsers to open a new window instead.
+	_parent: the parent browsing context of the current one. If no parent, behaves as _self.
+	_top: the topmost browsing context (the "highest" context that's an ancestor of the current one). If no ancestors, behaves as _self.
+	 */
+
+	// download
+	// ping
+	// referrerPolicy
+	// rel
+
 	protected override get template() {
 		return html`
-			<a href=${this.href}><slot></slot></a>
+			<a href=${this.href} ><slot></slot></a>
 		`
 	}
 }

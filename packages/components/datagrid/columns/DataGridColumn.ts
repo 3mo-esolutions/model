@@ -5,26 +5,14 @@ import { DataGrid } from '../DataGrid'
 export abstract class DataGridColumn<TData, TValue> extends Component {
 	@property({ type: Object }) dataGrid?: DataGrid<TData, any> | undefined
 
+	@property() width = 'minmax(100px, 1fr)'
+	@property({ type: Boolean }) override hidden = false
 	@property({ reflect: true }) heading = ''
+	@property({ reflect: true }) textAlign = 'start'
 	@property({ reflect: true }) override title!: string
 	@property({ reflect: true }) dataSelector!: KeyPathOf<TData>
 	@property({ type: Boolean, reflect: true }) nonSortable = false
 	@property({ type: Boolean, reflect: true }) nonEditable = false
-
-	@property({ type: Boolean })
-	override get hidden() { return super.hidden }
-	override set hidden(value: boolean) {
-		super.hidden = value
-		this.requestUpdate('hidden')
-	}
-
-	private _width = 'minmax(100px, 1fr)'
-	@property()
-	override get width() { return super.width }
-	override set width(value: string) {
-		this._width = CssHelper.isAsteriskSyntax(value) ? CssHelper.getGridFractionFromAsteriskSyntax(value) : value
-		this.requestUpdate('width')
-	}
 
 	get definition(): ColumnDefinition<TData, TValue> {
 		return {
@@ -33,7 +21,7 @@ export abstract class DataGridColumn<TData, TValue> extends Component {
 			title: this.title || undefined,
 			alignment: this.textAlign as 'left' | 'center' | 'right',
 			hidden: this.hidden,
-			width: this._width,
+			width: CssHelper.isAsteriskSyntax(this.width) ? CssHelper.getGridFractionFromAsteriskSyntax(this.width) : this.width,
 			sortable: !this.nonSortable,
 			editable: !this.nonEditable,
 			getContentTemplate: this.getContentTemplate.bind(this),

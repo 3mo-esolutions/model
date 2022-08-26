@@ -211,7 +211,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	private get fetchingTemplate() {
 		return html`
-			<mo-circular-progress indeterminate width='48px' height='48px' margin='auto'></mo-circular-progress>
+			<mo-circular-progress indeterminate ${style({ width: '48px', height: '48px', margin: 'auto' })}></mo-circular-progress>
 		`
 	}
 

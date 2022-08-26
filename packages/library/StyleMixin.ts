@@ -19,71 +19,26 @@ Object.defineProperty(LitElement.prototype, 'hidden', {
 	}
 })
 
-export const StyleMixin = <T extends AbstractConstructor<HTMLElement>>(Constructor: T) => {
-	abstract class StyleMixinConstructor extends Constructor {
-		@property()
-		get margin() { return this.style.margin as CSS.Property.Margin<string> }
-		set margin(value) { this.style.margin = value }
-
-		@property()
-		get padding() { return this.style.padding as CSS.Property.Padding<string> }
-		set padding(value) { this.style.padding = value }
-
-		@property()
-		get width() { return this.style.width as CSS.Property.Width<string> }
-		set width(value) {
-			if (CssHelper.isAsteriskSyntax(value)) {
-				this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
-				return
-			}
-			this.style.width = value
+property({ type: String })(LitElement.prototype, 'width')
+Object.defineProperty(LitElement.prototype, 'width', {
+	get(this: LitElement) { return this.style.width as CSS.Property.Width<string> },
+	set(this: LitElement, value: string) {
+		if (CssHelper.isAsteriskSyntax(value)) {
+			this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
+			return
 		}
-
-		@property()
-		get height() { return this.style.height as CSS.Property.Height<string> }
-		set height(value) {
-			if (CssHelper.isAsteriskSyntax(value)) {
-				this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
-				return
-			}
-			this.style.height = value
-		}
-
-		@property()
-		get fontSize() { return this.style.fontSize as CSS.Property.FontSize<string> }
-		set fontSize(value) { this.style.fontSize = value }
-
-		@property()
-		get fontWeight() { return this.style.fontWeight as CSS.Property.FontWeight }
-		set fontWeight(value) { this.style.fontWeight = value.toString() }
-
-		@property()
-		get gridRow() { return this.style.gridRow as CSS.Property.GridRow }
-		set gridRow(value) { this.style.gridRow = value.toString() }
-
-		@property()
-		get gridColumn() { return this.style.gridColumn as CSS.Property.GridColumn }
-		set gridColumn(value) { this.style.gridColumn = value.toString() }
-
-		@property()
-		get textAlign() { return this.style.textAlign as CSS.Property.TextAlign | (string & {}) }
-		set textAlign(value) { this.style.textAlign = value }
-
-		@property()
-		get background() { return this.style.background as CSS.Property.Background<string> }
-		set background(value) { this.style.background = value }
-
-		@property()
-		get foreground() { return this.style.color as CSS.Property.Color }
-		set foreground(value) { this.style.color = value }
-
-		@property()
-		get justifyContent() { return this.style.justifyContent as CSS.Property.JustifyContent }
-		set justifyContent(value) { this.style.justifyContent = value }
-
-		@property()
-		get alignItems() { return this.style.alignItems as CSS.Property.AlignItems }
-		set alignItems(value) { this.style.alignItems = value }
+		this.style.width = value
 	}
-	return StyleMixinConstructor
-}
+})
+
+property({ type: String })(LitElement.prototype, 'height')
+Object.defineProperty(LitElement.prototype, 'height', {
+	get(this: LitElement) { return this.style.height as CSS.Property.Height<string>  },
+	set(this: LitElement, value: string) {
+		if (CssHelper.isAsteriskSyntax(value)) {
+			this.style.flexGrow = CssHelper.getFlexGrowFromAsteriskSyntax(value).toString()
+			return
+		}
+		this.style.height = value
+	}
+})

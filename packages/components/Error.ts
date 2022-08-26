@@ -21,8 +21,8 @@ export class Error extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex gap='var(--mo-thickness-l)' foreground='var(--mo-color-gray)'>
-				${!this.icon ? nothing : html`<mo-icon fontSize='48px' icon=${this.icon}></mo-icon>`}
+			<mo-flex gap='var(--mo-thickness-l)' ${style({ color: 'var(--mo-color-gray)' })}>
+				${!this.icon ? nothing : html`<mo-icon icon=${this.icon} ${style({ fontSize: '48px' })}></mo-icon>`}
 				<mo-heading ${style({ fontWeight: '600' })}>
 					<slot></slot>
 				</mo-heading>

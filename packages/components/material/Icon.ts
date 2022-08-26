@@ -1,4 +1,4 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property, ComponentMixin, HTMLTemplateResult } from '../../library'
 import { MaterialIcon } from '..'
 import { Icon as MwcIcon } from '@material/mwc-icon'
 
@@ -8,11 +8,10 @@ export class Icon extends ComponentMixin(MwcIcon) {
 	get icon() { return this.textContent as MaterialIcon }
 	set icon(value: MaterialIcon) { this.updateComplete.then(() => this.textContent = value) }
 
-	@property()
-	override get fontSize() { return super.fontSize }
-	override set fontSize(value) {
-		super.fontSize = value
-		this.style.setProperty('--mdc-icon-size', String(value))
+	protected override render() {
+		const fontSize = getComputedStyle(this).getPropertyValue('font-size')
+		this.style.setProperty('--mdc-icon-size', fontSize)
+		return super.render() as HTMLTemplateResult
 	}
 }
 

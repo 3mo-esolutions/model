@@ -1,4 +1,4 @@
-import { component, css, html, renderContainer, nothing, property, event } from '../../library'
+import { component, css, html, renderContainer, nothing, property, event, style } from '../../library'
 import { Button, ButtonType } from '..'
 
 /**
@@ -46,8 +46,8 @@ export class Chip extends Button {
 
 	protected get deleteIconButtonTemplate() {
 		return !this.hasDelete ? nothing : html`
-			<mo-icon-button small icon='cancel' fontSize='16px'
-				foreground='rgba(var(--mo-color-foreground-base), 0.5)'
+			<mo-icon-button icon='cancel'
+				${style({ fontSize: '16px', color: 'rgba(var(--mo-color-foreground-base), 0.5)' })}
 				@click=${() => this.delete.dispatch()}
 			></mo-icon-button>
 		`

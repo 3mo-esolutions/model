@@ -46,7 +46,7 @@ export class Section extends Component {
 
 	protected get headingTemplate() {
 		return html`
-			<mo-heading part='heading' typography='heading4' fontWeight='500'>
+			<mo-heading part='heading' typography='heading4' ${style({ fontWeight: '500' })}>
 				${this.heading}
 			</mo-heading>
 		`

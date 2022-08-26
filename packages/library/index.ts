@@ -2,7 +2,7 @@
 export * from '@lit-labs/task'
 export * from './helpers'
 export * from './renderContainer'
-export * from './StyleMixin'
+import './StyleMixin'
 export * from './ComponentMixin'
 export * from './Component'
 export { Component } from './Component'

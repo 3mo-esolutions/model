@@ -1,8 +1,8 @@
-import { css, html, property, Component, nothing, query, event } from '../../library'
+import { css, html, property, Component, nothing, query, event, style } from '../../library'
 import { PwaHelper, RootCssInjectorController } from '../../utilities'
 import { Drawer } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost } from '..'
+import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost, deactivateInert } from '..'
 
 type View = 'desktop' | 'tablet'
 
@@ -35,6 +35,7 @@ export abstract class Application extends Component {
 		this.switchAttribute('application', true)
 		this.setupViews()
 		PwaHelper.registerServiceWorker()
+		deactivateInert(this.constructor as any)
 	}
 
 	closeDrawerIfDismissible() {
@@ -110,11 +111,11 @@ export abstract class Application extends Component {
 	protected override get template() {
 		return html`
 			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
-				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' foreground='var(--mo-color-accessible)'>
+				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
 					${this.topAppBarNavigationTemplate}
 				</mo-flex>
 
-				<mo-flex slot='title' alignItems='center' foreground='var(--mo-color-accessible)'>
+				<mo-flex slot='title' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
 					${this.topAppBarHeaderTemplate}
 				</mo-flex>
 
@@ -172,7 +173,7 @@ export abstract class Application extends Component {
 
 	protected get logoTemplate() {
 		return html`
-			<mo-application-logo height='30px' margin='0 0 0 var(--mo-thickness-xl)'></mo-application-logo>
+			<mo-application-logo ${style({ height: '30px', margin: '0 0 0 var(--mo-thickness-xl)' })}></mo-application-logo>
 		`
 	}
 

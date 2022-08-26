@@ -1,8 +1,7 @@
 import { LitElement, PropertyValues } from '@a11d/lit'
-import { StyleMixin } from '.'
 
 export const ComponentMixin = <T extends AbstractConstructor<LitElement>>(Constructor: T) => {
-	class ComponentMixinConstructor extends StyleMixin(Constructor) {
+	abstract class ComponentMixinConstructor extends Constructor {
 		/** Invoked after first update i.e. render is completed */
 		protected initialized() { }
 

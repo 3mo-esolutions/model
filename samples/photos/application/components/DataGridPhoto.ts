@@ -1,4 +1,4 @@
-import { component, html, ModdableDataGrid } from '@3mo/model'
+import { component, html, ModdableDataGrid, style } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 @component('photos-data-grid-photo')
@@ -20,7 +20,7 @@ export class DataGridPhoto extends ModdableDataGrid<Photo, FirstParameter<typeof
 	}
 
 	override getRowDetailsTemplate = (photo: Photo) => html`
-		<mo-flex padding='10px' gap='10px'>
+		<mo-flex ${style({ padding: '10px' })} gap='10px'>
 			<mo-heading typography='heading5'>${photo.title}</mo-heading>
 			<img width='100px' src=${photo.thumbnailUrl} title=${photo.title}>
 		</mo-flex>

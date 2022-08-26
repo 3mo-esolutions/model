@@ -1,3 +1,5 @@
+// Refactor: SlotController can handle this.
+
 Object.defineProperty(HTMLSlotElement.prototype, 'slottedElements', {
 	get: function (this: HTMLSlotElement) {
 		return getSlottedElements(this)

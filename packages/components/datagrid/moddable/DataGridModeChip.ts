@@ -1,4 +1,4 @@
-import { html, component, css, property, eventListener, renderContainer, nothing } from '../../../library'
+import { html, component, css, property, eventListener, renderContainer, nothing, style } from '../../../library'
 import { DialogAcknowledge, DialogAlert, Chip, DialogDeletion } from '../..'
 import { ContextMenuHost } from '../../../shell'
 import { Localizer } from '../../../localization'
@@ -119,7 +119,7 @@ export class DataGridModeChip extends Chip {
 				${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
 					<span id='spanUnsaved'>*</span>
 
-					<mo-icon-button icon='undo' tabindex='-1' small margin='0 0 0 12px'
+					<mo-icon-button icon='undo' tabindex='-1' small ${style({ marginLeft: '0 0 0 12px' })}
 						title=${_('Discard changes')}
 						@click=${this.discardChanges}
 					></mo-icon-button>
@@ -141,7 +141,7 @@ export class DataGridModeChip extends Chip {
 			${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
 				<mo-context-menu-item icon='undo' @click=${this.discardChanges}>${_('Discard changes')}</mo-context-menu-item>
 				<mo-context-menu-item icon='save' @click=${this.saveChanges}>${_('Save changes')}</mo-context-menu-item>
-				<mo-line margin='4px 0'></mo-line>
+				<mo-line ${style({ margin: '4px 0' })}></mo-line>
 			`}
 			<mo-context-menu-item icon='edit' @click=${this.editMode}>${_('Edit')}</mo-context-menu-item>
 			${this.mode.isArchived === false ? html`

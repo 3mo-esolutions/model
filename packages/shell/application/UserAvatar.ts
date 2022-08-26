@@ -1,4 +1,4 @@
-import { state, html, component, Component, property, css, nothing } from '../../library'
+import { state, html, component, Component, property, css, nothing, style } from '../../library'
 import { AuthenticationHelper } from '..'
 import { DialogAuthenticator } from './DialogAuthenticator'
 
@@ -45,7 +45,7 @@ export class UserAvatar extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-avatar foreground='var(--mo-color-accessible)' @click=${() => this.menuOpen = !this.menuOpen}>
+			<mo-avatar ${style({ color: 'var(--mo-color-accessible)' })} @click=${() => this.menuOpen = !this.menuOpen}>
 				${this.avatarContentTemplate}
 			</mo-avatar>
 

@@ -1,4 +1,4 @@
-import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing, unsafeCSS } from '../../library'
+import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing, unsafeCSS, style } from '../../library'
 import { MaterialIcon } from '../../components'
 import { nonInertable, NotificationType } from '..'
 import { PeriodicTimer } from '../../utilities'
@@ -104,7 +104,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 		return !this.type ? nothing : html`
 			<mo-icon
 				icon=${ifDefined(Snackbar.iconByType.get(this.type))}
-				foreground='rgba(var(--mo-snackbar-color-base), 0.75)'
+				${style({ color: 'rgba(var(--mo-snackbar-color-base), 0.75)' })}
 			></mo-icon>
 		`
 	}
@@ -112,7 +112,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 	@renderContainer('slot[name="dismiss"]')
 	protected get dismissIconButtonTemplate() {
 		return html`
-			<mo-icon-button icon='close' fontSize='18px' foreground='var(--mo-color-background)'></mo-icon-button>
+			<mo-icon-button icon='close' ${style({ color: 'var(--mo-color-background)', fontSize: '18px' })}></mo-icon-button>
 		`
 	}
 

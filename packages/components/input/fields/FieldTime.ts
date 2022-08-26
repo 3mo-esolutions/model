@@ -1,4 +1,4 @@
-import { component, html } from '../../../library'
+import { component, html, style } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-time')
@@ -7,7 +7,7 @@ export class FieldTime extends FieldTextBase {
 
 	protected override get template() {
 		return html`
-			<mo-icon foreground='var(--mo-color-gray)' icon='schedule'></mo-icon>
+			<mo-icon icon='schedule' ${style({ color: 'var(--mo-color-gray)' })}></mo-icon>
 			${super.template}
 		`
 	}

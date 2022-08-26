@@ -1,4 +1,4 @@
-import { html, property, state, css, event, component, PropertyValues, query } from '../../../library'
+import { html, property, state, css, event, component, PropertyValues, query, style } from '../../../library'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
 
@@ -173,7 +173,7 @@ export class FieldSelect<T> extends Field<Value> {
 					tabindex='-1'
 					small
 					icon='expand_more'
-					foreground='var(--mo-color-gray)'
+					${style({ color: 'var(--mo-color-gray)' })}
 					@click=${() => this.open = !this.open}
 				></mo-icon-button>
 
@@ -328,7 +328,7 @@ export class FieldSelect<T> extends Field<Value> {
 		const matchedOptions = this.options.filter(o => matchedValues.includes(o.value))
 		this.options.forEach(option => {
 			const matches = matchedOptions.includes(option)
-			option.height = matches ? '' : '0px'
+			option.style.height = matches ? '' : '0px'
 			option.switchAttribute('mwc-list-item', matches)
 		})
 		if (this.menuOptions?.listElement?.['items_']) {

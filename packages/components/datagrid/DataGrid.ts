@@ -587,11 +587,11 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			? this.renderData.map(getRowTemplate)
 			: html`<mo-virtualized-scroll .items=${this.renderData} .renderItem=${getRowTemplate as any}></mo-virtualized-scroll>`
 		return this.preventContentScroll || this.isSubDataGrid ? html`
-			<mo-flex id='rowsContainer' gridRow='2' gridColumn='1 / last-line' @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
+			<mo-flex id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
 				${content}
 			</mo-flex>
 		` : html`
-			<mo-scroll id='rowsContainer' gridRow='2' gridColumn='1 / last-line' @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
+			<mo-scroll id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
 				${content}
 			</mo-scroll>
 		`
@@ -638,7 +638,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.selectionToolbarDisabled === true || this.selectedData.length === 0 ? nothing : html`
 			<mo-flex id='flexSelectionToolbar'>
 				<mo-flex placeSelf='stretch' direction='horizontal' gap='30px'>
-					<mo-div margin='0 var(--mo-thickness-m)' fontWeight='500'>
+					<mo-div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
 						${_('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</mo-div>
 					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
@@ -654,16 +654,14 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	protected get toolbarActionsTemplate() {
 		return html`
-			<mo-icon-button
-				icon='filter_list'
+			<mo-icon-button icon='filter_list'
 				?hidden=${this.hasFilters === false}
-				foreground=${this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}
+				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
 			></mo-icon-button>
 
-			<mo-icon-button
-				icon='settings'
-				foreground=${this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}
+			<mo-icon-button icon='settings'
+				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>
 		`
@@ -838,8 +836,7 @@ function subDataGridSelectorChanged<TData>(this: DataGrid<TData>) {
 	}
 
 	this.getRowDetailsTemplate = (data: TData) => html`
-		<mo-data-grid
-			padding='0px'
+		<mo-data-grid ${style({ padding: '0px' })}
 			.data=${getPropertyByKeyPath(data, selector)}
 			headerHidden
 			sidePanelHidden

@@ -1,4 +1,4 @@
-import { component, html, nothing, property } from '../../../library'
+import { component, html, nothing, property, style } from '../../../library'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-text')
@@ -28,7 +28,7 @@ export class FieldText extends FieldTextBase {
 		}
 		const remainingLength = this.maxLength - this.fromValue(this.value).length
 		return html`
-			<mo-div foreground='var(--mo-color-gray-transparent)'>${remainingLength}</mo-div>
+			<mo-div ${style({ color: 'var(--mo-color-gray-transparent)' })}>${remainingLength}</mo-div>
 		`
 	}
 }

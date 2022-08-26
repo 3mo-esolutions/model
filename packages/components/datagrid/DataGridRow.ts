@@ -1,4 +1,4 @@
-import { nothing, css, property, component, Component, html, state, queryAll } from '../../library'
+import { nothing, css, property, component, Component, html, state, queryAll, style } from '../../library'
 import { ContextMenuHost } from '../../shell'
 import { KeyboardHelper } from '../../utilities'
 import { ColumnDefinition } from './ColumnDefinition'
@@ -188,7 +188,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
-				<mo-icon-button id='iconDetails' icon='keyboard_arrow_right' foreground='var(--mo-color-foreground)'
+				<mo-icon-button id='iconDetails' icon='keyboard_arrow_right' ${style({ color: 'var(--mo-color-foreground)' })}
 					?hidden=${this.hasDetails === false}
 					?disabled=${this.dataGrid.hasDataDetail?.(this.data) === false}
 					@click=${() => this.toggleDetails()}

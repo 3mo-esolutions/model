@@ -1,4 +1,4 @@
-import { component, property, css, ComponentMixin } from '../../library'
+import { component, property, css, ComponentMixin, HTMLTemplateResult } from '../../library'
 import { MaterialIcon } from '..'
 import { IconButton as MwcIconButton } from '@material/mwc-icon-button'
 
@@ -13,12 +13,6 @@ export class IconButton extends ComponentMixin(MwcIconButton) {
 
 	@property({ type: Boolean, reflect: true }) small = false
 
-	@property()
-	override get fontSize() { return super.fontSize }
-	override set fontSize(value) {
-		super.fontSize = value
-		this.style.setProperty('--mdc-icon-size', String(value))
-	}
 
 	protected override initialized() {
 		this.buttonElement.setAttribute('part', 'button')
@@ -29,15 +23,26 @@ export class IconButton extends ComponentMixin(MwcIconButton) {
 			...super.styles,
 			css`
 				:host {
-					--mdc-icon-size: var(--mo-font-size-icon, 20px);
+					font-size: 20px;
 					--mdc-icon-button-size: calc(var(--mdc-icon-size) * 2);
 				}
 
 				:host([small]) {
 					--mdc-icon-button-size: calc(var(--mdc-icon-size) * 1.5);
 				}
+
+				.mdc-icon-button, .material-icons {
+					font-size: inherit;
+				}
 			`
 		]
+	}
+
+	protected override render() {
+		const fontSize = getComputedStyle(this).getPropertyValue('font-size')
+		this.style.setProperty('--mdc-icon-size', fontSize)
+		this.style.setProperty('--mdc-icon-button-size', `calc(${fontSize} * ${this.small ? '1.5' : '2'})` )
+		return super.render() as HTMLTemplateResult
 	}
 }
 

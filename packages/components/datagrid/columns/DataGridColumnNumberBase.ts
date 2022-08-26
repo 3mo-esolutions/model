@@ -3,9 +3,7 @@ import { DataGridColumn } from '.'
 
 export abstract class DataGridColumnNumberBase<TData> extends DataGridColumn<TData, number> {
 	@property() sumHeading: string | undefined = undefined
-
-	override get textAlign() { return super.textAlign === '' ? 'right' : super.textAlign }
-	override set textAlign(value) { super.textAlign = value }
+	@property() override textAlign = 'end'
 
 	override get definition() {
 		return {

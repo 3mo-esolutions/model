@@ -1,4 +1,4 @@
-import { component, html, property } from '../../../library'
+import { component, html, property, style } from '../../../library'
 import { FormatHelper } from '../../../utilities'
 import { FieldNumber } from './FieldNumber'
 
@@ -19,7 +19,7 @@ export class FieldPercentage extends FieldNumber {
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-div fontSize='20px' fontWeight='600' foreground='var(--mo-color-gray)'>
+			<mo-div ${style({ fontSize: '20px', fontWeight: '600', color: 'var(--mo-color-gray)' })}>
 				${this.percentageSign}
 			</mo-div>
 		`

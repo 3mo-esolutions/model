@@ -1,4 +1,4 @@
-import { component, html, property, Component, css, nothing } from '../../library'
+import { component, html, property, Component, css, nothing, style } from '../../library'
 import { SlotController } from '../../utilities'
 
 /**
@@ -91,16 +91,16 @@ export class Card extends Component {
 		return !hasHeader ? nothing : html`
 			<slot part='header' name='header'>
 				<slot name='avatar'>
-					${!this.avatar ? nothing : html`<mo-avatar part='avatar' margin='0 var(--mo-thickness-m) 0 0'>${this.avatar}</mo-avatar>`}
+					${!this.avatar ? nothing : html`<mo-avatar part='avatar' ${style({ marginRight: 'var(--mo-thickness-m)' })}>${this.avatar}</mo-avatar>`}
 				</slot>
 
-				<mo-flex justifyContent='space-around' width='*'>
+				<mo-flex justifyContent='space-around' ${style({ width: '*' })}>
 					<slot name='heading'>
-						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4' fontWeight='500'>${this.heading}</mo-heading>`}
+						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4' ${style({ fontWeight: '500' })}>${this.heading}</mo-heading>`}
 					</slot>
 
 					<slot name='subHeading'>
-						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' fontWeight='400' foreground='var(--mo-color-gray)'>${this.subHeading}</mo-heading>`}
+						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' ${style({ fontWeight: '400', color: 'var(--mo-color-gray)' })}>${this.subHeading}</mo-heading>`}
 					</slot>
 				</mo-flex>
 				<slot name='action'></slot>

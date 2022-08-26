@@ -1,4 +1,4 @@
-import { component, html, ifDefined } from '../../../library'
+import { component, html, ifDefined, style } from '../../../library'
 import { DataGridColumnNumberBase } from '.'
 
 @component('mo-data-grid-column-amount')
@@ -20,7 +20,7 @@ export class DataGridColumnAmount<TData> extends DataGridColumnNumberBase<TData>
 
 	getSumTemplate(sum: number) {
 		return html`
-			<mo-amount fontWeight='500' value=${sum} foreground='var(--mo-accent)'></mo-amount>
+			<mo-amount value=${sum} ${style({ fontWeight: '500', color: 'var(--mo-accent)' })}></mo-amount>
 		`
 	}
 }

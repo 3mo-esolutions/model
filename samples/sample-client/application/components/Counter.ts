@@ -1,4 +1,4 @@
-import { Component, component, event, html, property } from '@3mo/model'
+import { Component, component, event, html, property, style } from '@3mo/model'
 
 /**
  * @fires countChange {CustomEvent<number>}
@@ -31,7 +31,7 @@ export class Counter extends Component {
 					➖
 				</mo-button>
 
-				<mo-flex data-test-id='count' alignItems='center' justifyContent='center' fontSize='var(--mo-font-size-xl)'>
+				<mo-flex data-test-id='count' alignItems='center' justifyContent='center' ${style({ fontSize: 'var(--mo-font-size-xl)' })}>
 					${this.count}
 				</mo-flex>
 

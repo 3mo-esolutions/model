@@ -31,6 +31,6 @@ function setPropertyByKeyPath<T, KeyPath extends KeyPathOf<T>>(object: T, keyPat
 	}
 }
 
-window.nameof = nameof
-window.getPropertyByKeyPath = getPropertyByKeyPath
-window.setPropertyByKeyPath = setPropertyByKeyPath
+globalThis.nameof = nameof
+globalThis.getPropertyByKeyPath = getPropertyByKeyPath
+globalThis.setPropertyByKeyPath = setPropertyByKeyPath

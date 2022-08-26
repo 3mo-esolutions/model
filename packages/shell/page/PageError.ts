@@ -1,6 +1,6 @@
 import { component, html } from '../../library'
 import { PageComponent } from './PageComponent'
-import { HttpErrorCode, Localizer } from '../..'
+import { HttpErrorCode, Localizer, style } from '../..'
 
 Localizer.register(LanguageCode.German, {
 	'Bad Request': 'Schlechte Anfrage',
@@ -104,8 +104,8 @@ export class PageError extends PageComponent<{ readonly error: HttpErrorCode, re
 				<mo-flex gap='var(--mo-thickness-xl)' alignItems='center' justifyContent='center'>
 					<mo-div class='code'>${this.errorTemplate}</mo-div>
 					<mo-flex gap='var(--mo-thickness-m)'>
-						<mo-heading typography='heading1' textAlign='center'>${this.parameters.message ?? PageError.errors.get(this.parameters.error)?.defaultMessage}</mo-heading>
-						<mo-heading typography='heading3' textAlign='center'>Open the menu and navigate to a page</mo-heading>
+						<mo-heading typography='heading1' ${style({ textAlign: 'center' })}>${this.parameters.message ?? PageError.errors.get(this.parameters.error)?.defaultMessage}</mo-heading>
+						<mo-heading typography='heading3' ${style({ textAlign: 'center' })}>Open the menu and navigate to a page</mo-heading>
 					</mo-flex>
 				</mo-flex>
 			</mo-page>

@@ -1,4 +1,4 @@
-import { html, component, state } from '../../../library'
+import { html, component, state, style } from '../../../library'
 import { DialogComponent } from '../../../shell'
 import { Localizer } from '../../../localization'
 import { DialogDeletion } from '../..'
@@ -43,8 +43,8 @@ export class DialogDataGridMode extends DialogComponent<{ readonly moddableDataG
 					@input=${(e: CustomEvent<string>) => this.mode.name = e.detail.trim()}
 				></mo-field-text>
 
-				<mo-flex slot='footer' width='*'>
-					<mo-checkbox margin='0 0 0 -8px'
+				<mo-flex slot='footer'>
+					<mo-checkbox ${style({ width: '*',  marginLeft: '-8px' })}
 						label=${_('Archived')}
 						?checked=${this.mode.isArchived}
 						@change=${(e: CustomEvent<CheckboxValue>) => this.mode.isArchived = e.detail === 'checked'}

@@ -67,12 +67,12 @@ export class DataGridFooter<TData> extends Component {
 	protected override get template() {
 		this.switchAttribute('hideTopBorder', this.dataGrid.hasFooter === false)
 		return this.dataGrid.hasFooter === false ? nothing : html`
-			<mo-flex direction='horizontal' justifyContent='space-between' margin='var(--mo-thickness-s)' height='calc(100% - calc(2 * var(--mo-thickness-s)))'>
+			<mo-flex direction='horizontal' justifyContent='space-between' ${style({ margin: 'var(--mo-thickness-s)', height: 'calc(100% - calc(2 * var(--mo-thickness-s)))' })}>
 				<mo-flex direction='horizontal' basis='auto' alignItems='center' gap='var(--mo-thickness-xl)'>
 					${this.paginationTemplate}
 				</mo-flex>
 
-				<mo-flex textAlign='right' direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)'>
+				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' ${style({ textAlign: 'right' })}>
 					${this.dataGrid.columns.map(column => this.getSumTemplate(column))}
 					<slot name='sum'></slot>
 				</mo-flex>

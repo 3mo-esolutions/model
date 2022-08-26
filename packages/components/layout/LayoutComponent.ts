@@ -7,12 +7,12 @@ export abstract class LayoutComponent extends Component {
 	set justifyItems(value) { this.style.justifyItems = value }
 
 	@property()
-	override get justifyContent() { return this.style.justifyContent as CSS.Property.JustifyContent }
-	override set justifyContent(value) { this.style.justifyContent = value }
+	get justifyContent() { return this.style.justifyContent as CSS.Property.JustifyContent }
+	set justifyContent(value) { this.style.justifyContent = value }
 
 	@property()
-	override get alignItems() { return this.style.alignItems as CSS.Property.AlignItems }
-	override set alignItems(value) { this.style.alignItems = value }
+	get alignItems() { return this.style.alignItems as CSS.Property.AlignItems }
+	set alignItems(value) { this.style.alignItems = value }
 
 	@property()
 	get alignContent() { return this.style.alignContent as CSS.Property.AlignContent }

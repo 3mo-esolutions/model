@@ -1,4 +1,4 @@
-import { component, Component, html, nothing, property, event } from '@3mo/model'
+import { component, Component, html, nothing, property, event, style } from '@3mo/model'
 import { Photo } from '../../sdk'
 import { DialogPhoto } from '../dialogs'
 
@@ -43,7 +43,7 @@ export class PhotoCard extends Component {
 				<mo-flex height='*'>
 					<img src=${this.photo.thumbnailUrl} alt=${this.photo.title} @click=${this.selectCard}>
 					<mo-flex height='*' justifyContent='center'>
-					<mo-heading typography='heading5' textAlign='center' width='100%' foreground='var(--mo-accent)'>${this.photo.title}</mo-heading>
+					<mo-heading typography='heading5' ${style({ textAlign: 'center', width: '100%', color: 'var(--mo-accent)' })}>${this.photo.title}</mo-heading>
 				</mo-flex>
 				</mo-flex>
 			</mo-card>

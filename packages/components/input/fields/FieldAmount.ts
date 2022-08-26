@@ -1,4 +1,4 @@
-import { component, html, property } from '../../../library'
+import { component, html, property, style } from '../../../library'
 import { FormatHelper } from '../../../utilities'
 import { FieldNumber } from './FieldNumber'
 
@@ -18,7 +18,7 @@ export class FieldAmount extends FieldNumber {
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-div foreground='var(--mo-color-gray)' fontSize='var(--mo-font-size-xl)'>${this.currencySymbolText}</mo-div>
+			<mo-div ${style({ color: 'var(--mo-color-gray)', fontSize: 'var(--mo-font-size-xl)' })}>${this.currencySymbolText}</mo-div>
 		`
 	}
 }
