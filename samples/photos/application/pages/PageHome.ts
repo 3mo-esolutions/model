@@ -62,12 +62,6 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	private get dataGridTemplate() {
 		return html`
 			<mo-flex>
-				<mo-div ${style({ display: 'block' })}>
-					<mo-icon icon='done_all' ${style({ fontSize: '15px' })}></mo-icon>
-					<mo-icon icon='done_all'></mo-icon>
-					<mo-icon icon='done_all' ${style({ fontSize: '32px' })}></mo-icon>
-					<mo-icon-button icon='done_all'></mo-icon-button>
-				</mo-div>
 				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
 					.parameters=${this.dataGridParameters}
 					.selectedData=${this.selectedPhotos}

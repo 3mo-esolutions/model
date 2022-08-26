@@ -27,6 +27,8 @@
 		"@a11d/lit": "*",
 		"@lit-labs/task": "1.*",
 		"@lit-labs/virtualizer": "0.7.0-pre.3",
+		"@3mo/flex": "*",
+		"@3mo/grid": "*",
 		"@material/mwc-button": "0.25.*",
 		"@material/mwc-checkbox": "0.25.*",
 		"@material/mwc-circular-progress": "0.25.*",

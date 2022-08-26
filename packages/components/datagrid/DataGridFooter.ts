@@ -68,7 +68,7 @@ export class DataGridFooter<TData> extends Component {
 		this.switchAttribute('hideTopBorder', this.dataGrid.hasFooter === false)
 		return this.dataGrid.hasFooter === false ? nothing : html`
 			<mo-flex direction='horizontal' justifyContent='space-between' ${style({ margin: 'var(--mo-thickness-s)', height: 'calc(100% - calc(2 * var(--mo-thickness-s)))' })}>
-				<mo-flex direction='horizontal' basis='auto' alignItems='center' gap='var(--mo-thickness-xl)'>
+				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)' ${style({ flexBasis: 'auto' })}>
 					${this.paginationTemplate}
 				</mo-flex>
 
