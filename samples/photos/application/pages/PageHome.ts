@@ -41,7 +41,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 	private get cardTemplate() {
 		return html`
-			<mo-flex direction='horizontal' height='40px' alignItems='center'>
+			<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
 				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
 				<mo-icon-button icon='edit' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>
 				<mo-icon-button icon='delete' ?hidden=${this.selectedPhotos.length === 0}></mo-icon-button>

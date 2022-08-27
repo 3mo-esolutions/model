@@ -1,4 +1,4 @@
-import { component, css, eventListener, html, property } from '../../library'
+import { component, css, eventListener, html, property, style } from '../../library'
 import { observeMutation } from '../../utilities'
 import { Checkbox, CSSDirection } from '..'
 
@@ -52,7 +52,7 @@ export class CheckboxGroup extends Checkbox {
 		return html`
 			<mo-flex>
 				${super.render()}
-				<mo-flex direction=${this.direction} height='*'>
+				<mo-flex direction=${this.direction} ${style({ height: '*' })}>
 					<slot ${observeMutation(this.handleSlotChange)}></slot>
 				</mo-flex>
 			</mo-flex>

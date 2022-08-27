@@ -120,7 +120,7 @@ export abstract class Application extends Component {
 				</mo-flex>
 
 				<slot slot='actionItems' name='actionItems'>
-					<mo-flex height='var(--mo-top-app-bar-height)' alignItems='center' justifyContent='center'>
+					<mo-flex ${style({ height: 'var(--mo-top-app-bar-height)' })} alignItems='center' justifyContent='center'>
 						${this.topAppBarActionItemsTemplate}
 					</mo-flex>
 				</slot>
@@ -134,8 +134,8 @@ export abstract class Application extends Component {
 						${this.drawerTitleTemplate}
 					</mo-flex>
 
-					<mo-flex height='100%'>
-						<mo-navigation-list height='*' open root>
+					<mo-flex ${style({ height: '100%' })}>
+						<mo-navigation-list ${style({ height: '*' })} open root>
 							${this.drawerTemplate}
 						</mo-navigation-list>
 
@@ -144,7 +144,7 @@ export abstract class Application extends Component {
 						</mo-navigation-list>
 					</mo-flex>
 
-					<mo-flex slot='appContent' height='100%'>
+					<mo-flex slot='appContent' ${style({ height: '100%' })}>
 						${this.pageHostTemplate}
 					</mo-flex>
 				</mo-drawer>
@@ -223,7 +223,7 @@ export abstract class Application extends Component {
 
 	protected get pageHostTemplate() {
 		return html`
-			<mo-page-host height='100%' width='100%'
+			<mo-page-host ${style({ width: '100%', height: '100%' })}
 				@headingChange=${(e: CustomEvent<string>) => this.pageHeading = e.detail}
 			></mo-page-host>
 		`

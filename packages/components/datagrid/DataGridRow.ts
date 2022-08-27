@@ -183,7 +183,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 
 	private get detailsExpanderTemplate() {
 		return html`
-			<mo-flex justifyContent='center' alignItems='center' width='var(--mo-data-grid-column-details-width)'
+			<mo-flex justifyContent='center' alignItems='center' ${style({ width: 'var(--mo-data-grid-column-details-width)' })}
 				?hidden=${this.dataGrid.hasDetails === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
@@ -199,7 +199,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 
 	private get selectionTemplate() {
 		return html`
-			<mo-flex height='var(--mo-data-grid-row-height)' width='var(--mo-data-grid-column-selection-width)' justifyContent='center' alignItems='center'
+			<mo-flex ${style({ width: 'var(--mo-data-grid-column-selection-width)', height: 'var(--mo-data-grid-row-height)' })} justifyContent='center' alignItems='center'
 				?hidden=${this.dataGrid.hasSelection === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}

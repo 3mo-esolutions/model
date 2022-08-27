@@ -1,4 +1,4 @@
-import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener } from '../../../library'
+import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener, style } from '../../../library'
 import { SplitterItem, CSSDirection, SplitterResizerHost } from '../..'
 import { MutationController } from '../../../utilities'
 import type * as CSS from 'csstype'
@@ -75,7 +75,7 @@ export class Splitter extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex height='100%' width='100%' wrap='nowrap' direction=${this.direction} gap=${ifDefined(this.gap)}>
+			<mo-flex ${style({ height: '100%', width: '100%' })} wrap='nowrap' direction=${this.direction} gap=${ifDefined(this.gap)}>
 				${this.items.map((item, index) => this.getItemTemplate(item, index))}
 			</mo-flex>
 		`

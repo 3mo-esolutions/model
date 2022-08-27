@@ -31,7 +31,7 @@ export class Section extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex width='100%' height='100%' gap='var(--mo-thickness-l)'>
+			<mo-flex gap='var(--mo-thickness-l)' ${style({ width: '100%', height: '100%' })}>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ minHeight: '30px' })}>
 					<slot name='heading'>
 						${this.headingTemplate}
@@ -55,7 +55,7 @@ export class Section extends Component {
 	protected get contentTemplate() {
 		const hasContent = this.slotController.hasSlottedElements('')
 		return html`
-			<mo-flex ?hidden=${!hasContent} height='*' direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
+			<mo-flex ?hidden=${!hasContent} ${style({ height: '*' })} direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
 				<slot></slot>
 			</mo-flex>
 		`

@@ -108,7 +108,7 @@ export class Alert extends Component {
 
 	protected get headingTemplate() {
 		return !this.heading ? nothing : html`
-			<mo-heading part='heading' typography='heading5' width='*'>${this.heading}</mo-heading>
+			<mo-heading part='heading' typography='heading5' ${style({ width: '*' })}>${this.heading}</mo-heading>
 		`
 	}
 

@@ -92,8 +92,8 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 			<mo-flex id='modebarFlex' direction='horizontal' ?hidden=${this.hasModebar === false}>
 				${this.modebarTemplate}
 			</mo-flex>
-			<mo-card height='100%' style='--mo-card-body-padding: 0px'>
-				<mo-flex height='100%'>
+			<mo-card ${style({ height: '100%', '--mo-card-body-padding': '0px' })}>
+				<mo-flex ${style({ height: '100%' })}>
 					${super.template}
 				</mo-flex>
 			</mo-card>
@@ -117,7 +117,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 			></mo-data-grid-mode-chip>
 		`
 		return html`
-			<mo-flex width='*' direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)'>
+			<mo-flex ${style({ width: '*' })} direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)'>
 				<mo-scroll ${style({ overflow: 'auto hidden', maxWidth: 'calc(100% - 40px)' })}>
 					<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
 						${this.modes.map(getModeChipTemplate)}

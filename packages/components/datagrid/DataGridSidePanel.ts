@@ -70,7 +70,7 @@ export class DataGridSidePanel<TData> extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-flex height='100%'>
+			<mo-flex ${style({ height: '100%' })}>
 				<mo-tab-bar
 					value=${ifDefined(this.dataGrid.sidePanelTab)}
 					?hidden=${this.dataGrid.hasToolbar || this.dataGrid.hasFilters === false}
@@ -82,11 +82,11 @@ export class DataGridSidePanel<TData> extends Component {
 				</mo-tab-bar>
 
 				<mo-flex id='flexHeading' direction='horizontal' alignItems='center' ?hidden=${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true}>
-					<mo-heading width='*' typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Filters' : 'Settings')}</mo-heading>
+					<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Filters' : 'Settings')}</mo-heading>
 					<mo-icon-button icon='close' small ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
 				</mo-flex>
 
-				<mo-scroll height='*'>
+				<mo-scroll ${style({ height: '*' })}>
 					${this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? this.filtersTemplate : this.settingsTemplate}
 				</mo-scroll>
 			</mo-flex>
@@ -128,8 +128,7 @@ export class DataGridSidePanel<TData> extends Component {
 			await this.dataGrid.updateComplete
 		}
 		return html`
-			<mo-checkbox
-				height='30px'
+			<mo-checkbox ${style({ height: '30px' })}
 				label=${column.heading}
 				?checked=${column.hidden === false}
 				@change=${change}

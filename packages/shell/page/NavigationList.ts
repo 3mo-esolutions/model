@@ -1,5 +1,5 @@
 import { Component, component, html, property, ifDefined, css } from '../../library'
-import { MaterialIcon, NavigationListItem } from '../..'
+import { MaterialIcon, NavigationListItem, style } from '../..'
 
 @component('mo-navigation-list')
 export class NavigationList extends Component {
@@ -82,7 +82,7 @@ export class NavigationList extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-list height='var(--drawer-item-height)' @click=${() => this.open = !this.open} ?hidden=${this.root}>
+			<mo-list ${style({ height: 'var(--drawer-item-height)' })} @click=${() => this.open = !this.open} ?hidden=${this.root}>
 				<mo-list-item icon=${ifDefined(this.icon)} metaIcon=${this.open ? 'arrow_drop_up' : 'arrow_drop_down'}>
 					${this.label}
 				</mo-list-item>

@@ -2,7 +2,7 @@ import { state, component, html, ifDefined, query } from '../../library'
 import { FieldText, FieldTextArea } from '..'
 import { DialogComponent } from '../../shell'
 import { BaseDialogParameters } from './BaseDialogParameters'
-import { Localizer } from '../..'
+import { Localizer, style } from '../..'
 
 Localizer.register(LanguageCode.German, {
 	'OK': 'OK',
@@ -32,7 +32,7 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
 			>
-				<mo-flex width='100%' height='100%' gap='var(--mo-thickness-m)'>
+				<mo-flex ${style({ width: '100%', height: '100%' })} gap='var(--mo-thickness-m)'>
 					${this.parameters.content}
 					${this.textFieldTemplate}
 				</mo-flex>

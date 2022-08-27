@@ -88,7 +88,7 @@ export class Calendar extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex alignItems='center' justifyContent='center' ${style({ width: 'var(--mo-calendar-max-width)', minHeight: 'var(--mo-calendar-min-height)' })}>
-				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' width='100%'>
+				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' ${style({ width: '100%' })}>
 					<mo-icon-button icon='keyboard_arrow_left'
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}
 					></mo-icon-button>
@@ -150,7 +150,7 @@ export class Calendar extends Component {
 
 	private get yearSelectionTemplate() {
 		return html`
-			<mo-scroll height='*'>
+			<mo-scroll ${style({ height: '*' })}>
 				<mo-grid rows='repeat(50, var(--mo-calendar-day-size))' columns='repeat(4, 1fr)'>
 					${this.years.map(year => html`
 						<mo-flex class=${classMap({ year: true, selected: this.navigatingDate.year === year })} @click=${() => this.selectYear(year)}>

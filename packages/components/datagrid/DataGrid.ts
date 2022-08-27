@@ -499,7 +499,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			<slot name='column' hidden ${observeMutation(() => this.requestUpdate())}>${this.columnsTemplate}</slot>
 			${this.toolbarTemplate}
-			<mo-splitter direction='horizontal-reversed' height='*' .resizerTemplate=${html`
+			<mo-splitter direction='horizontal-reversed' ${style({ height: '100%' })} .resizerTemplate=${html`
 				<mo-splitter-resizer-line style='--mo-splitter-resizer-line-thickness: 1px; --mo-splitter-resizer-line-idle-background: var(--mo-color-transparent-gray-3); --mo-splitter-resizer-line-horizontal-transform: scaleX(5);'></mo-splitter-resizer-line>
 			`}>
 				${this.sidePanelTab === undefined ? nothing : html`
@@ -515,7 +515,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				`}
 
 				<mo-splitter-item ${style({ position: 'relative' })}>
-					<mo-flex width='*' ${style({ position: 'relative' })}>
+					<mo-flex ${style({ width: '*', position: 'relative' })}>
 						<!-- Do not try to cache the content via "cache" directive as it is problematic for virtualized DataGrids -->
 						${this.contentTemplate}
 						<mo-flex id='flexFab' direction='vertical-reversed' gap='var(--mo-thickness-l)'>
@@ -624,7 +624,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	protected get toolbarTemplate() {
 		return this.hasToolbar === false ? nothing : html`
 			<mo-flex id='flexToolbar' direction='horizontal' gap='var(--mo-thickness-l)'>
-				<mo-flex direction='horizontal' width='*' alignItems='inherit' gap='var(--mo-thickness-l)'>
+				<mo-flex direction='horizontal' alignItems='inherit' gap='var(--mo-thickness-l)' ${style({ width: '*' })}>
 					<slot name='toolbar'></slot>
 				</mo-flex>
 				<slot name='toolbarAction'></slot>
@@ -637,15 +637,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	protected get selectionToolbarTemplate() {
 		return this.selectionToolbarDisabled === true || this.selectedData.length === 0 ? nothing : html`
 			<mo-flex id='flexSelectionToolbar'>
-				<mo-flex placeSelf='stretch' direction='horizontal' gap='30px'>
+				<mo-flex direction='horizontal' gap='30px' ${style({ placeSelf: 'stretch' })}>
 					<mo-div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
 						${_('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</mo-div>
 					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
-						<mo-div width='*'>${_('Options')}</mo-div>
+						<mo-div ${style({ width: '*' })}>${_('Options')}</mo-div>
 						<mo-icon-button small icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
 					</mo-flex>
-					<mo-div width='*'></mo-div>
+					<mo-div ${style({ width: '*' })}></mo-div>
 					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>
 				</mo-flex>
 			</mo-flex>

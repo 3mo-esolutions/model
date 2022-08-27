@@ -1,4 +1,4 @@
-import { component, css, html } from '../../library'
+import { component, css, html, style } from '../../library'
 import { Section } from './Section'
 
 /**
@@ -18,13 +18,13 @@ export class GroupBox extends Section {
 
 	protected override get headingTemplate() {
 		return html`
-			<mo-heading part='heading' width='*' typography='heading4'>${this.heading}</mo-heading>
+			<mo-heading part='heading' typography='heading4' ${style({ width: '*' })}>${this.heading}</mo-heading>
 		`
 	}
 
 	protected override get contentTemplate() {
 		return html`
-			<mo-card part='card' height='*'>
+			<mo-card part='card' ${style({ height: '*' })}>
 				${super.contentTemplate}
 				<slot slot='footer' name='footer'></slot>
 			</mo-card>

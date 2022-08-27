@@ -122,7 +122,7 @@ export class DataGridFooter<TData> extends Component {
 				></mo-icon-button>
 			</mo-flex>
 
-			<mo-div width='1px' height='50%' ${style({ background: 'var(--mo-color-transparent-gray-3)' })}></mo-div>
+			<mo-div ${style({ width: '1px', height: '50%', background: 'var(--mo-color-transparent-gray-3)' })}></mo-div>
 
 			<mo-div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
 				<mo-div ${style({ fontSize: 'var(--mo-font-size-s)' })}
@@ -130,7 +130,7 @@ export class DataGridFooter<TData> extends Component {
 					@click=${() => this.manualPageSize = true}
 				>${pageSizeText}</mo-div>
 
-				<mo-field-select-data-grid-page-size dense width='90px'
+				<mo-field-select-data-grid-page-size dense ${style({ width: '90px' })}
 					.dataGrid=${this.dataGrid}
 					?hidden=${this.manualPageSize === false}
 					value=${ifDefined(this.dataGrid.pagination)}
