@@ -1,5 +1,5 @@
 import { render, query, css, html, event, CSSResult, property, style } from '../../library'
-import { MaterialIcon } from '.'
+import { MaterialIcon } from '..'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 export const ListItemMixin = <T extends Constructor<MwcListItem>>(Constructor: T) => {

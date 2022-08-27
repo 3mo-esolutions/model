@@ -2,7 +2,7 @@
 import { component, property } from '../../../../library'
 import { FormatHelper, DateHelper, ClassInfo, classMap, css, html, state, style } from '../../../..'
 import { FieldDateBase } from './FieldDateBase'
-import { MaterialIcon } from '../../../helpers'
+import { MaterialIcon } from '../../..'
 import { CalendarSelectionAdapter } from '../../calendar'
 
 const enum DateRangeCalendarSelectionAdapterCurrentSelection { StartDate, EndDate }

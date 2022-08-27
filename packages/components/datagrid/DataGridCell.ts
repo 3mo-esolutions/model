@@ -62,7 +62,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 				border-radius: 50%;
 				height: 30px;
 				background: var(--mo-color-surface);
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				position: absolute;
 				top: calc((var(--mo-data-grid-row-height) - 30px) / 2);
 			}
@@ -114,7 +114,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 
 	private get copyIconButtonTemplate() {
 		return !window.isSecureContext ? nothing : html`
-			<mo-icon-button id='copyIconButton' icon='copy' small
+			<mo-icon-button id='copyIconButton' icon='content_copy' small
 				title=${`${this.column.heading} kopieren`}
 				${style({ right: this.column.alignment === 'right' ? 'unset' : '4px', left: this.column.alignment !== 'right' ? 'unset' : '4px' })}
 				@click=${this.copyIconButtonClick}

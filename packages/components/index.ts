@@ -1,5 +1,8 @@
 export * from '@3mo/flex'
 export * from '@3mo/grid'
+export * from '@3mo/icon'
+
+import './composer'
 
 export * from './helpers'
 export * from './Confetti'

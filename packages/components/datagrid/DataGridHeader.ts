@@ -95,7 +95,7 @@ export class DataGridHeader<TData> extends Component {
 	private get detailsExpanderTemplate() {
 		return html`
 			<mo-flex justifyContent='center' alignItems='center' ?hidden=${this.dataGrid.hasDetails === false}>
-				<mo-icon-button small ${style({ padding: '-10px 0px 0 -10px'})}
+				<mo-icon-button small ${style({ padding: '-10px 0px 0 -10px' })}
 					?hidden=${(this.dataGrid.hasDetails && this.dataGrid.multipleDetails) === false}
 					${style({ display: 'inherit' })}
 					icon=${this.areAllDetailsOpen ? 'unfold_less' : 'unfold_more'}

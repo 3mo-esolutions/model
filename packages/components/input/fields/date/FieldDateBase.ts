@@ -1,6 +1,6 @@
 
 import { html, nothing, property, query, style } from '../../../../library'
-import { MaterialIcon } from '../../../helpers'
+import { MaterialIcon } from '../../..'
 import { CalendarSelectionAdapter, SelectableCalendar } from '../../calendar'
 import { Field } from '../../Field'
 
