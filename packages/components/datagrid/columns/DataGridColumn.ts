@@ -1,4 +1,4 @@
-import { Component, property, CssHelper, HTMLTemplateResult } from '../../../library'
+import { Component, property, HTMLTemplateResult, AsteriskSyntaxStyleHandler } from '../../../library'
 import { ColumnDefinition } from '../ColumnDefinition'
 import { DataGrid } from '../DataGrid'
 
@@ -21,7 +21,7 @@ export abstract class DataGridColumn<TData, TValue> extends Component {
 			title: this.title || undefined,
 			alignment: this.textAlign as 'left' | 'center' | 'right',
 			hidden: this.hidden,
-			width: CssHelper.isAsteriskSyntax(this.width) ? CssHelper.getGridFractionFromAsteriskSyntax(this.width) : this.width,
+			width: !AsteriskSyntaxStyleHandler.regex.test(this.width) ? this.width : `${AsteriskSyntaxStyleHandler.getProportion(this.width)}fr`,
 			sortable: !this.nonSortable,
 			editable: !this.nonEditable,
 			getContentTemplate: this.getContentTemplate.bind(this),

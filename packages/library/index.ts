@@ -1,6 +1,6 @@
 /* eslint-disable import/export */
 export * from '@lit-labs/task'
-export * from './helpers'
+export * from './TemplateHelper'
 export * from './renderContainer'
 import './StyleMixin'
 export * from './ComponentMixin'
