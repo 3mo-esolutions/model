@@ -6,7 +6,7 @@ describe(Card.name, () => {
 
 	function testSlotRendersIfContentAvailable(toBeRenderSlotName: string, contentSlotName: string) {
 		it(`should render slot "${toBeRenderSlotName}" if the content of slot "${contentSlotName}" is available`, async () => {
-			render(html`<mo-div slot=${contentSlotName}>Content</mo-div>`, fixture.component)
+			render(html`<div slot=${contentSlotName}>Content</div>`, fixture.component)
 
 			await fixture.update()
 

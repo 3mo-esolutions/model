@@ -99,17 +99,17 @@ export class DataGridFooter<TData> extends Component {
 					@click=${() => this.setPage(this.page - 1)}
 				></mo-icon-button>
 
-				<mo-div ${style({ cursor: 'pointer', width: hasUnknownDataLength ? '40px' : '75px', textAlign: 'center' })}>
-					<mo-div ${style({ fontSize: 'var(--mo-font-size-s)' })}
+				<div ${style({ cursor: 'pointer', width: hasUnknownDataLength ? '40px' : '75px', textAlign: 'center' })}>
+					<div ${style({ fontSize: 'var(--mo-font-size-s)' })}
 						?hidden=${this.manualPagination === true}
 						@click=${() => this.manualPagination = hasUnknownDataLength === false}
-					>${pageText}</mo-div>
+					>${pageText}</div>
 
 					<mo-field-number dense ?hidden=${this.manualPagination === false}
 						value=${this.page}
 						@change=${(e: CustomEvent<number>) => this.handleManualPageChange(e.detail)}>
 					</mo-field-number>
-				</mo-div>
+				</div>
 
 				<mo-icon-button small icon='keyboard_arrow_right'
 					?disabled=${!this.dataGrid.hasNextPage}
@@ -122,13 +122,13 @@ export class DataGridFooter<TData> extends Component {
 				></mo-icon-button>
 			</mo-flex>
 
-			<mo-div ${style({ width: '1px', height: '50%', background: 'var(--mo-color-transparent-gray-3)' })}></mo-div>
+			<div ${style({ width: '1px', height: '50%', background: 'var(--mo-color-transparent-gray-3)' })}></div>
 
-			<mo-div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
-				<mo-div ${style({ fontSize: 'var(--mo-font-size-s)' })}
+			<div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
+				<div ${style({ fontSize: 'var(--mo-font-size-s)' })}
 					?hidden=${this.manualPageSize === true}
 					@click=${() => this.manualPageSize = true}
-				>${pageSizeText}</mo-div>
+				>${pageSizeText}</div>
 
 				<mo-field-select-data-grid-page-size dense ${style({ width: '90px' })}
 					.dataGrid=${this.dataGrid}
@@ -136,7 +136,7 @@ export class DataGridFooter<TData> extends Component {
 					value=${ifDefined(this.dataGrid.pagination)}
 					@change=${(e: CustomEvent<DataGridPagination>) => this.handlePaginationChange(e.detail)}>
 				</mo-field-select-data-grid-page-size>
-			</mo-div>
+			</div>
 		`
 	}
 

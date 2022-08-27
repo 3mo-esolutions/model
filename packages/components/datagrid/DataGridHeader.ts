@@ -139,7 +139,7 @@ export class DataGridHeader<TData> extends Component {
 				${style({ overflow: 'hidden', position: 'relative', cursor: 'pointer', userSelect: 'none' })}
 				@click=${() => this.sort(column)}
 			>
-				<mo-div class='headerContent' ${style({ width: '100%', textAlign: column.alignment })} title=${column.title || column.heading}>${column.heading}</mo-div>
+				<div class='headerContent' ${style({ width: '100%', textAlign: column.alignment })} title=${column.title || column.heading}>${column.heading}</div>
 
 				<mo-icon
 					${style({ color: 'var(--mo-color-accent)', margin: '0 3px 3px 3px', lineHeight: 'calc(var(--mo-data-grid-header-height) - 3px)' })}

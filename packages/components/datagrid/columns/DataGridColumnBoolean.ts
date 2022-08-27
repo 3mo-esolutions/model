@@ -13,7 +13,9 @@ export class DataGridColumnBoolean<TData> extends DataGridColumn<TData, boolean>
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	getContentTemplate(value: boolean | undefined, _data: TData) {
 		return html`
-			<mo-icon icon=${value ? this.trueIcon : this.falseIcon} ${style({ color: value ? this.trueIconColor : this.falseIconColor })}></mo-icon>
+			<mo-flex justifyContent='center' ${style({ height: '100%' })}>
+				<mo-icon icon=${value ? this.trueIcon : this.falseIcon} ${style({ color: value ? this.trueIconColor : this.falseIconColor })}></mo-icon>
+			</mo-flex>
 		`
 	}
 

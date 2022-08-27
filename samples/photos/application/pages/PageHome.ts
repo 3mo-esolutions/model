@@ -62,13 +62,13 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	private get dataGridTemplate() {
 		return html`
 			<mo-flex>
-				<mo-div ${style({ display: 'block' })}>
+				<div ${style({ display: 'block' })}>
 					<mo-icon icon='settings' ${style({ fontSize: '15px' })}></mo-icon>
 					<mo-icon icon='settings'></mo-icon>
 					<mo-icon icon='settings' ${style({ fontSize: '32px' })}></mo-icon>
 					<mo-icon-button icon='settings'></mo-icon-button>
 					<mo-icon-button small icon='settings'></mo-icon-button>
-				</mo-div>
+				</div>
 				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
 					.parameters=${this.dataGridParameters}
 					.selectedData=${this.selectedPhotos}

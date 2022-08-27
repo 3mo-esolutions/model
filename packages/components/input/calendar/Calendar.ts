@@ -92,10 +92,10 @@ export class Calendar extends Component {
 					<mo-icon-button icon='keyboard_arrow_left'
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}
 					></mo-icon-button>
-					<mo-div>
+					<div>
 						<a class='navigatingMonth'>${this.navigatingDate.monthName}</a>
 						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingDate.year}</a>
-					</mo-div>
+					</div>
 					<mo-icon-button icon='keyboard_arrow_right'
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(+1)}
 					></mo-icon-button>
@@ -113,19 +113,19 @@ export class Calendar extends Component {
 				columns=${this.includeWeekNumbers ? 'var(--mo-calendar-week-number-width) repeat(7, var(--mo-calendar-day-size))' : 'repeat(7, var(--mo-calendar-day-size))'}
 				${style({ alignItems: 'center', justifyItems: 'center' })}
 			>
-				${this.includeWeekNumbers === false ? nothing : html`<mo-div></mo-div>`}
+				${this.includeWeekNumbers === false ? nothing : html`<div></div>`}
 
 				${MoDate.weekDayNames.map(dayName => html`
-					<mo-div class='monthHeader'>
+					<div class='monthHeader'>
 						${dayName.charAt(0).toUpperCase() + dayName.charAt(1)}
-					</mo-div>
+					</div>
 				`)}
 
 				${this.navigatingDate.monthWeeks.map(([year, weekNumber]) => html`
 					${this.includeWeekNumbers === false ? nothing : html`
-						<mo-div class='week'>
+						<div class='week'>
 							${weekNumber}
-						</mo-div>
+						</div>
 					`}
 
 					${MoDate.getWeekRange([year, weekNumber]).map(day => this.getDayTemplate(day))}

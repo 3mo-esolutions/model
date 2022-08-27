@@ -22,7 +22,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 
 	protected get calendarIconButtonTemplate() {
 		return html`
-			<mo-div>
+			<div>
 				${this.hideDatePicker ? nothing : html`
 					<mo-icon-button tabindex='-1' small
 						icon=${this.calendarIconButtonIcon}
@@ -41,7 +41,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 					@closed=${() => this.open = false}
 					@opened=${() => this.open = true}
 				>${!this.open ? nothing : this.menuContentTemplate}</mo-menu>
-			</mo-div>
+			</div>
 		`
 	}
 

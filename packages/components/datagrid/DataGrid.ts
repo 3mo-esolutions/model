@@ -638,14 +638,14 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.selectionToolbarDisabled === true || this.selectedData.length === 0 ? nothing : html`
 			<mo-flex id='flexSelectionToolbar'>
 				<mo-flex direction='horizontal' gap='30px' ${style({ placeSelf: 'stretch' })}>
-					<mo-div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
+					<div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
 						${_('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
-					</mo-div>
+					</div>
 					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
-						<mo-div ${style({ width: '*' })}>${_('Options')}</mo-div>
+						<div ${style({ width: '*' })}>${_('Options')}</div>
 						<mo-icon-button small icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
 					</mo-flex>
-					<mo-div ${style({ width: '*' })}></mo-div>
+					<div ${style({ width: '*' })}></div>
 					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>
 				</mo-flex>
 			</mo-flex>

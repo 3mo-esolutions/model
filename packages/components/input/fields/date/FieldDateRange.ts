@@ -112,17 +112,17 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 		return html`
 			<mo-flex>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ textAlign: 'center', height: '30px' })}>
-						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
+						<div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
 							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.StartDate ? 'var(--mo-color-accent)' : 'unset' })}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.StartDate}
-						>${!startDate ? 'Start' : FormatHelper.date(startDate)}</mo-div>
+						>${!startDate ? 'Start' : FormatHelper.date(startDate)}</div>
 
-						<mo-div ${style({ color: 'var(--mo-color-gray)' })}>bis</mo-div>
+						<div ${style({ color: 'var(--mo-color-gray)' })}>bis</div>
 
-						<mo-div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
+						<div ${style({ width: '*', fontWeight: '500', cursor: 'pointer' })}
 							${style({ color: this.currentSelection === DateRangeCalendarSelectionAdapterCurrentSelection.EndDate ? 'var(--mo-color-accent)' : 'unset' })}
 							@click=${() => this.currentSelection = DateRangeCalendarSelectionAdapterCurrentSelection.EndDate}
-						>${!endDate ? 'Ende' : FormatHelper.date(endDate)}</mo-div>
+						>${!endDate ? 'Ende' : FormatHelper.date(endDate)}</div>
 				</mo-flex>
 				${super.menuContentTemplate}
 			</mo-flex>

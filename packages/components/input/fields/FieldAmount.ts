@@ -18,7 +18,7 @@ export class FieldAmount extends FieldNumber {
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-div ${style({ color: 'var(--mo-color-gray)', fontSize: 'var(--mo-font-size-xl)' })}>${this.currencySymbolText}</mo-div>
+			<div ${style({ color: 'var(--mo-color-gray)', fontSize: 'var(--mo-font-size-xl)' })}>${this.currencySymbolText}</div>
 		`
 	}
 }

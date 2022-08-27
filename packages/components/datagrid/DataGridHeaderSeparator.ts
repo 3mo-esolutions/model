@@ -62,7 +62,7 @@ export class DataGridHeaderSeparator extends Component {
 			</div>
 
 			${this.isResizing === false ? nothing : html`
-				<mo-div class='resizerOverlay' ${style({ marginLeft: `${this.delta}px` })}></mo-div>
+				<div class='resizerOverlay' ${style({ marginLeft: `${this.delta}px` })}></div>
 			`}
 		`
 	}

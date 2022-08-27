@@ -19,9 +19,9 @@ export class FieldPercentage extends FieldNumber {
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-div ${style({ fontSize: '20px', fontWeight: '600', color: 'var(--mo-color-gray)' })}>
+			<div ${style({ fontSize: '20px', fontWeight: '600', color: 'var(--mo-color-gray)' })}>
 				${this.percentageSign}
-			</mo-div>
+			</div>
 		`
 	}
 }

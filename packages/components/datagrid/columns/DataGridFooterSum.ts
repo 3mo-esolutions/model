@@ -14,7 +14,7 @@ export class DataGridFooterSum extends Component {
 				line-height: 1em;
 			}
 
-			mo-div {
+			div {
 				color: var(--mo-color-foreground-transparent);
 				font-size: var(--mo-font-size-xs);
 				text-transform: uppercase;
@@ -25,7 +25,7 @@ export class DataGridFooterSum extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-div>${this.heading}</mo-div>
+			<div>${this.heading}</div>
 			<mo-flex direction='horizontal' justifyContent='center'>
 				<slot></slot>
 			</mo-flex>

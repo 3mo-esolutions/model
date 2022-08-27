@@ -167,7 +167,7 @@ export class FieldSelect<T> extends Field<Value> {
 	protected override get template() {
 		return html`
 			${super.template}
-			<mo-div>
+			<div>
 				<mo-icon-button
 					part='dropDownIcon'
 					tabindex='-1'
@@ -194,7 +194,7 @@ export class FieldSelect<T> extends Field<Value> {
 				>
 					<slot></slot>
 				</mo-menu>
-			</mo-div>
+			</div>
 		`
 	}
 

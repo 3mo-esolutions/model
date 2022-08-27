@@ -11,7 +11,7 @@ export class PageHome extends PageComponent {
 				<mo-card>
 					<mo-flex alignItems='center' justifyContent='center' gap='var(--mo-thickness-xl)' ${style({ height: '100%' })}>
 						<mo-heading ${style({ color: 'var(--mo-color-accent)' })}>Welcome to 3MO Design Library</mo-heading>
-						<mo-div>As always there is a counter in a sample project. Get used to it 😀</mo-div>
+						<div>As always there is a counter in a sample project. Get used to it 😀</div>
 						<mo-button @click=${() => new DialogSample().confirm()}>Open Dialog</mo-button>
 						<mo-field-select>
 							<mo-option>A</mo-option>

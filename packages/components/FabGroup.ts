@@ -20,12 +20,12 @@ export class FabGroup extends Component {
 				z-index: 10;
 			}
 
-			mo-div {
+			div {
 				margin-bottom: calc(56px + 16px);
 				display: block;
 			}
 
-			:host(:not([open])) mo-div {
+			:host(:not([open])) div {
 				visibility: collapse;
 			}
 
@@ -63,11 +63,11 @@ export class FabGroup extends Component {
 				@click=${this.handleClick}
 			></mo-fab>
 
-			<mo-div ${style({ position: 'absolute', bottom: '0', right: '0' })}>
+			<div ${style({ position: 'absolute', bottom: '0', right: '0' })}>
 				<mo-flex direction='vertical-reversed' alignItems='end' gap='8px'>
 					<slot @slotchange=${() => this.updateFabElements()}></slot>
 				</mo-flex>
-			</mo-div>
+			</div>
 		`
 	}
 
