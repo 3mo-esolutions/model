@@ -23,7 +23,7 @@
 - Dialogs with [acknowledgement actions](https://material.io/components/dialogs#actions) with the sole goal of multiple or single selection of a list, shall be ignored and outsourced to the FieldSelect component which also supports multiple selection.
 
 ## API
-- The min-width, max-width and min-height of the Dialog can be overwritten via the CSS properties `--mdc-dialog-max-width`, `--mdc-dialog-min-width`, `--mdc-dialog-min-height`
+- The min-width, max-width and min-height of the Dialog can be overwritten via the CSS properties `--mdc-dialog-width`, `--mdc-dialog-width`, `--mdc-dialog-min-height`
 The `size` (`small` | `medium`| `large`) property act as **presets** for these CSS properties
 
 | Type | min-width | max-width | min-height |

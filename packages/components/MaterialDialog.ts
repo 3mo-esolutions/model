@@ -96,39 +96,42 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				}
 
 				:host([size=small]) {
-					--mdc-dialog-min-width: 320px;
-					--mdc-dialog-max-width: 480px;
-					--mdc-dialog-min-height: auto;
+					--mdc-dialog-width-default: 480px;
+					--mdc-dialog-height-default: auto;
 				}
 
 				:host([size=medium]) {
-					--mdc-dialog-max-width: 1024px;
-					--mdc-dialog-min-width: calc(100% - 32px);
-					--mdc-dialog-min-height: 768px;
+					--mdc-dialog-width-default: 1024px;
+					--mdc-dialog-height-default: 768px;
 				}
 
 				:host([size=large]) {
-					--mdc-dialog-max-width: 1680px;
-					--mdc-dialog-min-width: calc(100% - 32px);
-					--mdc-dialog-min-height: calc(100% - 32px);
+					--mdc-dialog-width-default: 1680px;
+					--mdc-dialog-height-default: 100vh;
 				}
 
 				:host([boundToWindow][size=large]) {
-					--mdc-dialog-max-width: 100%;
-					--mdc-dialog-min-width: 100%;
-					--mdc-dialog-min-height: 100%;
-					--mdc-dialog-max-height: 100%;
+					--mdc-dialog-width-default: 100vw;
+					--mdc-dialog-height-default: 100vh;
 				}
 
 				:host([boundToWindow]) {
 					--mdc-dialog-scrim-color: var(--mo-color-background);
 				}
 
-				.mdc-dialog__surface {
-					max-width: var(--mdc-dialog-max-width) !important;
-					width: 100vw;
-					min-height: var(--mdc-dialog-min-height);
-					height: var(--mdc-dialog-min-height);
+				.mdc-dialog .mdc-dialog__surface {
+					height: var(--mdc-dialog-height, var(--mdc-dialog-height-default));
+					max-height: calc(100vh - 32px);
+
+					width: var(--mdc-dialog-width, var(--mdc-dialog-width-default));
+					max-width: calc(100vw - 32px);
+				}
+
+				@media (max-width: 1024px), (max-height: 768px) {
+					.mdc-dialog .mdc-dialog__surface {
+						max-height: 100vh;
+						max-width: 100vw;
+					}
 				}
 
 				.mdc-dialog__actions {
