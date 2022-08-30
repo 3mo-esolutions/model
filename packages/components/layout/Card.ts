@@ -18,7 +18,7 @@ export class Card extends Component {
 	@property() avatar?: string
 	@property() image?: string
 
-	private readonly slotController = new SlotController(this)
+	protected readonly slotController = new SlotController(this)
 
 	static override get styles() {
 		return css`

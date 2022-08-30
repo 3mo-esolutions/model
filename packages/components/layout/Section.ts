@@ -1,6 +1,4 @@
 import { Component, component, css, html, property, style } from '../../library'
-import { CSSDirection } from '../helpers'
-import type * as CSS from 'csstype'
 import { SlotController } from '../../utilities'
 
 /**
@@ -11,9 +9,6 @@ import { SlotController } from '../../utilities'
 @component('mo-section')
 export class Section extends Component {
 	@property() heading = ''
-	@property() direction: CSSDirection = 'vertical'
-	@property() gap: CSS.Property.Gap<string> = 'unset'
-	@property() wrap: CSS.Property.FlexWrap = 'unset'
 
 	private readonly slotController = new SlotController(this)
 
@@ -55,9 +50,9 @@ export class Section extends Component {
 	protected get contentTemplate() {
 		const hasContent = this.slotController.hasSlottedElements('')
 		return html`
-			<mo-flex ?hidden=${!hasContent} ${style({ height: '*' })} direction=${this.direction} gap=${this.gap} wrap=${this.wrap}>
+			<mo-grid ?hidden=${!hasContent} ${style({ height: '*' })}>
 				<slot></slot>
-			</mo-flex>
+			</mo-grid>
 		`
 	}
 }

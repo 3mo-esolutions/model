@@ -21,7 +21,7 @@ export class PageField extends PageComponent {
 				<mo-grid gap='var(--mo-thickness-xl)' columns='* *' ${style({ width: '100%', height: '*' })}>
 					<mo-flex>
 						<mo-card heading='Textfelder'>
-							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder'>
+							<mo-section heading='Textfelder'>
 								<mo-grid columns='repeat(5, *)' rows='auto' gap='var(--mo-thickness-l)'>
 									<mo-field-text label="Text"></mo-field-text>
 									<mo-field-text label="Text disabled" disabled></mo-field-text>
@@ -46,11 +46,10 @@ export class PageField extends PageComponent {
 									<mo-field-email label="E-Mail readonly" readonly></mo-field-email>
 									<mo-field-email label="E-Mail required" required></mo-field-email>
 									<mo-field-email label="E-Mail error" error></mo-field-email>
-
 								</mo-grid>
 							</mo-section>
 
-							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder mit Icons'>
+							<mo-section heading='Textfelder mit Icons'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>
 
 									<mo-field-amount label='Betrag'></mo-field-amount>
@@ -85,10 +84,10 @@ export class PageField extends PageComponent {
 										<mo-icon slot='leading' icon='email'></mo-icon>
 									</mo-field-email>
 									<mo-field-email label="E-Mail slot leading disabled" disabled>
-										<mo-icon slot='leading' icon='email'>
+										<mo-icon slot='leading' icon='email'></mo-icon>
 									</mo-field-email>
 									<mo-field-email label="E-Mail slot leading readonly" readonly>
-										<mo-icon slot='leading' icon='email'>
+										<mo-icon slot='leading' icon='email'></mo-icon>
 									</mo-field-email>
 
 									<mo-field-search label="Suche">
@@ -161,7 +160,7 @@ export class PageField extends PageComponent {
 								</mo-grid>
 							</mo-section>
 
-							<mo-section gap='var(--mo-thickness-xl)' heading='Textfelder Dense'>
+							<mo-section heading='Textfelder Dense'>
 								<mo-grid columns='repeat(4, *)' rows='auto' gap='var(--mo-thickness-l)'>
 									<mo-field-text label="Text" dense></mo-field-text>
 									<mo-field-text label="Text disabled" disabled dense></mo-field-text>
@@ -186,7 +185,7 @@ export class PageField extends PageComponent {
 						</mo-card>
 						<!--
 						<mo-card heading='Listen'>
-							<mo-section gap='var(--mo-thickness-xl)' heading='Listen'>
+							<mo-section heading='Listen'>
 								<mo-list>
 									<mo-list-item>List Item</mo-list-item>
 									<mo-list-item>List Item</mo-list-item>
@@ -204,7 +203,7 @@ export class PageField extends PageComponent {
 					</mo-flex>
 					<mo-flex>
 						<mo-card heading='Selects'>
-							<mo-section gap='var(--mo-thickness-xl)' heading='Select'>
+							<mo-section heading='Select'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>
 									<mo-field-select label="Selectlabel slot leading trailing">
 										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
