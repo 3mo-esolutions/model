@@ -82,6 +82,15 @@ export class Card extends Component {
 		`
 	}
 
+	protected get mediaTemplate() {
+		const hasMedia = !!this.image || this.slotController.hasSlottedElements('media')
+		return !hasMedia ? nothing : html`
+			<slot part='media' name='media'>
+				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
+			</slot>
+		`
+	}
+
 	protected get headerTemplate() {
 		const hasHeader = this.slotController.hasSlottedElements('header')
 			|| !!this.avatar || !!this.heading || !!this.subHeading
@@ -90,31 +99,42 @@ export class Card extends Component {
 		this.switchAttribute('hasHeader', hasHeader)
 		return !hasHeader ? nothing : html`
 			<slot part='header' name='header'>
-				<slot name='avatar'>
-					${!this.avatar ? nothing : html`<mo-avatar part='avatar' ${style({ marginRight: 'var(--mo-thickness-m)' })}>${this.avatar}</mo-avatar>`}
-				</slot>
-
+				${this.defaultHeaderAvatarTemplate}
 				<mo-flex justifyContent='space-around' ${style({ width: '*' })}>
-					<slot name='heading'>
-						${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4' ${style({ fontWeight: '500' })}>${this.heading}</mo-heading>`}
-					</slot>
-
-					<slot name='subHeading'>
-						${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' ${style({ fontWeight: '400', color: 'var(--mo-color-gray)' })}>${this.subHeading}</mo-heading>`}
-					</slot>
+					${this.defaultHeaderHeadingTemplate}
+					${this.defaultHeaderSubHeadingTemplate}
 				</mo-flex>
-				<slot name='action'></slot>
+				${this.defaultHeaderActionTemplate}
 			</slot>
 		`
 	}
 
-	protected get mediaTemplate() {
-		const hasMedia = !!this.image || this.slotController.hasSlottedElements('media')
-		return !hasMedia ? nothing : html`
-			<slot part='media' name='media'>
-				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
+	protected get defaultHeaderAvatarTemplate() {
+		return html`
+			<slot name='avatar'>
+				${!this.avatar ? nothing : html`<mo-avatar part='avatar' ${style({ marginRight: 'var(--mo-thickness-m)' })}>${this.avatar}</mo-avatar>`}
 			</slot>
 		`
+	}
+
+	protected get defaultHeaderHeadingTemplate() {
+		return html`
+			<slot name='heading'>
+				${!this.heading ? nothing : html`<mo-heading part='heading' typography='heading4' ${style({ fontWeight: '500' })}>${this.heading}</mo-heading>`}
+			</slot>
+		`
+	}
+
+	protected get defaultHeaderSubHeadingTemplate() {
+		return html`
+			<slot name='subHeading'>
+				${!this.subHeading ? nothing : html`<mo-heading part='subHeading' typography='heading6' ${style({ fontWeight: '400', color: 'var(--mo-color-gray)' })}>${this.subHeading}</mo-heading>`}
+			</slot>
+		`
+	}
+
+	protected get defaultHeaderActionTemplate() {
+		return html`<slot name='action'></slot>`
 	}
 
 	protected get bodyTemplate() {
