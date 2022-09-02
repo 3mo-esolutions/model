@@ -89,12 +89,12 @@ export class DataGridFooter<TData> extends Component {
 			: `${from}-${from + this.dataGrid.renderData.length - 1} / ${this.dataGrid.dataLength}`
 		return !this.dataGrid.hasPagination ? nothing : html`
 			<mo-flex direction='horizontal' gap='var(--mo-thickness-s)' alignItems='center' justifyContent='center'>
-				<mo-icon-button small icon='first_page'
+				<mo-icon-button dense icon='first_page'
 					?disabled=${this.page === 1}
 					@click=${() => this.setPage(1)}
 				></mo-icon-button>
 
-				<mo-icon-button small icon='keyboard_arrow_left'
+				<mo-icon-button dense icon='keyboard_arrow_left'
 					?disabled=${this.page === 1}
 					@click=${() => this.setPage(this.page - 1)}
 				></mo-icon-button>
@@ -111,12 +111,12 @@ export class DataGridFooter<TData> extends Component {
 					</mo-field-number>
 				</div>
 
-				<mo-icon-button small icon='keyboard_arrow_right'
+				<mo-icon-button dense icon='keyboard_arrow_right'
 					?disabled=${!this.dataGrid.hasNextPage}
 					@click=${() => this.setPage(this.page + 1)}
 				></mo-icon-button>
 
-				<mo-icon-button small icon='last_page'
+				<mo-icon-button dense icon='last_page'
 					?disabled=${hasUnknownDataLength || this.page === this.dataGrid.maxPage}
 					@click=${() => this.setPage(this.dataGrid.maxPage ?? 1)}
 				></mo-icon-button>

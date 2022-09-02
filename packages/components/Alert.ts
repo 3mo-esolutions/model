@@ -114,7 +114,7 @@ export class Alert extends Component {
 
 	protected get expandIconTemplate() {
 		return !this.isCollapsible ? nothing : html`
-			<mo-icon-button small ${style({ alignSelf: 'center' })}
+			<mo-icon-button dense ${style({ alignSelf: 'center' })}
 				icon=${this.open ? 'expand_less' : 'expand_more'}
 				@click=${() => this.open = !this.open}
 			></mo-icon-button>

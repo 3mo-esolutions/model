@@ -1,6 +1,7 @@
 export * from '@3mo/flex'
 export * from '@3mo/grid'
 export * from '@3mo/icon'
+export * from '@3mo/icon-button'
 
 import './composer'
 

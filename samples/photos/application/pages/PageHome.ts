@@ -67,7 +67,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					<mo-icon icon='settings'></mo-icon>
 					<mo-icon icon='settings' ${style({ fontSize: '32px' })}></mo-icon>
 					<mo-icon-button icon='settings'></mo-icon-button>
-					<mo-icon-button small icon='settings'></mo-icon-button>
+					<mo-icon-button dense icon='settings'></mo-icon-button>
 				</div>
 				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
 					.parameters=${this.dataGridParameters}

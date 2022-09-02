@@ -643,7 +643,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					</div>
 					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
 						<div ${style({ width: '*' })}>${_('Options')}</div>
-						<mo-icon-button small icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
+						<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
 					</mo-flex>
 					<div ${style({ width: '*' })}></div>
 					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>

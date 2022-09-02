@@ -1,7 +1,7 @@
 import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, state, eventListener } from '../../library'
 import { DialogActionKey, DialogComponent, isDialogActionKey } from '../shell'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
-import type { IconButton } from './material'
+import type { IconButton } from '.'
 
 export const enum MaterialDialogSize {
 	Large = 'large',

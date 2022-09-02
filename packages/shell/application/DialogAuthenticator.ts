@@ -120,7 +120,7 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			}
 
 			a {
-				font-size: small;
+				font-size: dense;
 				opacity: 0.85;
 				cursor: pointer;
 			}

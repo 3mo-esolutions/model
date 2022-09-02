@@ -114,7 +114,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 
 	private get copyIconButtonTemplate() {
 		return !window.isSecureContext ? nothing : html`
-			<mo-icon-button id='copyIconButton' icon='content_copy' small
+			<mo-icon-button id='copyIconButton' icon='content_copy' dense
 				title=${`${this.column.heading} kopieren`}
 				${style({ right: this.column.alignment === 'right' ? 'unset' : '4px', left: this.column.alignment !== 'right' ? 'unset' : '4px' })}
 				@click=${this.copyIconButtonClick}

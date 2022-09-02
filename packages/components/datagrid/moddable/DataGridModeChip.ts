@@ -119,18 +119,18 @@ export class DataGridModeChip extends Chip {
 				${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
 					<span id='spanUnsaved'>*</span>
 
-					<mo-icon-button icon='undo' tabindex='-1' small ${style({ marginLeft: '0 0 0 12px' })}
+					<mo-icon-button icon='undo' tabindex='-1' dense ${style({ marginLeft: '0 0 0 12px' })}
 						title=${_('Discard changes')}
 						@click=${this.discardChanges}
 					></mo-icon-button>
 
-					<mo-icon-button icon='save' tabindex='-1' small
+					<mo-icon-button icon='save' tabindex='-1' dense
 						title=${_('Save changes')}
 						@click=${this.saveChanges}
 					></mo-icon-button>
 				`}
 
-				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' small @click=${this.openMenu}></mo-icon-button>
+				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' dense @click=${this.openMenu}></mo-icon-button>
 			</mo-flex>
 		`
 	}

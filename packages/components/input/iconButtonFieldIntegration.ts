@@ -1,6 +1,5 @@
 import { css } from '../../library'
-// eslint-disable-next-line import/no-internal-modules
-import { IconButton } from '../material/IconButton'
+import { IconButton } from '..'
 import { Field } from './Field'
 
 export const iconButtonFieldIntegration = {

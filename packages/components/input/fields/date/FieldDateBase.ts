@@ -24,7 +24,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 		return html`
 			<div>
 				${this.hideDatePicker ? nothing : html`
-					<mo-icon-button tabindex='-1' small
+					<mo-icon-button tabindex='-1' dense
 						icon=${this.calendarIconButtonIcon}
 						${style({ color: this.open ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 						@click=${() => this.open = !this.open}>

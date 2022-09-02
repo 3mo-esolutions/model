@@ -61,7 +61,7 @@ export class PageField extends PageComponent {
 									<mo-field-percentage label='Prozent readonly' readonly></mo-field-percentage>
 
 									<mo-field-date label='Datum'>
-										<mo-icon-button slot='trailing' small icon='edit'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='edit'></mo-icon-button>
 									</mo-field-date>
 									<mo-field-date label='Datum disabled' disabled></mo-field-date>
 									<mo-field-date label='Datum readonly' readonly></mo-field-date>
@@ -91,7 +91,7 @@ export class PageField extends PageComponent {
 									</mo-field-email>
 
 									<mo-field-search label="Suche">
-										<mo-icon-button slot='trailing' small icon='edit'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='edit'></mo-icon-button>
 									</mo-field-search>
 									<mo-field-search label="Suche disabled" disabled></mo-field-search>
 									<mo-field-search label="Suche" readonly></mo-field-search>
@@ -115,32 +115,32 @@ export class PageField extends PageComponent {
 									<mo-field-text label="maxLength readonly" maxLength='10' readonly></mo-field-text>
 
 									<mo-field-text label="Text slot leading trailing">
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing disabled" disabled>
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing readonly" readonly>
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 									</mo-field-text>
 
 									<mo-field-text label="Text slot leading trailing trailingInternal">
 										<mo-icon slot='leading' icon='person_add'></mo-icon>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='person_add'></mo-icon-button>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing trailingInternal disabled" disabled>
 										<mo-icon slot='leading' icon='person_add'></mo-icon><
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='person_add'></mo-icon-button>
 									</mo-field-text>
 									<mo-field-text label="Text slot leading trailing trailingInternal readonly" readonly>
 										<mo-icon slot='leading' icon='person_add'></mo-icon><
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='person_add'></mo-icon-button>
 									</mo-field-text>
 
 									<mo-field-text label="Text slot trailing trailingInternal">
@@ -206,20 +206,20 @@ export class PageField extends PageComponent {
 							<mo-section heading='Select'>
 								<mo-grid columns='repeat(3, *)' rows='auto' gap='var(--mo-thickness-l)'>
 									<mo-field-select label="Selectlabel slot leading trailing">
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>
 									<mo-field-select label="Disabled" disabled>
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>
 									<mo-field-select label="Readonly" readonly>
-										<mo-icon-button slot='leading' small icon='person_add'></mo-icon-button>
-										<mo-icon-button slot='trailing' small icon='cancel'></mo-icon-button>
+										<mo-icon-button slot='leading' dense icon='person_add'></mo-icon-button>
+										<mo-icon-button slot='trailing' dense icon='cancel'></mo-icon-button>
 										<mo-option>option 1</mo-option>
 										<mo-option>option 2</mo-option>
 									</mo-field-select>

@@ -1,6 +1,4 @@
 export * from './Button'
-export * from './IconButton'
-export * from './IconButtonToggle'
 export * from './Fab'
 export * from './Checkbox'
 export * from './CircularProgress'
