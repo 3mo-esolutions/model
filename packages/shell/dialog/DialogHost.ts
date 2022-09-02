@@ -1,6 +1,6 @@
 import { Component, component, css, html } from '../../library'
 import { WindowHelper, WindowOpenMode } from '../../utilities'
-import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, NotificationHost } from '..'
+import { DialogComponent, AuthorizationHelper, PageDialog, DialogConfirmationStrategy, NotificationHost, DialogParameters } from '..'
 
 @component('mo-dialog-host')
 export class DialogHost extends Component {
@@ -10,7 +10,7 @@ export class DialogHost extends Component {
 
 	private readonly dialogComponents = new Set<DialogComponent<any, any>>()
 
-	async confirm<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
+	async confirm<T extends DialogComponent<TParams, TResult>, TParams extends DialogParameters, TResult>(dialog: T, strategy = DialogConfirmationStrategy.Dialog) {
 		if (AuthorizationHelper.componentAuthorized(dialog) === false) {
 			NotificationHost.instance.notifyAndThrowError(`🔒 ${_('Access Denied')}`)
 		}
@@ -33,7 +33,7 @@ export class DialogHost extends Component {
 		return page.confirmDialog(dialogComponent)
 	}
 
-	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams, TResult>(dialogComponent: T) {
+	private confirmDialog<T extends DialogComponent<TParams, TResult>, TParams extends DialogParameters, TResult>(dialogComponent: T) {
 		MoDeL.application.closeDrawerIfDismissible()
 
 		this.dialogComponents.add(dialogComponent)
