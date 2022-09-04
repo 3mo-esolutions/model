@@ -18,14 +18,6 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 	get data() { return this.row.data }
 	get dataSelector() { return this.column.dataSelector }
 
-	handleEdit(value: TValue | undefined) {
-		if (value !== undefined && this.value !== value) {
-			this.row.requestUpdate()
-			setPropertyByKeyPath(this.data, this.dataSelector, value)
-			this.row.dataGrid.cellEdit.dispatch(this)
-		}
-	}
-
 	static override get styles() {
 		return css`
 			:host {

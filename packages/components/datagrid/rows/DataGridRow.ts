@@ -1,35 +1,32 @@
-import { nothing, css, property, component, Component, html, state, queryAll, style } from '../../library'
-import { ContextMenuHost } from '../../shell'
-import { KeyboardHelper } from '../../utilities'
-import { ColumnDefinition } from './ColumnDefinition'
-import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenuItem, DataGridSelectionMode } from '.'
+import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult } from '../../../library'
+import { ContextMenuHost } from '../../../shell'
+import { KeyboardHelper } from '../../../utilities'
+import { ColumnDefinition } from '../ColumnDefinition'
+import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenuItem, DataGridSelectionMode } from '..'
 
-@component('mo-data-grid-row')
-export class DataGridRow<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
+export abstract class DataGridRow<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
 	@queryAll('mo-data-grid-cell') readonly cells!: Array<DataGridCell<any, TData, TDetailsElement>>
 
 	@property({ type: Object }) dataGrid!: DataGrid<TData, TDetailsElement>
 	@property({ type: Object }) data!: TData
 	@property({ type: Boolean, reflect: true }) selected = false
 	@property({ type: Boolean, reflect: true }) detailsOpen = false
-	@state() private editing = false
+	@state() protected editing = false
 
 	get detailsElement() {
-		return this.renderRoot.querySelector('#details')?.firstElementChild as TDetailsElement as TDetailsElement | undefined
+		return this.renderRoot.querySelector('#detailsContainer')?.firstElementChild as TDetailsElement as TDetailsElement | undefined
 	}
 
 	protected override connected() {
-		super.connected()
 		this.dataGrid.rowConnected.dispatch(this)
 	}
 
 	protected override disconnected() {
-		super.disconnected()
 		this.dataGrid.rowDisconnected.dispatch(this)
 	}
 
 	protected override initialized() {
-		super.initialized()
+		this.switchAttribute('mo-data-grid-row', true)
 		this.editing = this.dataGrid.editability === DataGridEditability.Always
 	}
 
@@ -60,7 +57,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 				background: var(--mo-color-accent-transparent) !important;
 			}
 
-			:host(:hover) mo-grid::before, #details::before {
+			:host(:hover) mo-grid::before, #detailsContainer::before {
 				content: '';
 				width: 2px;
 				height: 100%;
@@ -71,7 +68,6 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 			}
 
 			mo-grid {
-				height: var(--mo-data-grid-row-height);
 				cursor: pointer;
 				transition: var(--mo-duration-quick);
 			}
@@ -93,102 +89,67 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
 			}
 
-			#iconMore {
+			#contextMenuIconButton {
 				transition: var(--mo-duration-quick);
 				opacity: 0;
 				color: var(--mo-color-accent);
 			}
 
-			:host([selected]) #iconMore {
+			:host([selected]) #contextMenuIconButton {
 				color: var(--mo-color-foreground);
 			}
 
-			mo-grid:hover #iconMore {
+			mo-grid:hover #contextMenuIconButton {
 				opacity: 1;
 			}
 
-			mo-flex {
-				justify-content: center;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-
-			#iconDetails {
+			#detailsExpanderIconButton {
 				transition: var(--mo-duration-quick);
 			}
 
-			#iconDetails:hover {
+			#detailsExpanderIconButton:hover {
 				color: var(--mo-color-accent);
 			}
 
-			:host([detailsOpen]) #iconDetails {
+			:host([detailsOpen]) #detailsExpanderIconButton {
 				transform: rotate(90deg);
 			}
 
-			#details {
+			#detailsContainer {
 				display: inline-block;
 				padding: 0;
 				width: 100%;
 			}
 
-			#details:empty {
+			#detailsContainer:empty {
 				display: none;
 			}
 
-			#details > :first-child {
+			#detailsContainer > :first-child {
 				padding: var(--mo-thickness-l) 0;
 			}
-
-			/* Tree-view borders
-				#details [mo-data-grid]::before {
-					content: '';
-					width: 2px;
-					height: calc(100% - var(--mo-details-data-grid-left-margin) + 5px - calc(var(--mo-data-grid-row-height)));
-					top: calc(var(--mo-data-grid-row-height) / 2 + 3px);
-					position: absolute;
-					background-color: var(--mo-color-gray-alpha-1);
-					/* Because of the background color of rows
-					z-index: 1;
-				}
-
-				:host([isSubRow]) mo-grid::before {
-					content: '';
-					width: var(--mo-data-grid-row-tree-line-width, 8px);
-					border-top: 2px solid var(--mo-color-gray);
-					margin-left: calc(var(--mo-details-data-grid-left-margin) * -1);
-					position: absolute;
-					top: calc(50% - 1px);
-					height: 0px;
-				}
-			*/
 		`
 	}
 
 	protected override get template() {
 		return html`
-			<mo-grid columns='var(--mo-data-grid-columns)' columnGap='var(--mo-data-grid-columns-gap)'
-				@click=${this.handleContentClick}
-				@dblclick=${this.handleContentDoubleClick}
-				@contextmenu=${this.openContextMenu}
-			>
-				${this.detailsExpanderTemplate}
-				${this.selectionTemplate}
-				${this.dataGrid.columns.filter(column => column.hidden === false).map(column => this.getCellTemplate(column as any))}
-				${this.contextMenuTemplate}
+			<mo-grid @click=${this.handleContentClick} @dblclick=${this.handleContentDoubleClick} @contextmenu=${this.openContextMenu}>
+				${this.rowTemplate}
 			</mo-grid>
-			<slot id='details'>${this.detailsOpen ? this.detailsTemplate : nothing}</slot>
+			<slot id='detailsContainer'>${this.detailsOpen ? this.detailsTemplate : nothing}</slot>
 		`
 	}
 
-	private get detailsExpanderTemplate() {
+	protected abstract get rowTemplate(): HTMLTemplateResult
+
+	protected get detailsExpanderTemplate() {
 		return html`
 			<mo-flex justifyContent='center' alignItems='center' ${style({ width: 'var(--mo-data-grid-column-details-width)' })}
 				?hidden=${this.dataGrid.hasDetails === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
-				<mo-icon-button id='iconDetails' icon='keyboard_arrow_right' ${style({ color: 'var(--mo-color-foreground)' })}
+				<mo-icon-button id='detailsExpanderIconButton' icon='keyboard_arrow_right' ${style({ color: 'var(--mo-color-foreground)' })}
 					?hidden=${this.hasDetails === false}
 					?disabled=${this.dataGrid.hasDataDetail?.(this.data) === false}
 					@click=${() => this.toggleDetails()}
@@ -197,9 +158,9 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 		`
 	}
 
-	private get selectionTemplate() {
+	protected get selectionTemplate() {
 		return html`
-			<mo-flex ${style({ width: 'var(--mo-data-grid-column-selection-width)', height: 'var(--mo-data-grid-row-height)' })} justifyContent='center' alignItems='center'
+			<mo-flex id='selectionContainer' ${style({ width: 'var(--mo-data-grid-column-selection-width)' })} justifyContent='center' alignItems='center'
 				?hidden=${this.dataGrid.hasSelection === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
@@ -213,7 +174,7 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 		`
 	}
 
-	private getCellTemplate(column: ColumnDefinition<TData, KeyPathValueOf<TData, KeyPathOf<TData>>>) {
+	protected getCellTemplate(column: ColumnDefinition<TData, KeyPathValueOf<TData, KeyPathOf<TData>>>) {
 		return column.hidden ? nothing : html`
 			<mo-data-grid-cell
 				?editing=${this.editing}
@@ -224,19 +185,19 @@ export class DataGridRow<TData, TDetailsElement extends Element | undefined = un
 		`
 	}
 
-	private get contextMenuTemplate() {
+	protected get contextMenuIconButtonTemplate() {
 		return html`
 			<mo-flex justifyContent='center' alignItems='center'
 				?hidden=${this.dataGrid.hasContextMenu === false}
 				@click=${this.openContextMenu}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
-				<mo-icon-button id='iconMore' icon='more_vert'></mo-icon-button>
+				<mo-icon-button id='contextMenuIconButton' icon='more_vert'></mo-icon-button>
 			</mo-flex>
 		`
 	}
 
-	private get detailsTemplate() {
+	protected get detailsTemplate() {
 		return !this.hasDetails
 			? nothing
 			: this.dataGrid.getRowDetailsTemplate?.(this.data)

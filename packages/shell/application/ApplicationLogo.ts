@@ -41,7 +41,6 @@ export class ApplicationLogo extends Component {
 
 			img, a {
 				height: 100%;
-				max-width: 100%;
 			}
 		`
 	}
