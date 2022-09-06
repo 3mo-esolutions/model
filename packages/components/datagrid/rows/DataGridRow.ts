@@ -35,7 +35,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 		super.updated(...parameters)
 	}
 
-	private get hasDetails() {
+	protected get hasDetails() {
 		if (this.dataGrid.subDataGridDataSelector) {
 			return Array.isArray(getPropertyByKeyPath(this.data, this.dataGrid.subDataGridDataSelector))
 		}
@@ -57,7 +57,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				background: var(--mo-color-accent-transparent) !important;
 			}
 
-			:host(:hover) mo-grid::before, #detailsContainer::before {
+			:host(:hover) #contentContainer::before, #detailsContainer::before {
 				content: '';
 				width: 2px;
 				height: 100%;
@@ -67,20 +67,20 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				background-color: var(--mo-color-accent);
 			}
 
-			mo-grid {
+			#contentContainer {
 				cursor: pointer;
 				transition: var(--mo-duration-quick);
 			}
 
-			:host([detailsOpen]) mo-grid {
+			:host([detailsOpen]) #contentContainer {
 				background: var(--mo-data-grid-row-background-on-opened-detail-element, var(--mo-color-accent-transparent));
 			}
 
-			:host([selected]) mo-grid {
+			:host([selected]) #contentContainer {
 				background: var(--mo-data-grid-selection-background) !important;
 			}
 
-			:host([selected]:not(:last-of-type)) mo-grid:after {
+			:host([selected]:not(:last-of-type)) #contentContainer:after {
 				content: '';
 				position: absolute;
 				bottom: 0;
@@ -99,7 +99,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				color: var(--mo-color-foreground);
 			}
 
-			mo-grid:hover #contextMenuIconButton {
+			#contentContainer:hover #contextMenuIconButton {
 				opacity: 1;
 			}
 
@@ -133,7 +133,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	protected override get template() {
 		return html`
-			<mo-grid @click=${this.handleContentClick} @dblclick=${this.handleContentDoubleClick} @contextmenu=${this.openContextMenu}>
+			<mo-grid id='contentContainer' @click=${() => this.handleContentClick()} @dblclick=${() => this.handleContentDoubleClick()} @contextmenu=${(e: PointerEvent) => this.openContextMenu(e)}>
 				${this.rowTemplate}
 			</mo-grid>
 			<slot id='detailsContainer'>${this.detailsOpen ? this.detailsTemplate : nothing}</slot>
@@ -238,7 +238,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 		}
 	}
 
-	private readonly handleContentClick = () => {
+	protected handleContentClick() {
 		if (this.dataGrid.selectOnClick && this.dataGrid.editability !== DataGridEditability.OnRowClick) {
 			this.setSelection(!this.selected)
 		}
@@ -260,21 +260,20 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	private enableEditMode() {
 		this.dataBeforeEdit = JSON.stringify(this.data)
 		this.editing = true
-		window.addEventListener('click', this.handleClick)
-	}
-
-	private readonly handleClick = (e: MouseEvent) => {
-		if (e.composedPath().includes(this) === false) {
-			const dataAfterEdit = JSON.stringify(this.data)
-			if (dataAfterEdit !== this.dataBeforeEdit) {
-				this.dataGrid.rowEdit.dispatch(this)
+		const handleClick = (e: MouseEvent) => {
+			if (e.composedPath().includes(this) === false) {
+				const dataAfterEdit = JSON.stringify(this.data)
+				if (dataAfterEdit !== this.dataBeforeEdit) {
+					this.dataGrid.rowEdit.dispatch(this)
+				}
+				window.removeEventListener('click', handleClick)
+				this.editing = false
 			}
-			window.removeEventListener('click', this.handleClick)
-			this.editing = false
 		}
+		window.addEventListener('click', handleClick)
 	}
 
-	private readonly handleContentDoubleClick = async () => {
+	protected async handleContentDoubleClick() {
 		if (this.dataGrid.primaryContextMenuItemOnDoubleClick === true && this.dataGrid.hasContextMenu === true && this.dataGrid.selectionMode === DataGridSelectionMode.None) {
 			await this.openContextMenu()
 			ContextMenuHost.instance.items.find(item => item instanceof DataGridPrimaryContextMenuItem)?.click()
@@ -284,8 +283,8 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 		this.dataGrid.rowDoubleClick.dispatch(this)
 	}
 
-	openContextMenu = async (mouseEvent?: MouseEvent) => {
-		mouseEvent?.stopPropagation()
+	async openContextMenu(pointerEvent?: PointerEvent) {
+		pointerEvent?.stopPropagation()
 
 		if (this.dataGrid.getRowContextMenuTemplate === undefined) {
 			return
@@ -303,8 +302,8 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 		const contextMenuTemplate = this.dataGrid.getRowContextMenuTemplate(contextMenuData)
 
-		await ContextMenuHost.open(...(mouseEvent
-			? [mouseEvent, contextMenuTemplate]
+		await ContextMenuHost.open(...(pointerEvent
+			? [pointerEvent, contextMenuTemplate]
 			: [[this.clientLeft, this.clientTop], contextMenuTemplate]
 		))
 	}
