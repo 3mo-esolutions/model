@@ -571,12 +571,12 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return !this.isSubDataGrid && !this.preventContentScroll ? html`
 			<mo-grid ${style({ height: '*' })} rows='* auto'>
-				<mo-scroll>
+				<mo-scroller>
 					<mo-grid ${style({ height: '100%' })} rows='auto *'>
 						${this.headerTemplate}
 						${this.rowsTemplate}
 					</mo-grid>
-				</mo-scroll>
+				</mo-scroller>
 				${this.footerTemplate}
 			</mo-grid>
 		` : html`
@@ -605,9 +605,9 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				${content}
 			</mo-flex>
 		` : html`
-			<mo-scroll id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
+			<mo-scroller id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
 				${content}
-			</mo-scroll>
+			</mo-scroller>
 		`
 	}
 

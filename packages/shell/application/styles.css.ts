@@ -10,11 +10,6 @@ export const styles = css`
 		src: url(https://fonts.gstatic.com/s/productsans/v5/HYvgU2fE2nRJvZ5JFAumwegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
 	}
 
-	:root {
-		--mo-scrollbar-background-color: transparent;
-		--mo-scrollbar-foreground-color: rgba(128, 128, 128, 0.75);
-	}
-
 	* {
 		font-family: var(--mo-font-family);
 		font-weight: 400;
@@ -25,8 +20,6 @@ export const styles = css`
 	html {
 		width: 100%;
 		height: 100%;
-		scrollbar-width: thin;
-		scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
 	}
 
 	body {
@@ -35,16 +28,6 @@ export const styles = css`
 		margin: 0;
 		padding: 0;
 		overflow: auto;
-	}
-
-	::-webkit-scrollbar {
-		width: 5px;
-		height: 5px;
-		background-color: var(--mo-scrollbar-background-color);
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: var(--mo-scrollbar-foreground-color);
 	}
 
 	[application] {

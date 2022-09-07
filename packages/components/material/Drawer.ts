@@ -56,7 +56,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 
 				.mdc-drawer__content {
 					margin-top: var(--mo-thickness-m);
-					scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+					scrollbar-color: rgba(128, 128, 128, 0.75) transparent;
 					scrollbar-width: thin;
 				}
 
@@ -66,7 +66,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 				}
 
 				.mdc-drawer__content::-webkit-scrollbar-thumb {
-					background: var(--mo-scrollbar-foreground-color);
+					background: rgba(128, 128, 128, 0.75);
 				}
 			`
 		]

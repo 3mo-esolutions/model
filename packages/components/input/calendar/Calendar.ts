@@ -150,7 +150,7 @@ export class Calendar extends Component {
 
 	private get yearSelectionTemplate() {
 		return html`
-			<mo-scroll ${style({ height: '*' })}>
+			<mo-scroller ${style({ height: '*' })}>
 				<mo-grid rows='repeat(50, var(--mo-calendar-day-size))' columns='repeat(4, 1fr)'>
 					${this.years.map(year => html`
 						<mo-flex class=${classMap({ year: true, selected: this.navigatingDate.year === year })} @click=${() => this.selectYear(year)}>
@@ -158,7 +158,7 @@ export class Calendar extends Component {
 						</mo-flex>
 					`)}
 				</mo-grid>
-			</mo-scroll>
+			</mo-scroller>
 		`
 	}
 

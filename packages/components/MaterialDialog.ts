@@ -157,7 +157,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				}
 
 				#content {
-					scrollbar-color: var(--mo-scrollbar-foreground-color) var(--mo-scrollbar-background-color);
+					scrollbar-color: rgba(128, 128, 128, 0.75) transparent;
 					scrollbar-width: thin;
 				}
 
@@ -167,7 +167,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				}
 
 				#content::-webkit-scrollbar-thumb {
-					background: var(--mo-scrollbar-foreground-color);
+					background: rgba(128, 128, 128, 0.75);
 				}
 
 				:host([size=large]) #actions, :host([size=large]) #title {

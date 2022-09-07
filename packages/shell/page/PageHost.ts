@@ -62,18 +62,18 @@ export class PageHost extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-scroll>
+			<mo-scroller>
 				<mo-grid part='pageHolder'>
 					${this.currentPage}
 				</mo-grid>
-			</mo-scroll>
+			</mo-scroller>
 		`
 	}
 }
 
 /* TODO UPSTREAM
 	PageHost being a scroller itself, causes Material's TopAppBar not to collapse on page scroll.
-	If this is needed, the mo-scroll should be removed, and another solution shall be found.
+	If this is needed, the mo-scroller should be removed, and another solution shall be found.
 	An issue is therefore filed here: https://github.com/material-components/material-components-web-components/issues/2028
 */
 

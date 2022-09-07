@@ -50,12 +50,15 @@ export class DataGridSidePanel<TData> extends Component {
 				padding-left: var(--mo-thickness-xl);
 			}
 
-			mo-scroll {
+			mo-scroller {
 				width: calc(100% - calc(2 * var(--mo-thickness-xl)));
 				padding: 0 var(--mo-thickness-xl);
 				margin-top: var(--mo-thickness-xl);
 				overflow-x: hidden;
-				--mo-scroll-width: calc(100% - calc(2 * var(--mo-thickness-xl)));
+			}
+
+			mo-scroller::part(container) {
+				width: calc(100% - calc(2 * var(--mo-thickness-xl)));
 			}
 
 			mo-section mo-checkbox {
@@ -86,9 +89,9 @@ export class DataGridSidePanel<TData> extends Component {
 					<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
 				</mo-flex>
 
-				<mo-scroll ${style({ height: '*' })}>
+				<mo-scroller ${style({ height: '*' })}>
 					${this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? this.filtersTemplate : this.settingsTemplate}
-				</mo-scroll>
+				</mo-scroller>
 			</mo-flex>
 		`
 	}
