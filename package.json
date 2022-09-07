@@ -30,6 +30,7 @@
 		"@3mo/icon": "*",
 		"@3mo/icon-button": "*",
 		"@3mo/scroller": "*",
+		"@3mo/virtualized-scroller": "*",
 		"@a11d/lit": "*",
 		"@lit-labs/task": "1.*",
 		"@lit-labs/virtualizer": "0.7.0-pre.3",

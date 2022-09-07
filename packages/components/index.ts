@@ -4,6 +4,7 @@ export * from '@3mo/icon'
 export * from '@3mo/icon-button'
 export * from '@3mo/anchor'
 export * from '@3mo/scroller'
+export * from '@3mo/virtualized-scroller'
 
 import './composer'
 

@@ -19,7 +19,7 @@ export class SplitterResizerLine extends SplitterResizer {
 				height: var(--mo-splitter-resizer-line-thickness, 2px);
 			}
 
-			:host([hostDirection=horizontal]) , :host([hostDirection=horizontal-reversed]) {
+			:host([hostDirection=horizontal]), :host([hostDirection=horizontal-reversed]) {
 				height: 100%;
 				width: var(--mo-splitter-resizer-line-thickness, 2px);
 			}

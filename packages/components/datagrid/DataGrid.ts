@@ -599,7 +599,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		const shallVirtualize = this.isSubDataGrid === false && this.renderData.length > DataGrid.virtualizationThreshold
 		const content = shallVirtualize === false
 			? this.renderData.map(getRowTemplate)
-			: html`<mo-virtualized-scroll .items=${this.renderData} .renderItem=${getRowTemplate as any}></mo-virtualized-scroll>`
+			: html`<mo-virtualized-scroller .items=${this.renderData} .getItemTemplate=${getRowTemplate as any}></mo-virtualized-scroller>`
 		return this.preventContentScroll || this.isSubDataGrid ? html`
 			<mo-flex id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
 				${content}
