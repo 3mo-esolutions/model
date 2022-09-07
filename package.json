@@ -24,6 +24,7 @@
 		"test:ci": "npm run build && npm run test"
 	},
 	"dependencies": {
+		"@3mo/anchor": "*",
 		"@3mo/flex": "*",
 		"@3mo/grid": "*",
 		"@3mo/icon": "*",

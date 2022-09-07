@@ -61,29 +61,20 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 	private get dataGridTemplate() {
 		return html`
-			<mo-flex>
-				<div ${style({ display: 'block' })}>
-					<mo-icon icon='settings' ${style({ fontSize: '15px' })}></mo-icon>
-					<mo-icon icon='settings'></mo-icon>
-					<mo-icon icon='settings' ${style({ fontSize: '32px' })}></mo-icon>
-					<mo-icon-button icon='settings'></mo-icon-button>
-					<mo-icon-button dense icon='settings'></mo-icon-button>
-				</div>
-				<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
-					.parameters=${this.dataGridParameters}
-					.selectedData=${this.selectedPhotos}
-					@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}
-					@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
-					@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
-				>
-					<app-field-select-album multiple slot='toolbar' default='All'
-						.value=${this.dataGridParameters.albumIds}
-						@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
-					</app-field-select-album>
+			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails editability='always'
+				.parameters=${this.dataGridParameters}
+				.selectedData=${this.selectedPhotos}
+				@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}
+				@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
+				@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
+			>
+				<app-field-select-album multiple slot='toolbar' default='All'
+					.value=${this.dataGridParameters.albumIds}
+					@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
+				</app-field-select-album>
 
-					<mo-fab slot='fab' icon='add'></mo-fab>
-				</photos-data-grid-photo>
-			</mo-flex>
+				<mo-fab slot='fab' icon='add'></mo-fab>
+			</photos-data-grid-photo>
 		`
 	}
 
