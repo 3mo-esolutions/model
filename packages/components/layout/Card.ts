@@ -83,7 +83,7 @@ export class Card extends Component {
 	}
 
 	protected get mediaTemplate() {
-		const hasMedia = !!this.image || this.slotController.hasSlottedElements('media')
+		const hasMedia = !!this.image || this.slotController.hasAssignedElements('media')
 		return !hasMedia ? nothing : html`
 			<slot part='media' name='media'>
 				${!this.image ? nothing : html`<img part='media' src=${this.image} />`}
@@ -92,10 +92,10 @@ export class Card extends Component {
 	}
 
 	protected get headerTemplate() {
-		const hasHeader = this.slotController.hasSlottedElements('header')
+		const hasHeader = this.slotController.hasAssignedElements('header')
 			|| !!this.avatar || !!this.heading || !!this.subHeading
-			|| this.slotController.hasSlottedElements('avatar') || this.slotController.hasSlottedElements('heading')
-			|| this.slotController.hasSlottedElements('subHeading') || this.slotController.hasSlottedElements('action')
+			|| this.slotController.hasAssignedElements('avatar') || this.slotController.hasAssignedElements('heading')
+			|| this.slotController.hasAssignedElements('subHeading') || this.slotController.hasAssignedElements('action')
 		this.switchAttribute('hasHeader', hasHeader)
 		return !hasHeader ? nothing : html`
 			<slot part='header' name='header'>
@@ -138,12 +138,12 @@ export class Card extends Component {
 	}
 
 	protected get bodyTemplate() {
-		this.switchAttribute('hasBody', this.slotController.hasSlottedElements(''))
+		this.switchAttribute('hasBody', this.slotController.hasAssignedElements(''))
 		return html`<slot></slot>`
 	}
 
 	protected get footerTemplate() {
-		return !this.slotController.hasSlottedElements('footer') ? nothing : html`<slot part='footer' name='footer'></slot>`
+		return !this.slotController.hasAssignedElements('footer') ? nothing : html`<slot part='footer' name='footer'></slot>`
 	}
 }
 

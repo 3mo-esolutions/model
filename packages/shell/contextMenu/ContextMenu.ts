@@ -1,5 +1,6 @@
 import { component, PropertyValues } from '../../library'
-import { Menu } from '../../components'
+// eslint-disable-next-line import/no-internal-modules
+import { Menu } from '../../components/material'
 // eslint-disable-next-line import/no-internal-modules
 import { MenuSurface as MwcMenuSurface } from '@material/mwc-menu/mwc-menu-surface'
 

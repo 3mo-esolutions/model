@@ -1,5 +1,7 @@
 import { component, css, property, html, PropertyValues, event, query, style } from '../../library'
-import { Flex, ListItem, Menu } from '../../components'
+import type { Flex } from '@3mo/flex'
+// eslint-disable-next-line import/no-internal-modules
+import { ListItem, Menu } from '../../components/material'
 import { ContextMenu } from '..'
 
 /**

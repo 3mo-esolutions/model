@@ -1,5 +1,5 @@
 import { component, event, ComponentMixin, css } from '../../library'
-import { ListItemMixin } from '..'
+import { ListItemMixin } from '../helpers'
 // eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 

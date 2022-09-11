@@ -48,7 +48,7 @@ export class Section extends Component {
 	}
 
 	protected get contentTemplate() {
-		const hasContent = this.slotController.hasSlottedElements('')
+		const hasContent = this.slotController.hasAssignedElements('')
 		return html`
 			<mo-grid ?hidden=${!hasContent} ${style({ height: '*' })}>
 				<slot></slot>

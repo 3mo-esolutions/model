@@ -1,6 +1,4 @@
-import { LoadingButton } from '.'
-import { component, css, Component, html, property } from '../../library'
-import { MaterialDialog } from '../MaterialDialog'
+import { component, css, Component, html, property } from '../library'
 
 @component('mo-split-button')
 export class SplitButton extends Component {
@@ -28,7 +26,7 @@ export class SplitButton extends Component {
 		return html`
 			<mo-button-group type='raised'>
 				<slot></slot>
-				<mo-button icon='keyboard_arrow_down' @click=${(e: MouseEvent) => this.handleMoreClick(e)}></mo-button>
+				<mo-button leadingIcon='keyboard_arrow_down' @click=${(e: MouseEvent) => this.handleMoreClick(e)}></mo-button>
 			</mo-button-group>
 			<mo-menu fixed
 				.anchor=${this as any}
@@ -47,12 +45,6 @@ export class SplitButton extends Component {
 		this.open = true
 	}
 }
-
-MaterialDialog.executingActionAdaptersByComponent.set(SplitButton, (button, isExecuting) => {
-	if (button.firstElementChild instanceof LoadingButton) {
-		button.firstElementChild.loading = isExecuting
-	}
-})
 
 declare global {
 	interface HTMLElementTagNameMap {

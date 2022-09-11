@@ -1,5 +1,5 @@
 import { component, ComponentMixin } from '../../library'
-import { ListItemMixin } from '..'
+import { ListItemMixin } from '../helpers'
 // eslint-disable-next-line import/no-internal-modules
 import { RadioListItem as MwcRadioListItem } from '@material/mwc-list/mwc-radio-list-item'
 

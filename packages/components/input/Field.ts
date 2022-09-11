@@ -306,7 +306,7 @@ export abstract class Field<T> extends Input<T> {
 
 	protected override get template() {
 		return html`
-			${!this.slotController.hasSlottedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
+			${!this.slotController.hasAssignedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
 			<div part='container'>
 				<input
 					id='input'
@@ -324,7 +324,7 @@ export abstract class Field<T> extends Input<T> {
 				>
 				<label for='input'>${this.label} ${this.required ? '*' : ''}</label>
 			</div>
-			${!this.slotController.hasSlottedElements('trailing') ? nothing : html`<slot name='trailing'></slot>`}
+			${!this.slotController.hasAssignedElements('trailing') ? nothing : html`<slot name='trailing'></slot>`}
 		`
 	}
 

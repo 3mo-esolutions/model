@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, property, html, ifDefined, style } from '../../library'
 import { PageComponent, DialogComponent, RouteMatchMode, PageHost } from '..'
-import { ListItem } from '../../components'
+import { ListItem } from '../../components/material/ListItem'
 
 type NavigatableComponent = PageComponent<any> | DialogComponent<any, any>
 

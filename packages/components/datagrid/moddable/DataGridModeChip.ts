@@ -1,5 +1,5 @@
-import { html, component, css, property, eventListener, renderContainer, nothing, style } from '../../../library'
-import { DialogAcknowledge, DialogAlert, Chip, DialogDeletion } from '../..'
+import { html, component, css, property, eventListener, Component, nothing, style } from '../../../library'
+import { DialogAcknowledge, DialogAlert, DialogDeletion } from '../..'
 import { ContextMenuHost } from '../../../shell'
 import { Localizer } from '../../../localization'
 import { DialogDataGridMode, ModdableDataGrid, Mode } from '.'
@@ -21,7 +21,7 @@ Localizer.register(LanguageCode.German, {
 })
 
 @component('mo-data-grid-mode-chip')
-export class DataGridModeChip extends Chip {
+export class DataGridModeChip extends Component {
 	@property({
 		type: Object,
 		updated(this: DataGridModeChip) {
@@ -34,38 +34,32 @@ export class DataGridModeChip extends Chip {
 		}
 	}) moddableDataGrid!: ModdableDataGrid<unknown>
 
-	@property({
-		type: Object,
-		updated(this: DataGridModeChip) {
-			this.title = this.mode.name
-			this.label = this.mode.isArchived ? `[${this.mode.name}]` : this.mode.name
-		}
-	}) mode!: Mode<unknown, any>
+	@property({ type: Object }) mode!: Mode<unknown, any>
 
 	@property({ type: Boolean, reflect: true }) selected = false
 	@property({ type: Boolean, reflect: true }) readOnly = false
 
 	static override get styles() {
-		return [...super.styles, css`
+		return css`
 			:host {
 				white-space: nowrap;
 			}
 
 			:host(:hover) {
-				--mdc-theme-primary: var(--mo-color-accent-transparent);
+				--mo-chip-background-color: var(--mo-color-accent-transparent);
 			}
 
 			:host([selected]) {
-				--mdc-theme-primary: var(--mo-color-accent);
-				--mdc-theme-on-primary: var(--mo-color-accessible);
+				--mo-chip-background-color: var(--mo-color-accent);
+				--mo-chip-foreground-color: var(--mo-color-accessible);
 			}
 
-			button {
+			mo-button::part(button) {
 				padding: 0px 16px !important;
 				transition: 100ms;
 			}
 
-			:host([selected]:not([readOnly])) button {
+			:host([selected]:not([readOnly])) mo-button::part(button) {
 				padding-right: 8px !important;
 			}
 
@@ -77,7 +71,22 @@ export class DataGridModeChip extends Chip {
 			:host([selected]:not([readOnly])) mo-icon-button:not([data-no-border]) {
 				border-left: 1px solid var(--mo-color-gray-transparent);
 			}
-		`]
+		`
+	}
+
+	protected override async initialized() {
+		// TODO: Think of a better API for disabling ripple:
+		// 			prop: disableRipple
+		// 			csspart: ripple => display: none
+		const chip = this.shadowRoot!.querySelector('mo-chip')
+		await chip?.updateComplete
+
+		const moButton = chip?.shadowRoot?.querySelector('mo-button')
+		await moButton?.updateComplete
+
+		const button = moButton?.shadowRoot?.querySelector('mwc-button')
+		// @ts-expect-error Overwriting instance method
+		button['renderRipple'] = () => nothing
 	}
 
 	@eventListener('click')
@@ -108,14 +117,18 @@ export class DataGridModeChip extends Chip {
 		this.editMode(e)
 	}
 
-	protected override renderRipple() {
-		return nothing
+	protected override get template() {
+		return html`
+			<mo-chip title=${this.mode.name}>
+				${this.mode.isArchived ? `[${this.mode.name}]` : this.mode.name}
+				${this.trailingSlotTemplate}
+			</mo-chip>
+		`
 	}
 
-	@renderContainer('slot[name="trailingIcon"]')
-	protected override get trailingTemplate() {
+	protected get trailingSlotTemplate() {
 		return this.readOnly || !this.selected ? nothing : html`
-			<mo-flex direction='horizontal'>
+			<mo-flex direction='horizontal' slot='trailing'>
 				${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
 					<span id='spanUnsaved'>*</span>
 

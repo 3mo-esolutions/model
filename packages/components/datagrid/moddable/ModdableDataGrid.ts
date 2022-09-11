@@ -122,7 +122,11 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 					<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
 						${this.modes.map(getModeChipTemplate)}
 						${this.temporarySelectedModeTab}
-						${sortable(this.modesRepository.getUnarchived(), this.handleSort, getModeChipTemplate)}
+						${sortable({
+							data: this.modesRepository.getUnarchived(),
+							sortedCallback: this.handleSort,
+							getItemTemplate: getModeChipTemplate,
+						})}
 					</mo-flex>
 				</mo-scroller>
 				<mo-icon-button icon='add' @click=${this.createNewMode}></mo-icon-button>

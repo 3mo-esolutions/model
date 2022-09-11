@@ -1,5 +1,5 @@
 import { component, css, property, ComponentMixin } from '../../library'
-import { ListItemMixin } from '..'
+import { ListItemMixin } from '../helpers'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 /**

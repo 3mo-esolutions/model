@@ -51,14 +51,16 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					<photos-photo-card
 						.photo=${photo}
 						?selected=${this.selectedPhotos.includes(photo)}
-						@contextmenu=${(e: MouseEvent) => ContextMenuHost.open(e, this.contextMenuTemplate)}
 						@selectionChange=${(event: CustomEvent<boolean>) => this.updateSelectedPhotos(event.detail, photo)}
+						@contextmenu=${(e: MouseEvent) => ContextMenuHost.open(e, html`
+							<mo-context-menu-item icon='edit'>Edit</mo-context-menu-item>
+							<mo-context-menu-item icon='delete'>Delete</mo-context-menu-item>
+						`)}
 					></photos-photo-card>
 				`)}
 			</mo-grid>
 		`
 	}
-
 	private get dataGridTemplate() {
 		return html`
 			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails editability='always'
@@ -75,13 +77,6 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 				<mo-fab slot='fab' icon='add'></mo-fab>
 			</photos-data-grid-photo>
-		`
-	}
-
-	private get contextMenuTemplate() {
-		return html`
-			<mo-context-menu-item icon='edit'>Edit</mo-context-menu-item>
-			<mo-context-menu-item icon='delete'>Delete</mo-context-menu-item>
 		`
 	}
 

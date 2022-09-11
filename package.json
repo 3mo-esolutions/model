@@ -25,10 +25,15 @@
 	},
 	"dependencies": {
 		"@3mo/anchor": "*",
+		"@3mo/button": "*",
+		"@3mo/button-group": "*",
+		"@3mo/circular-progress": "*",
 		"@3mo/flex": "*",
 		"@3mo/grid": "*",
 		"@3mo/icon": "*",
 		"@3mo/icon-button": "*",
+		"@3mo/linear-progress": "*",
+		"@3mo/loading-button": "*",
 		"@3mo/scroller": "*",
 		"@3mo/virtualized-scroller": "*",
 		"@a11d/lit": "*",
@@ -63,6 +68,7 @@
 		"temporal-polyfill": "*"
 	},
 	"devDependencies": {
+		"@a11d/eslint-config": "*",
 		"@typescript-eslint/eslint-plugin": "*",
 		"@typescript-eslint/parser": "*",
 		"concurrently": "*",

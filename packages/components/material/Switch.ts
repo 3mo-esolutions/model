@@ -1,5 +1,5 @@
 import { component, ComponentMixin, css } from '../../library'
-import { LabelMixin, InputMixin } from '..'
+import { LabelMixin, InputMixin } from '../helpers'
 import { Switch as MwcSwitch } from '@material/mwc-switch'
 
 /**

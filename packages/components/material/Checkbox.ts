@@ -1,5 +1,5 @@
 import { component, property, ComponentMixin, css } from '../../library'
-import { LabelMixin, InputMixin } from '..'
+import { LabelMixin, InputMixin } from '../helpers'
 import { Checkbox as MwcCheckbox } from '@material/mwc-checkbox'
 
 /**

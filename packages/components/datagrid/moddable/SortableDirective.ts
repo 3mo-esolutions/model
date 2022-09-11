@@ -1,21 +1,21 @@
-import { directive, Directive, PartType, PartInfo, html, ChildPart, DirectiveParameters } from '../../../library'
+import { directive, Directive, PartType, PartInfo, html, ChildPart, DirectiveParameters, HTMLTemplateResult } from '../../../library'
 
 type SortedCallback<T> = (data: Array<T>) => void
 
-type SortableDirectiveParameters<T> = [
-	data: Array<T>,
-	sortedCallback: SortedCallback<T>,
-	...getItemTemplate: Parameters<Array<T>['map']>
-]
+type SortableDirectiveParameters<T> = {
+	data: Array<T>
+	sortedCallback: SortedCallback<T>
+	getItemTemplate: (item: T) => HTMLTemplateResult
+	getDragImage?: (item: HTMLElement) => HTMLElement
+}
 
 class SortableDirective<T> extends Directive {
 	private static readonly nonSortableAttributeName = 'data-non-sortable'
 	private static readonly dropIndicationTransitionInPx = 10
 
 	private readonly element: HTMLElement
-	private data = new Array<T>()
+	private parameters!: SortableDirectiveParameters<T>
 	private sortedData = new Array<T>()
-	private sortedCallback?: SortedCallback<T>
 	private drag?: {
 		readonly element: HTMLElement
 		readonly elementRect: DOMRectReadOnly
@@ -38,12 +38,9 @@ class SortableDirective<T> extends Directive {
 		Array.from(this.element.children).forEach(element => element.setAttribute(SortableDirective.nonSortableAttributeName, ''))
 	}
 
-	render(...[data, sortedCallback, ...getItemTemplate]: SortableDirectiveParameters<T>) {
-		this.data = data
-		this.sortedCallback = sortedCallback
-		return html`
-			${this.data.map(...getItemTemplate)}
-		`
+	render(parameters: SortableDirectiveParameters<T>) {
+		this.parameters = parameters
+		return html`${this.parameters.data.map(parameters.getItemTemplate)}`
 	}
 
 	override update(part: ChildPart, parameters: DirectiveParameters<this>) {
@@ -61,6 +58,11 @@ class SortableDirective<T> extends Directive {
 
 		child.ondragstart = e => {
 			const element = e.target as HTMLElement
+
+			if (this.parameters.getDragImage) {
+				e.dataTransfer?.setDragImage(this.parameters.getDragImage(element), 1000, 1000)
+			}
+
 			this.drag = {
 				element: element,
 				elementRect: element.getBoundingClientRect(),
@@ -77,7 +79,7 @@ class SortableDirective<T> extends Directive {
 				element.style.opacity = '1'
 				element.style.transform = 'unset'
 			})
-			this.sortedCallback?.(this.sortedData)
+			this.parameters.sortedCallback(this.sortedData)
 		}
 
 		child.ondrag = e => {
@@ -105,7 +107,7 @@ class SortableDirective<T> extends Directive {
 	}
 
 	private moveData(fromIndex: number, toIndex: number) {
-		const clone = [...this.data]
+		const clone = [...this.parameters.data]
 		const element = clone.splice(fromIndex, 1)[0]
 		clone.splice(toIndex, 0, element!)
 		return clone
@@ -143,4 +145,4 @@ class SortableDirective<T> extends Directive {
 }
 
 // @ts-expect-error T cannot be inferred
-export const sortable = <T>(...parameters: SortableDirectiveParameters<T>) => directive(SortableDirective)(...parameters)
+export const sortable = <T>(parameters: SortableDirectiveParameters<T>) => directive(SortableDirective)(parameters)
