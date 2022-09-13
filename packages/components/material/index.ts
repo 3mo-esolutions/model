@@ -1,4 +1,3 @@
-export * from './Fab'
 export * from './Checkbox'
 export * from './Radio'
 export * from './Slider'

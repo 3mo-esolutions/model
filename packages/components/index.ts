@@ -10,6 +10,7 @@ export * from '@3mo/linear-progress'
 export * from '@3mo/button'
 export * from '@3mo/loading-button'
 export * from '@3mo/button-group'
+export * from '@3mo/fab'
 
 import './composer'
 

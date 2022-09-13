@@ -78,7 +78,7 @@ export class FabGroup extends Component {
 
 	private updateFabElements() {
 		this.fabElements.forEach((fab, index) => {
-			fab.showIconAtEnd = true
+			fab.iconAtEnd = true
 			fab.tabIndex = this.open ? 0 : -1
 			const delay = this.open ? index * 25 : 0
 			fab.style.transitionDelay = `${delay}ms`

@@ -32,6 +32,7 @@
 		"@3mo/grid": "*",
 		"@3mo/icon": "*",
 		"@3mo/icon-button": "*",
+		"@3mo/fab": "*",
 		"@3mo/linear-progress": "*",
 		"@3mo/loading-button": "*",
 		"@3mo/scroller": "*",
