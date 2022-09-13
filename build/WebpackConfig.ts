@@ -6,7 +6,9 @@ const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const Global = require('glob')
+const fs = require('fs')
 
 const sharedConfigs = {
 	stats: 'minimal',
@@ -29,6 +31,13 @@ const sharedConfigs = {
 					noErrorOnMissing: true
 				}
 			]
+		}),
+		new FaviconsWebpackPlugin({
+			logo: 'node_modules/@3mo/model/www/assets/images/3mo.svg',
+			manifest: './manifest.json',
+			favicons: {
+				appleStatusBarStyle: 'default'
+			}
 		})
 	],
 	resolve: {
@@ -63,11 +72,24 @@ const developmentConfigs = {
 }
 
 module.exports = (environment, config, plugins = []) => {
-	sharedConfigs.plugins.push(...plugins,
-		new webpack.DefinePlugin({
-			environment: JSON.stringify(environment)
-		})
-	)
+	const getChangelog = () => {
+		try {
+			return fs.readFileSync('CHANGELOG.md', 'utf8')
+		} catch (error) {
+			return undefined
+		}
+	}
+
+	const define = {
+		environment: JSON.stringify(environment),
+	}
+
+	const changelog = getChangelog()
+	if (changelog) {
+		define.changelog = JSON.stringify(changelog)
+	}
+
+	sharedConfigs.plugins.push(...plugins, new webpack.DefinePlugin(define))
 	const MoDeLConfig = environment !== 'production'
 		? { ...sharedConfigs, ...developmentConfigs }
 		: { ...sharedConfigs, ...productionConfigs }

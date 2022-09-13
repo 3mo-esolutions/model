@@ -21,7 +21,7 @@ export class ExcelHelper {
 			${dataClone.map(data => keys.map(selector => `"${getPropertyByKeyPath(data, selector)}"`).join(',')).join('\r\n')}
 		`
 
-		const fileName = Manifest.short_name + title.replace(/ /g, '_')
+		const fileName = Manifest?.short_name + title.replace(/ /g, '_')
 		Downloader.download(`data:text/csv;charset=utf-8,${escape(csv)}`, `${fileName}.csv`)
 	}
 }

@@ -7,7 +7,7 @@ export class WindowHelper {
 
 	static open(path = window.location.pathname, mode = WindowOpenMode.Tab) {
 		return new Promise<Window>((resolve, reject) => {
-			if (PwaHelper.isInstalled && mode === WindowOpenMode.Tab && Manifest.display_override?.includes('tabbed') === false) {
+			if (PwaHelper.isInstalled && mode === WindowOpenMode.Tab && Manifest?.display_override?.includes('tabbed') === false) {
 				mode = WindowOpenMode.Window
 			}
 

@@ -1,10 +1,15 @@
 import { css, html, property, Component, nothing, query, event, style } from '../../library'
 import { PwaHelper, RootCssInjectorController } from '../../utilities'
-import { Drawer } from '../../components'
+import { DialogReleaseNotes, Drawer, PagePreferences } from '../../components'
 import { styles } from './styles.css'
 import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost, deactivateInert } from '..'
+import { Localizer } from '../../localization'
 
 type View = 'desktop' | 'tablet'
+
+Localizer.register(LanguageCode.German, {
+	'User Settings': 'Benutzereinstellungen',
+})
 
 export const application = () => <T extends Application>(ApplicationConstructor: Constructor<T>) => {
 	window.document.body.appendChild(new ApplicationConstructor)
@@ -17,7 +22,7 @@ export abstract class Application extends Component {
 
 	@event() readonly viewChange!: EventDispatcher<View>
 
-	@property({ updated: value => document.title = `${value} | ${Manifest.short_name}` }) pageHeading?: string
+	@property({ updated: value => document.title = [value, Manifest?.short_name].filter(Boolean).join(' | ') }) pageHeading?: string
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Boolean }) drawerOpen = false
 	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
@@ -57,12 +62,12 @@ export abstract class Application extends Component {
 
 	override async connectedCallback() {
 		await ApplicationProviderHelper.provideBeforeGlobalAuthenticationProviders()
-		document.title = Manifest.short_name
+		document.title = Manifest?.short_name || ''
 		super.connectedCallback()
 	}
 
 	resetTitle() {
-		document.title = Manifest.short_name
+		document.title = Manifest?.short_name || ''
 	}
 
 	protected override async initialized() {
@@ -70,6 +75,8 @@ export abstract class Application extends Component {
 		await AuthenticationHelper.authenticateGloballyIfAvailable()
 		await Router.initialize()
 		window.dispatchEvent(new Event('MoDeL.initialized'))
+
+		await new DialogReleaseNotes().confirm()
 	}
 
 	static override get styles() {
@@ -179,7 +186,7 @@ export abstract class Application extends Component {
 
 	protected get applicationNameTemplate() {
 		return html`
-			<span class='applicationTitle'>${Manifest.short_name}</span>
+			<span class='applicationTitle'>${Manifest?.short_name}</span>
 		`
 	}
 
@@ -214,7 +221,11 @@ export abstract class Application extends Component {
 	}
 
 	protected get userAvatarMenuItemsTemplate() {
-		return nothing
+		return html`
+			<mo-navigation-list-item icon='manage_accounts' .component=${new PagePreferences}>
+				${_('User Settings')}
+			</mo-navigation-list-item>
+		`
 	}
 
 	protected get drawerTemplate() {

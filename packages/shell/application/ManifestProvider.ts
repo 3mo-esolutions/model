@@ -7,7 +7,7 @@ export class ManifestProvider extends ApplicationProvider {
 		const manifestLink = globalThis.document.head.querySelector<HTMLLinkElement>('link[rel=manifest]')
 
 		if (!manifestLink) {
-			globalThis.Manifest = {} as Manifest
+			globalThis.Manifest = undefined
 			return
 		}
 
@@ -19,5 +19,5 @@ export class ManifestProvider extends ApplicationProvider {
 
 declare global {
 	// eslint-disable-next-line
-	var Manifest: Manifest
+	var Manifest: Manifest | undefined
 }
