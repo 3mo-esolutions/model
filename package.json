@@ -65,7 +65,8 @@
 		"@types/route-parser": "*",
 		"bowser": "*",
 		"csstype": "*",
-		"favicons-webpack-plugin": "^5.0.2",
+		"favicons": "6.2.*",
+		"favicons-webpack-plugin": "*",
 		"lit": "2.*",
 		"route-parser": "*",
 		"temporal-polyfill": "*"
