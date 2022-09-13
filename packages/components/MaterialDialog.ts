@@ -271,7 +271,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 	@renderContainer('#divHeaderOptions')
 	protected get headerOptionsTemplate() {
 		return html`
-			${this.boundToWindow || !this.poppable ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
+			${this.boundToWindow || !this.poppable ? nothing : html`<mo-icon-button icon='launch' hidden @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
 			${this.boundToWindow || this.blocking ? nothing : html`<mo-icon-button icon='close' @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>`}
 		`
 	}
