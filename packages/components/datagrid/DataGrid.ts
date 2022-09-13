@@ -734,15 +734,9 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				></mo-icon-button>
 			`}
 
-<<<<<<< HEAD
 			<mo-icon-button icon='settings'
-				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
-=======
-			<mo-icon-button
 				${tooltip(this, _('Settings'))}
-				icon='settings'
-				foreground=${this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-accent)' : 'var(--mo-color-gray)'}
->>>>>>> 732bb04 ([PoC])
+				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>
 		`

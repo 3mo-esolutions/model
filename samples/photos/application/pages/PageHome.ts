@@ -40,23 +40,19 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 	private get cardTemplate() {
 		return html`
-			<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
+		<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
 				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
-				${this.selectedPhotos.length === 0 ? nothing : html`<mo-icon-button icon='edit'></mo-icon-button>`}
-				${this.selectedPhotos.length === 0 ? nothing : html`<mo-icon-button icon='delete'></mo-icon-button>`}
-				<mo-flex direction='horizontal' height='40px' alignItems='center'>
-					<mo-heading width='*' typography='heading4' foreground='var(--mo-accent)'>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
-					<mo-icon-button icon='edit' ?hidden=${this.selectedPhotos.length === 0}
-						${tooltip(this, html`
-							<mo-card heading='Test'>
-								Edit ${this.selectedPhotos.length} Photos
+				<mo-icon-button icon='edit' ?hidden=${this.selectedPhotos.length === 0}
+					${tooltip(this, html`
+						<mo-card heading='Test'>
+							Edit ${this.selectedPhotos.length} Photos
 
-								<mo-anchor>More Info</mo-anchor>
-							</mo-card>
-						`)}
-					></mo-icon-button>
-					<mo-icon-button icon='delete' ?hidden=${this.selectedPhotos.length === 0} ${tooltip(this, 'Delete!')}></mo-icon-button>
-			</mo-flex>
+							<mo-anchor>More Info</mo-anchor>
+						</mo-card>
+					`)}
+				></mo-icon-button>
+				<mo-icon-button icon='delete' ?hidden=${this.selectedPhotos.length === 0} ${tooltip(this, 'Delete!')}></mo-icon-button>
+		</mo-flex>
 			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='var(--mo-thickness-m)'>
 				${this.photos.filter(photo => !this.parameters.albumId || photo.albumId === this.parameters.albumId).slice(0, 50).map(photo => html`
 					<photos-photo-card
