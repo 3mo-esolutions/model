@@ -108,11 +108,13 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				:host([size=large]) {
 					--mdc-dialog-width-default: 1680px;
 					--mdc-dialog-height-default: 100vh;
+					--mdc-dialog-height-default: 100dvh;
 				}
 
 				:host([boundToWindow][size=large]) {
 					--mdc-dialog-width-default: 100vw;
 					--mdc-dialog-height-default: 100vh;
+					--mdc-dialog-height-default: 100dvh;
 				}
 
 				:host([boundToWindow]) {
@@ -122,6 +124,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				.mdc-dialog .mdc-dialog__surface {
 					height: var(--mdc-dialog-height, var(--mdc-dialog-height-default));
 					max-height: calc(100vh - 32px);
+					max-height: calc(100dvh - 32px);
 
 					width: var(--mdc-dialog-width, var(--mdc-dialog-width-default));
 					max-width: calc(100vw - 32px);
@@ -130,6 +133,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 				@media (max-width: 1024px), (max-height: 768px) {
 					.mdc-dialog .mdc-dialog__surface {
 						max-height: 100vh;
+						max-height: 100dvh;
 						max-width: 100vw;
 					}
 				}
