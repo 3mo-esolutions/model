@@ -13,6 +13,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 	@property({ type: Object }) edit?: EditAction<TEntity> | Constructor<DialogEntity<TEntity>>
 	@property({ type: Object }) delete?: (...entities: Array<TEntity>) => void | PromiseLike<void>
 	@property({ type: Object }) rowContextMenuTemplate?: (rowData: Array<TEntity>) => TemplateResult
+	@property({ type: Boolean }) hideFab = false
 
 	@property({
 		type: Object,
@@ -28,6 +29,34 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 	override parameters = {} as TDataFetcherParameters
 
+	async createAndRefetch() {
+		if (!this.create) {
+			return
+		}
+
+		await (
+			this.isEntityDialogClass(this.create)
+				? this.confirmDialogEntity(new this.create({}))
+				: this.create()
+		)
+
+		await this.refetchData()
+	}
+
+	async editAndRefetch(entity: TEntity) {
+		if (!this.edit) {
+			return
+		}
+
+		await (
+			this.isEntityDialogClass(this.edit)
+				? this.confirmDialogEntity(new this.edit({ id: entity.id }))
+				: this.edit(entity)
+		)
+
+		await this.refetchData()
+	}
+
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.setupRowClick()
@@ -35,7 +64,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 	protected override get fabTemplate() {
 		return html`
-			${!this.create ? nothing : html`<mo-fab icon='add' @click=${() => this.createAndRefetch()}></mo-fab>`}
+			${!this.create || this.hideFab ? nothing : html`<mo-fab icon='add' @click=${() => this.createAndRefetch()}></mo-fab>`}
 			${super.fabTemplate}
 		`
 	}
@@ -54,28 +83,6 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 			${!this.edit || entities.length !== 1 ? nothing : html`<mo-context-menu-item icon='edit' data-test-id='edit' @click=${() => this.editAndRefetch(entities[0]!)}>Bearbeiten</mo-context-menu-item>`}
 			${!this.delete ? nothing : html`<mo-context-menu-item icon='delete' data-test-id='delete' @click=${() => this.deleteAndRefetch(entities)}>Löschen</mo-context-menu-item>`}
 		`
-	}
-
-	private async createAndRefetch() {
-		if (!this.create) {
-			return
-		}
-		const promise = this.isEntityDialogClass(this.create)
-			? this.confirmDialogEntity(new this.create({}))
-			: this.create()
-		await promise
-		await this.refetchData()
-	}
-
-	private async editAndRefetch(entity: TEntity) {
-		if (!this.edit) {
-			return
-		}
-		const promise = this.isEntityDialogClass(this.edit)
-			? this.confirmDialogEntity(new this.edit({ id: entity.id }))
-			: this.edit(entity)
-		await promise
-		await this.refetchData()
 	}
 
 	private async confirmDialogEntity(dialog: DialogEntity<TEntity>) {
