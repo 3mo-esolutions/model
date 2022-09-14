@@ -15,9 +15,7 @@ export class SplitButton extends Component {
 			}
 
 			mo-button {
-				--mdc-button-horizontal-padding: 8px;
-				--mo-button-min-width: 0px;
-				--mo-button-icon-margin-right: 0px;
+				--mo-button-horizontal-padding: 8px;
 			}
 		`
 	}
@@ -26,7 +24,9 @@ export class SplitButton extends Component {
 		return html`
 			<mo-button-group type='raised'>
 				<slot></slot>
-				<mo-button leadingIcon='keyboard_arrow_down' @click=${(e: MouseEvent) => this.handleMoreClick(e)}></mo-button>
+				<mo-button @click=${(e: MouseEvent) => this.handleMoreClick(e)}>
+					<mo-icon icon='keyboard_arrow_down'></mo-icon>
+				</mo-button>
 			</mo-button-group>
 			<mo-menu fixed
 				.anchor=${this as any}
