@@ -373,7 +373,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 				--mo-data-grid-header-height: 32px;
 				--mo-data-grid-footer-min-height: 40px;
-				--mo-data-grid-toolbar-min-height: 45px;
 				--mo-data-grid-toolbar-padding: var(--mo-thickness-xl) 0 var(--mo-thickness-xl) var(--mo-thickness-xl);
 				--mo-data-grid-border: 1px solid var(--mo-color-transparent-gray-3);
 
@@ -430,9 +429,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 			#flexToolbar {
 				position: relative;
-				min-height: var(--mo-data-grid-toolbar-min-height);
 				padding: var(--mo-data-grid-toolbar-padding);
-				align-items: center;
 			}
 
 			#flexToolbar mo-icon-button {
@@ -639,13 +636,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	protected get toolbarTemplate() {
 		return this.hasToolbar === false ? nothing : html`
-			<mo-flex id='flexToolbar' direction='horizontal' gap='var(--mo-thickness-l)'>
-				<mo-flex direction='horizontal' alignItems='inherit' gap='var(--mo-thickness-l)' ${style({ width: '*' })}>
+			<mo-flex id='flexToolbar' direction='horizontal' gap='var(--mo-thickness-l)' wrap='wrap' justifyContent='end' alignItems='center'>
+				<mo-flex direction='horizontal' alignItems='inherit' gap='var(--mo-thickness-l)' wrap='wrap' ${style({ width: '*' })}>
 					<slot name='toolbar'></slot>
 				</mo-flex>
-				<slot name='toolbarAction'></slot>
-				${this.toolbarActionsTemplate}
-				${this.selectionToolbarTemplate}
+				<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
+					<slot name='toolbarAction'></slot>
+					${this.toolbarActionsTemplate}
+					${this.selectionToolbarTemplate}
+				</mo-flex>
 			</mo-flex>
 		`
 	}
