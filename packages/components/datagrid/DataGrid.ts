@@ -373,7 +373,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 				--mo-data-grid-header-height: 32px;
 				--mo-data-grid-footer-min-height: 40px;
-				--mo-data-grid-toolbar-padding: var(--mo-thickness-xl) 0 var(--mo-thickness-xl) var(--mo-thickness-xl);
+				--mo-data-grid-toolbar-padding: var(--mo-thickness-xl);
 				--mo-data-grid-border: 1px solid var(--mo-color-transparent-gray-3);
 
 				/* --mo-data-grid-columns Generated in JS */
