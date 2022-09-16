@@ -91,15 +91,17 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 			#contextMenuIconButton {
 				transition: var(--mo-duration-quick);
-				opacity: 0;
-				color: var(--mo-color-accent);
+				opacity: 0.5;
+				color: var(--mo-color-gray);
 			}
 
 			:host([selected]) #contextMenuIconButton {
 				color: var(--mo-color-foreground);
+				opacity: 1;
 			}
 
 			#contentContainer:hover #contextMenuIconButton {
+				color: var(--mo-color-accent);
 				opacity: 1;
 			}
 
