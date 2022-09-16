@@ -63,7 +63,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	}
 	private get dataGridTemplate() {
 		return html`
-			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails editability='always'
+			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails
 				.parameters=${this.dataGridParameters}
 				.selectedData=${this.selectedPhotos}
 				@dataChange=${(event: CustomEvent<Array<Photo>>) => this.photos = event.detail}

@@ -67,12 +67,12 @@ export class DataGridFooter<TData> extends Component {
 	protected override get template() {
 		this.switchAttribute('hideTopBorder', this.dataGrid.hasFooter === false)
 		return this.dataGrid.hasFooter === false ? nothing : html`
-			<mo-flex direction='horizontal' justifyContent='space-between' ${style({ margin: 'var(--mo-thickness-s)', height: 'calc(100% - calc(2 * var(--mo-thickness-s)))' })}>
-				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-xl)' ${style({ flexBasis: 'auto' })}>
+			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse' gap='var(--mo-thickness-m)' ${style({ flex: '1', padding: 'var(--mo-thickness-m)' })}>
+				<mo-flex direction='horizontal' alignItems='center' gap='1vw' ${style({ flexBasis: 'auto' })}>
 					${this.paginationTemplate}
 				</mo-flex>
 
-				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' ${style({ textAlign: 'right' })}>
+				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' ${style({ textAlign: 'right', paddingRight: 'var(--mo-data-grid-footer-trailing-padding)' })}>
 					${this.dataGrid.columns.map(column => this.getSumTemplate(column))}
 					<slot name='sum'></slot>
 				</mo-flex>
@@ -121,8 +121,6 @@ export class DataGridFooter<TData> extends Component {
 					@click=${() => this.setPage(this.dataGrid.maxPage ?? 1)}
 				></mo-icon-button>
 			</mo-flex>
-
-			<div ${style({ width: '1px', height: '50%', background: 'var(--mo-color-transparent-gray-3)' })}></div>
 
 			<div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
 				<div ${style({ fontSize: 'var(--mo-font-size-s)' })}

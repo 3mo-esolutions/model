@@ -10,7 +10,7 @@
 	},
 	"license": "Apache 2.0",
 	"dependencies": {
-		"@3mo/model": "file:../.."
+		"@3mo/model": "file:../../packages/"
 	},
 	"devDependencies": {
 		"concurrently": "*",

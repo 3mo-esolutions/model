@@ -476,7 +476,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 			#flexFab {
 				position: absolute;
-				bottom: 16px;
+				top: -28px;
 				right: 16px;
 				transition: var(--mo-data-grid-fab-transition, var(--mo-duration-quick));
 			}
@@ -491,7 +491,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			}
 
 			:host([hasSums][hasFabs]:not([fabSlotCollapsed])) mo-data-grid-footer {
-				padding-right: calc(var(--mo-data-grid-fab-slot-width, 56px) + 16px);
+				--mo-data-grid-footer-trailing-padding: calc(var(--mo-data-grid-fab-slot-width, 56px) + 16px);
 			}
 
 			slot[name=fab] {
@@ -528,9 +528,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					<mo-flex ${style({ width: '*', position: 'relative' })}>
 						<!-- Do not try to cache the content via "cache" directive as it is problematic for virtualized DataGrids -->
 						${this.contentTemplate}
-						<mo-flex id='flexFab' direction='vertical-reversed' gap='var(--mo-thickness-l)'>
-							${this.fabTemplate}
-						</mo-flex>
 					</mo-flex>
 				</mo-splitter-item>
 			</mo-splitter>
@@ -624,14 +621,19 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	protected get footerTemplate() {
 		return html`
-			<mo-data-grid-footer
-				.dataGrid=${this as any}
-				?hidden=${this.hasFooter === false}
-				page=${this.page}
-				@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
-			>
-				<slot name='sum' slot='sum'></slot>
-			</mo-data-grid-footer>
+			<mo-flex ${style({ position: 'relative' })}>
+				<mo-flex id='flexFab' direction='vertical-reversed' gap='var(--mo-thickness-l)'>
+					${this.fabTemplate}
+				</mo-flex>
+				<mo-data-grid-footer
+					.dataGrid=${this as any}
+					?hidden=${this.hasFooter === false}
+					page=${this.page}
+					@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
+				>
+					<slot name='sum' slot='sum'></slot>
+				</mo-data-grid-footer>
+			</mo-flex>
 		`
 	}
 
