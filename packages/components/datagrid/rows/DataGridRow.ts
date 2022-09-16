@@ -1,4 +1,4 @@
-import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult } from '../../../library'
+import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult, LitElement } from '../../../library'
 import { ContextMenuHost } from '../../../shell'
 import { KeyboardHelper } from '../../../utilities'
 import { ColumnDefinition } from '../ColumnDefinition'
@@ -32,6 +32,9 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	override updated(...parameters: Parameters<Component['updated']>) {
 		this.cells.forEach(cell => cell.requestUpdate())
+		if (this.detailsElement instanceof LitElement) {
+			this.detailsElement.requestUpdate()
+		}
 		super.updated(...parameters)
 	}
 
