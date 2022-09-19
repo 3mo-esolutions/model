@@ -133,6 +133,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	@property({ type: Boolean }) selectionToolbarDisabled = false
 	@property({ type: Boolean, reflect: true }) hasAlternatingBackground = DataGrid.hasAlternatingBackground.value
 
+	@property({ type: Boolean }) preventFabCollapse = false
 	@property({ type: Boolean, reflect: true }) protected fabSlotCollapsed = false
 
 	@queryAll('[mo-data-grid-row]') readonly rows!: Array<DataGridRow<TData, TDetailsElement>>
@@ -565,7 +566,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return !this.isSubDataGrid && !this.preventContentScroll ? html`
 			<mo-grid ${style({ height: '*' })} rows='* auto'>
-				<mo-scroller>
+				<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
 					<mo-grid ${style({ height: '100%' })} rows='auto *'>
 						${this.headerTemplate}
 						${this.rowsTemplate}
@@ -595,11 +596,19 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			? this.renderData.map(getRowTemplate)
 			: html`<mo-virtualized-scroller .items=${this.renderData} .getItemTemplate=${getRowTemplate as any}></mo-virtualized-scroller>`
 		return this.preventContentScroll || this.isSubDataGrid ? html`
-			<mo-flex id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
+			<mo-flex id='rowsContainer'
+				${style({ gridRow: '2', gridColumn: '1 / last-line' })}
+				${observeResize(() => this.requestUpdate())}
+				@scroll=${this.handleScroll}
+			>
 				${content}
 			</mo-flex>
 		` : html`
-			<mo-scroller id='rowsContainer' ${style({ gridRow: '2', gridColumn: '1 / last-line' })} @scroll=${this.handleScroll} ${observeResize(() => this.requestUpdate())}>
+			<mo-scroller id='rowsContainer'
+				${style({ gridRow: '2', gridColumn: '1 / last-line' })}
+				${observeResize(() => this.requestUpdate())}
+				@scroll=${this.handleScroll}
+			>
 				${content}
 			</mo-scroller>
 		`
@@ -730,16 +739,18 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	private lastScrollElementTop = 0
 	private readonly handleScroll = (e: Event) => {
-		if (!e.composed) {
-			e.preventDefault()
-			e.target?.dispatchEvent(new Event('scroll', { composed: true, bubbles: true }))
+		if (this.preventFabCollapse === false) {
+			if (!e.composed) {
+				e.preventDefault()
+				e.target?.dispatchEvent(new Event('scroll', { composed: true, bubbles: true }))
 
-			if (this.hasFabs) {
-				const targetElement = e.composedPath()[0] as HTMLElement
-				const scrollTop = targetElement.scrollTop
-				const isUpScrolling = scrollTop <= this.lastScrollElementTop
-				this.fabSlotCollapsed = !isUpScrolling
-				this.lastScrollElementTop = scrollTop <= 0 ? 0 : scrollTop
+				if (this.hasFabs) {
+					const targetElement = e.composedPath()[0] as HTMLElement
+					const scrollTop = targetElement.scrollTop
+					const isUpScrolling = scrollTop <= this.lastScrollElementTop
+					this.fabSlotCollapsed = !isUpScrolling
+					this.lastScrollElementTop = scrollTop <= 0 ? 0 : scrollTop
+				}
 			}
 		}
 	}
