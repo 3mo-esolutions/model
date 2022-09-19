@@ -1,4 +1,4 @@
-import { html, css, state, nothing } from '../../library'
+import { html, state, nothing } from '../../library'
 import { DialogComponent } from '../dialog'
 import { LocalStorageEntry } from '../../utilities'
 import { NotificationHost, User } from '..'
@@ -113,38 +113,15 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		MoDeL.application.pageHost.currentPage?.requestUpdate()
 	}
 
-	static override get styles() {
-		return css`
-			mo-dialog {
-				--mdc-dialog-scrim-color: var(--mo-color-background)
-			}
-
-			a {
-				font-size: dense;
-				opacity: 0.85;
-				cursor: pointer;
-			}
-
-			a:hover {
-				color: var(--mo-color-accent);
-			}
-
-			h2 {
-				font-weight: 500;
-			}
-		`
-	}
-
 	protected override get template() {
 		return html`
-			<mo-dialog blocking primaryOnEnter>
+			<mo-dialog blocking primaryOnEnter ${style({ '--mdc-dialog-scrim-color': 'var(--mo-color-background)' })}>
 				<mo-loading-button slot='primaryAction' type='raised'>${this.primaryButtonText}</mo-loading-button>
 				${this.additionalTemplate}
-				<mo-flex alignItems='center' ${style({ minWidth: '350px' })}>
-					${this.headerTemplate}
-					<mo-flex alignItems='stretch' justifyContent='center' gap='var(--mo-thickness-m)' ${style({ height: '*', width: '100%', minHeight: '250px' })}>
-						${this.contentTemplate}
-					</mo-flex>
+				<mo-flex alignItems='center' gap='40px'>
+					${this.logoTemplate}
+					${this.applicationInfoTemplate}
+					${this.contentTemplate}
 				</mo-flex>
 			</mo-dialog>
 		`
@@ -154,43 +131,42 @@ export abstract class DialogAuthenticator extends DialogComponent {
 		return nothing
 	}
 
-	protected get headerTemplate() {
-		return html`
-			<mo-flex ${style({ height: '100px' })} alignItems='center' gap='10px'>
-				${this.logoTemplate}
-				<mo-heading typography='heading3'>${Manifest?.short_name || _('Welcome')}</mo-heading>
-			</mo-flex>
+	protected get applicationInfoTemplate() {
+		return !Manifest ? nothing : html`
+			<mo-heading typography='subheading1' ${style({ color: 'var(--mo-color-gray)' })}>${Manifest.name} v${Manifest.version}</mo-heading>
 		`
 	}
 
 	protected get logoTemplate() {
 		return html`
-			<mo-application-logo ${style({ height: '60px' })}></mo-application-logo>
+			<mo-application-logo ${style({ height: '100px', maxWidth: '75%', padding: '15px 0 0 0' })}></mo-application-logo>
 		`
 	}
 
 	protected get contentTemplate() {
 		return html`
-			<mo-field-text data-focus
-				label=${_('Username')}
-				.value=${this.username}
-				@input=${(e: CustomEvent<string>) => this.username = e.detail}
-			></mo-field-text>
+			<mo-flex gap='var(--mo-thickness-l)' ${style({ height: '*', width: '100%', paddingBottom: '25px' })}>
+				<mo-field-text data-focus
+					label=${_('Username')}
+					.value=${this.username}
+					@input=${(e: CustomEvent<string>) => this.username = e.detail}
+				></mo-field-text>
 
-			<mo-field-password
-				label=${_('Password')}
-				.value=${this.password}
-				@input=${(e: CustomEvent<string>) => this.password = e.detail}
-			></mo-field-password>
+				<mo-field-password
+					label=${_('Password')}
+					.value=${this.password}
+					@input=${(e: CustomEvent<string>) => this.password = e.detail}
+				></mo-field-password>
 
-			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center'>
-				<mo-checkbox
-					label=${_('Remember Password')}
-					?checked=${this.shallRememberPassword}
-					@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
-				></mo-checkbox>
+				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse'>
+					<mo-checkbox
+						label=${_('Remember Password')}
+						?checked=${this.shallRememberPassword}
+						@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
+					></mo-checkbox>
 
-				<a @click=${() => this.resetPassword()}>${_('Reset Password')}</a>
+					<mo-anchor ${style({ fontSize: 'small' })} @click=${() => this.resetPassword()}>${_('Reset Password')}</mo-anchor>
+				</mo-flex>
 			</mo-flex>
 		`
 	}
