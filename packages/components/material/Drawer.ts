@@ -1,5 +1,5 @@
-import { component, property, css, ComponentMixin } from '../../library'
-import { LocalStorageEntry } from '../../utilities'
+import { component, property, css, ComponentMixin, PropertyValues } from '../../library'
+import { ClientInfoHelper, LocalStorageEntry } from '../../utilities'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 // This is defined by MWC and cannot be renamed
@@ -79,6 +79,23 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		this.hasHeader = !!Array.from(this.children).find(child => child.slot === 'title')
 		this.addEventListener('MDCTopAppBar:nav', () => this.open = !this.open)
 		this.setupType()
+	}
+
+	protected override updated(changedProperties: PropertyValues<this>) {
+		super.updated(changedProperties)
+		if (changedProperties.has('open') && this.open === false && ClientInfoHelper.browser === 'Safari') {
+			this.recoverFromInertBugInSafari()
+		}
+	}
+
+	private async recoverFromInertBugInSafari() {
+		await Promise.sleep(0)
+		this.appContent.inert = false
+		// @ts-expect-error $blockingElements exists but is not in the type definition
+		document.$blockingElements.pop()
+		const aside = this.renderRoot.querySelector('aside')
+		aside?.classList.remove('mdc-drawer--open')
+		aside?.classList.remove('mdc-drawer--closing')
 	}
 
 	private setupType() {
