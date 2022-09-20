@@ -18,7 +18,7 @@ export class Chip extends Component {
 		return css`
 			:host {
 				display: inline-block;
-				height: 30px;
+				height: 36px;
 				border-radius: 100px;
 			}
 

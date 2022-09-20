@@ -79,7 +79,9 @@ export class DialogReleaseNotes extends DialogComponent {
 		const match = Changelog?.match(regExp)
 
 		if (!match) {
-			throw new Error(`Could not find release notes for provided version ${version}`)
+			// eslint-disable-next-line no-console
+			console.error(new Error(`Could not find release notes for provided version ${version}`))
+			return ''
 		}
 
 		return match as RegExpMatchArray

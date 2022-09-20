@@ -511,7 +511,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				<mo-splitter-resizer-line style='--mo-splitter-resizer-line-thickness: 1px; --mo-splitter-resizer-line-idle-background: var(--mo-color-transparent-gray-3); --mo-splitter-resizer-line-horizontal-transform: scaleX(5);'></mo-splitter-resizer-line>
 			`}>
 				${this.sidePanelTab === undefined ? nothing : html`
-					<mo-splitter-item size='min(25%, 300px)' min='max(10%, 150px)' max='min(50%, 750px)'>
+					<mo-splitter-item size='min(25%, 300px)' min='max(15%, 250px)' max='min(50%, 750px)'>
 						<mo-data-grid-side-panel
 							.dataGrid=${this as any}
 							tab=${ifDefined(this.sidePanelTab)}

@@ -6,7 +6,7 @@ import { DataGrid } from './DataGrid'
 
 Localizer.register(LanguageCode.German, {
 	'Settings': 'Einstellungen',
-	'Filters': 'Filter',
+	'Extended Filters': 'Weitere Filter',
 	'Export as Excel file': 'Als Excel-Datei Exportieren',
 	'Columns': 'Spalten',
 })
@@ -85,7 +85,7 @@ export class DataGridSidePanel<TData> extends Component {
 				</mo-tab-bar>
 
 				<mo-flex id='flexHeading' direction='horizontal' alignItems='center' ?hidden=${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true}>
-					<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Filters' : 'Settings')}</mo-heading>
+					<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
 					<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
 				</mo-flex>
 

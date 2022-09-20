@@ -33,7 +33,7 @@ export abstract class Application extends Component {
 	@query('mo-notification-host') readonly notificationHost!: NotificationHost
 	@query('mo-drawer') readonly drawer!: Drawer
 
-	protected readonly rootCssInjector = new RootCssInjectorController(this, Application.rootStyles)
+	protected readonly rootCssInjector = new RootCssInjectorController(this, (this.constructor as any).rootStyles)
 
 	constructor() {
 		super()
