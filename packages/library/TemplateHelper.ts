@@ -1,6 +1,10 @@
-import { TemplateResult, render } from 'lit'
+import { TemplateResult, render, nothing } from 'lit'
 
 export class TemplateHelper {
+	static isEmpty(template: TemplateResult) {
+		return !template || template === nothing as any
+	}
+
 	static extractHTML(template: TemplateResult) {
 		return this.renderAndExtract(template, div => div.innerHTML)
 	}

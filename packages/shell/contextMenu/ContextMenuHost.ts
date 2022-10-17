@@ -1,4 +1,4 @@
-import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css } from '../../library'
+import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css, TemplateHelper } from '../../library'
 import { Corner } from '@material/mwc-menu'
 import { ContextMenu, ListItem } from '../..'
 import { nonInertable } from '..'
@@ -53,6 +53,10 @@ export class ContextMenuHost extends Component {
 	}
 
 	private async openByCoordinates(coordinates: Coordinates, template: TemplateResult) {
+		if (TemplateHelper.isEmpty(template)) {
+			return
+		}
+
 		const [x, y] = coordinates
 		this.contextMenu.anchor = null
 		this.menuContent = template
@@ -76,6 +80,9 @@ export class ContextMenuHost extends Component {
 	}
 
 	private async openByRelativeElement(element: HTMLElement, corner: Corner, template: TemplateResult) {
+		if (TemplateHelper.isEmpty(template)) {
+			return
+		}
 		this.contextMenu.corner = corner
 		this.contextMenu.anchor = element
 		this.menuContent = template
