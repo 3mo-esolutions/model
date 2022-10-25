@@ -28,13 +28,18 @@ export class LocalStorageEntry<T> {
 	get value(): T {
 		const value = window.localStorage.getItem(this.name) ?? undefined
 		if (value === undefined || value === 'undefined') {
+			window.localStorage.removeItem(this.name)
 			return this.defaultValue
 		}
 		return JSON.isJson(value) ? JSON.parse(value, this.reviver) : value
 	}
 
 	set value(obj: T) {
-		window.localStorage.setItem(this.name, JSON.stringify(obj))
+		if (obj === undefined) {
+			window.localStorage.removeItem(this.name)
+		} else {
+			window.localStorage.setItem(this.name, JSON.stringify(obj))
+		}
 		this.changed.dispatch(obj)
 		LocalStorageContainer.changed.dispatch(this)
 	}

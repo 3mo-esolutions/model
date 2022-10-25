@@ -17,8 +17,8 @@ export class PagePreferencesSecurity extends PageSettings {
 					>Vor dem Löschen bestätigen</mo-list-item-checkbox>
 
 					<mo-list-item-checkbox
-						?selected=${DialogAuthenticator.shallRemember.value}
-						@selectionChange=${(e: CustomEvent<boolean>) => DialogAuthenticator.shallRemember.value = e.detail}
+						?selected=${DialogAuthenticator.shallRememberCredentials.value}
+						@selectionChange=${(e: CustomEvent<boolean>) => DialogAuthenticator.shallRememberCredentials.value = e.detail}
 					>Passwort merken & eingeloggt bleiben</mo-list-item-checkbox>
 
 					<mo-list-item hidden>2-Faktor Authentifizierung</mo-list-item>

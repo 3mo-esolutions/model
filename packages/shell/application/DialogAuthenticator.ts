@@ -12,21 +12,20 @@ Localizer.register(LanguageCode.German, {
 	'Something went wrong. Try again.': 'Etwas ist schief gelaufen. Versuche nochmal.',
 	'Username': 'Benutzer',
 	'Password': 'Passwort',
-	'Remember Password': 'Passwort merken',
+	'Remember Credentials': 'Anmeldedaten merken',
 	'Reset Password': 'Passwort zurücksetzen',
 	'Welcome': 'Willkommen',
 	'Login': 'Anmelden'
 })
 
 export abstract class DialogAuthenticator extends DialogComponent {
-	static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
+	static readonly shallRememberCredentials = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
 	static readonly authenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
 	private static readonly password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
 	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
 
-	@state() shallRememberPassword = DialogAuthenticator.shallRemember.value
-	@state() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
-	@state() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
+	@state() username = DialogAuthenticator.shallRememberCredentials.value ? DialogAuthenticator.username.value ?? '' : ''
+	@state() password = DialogAuthenticator.shallRememberCredentials.value ? DialogAuthenticator.password.value ?? '' : ''
 	@state() primaryButtonText = _('Login')
 
 	private preventNextAutomaticAuthentication = false
@@ -94,9 +93,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 			return
 		}
 
-		const shouldHaveRemembered = DialogAuthenticator.shallRemember.value
+		const shouldHaveRememberedCredentials = DialogAuthenticator.shallRememberCredentials.value
 
-		if (!shouldHaveRemembered) {
+		if (!shouldHaveRememberedCredentials) {
 			return defaultToSuper()
 		}
 
@@ -160,9 +159,9 @@ export abstract class DialogAuthenticator extends DialogComponent {
 
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse'>
 					<mo-checkbox
-						label=${_('Remember Password')}
-						?checked=${this.shallRememberPassword}
-						@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
+						label=${_('Remember Credentials')}
+						?checked=${DialogAuthenticator.shallRememberCredentials.value}
+						@change=${(e: CustomEvent<CheckboxValue>) => DialogAuthenticator.shallRememberCredentials.value = e.detail === 'checked'}
 					></mo-checkbox>
 
 					<mo-anchor ${style({ fontSize: 'small' })} @click=${() => this.resetPassword()}>${_('Reset Password')}</mo-anchor>
@@ -172,11 +171,8 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	}
 
 	protected override async primaryAction() {
-		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
-		if (DialogAuthenticator.shallRemember.value) {
-			DialogAuthenticator.username.value = this.username
-			DialogAuthenticator.password.value = this.password
-		}
+		DialogAuthenticator.username.value = DialogAuthenticator.shallRememberCredentials.value ? this.username : undefined
+		DialogAuthenticator.password.value = DialogAuthenticator.shallRememberCredentials.value ? this.password : undefined
 		await this.authenticate()
 	}
 }
