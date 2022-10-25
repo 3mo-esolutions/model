@@ -44,6 +44,7 @@ export abstract class DataGridColumn<TData, TValue> extends Component {
 	}
 
 	protected override updated() {
+		this.dataGrid?.extractColumns()
 		this.dataGrid?.requestUpdate()
 	}
 }
