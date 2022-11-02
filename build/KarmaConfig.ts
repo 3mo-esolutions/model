@@ -3,7 +3,7 @@ module.exports = {
 	basePath: '.',
 	frameworks: ['parallel', 'jasmine'],
 	plugins: ['karma-*'],
-	files: ['./test-temp/main.js'],
+	files: ['./test-temp/*.js'],
 	reporters: ['helpful'],
 	logLevel: 'ERROR',
 	port: 9876,
