@@ -22,9 +22,12 @@ export class Splitter extends Component {
 		return Array.from(this.children).filter(c => c instanceof SplitterItem) as Array<SplitterItem>
 	}
 
-	protected readonly mutationController = new MutationController(this, () => {
-		this.items.forEach((item, index) => item.slot = `${Splitter.itemSlotPrefix}${index}`)
-		this.requestUpdate()
+	protected readonly mutationController = new MutationController(this, {
+		config: { childList: true },
+		callback: () => {
+			this.items.forEach((item, index) => item.slot = `${Splitter.itemSlotPrefix}${index}`)
+			this.requestUpdate()
+		}
 	})
 
 	static override get styles() {

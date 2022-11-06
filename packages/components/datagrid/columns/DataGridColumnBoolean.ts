@@ -21,7 +21,7 @@ export class DataGridColumnBoolean<TData> extends DataGridColumn<TData, boolean>
 
 	getEditContentTemplate(value: boolean | undefined, data: TData) {
 		return html`
-			<mo-checkbox reducedTouchTarget label=${this.heading}
+			<mo-checkbox label=${this.heading}
 				?checked=${value}
 				@change=${(e: CustomEvent<CheckboxValue>) => this.handleEdit(e.detail === 'checked', data)}
 			></mo-checkbox>
