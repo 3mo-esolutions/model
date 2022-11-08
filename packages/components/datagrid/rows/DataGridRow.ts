@@ -40,7 +40,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	protected get hasDetails() {
 		if (this.dataGrid.subDataGridDataSelector) {
-			return Array.isArray(getPropertyByKeyPath(this.data, this.dataGrid.subDataGridDataSelector))
+			return Array.isArray(getValueByKeyPath(this.data, this.dataGrid.subDataGridDataSelector))
 		}
 
 		return this.dataGrid.hasDetails
@@ -185,7 +185,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				?editing=${this.editing}
 				.row=${this as any}
 				.column=${column}
-				.value=${getPropertyByKeyPath(this.data, column.dataSelector as any)}
+				.value=${getValueByKeyPath(this.data, column.dataSelector as any)}
 			></mo-data-grid-cell>
 		`
 	}

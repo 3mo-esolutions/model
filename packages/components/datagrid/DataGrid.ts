@@ -229,7 +229,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		const cell = row?.cells.find(c => c.dataSelector === dataSelector)
 		if (row && cell && value !== undefined && cell.value !== value) {
 			row.requestUpdate()
-			setPropertyByKeyPath(data, dataSelector, value)
+			setValueByKeyPath(data, dataSelector, value)
 			this.cellEdit.dispatch(cell)
 		}
 	}
@@ -263,7 +263,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	get hasDetails() {
 		return !!this.getRowDetailsTemplate
 			&& this.data.some(data => this.hasDetail(data))
-			&& (!this.subDataGridDataSelector || this.data.some(data => Array.isArray(getPropertyByKeyPath(data, this.subDataGridDataSelector!))))
+			&& (!this.subDataGridDataSelector || this.data.some(data => Array.isArray(getValueByKeyPath(data, this.subDataGridDataSelector!))))
 	}
 
 	get hasSelection() {
@@ -773,9 +773,9 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 		switch (sorting.strategy) {
 			case DataGridSortingStrategy.Ascending:
-				return dataClone.sort((a, b) => getPropertyByKeyPath(a, sorting.selector) > getPropertyByKeyPath(b, sorting.selector) ? 1 : -1)
+				return dataClone.sort((a, b) => getValueByKeyPath(a, sorting.selector) > getValueByKeyPath(b, sorting.selector) ? 1 : -1)
 			case DataGridSortingStrategy.Descending:
-				return dataClone.sort((a, b) => getPropertyByKeyPath(a, sorting.selector) < getPropertyByKeyPath(b, sorting.selector) ? 1 : -1)
+				return dataClone.sort((a, b) => getValueByKeyPath(a, sorting.selector) < getValueByKeyPath(b, sorting.selector) ? 1 : -1)
 
 		}
 	}
@@ -826,7 +826,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return Object.keys(sampleData!)
 			.filter(key => !key.startsWith('_'))
 			.map(key => {
-				const columnElement = document.createElement(getDefaultColumnElement(getPropertyByKeyPath(sampleData, key as any)))
+				const columnElement = document.createElement(getDefaultColumnElement(getValueByKeyPath(sampleData, key as any)))
 				columnElement.remove()
 				return {
 					heading: key.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + key.replace(/([A-Z])/g, ' $1').slice(1),
@@ -864,7 +864,7 @@ function subDataGridSelectorChanged<TData>(this: DataGrid<TData>) {
 
 	this.getRowDetailsTemplate = (data: TData) => html`
 		<mo-data-grid ${style({ padding: '0px' })}
-			.data=${getPropertyByKeyPath(data, selector)}
+			.data=${getValueByKeyPath(data, selector)}
 			headerHidden
 			sidePanelHidden
 			.columns=${this.columns}

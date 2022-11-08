@@ -8,8 +8,8 @@ export class ExcelHelper {
 	) {
 		const dataClone = data.map((data: TData) => {
 			keys.forEach(key => {
-				const value = getPropertyByKeyPath(data, key)
-				setPropertyByKeyPath(data, key, value instanceof Date
+				const value = getValueByKeyPath(data, key)
+				setValueByKeyPath(data, key, value instanceof Date
 					? isNaN(value.getTime()) ? '' : value.toISOString() as any
 					: value
 				)
@@ -18,7 +18,7 @@ export class ExcelHelper {
 		})
 
 		const csv = `${keys.join(',')}
-			${dataClone.map(data => keys.map(selector => `"${getPropertyByKeyPath(data, selector)}"`).join(',')).join('\r\n')}
+			${dataClone.map(data => keys.map(selector => `"${getValueByKeyPath(data, selector)}"`).join(',')).join('\r\n')}
 		`
 
 		const fileName = Manifest?.short_name + title.replace(/ /g, '_')

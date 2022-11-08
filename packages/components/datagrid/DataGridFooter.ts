@@ -144,7 +144,7 @@ export class DataGridFooter<TData> extends Component {
 		}
 
 		const sum = this.dataGrid.renderData
-			.map(data => parseFloat(getPropertyByKeyPath(data, column.dataSelector) as unknown as string))
+			.map(data => parseFloat(getValueByKeyPath(data, column.dataSelector) as unknown as string))
 			.filter(n => isNaN(n) === false)
 			.reduce(((a, b) => a + b), 0)
 			|| 0
