@@ -1,4 +1,4 @@
-import { component, html, property, Component, css, nothing, style } from '../../library'
+import { component, html, property, Component, css, nothing, style } from '@a11d/lit'
 import { SlotController } from '../../utilities'
 
 /**

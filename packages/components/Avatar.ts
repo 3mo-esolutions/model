@@ -1,4 +1,4 @@
-import { html, component, Component, css } from '../../library'
+import { html, component, Component, css } from '@a11d/lit'
 
 @component('mo-avatar')
 export class Avatar extends Component {

@@ -1,4 +1,4 @@
-import { component, html, style } from '../../../library'
+import { component, html, nothing, style } from '@a11d/lit'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-search')
@@ -9,9 +9,9 @@ export class FieldSearch extends FieldTextBase {
 		return html`
 			<mo-icon icon='search' ${style({ color: this.active ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}></mo-icon>
 			${super.template}
-			<mo-icon-button icon='cancel' dense ${style({ color: 'var(--mo-color-gray)' })}
-				?hidden=${!this.value} @click=${() => this.clear()}
-			></mo-icon-button>
+			${!this.value ? nothing : html`
+				<mo-icon-button icon='cancel' dense ${style({ color: 'var(--mo-color-gray)' })} @click=${() => this.clear()}></mo-icon-button>
+			`}
 		`
 	}
 

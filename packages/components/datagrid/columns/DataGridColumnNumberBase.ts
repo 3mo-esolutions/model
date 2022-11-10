@@ -1,4 +1,4 @@
-import { property, TemplateResult } from '../../../library'
+import { property, TemplateResult } from '@a11d/lit'
 import { DataGridColumn } from '.'
 
 export abstract class DataGridColumnNumberBase<TData> extends DataGridColumn<TData, number> {

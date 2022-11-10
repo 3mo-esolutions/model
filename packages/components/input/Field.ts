@@ -1,4 +1,4 @@
-import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '../../library'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '@a11d/lit'
 import { SlotController } from '../../utilities'
 import { Input } from './Input'
 

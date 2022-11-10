@@ -1,4 +1,4 @@
-import { component, css, Component, html, property, ifDefined, nothing, style } from '../library'
+import { component, css, Component, html, property, ifDefined, nothing, style } from '@a11d/lit'
 import { MaterialIcon } from '.'
 
 export const enum AlertType {

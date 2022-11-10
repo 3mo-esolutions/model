@@ -1,4 +1,4 @@
-import { css } from '../../library'
+import { css } from '@a11d/lit'
 
 export const styles = css`
 	@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';

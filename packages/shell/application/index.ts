@@ -1,6 +1,4 @@
 export * from './Application'
-export * from './ApplicationProvider'
 export * from './DialogAuthenticator'
 export * from './UserAvatar'
 export * from './ApplicationLogo'
-export * from './ManifestProvider'

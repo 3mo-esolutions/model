@@ -1,5 +1,5 @@
-import { component, html, ifDefined } from '../../library'
-import { DialogComponent } from '../../shell'
+import { component, html, ifDefined } from '@a11d/lit'
+import { DialogComponent } from '@a11d/lit-application'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
 type Parameters<TResult> = BaseDialogParameters & { readonly secondaryButtonText?: string } & {

@@ -1,11 +1,19 @@
-import { html, component, style, nothing } from '../../library'
+import { html, component, style, nothing } from '@a11d/lit'
 import { DialogReleaseNotes, PagePreferencesFeatureFlags, PagePreferencesSecurity, PagePreferencesUserInterface } from '..'
 import { PageSettingsHost } from '.'
-import { route } from '../../shell'
+import { route, RouterController } from '@a11d/lit-application'
 
 @route('/preferences')
 @component('mo-page-preferences')
 export class PagePreferences extends PageSettingsHost {
+	readonly router = new RouterController(this,
+		[
+			{ path: '/preferences/security', render: () => new PagePreferencesSecurity() },
+			{ path: '/preferences/user-interface', render: () => new PagePreferencesUserInterface() },
+			{ path: '/preferences/feature-flags', render: () => new PagePreferencesFeatureFlags() },
+		]
+	)
+
 	protected get heading() {
 		return 'Benutzereinstellungen'
 	}
@@ -20,10 +28,10 @@ export class PagePreferences extends PageSettingsHost {
 						<mo-navigation-list-item icon='fiber_new' .component=${new PagePreferencesFeatureFlags}>Feature-Flags</mo-navigation-list-item>
 					</mo-list>
 
-					${!Manifest ? nothing : html`
+					${!manifest ? nothing : html`
 						<mo-flex direction='horizontal' alignItems='center' justifyContent='center' ${style({ color: 'var(--mo-color-gray)', padding: 'var(--mo-thickness-l)' })}>
-							<mo-heading typography='heading6'>${Manifest.name} v${Manifest.version}</mo-heading>
-							<mo-icon-button dense icon='info' ?hidden=${!Changelog} ${style({ color: 'var(--mo-color-accent)' })} @click=${() => new DialogReleaseNotes().confirm()}></mo-icon-button>
+							<mo-heading typography='heading6'>${manifest.name} v${manifest.version}</mo-heading>
+							${!Changelog ? nothing : html`<mo-icon-button dense icon='info' ${style({ color: 'var(--mo-color-accent)' })} @click=${() => new DialogReleaseNotes().confirm()}></mo-icon-button>`}
 						</mo-flex>
 					`}
 				</mo-flex>

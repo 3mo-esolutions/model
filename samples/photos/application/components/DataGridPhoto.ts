@@ -1,4 +1,4 @@
-import { component, html, ModdableDataGrid, style } from '@3mo/model'
+import { component, html, ModdableDataGrid, nothing, style } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 @component('photos-data-grid-photo')
@@ -27,7 +27,7 @@ export class DataGridPhoto extends ModdableDataGrid<Photo, FirstParameter<typeof
 	`
 
 	override getRowContextMenuTemplate = (rowData: Array<Photo>) => html`
-		<mo-data-grid-primary-context-menu-item ?hidden=${rowData.length > 1} icon='edit' @click=${() => alert('edit')}>Edit</mo-data-grid-primary-context-menu-item>
+		${rowData.length > 1 ? nothing : html`<mo-data-grid-primary-context-menu-item icon='edit' @click=${() => alert('edit')}>Edit</mo-data-grid-primary-context-menu-item>`}
 		<mo-context-menu-item icon='delete' @click=${() => alert('delete')}>Delete</mo-context-menu-item>
 	`
 }

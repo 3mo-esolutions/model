@@ -1,12 +1,12 @@
-import { html, component, css, style } from '../../library'
+import { html, component, css, style } from '@a11d/lit'
 import { Amount, DataGrid, DataGridPagination, Drawer, Slider } from '..'
-import { PagePreferences, PageSettings } from '.'
-import { Background, route, routeHost, ThemeHelper } from '../../shell'
+import { PageSettings } from '.'
+import { route } from '@a11d/lit-application'
 import { Color } from '../../utilities'
+import { Background, ThemeHelper } from '../../shell'
 
 @component('mo-page-preferences-user-interface')
 @route('/preferences/user-interface', '/preferences/ui')
-@routeHost(PagePreferences)
 export class PagePreferencesUserInterface extends PageSettings {
 	private static readonly accentPresetColors = [
 		new Color('rgb(0, 119, 200)'), // 3MO Blue

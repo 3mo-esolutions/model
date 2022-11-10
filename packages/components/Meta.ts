@@ -1,4 +1,4 @@
-import { component, html, property, Component, nothing, style } from  '../../library'
+import { component, html, property, Component, nothing, style } from  '@a11d/lit'
 import type { MaterialIcon } from '@3mo/icon'
 import type { Flex } from '@3mo/flex'
 
@@ -80,7 +80,7 @@ export class Meta extends Component {
 				<mo-heading typography='subtitle2' part='heading'>${this.heading}</mo-heading>
 				<span>
 					<slot></slot>
-					<mo-label part='label' ?hidden=${this.label === undefined}>${this.label}</mo-label>
+					${!this.label ? nothing : html`<mo-label part='label'>${this.label}</mo-label>`}
 				</span>
 			</mo-flex>
 		`

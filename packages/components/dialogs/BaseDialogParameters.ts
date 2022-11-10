@@ -1,4 +1,4 @@
-import { TemplateResult } from '../../library'
+import { TemplateResult } from '@a11d/lit'
 import { MaterialDialogSize } from '..'
 
 export type BaseDialogParameters = {

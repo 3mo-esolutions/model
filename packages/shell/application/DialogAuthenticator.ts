@@ -1,7 +1,5 @@
-import { html, state, nothing } from '../../library'
-import { DialogComponent } from '../dialog'
-import { LocalStorageEntry } from '../../utilities'
-import { NotificationHost, User } from '..'
+import { html, nothing, state } from '@a11d/lit'
+import { DialogAuthenticator as DialogAuthenticatorBase } from '@a11d/lit-application-authentication'
 import { Localizer, style } from '../..'
 
 Localizer.register(LanguageCode.German, {
@@ -18,100 +16,14 @@ Localizer.register(LanguageCode.German, {
 	'Login': 'Anmelden'
 })
 
-export abstract class DialogAuthenticator extends DialogComponent {
-	static readonly shallRemember = new LocalStorageEntry('MoDeL.Authentication.ShallRemember', false)
-	static readonly authenticatedUser = new LocalStorageEntry<User | undefined>('MoDeL.Authentication.User', undefined)
-	private static readonly password = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Password', undefined)
-	private static readonly username = new LocalStorageEntry<string | undefined>('MoDeL.Authentication.Username', undefined)
+export type User = {
+	id: number
+	name: string
+	email: string
+}
 
-	@state() shallRememberPassword = DialogAuthenticator.shallRemember.value
-	@state() username = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.username.value ?? '' : ''
-	@state() password = DialogAuthenticator.shallRemember.value ? DialogAuthenticator.password.value ?? '' : ''
+export abstract class DialogAuthenticator extends DialogAuthenticatorBase<User> {
 	@state() primaryButtonText = _('Login')
-
-	private preventNextAutomaticAuthentication = false
-
-	protected abstract authenticateProcess(): Promise<User>
-	protected abstract unauthenticateProcess(): Promise<void>
-	protected abstract checkAuthenticationProcess(): Promise<boolean>
-	protected abstract resetPasswordProcess(): Promise<void>
-
-	async isAuthenticated() {
-		const isAuthenticatedServerSide = await this.checkAuthenticationProcess()
-		const isAuthenticatedClientSide = DialogAuthenticator.authenticatedUser.value !== undefined
-		return isAuthenticatedServerSide && isAuthenticatedClientSide
-	}
-
-	async authenticate() {
-		try {
-			const user = await this.authenticateProcess()
-			DialogAuthenticator.authenticatedUser.value = user
-			const isAuthenticated = await this.isAuthenticated()
-			if (isAuthenticated === false) {
-				throw new Error(_('Something went wrong. Try again.'))
-			}
-			NotificationHost.instance.notifySuccess(_('Authenticated successfully'))
-		} catch (error: any) {
-			throw new Error(error.message ?? _('Incorrect Credentials'))
-		}
-	}
-
-	async unauthenticate() {
-		try {
-			await this.unauthenticateProcess()
-		} finally {
-			NotificationHost.instance.notifySuccess(_('Unauthenticated successfully'))
-			DialogAuthenticator.authenticatedUser.value = undefined
-			this.preventNextAutomaticAuthentication = true
-			this.confirm()
-		}
-	}
-
-	async resetPassword() {
-		try {
-			await this.resetPasswordProcess()
-			NotificationHost.instance.notifyInfo(_('Password reset instructions have been sent to your email address'))
-		} catch (error: any) {
-			NotificationHost.instance.notifyError(error.message ?? _('Password could not be reset'))
-			throw error
-		}
-	}
-
-	override async confirm(...args: Parameters<DialogComponent['confirm']>) {
-		const defaultToSuper = async () => {
-			await super.confirm(...args)
-			this.requestApplicationUpdate()
-		}
-
-		if (this.preventNextAutomaticAuthentication === true) {
-			this.preventNextAutomaticAuthentication = false
-			return defaultToSuper()
-		}
-
-		const isAuthenticated = await this.isAuthenticated()
-
-		if (isAuthenticated) {
-			return
-		}
-
-		const shouldHaveRemembered = DialogAuthenticator.shallRemember.value
-
-		if (!shouldHaveRemembered) {
-			return defaultToSuper()
-		}
-
-		try {
-			await this.authenticate()
-			return this.requestApplicationUpdate()
-		} catch (error) {
-			return defaultToSuper()
-		}
-	}
-
-	protected requestApplicationUpdate() {
-		MoDeL.application.requestUpdate()
-		MoDeL.application.pageHost.currentPage?.requestUpdate()
-	}
 
 	protected override get template() {
 		return html`
@@ -132,8 +44,10 @@ export abstract class DialogAuthenticator extends DialogComponent {
 	}
 
 	protected get applicationInfoTemplate() {
-		return !Manifest ? nothing : html`
-			<mo-heading typography='subheading1' ${style({ color: 'var(--mo-color-gray)' })}>${Manifest.name} v${Manifest.version}</mo-heading>
+		return !manifest ? nothing : html`
+			<mo-heading typography='subheading1' ${style({ color: 'var(--mo-color-gray)' })}>
+				${manifest.name} ${!manifest.version ? nothing : html`v${manifest.version}`}
+			</mo-heading>
 		`
 	}
 
@@ -169,14 +83,5 @@ export abstract class DialogAuthenticator extends DialogComponent {
 				</mo-flex>
 			</mo-flex>
 		`
-	}
-
-	protected override async primaryAction() {
-		DialogAuthenticator.shallRemember.value = this.shallRememberPassword
-		if (DialogAuthenticator.shallRemember.value) {
-			DialogAuthenticator.username.value = this.username
-			DialogAuthenticator.password.value = this.password
-		}
-		await this.authenticate()
 	}
 }

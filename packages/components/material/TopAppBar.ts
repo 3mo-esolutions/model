@@ -1,4 +1,5 @@
-import { component, css, ComponentMixin } from '../../library'
+import { component, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { TopAppBar as MwcTopAppBar } from '@material/mwc-top-app-bar'
 
 /**

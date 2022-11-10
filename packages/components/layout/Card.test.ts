@@ -1,4 +1,4 @@
-import { html, render } from '../../library'
+import { html, render } from '@a11d/lit'
 import { Card } from './Card'
 
 describe(Card.name, () => {

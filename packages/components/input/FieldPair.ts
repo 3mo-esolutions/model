@@ -1,4 +1,4 @@
-import { Component, component, html, property } from '../../library'
+import { Component, component, html, property } from '@a11d/lit'
 import { Field } from './Field'
 
 export const enum FieldPairMode {

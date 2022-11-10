@@ -1,4 +1,4 @@
-import { component, css, html, style } from '../../library'
+import { component, css, html, style } from '@a11d/lit'
 import { Section } from './Section'
 
 /**

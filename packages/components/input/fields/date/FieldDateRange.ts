@@ -1,5 +1,5 @@
 
-import { component, property } from '../../../../library'
+import { component, property } from '@a11d/lit'
 import { FormatHelper, DateHelper, ClassInfo, classMap, css, html, state, style } from '../../../..'
 import { FieldDateBase } from './FieldDateBase'
 import { MaterialIcon } from '../../..'

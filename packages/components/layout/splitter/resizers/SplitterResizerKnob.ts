@@ -1,4 +1,4 @@
-import { component, css } from '../../../../library'
+import { component, css } from '@a11d/lit'
 import { SplitterResizer } from '.'
 
 @component('mo-splitter-resizer-knob')

@@ -1,45 +1,26 @@
-import { css, html, property, Component, nothing, query, event, style } from '../../library'
-import { PwaHelper, RootCssInjectorController } from '../../utilities'
-import { DialogReleaseNotes, Drawer, PagePreferences } from '../../components'
+import { css, html, property, nothing, query, style } from '@a11d/lit'
+import { PwaHelper } from '@a11d/lit-application'
+import { Drawer, PagePreferences } from '../../components'
 import { styles } from './styles.css'
-import { ApplicationProviderHelper, PageHost, ThemeHelper, DialogHost, AuthenticationHelper, NotificationHost, deactivateInert } from '..'
+import { ThemeHelper } from '..'
 import { Localizer } from '../../localization'
-
-type View = 'desktop' | 'tablet'
+import { Application as ApplicationBase, deactivateInert } from '@a11d/lit-application'
+import { Authentication } from '@a11d/lit-application-authentication'
 
 Localizer.register(LanguageCode.German, {
 	'User Settings': 'Benutzereinstellungen',
 })
 
-export const application = () => <T extends Application>(ApplicationConstructor: Constructor<T>) => {
-	window.document.body.appendChild(new ApplicationConstructor)
-}
-
-export abstract class Application extends Component {
-	static get rootStyles() {
-		return css`${styles}`
-	}
-
-	@event() readonly viewChange!: EventDispatcher<View>
-
-	@property({ updated: value => document.title = [value, Manifest?.short_name].filter(Boolean).join(' | ') }) pageHeading?: string
+export abstract class Application extends ApplicationBase {
 	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
 	@property({ type: Boolean }) drawerOpen = false
-	@property({ type: Boolean, reflect: true }) topAppBarProminent = false
-	@property({ reflect: true }) view: View = 'desktop'
 
-	@query('mo-page-host') readonly pageHost!: PageHost
-	@query('mo-dialog-host') readonly dialogHost!: DialogHost
-	@query('mo-notification-host') readonly notificationHost!: NotificationHost
 	@query('mo-drawer') readonly drawer!: Drawer
-
-	protected readonly rootCssInjector = new RootCssInjectorController(this, (this.constructor as any).rootStyles)
 
 	constructor() {
 		super()
 		this.switchAttribute('application', true)
-		this.setupViews()
-		PwaHelper.registerServiceWorker()
+		PwaHelper.registerServiceWorker('/ServiceWorker.js')
 		deactivateInert(this.constructor as any)
 	}
 
@@ -49,41 +30,19 @@ export abstract class Application extends Component {
 		}
 	}
 
-	private setupViews() {
-		const handler = (e: MediaQueryListEvent | MediaQueryList) => {
-			const view = e.matches ? 'tablet' : 'desktop'
-			this.view = view
-			this.viewChange.dispatch(view)
-		}
-		const mediaQueryList = window.matchMedia('(max-width: 768px)')
-		handler(mediaQueryList)
-		mediaQueryList.addEventListener('change', handler)
-	}
-
-	override async connectedCallback() {
-		await ApplicationProviderHelper.provideBeforeGlobalAuthenticationProviders()
-		document.title = Manifest?.short_name || ''
-		super.connectedCallback()
-	}
-
-	resetTitle() {
-		document.title = Manifest?.short_name || ''
-	}
-
-	protected override async initialized() {
+	override async connected() {
+		await super.connected()
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
-		await AuthenticationHelper.authenticateGloballyIfAvailable()
-		await Router.initialize()
-		window.dispatchEvent(new Event('MoDeL.initialized'))
-
-		await new DialogReleaseNotes().confirm()
 	}
 
 	static override get styles() {
 		return css`
-			:host {
-				display: flex;
-				font-family: var(--mo-font-family);
+			${styles}
+
+			${super.styles}
+
+			[application] {
+				font-family: var(--mo-font-family) !important;
 				font-size: var(--mo-font-size-default);
 				background-color: var(--mo-color-background);
 				color: var(--mo-color-foreground);
@@ -96,20 +55,12 @@ export abstract class Application extends Component {
 				font-family: Google Sans;
 			}
 
-			:host([isTopAppBarProminent]) #pageHeading {
-				margin-bottom: 9px;
-			}
-
 			slot[name=pageHeadingDetails] {
 				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
-			:host([view=tablet]) mo-application-logo {
-				display: none;
-			}
-
-			:host([view=tablet]) mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
+			[application][data-mobile-navigation] mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
 				display: none;
 			}
 		`
@@ -117,103 +68,92 @@ export abstract class Application extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-top-app-bar dense centerTitle ?prominent=${this.topAppBarProminent}>
-				<mo-flex slot='navigationIcon' direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
-					${this.topAppBarNavigationTemplate}
-				</mo-flex>
-
-				<mo-flex slot='title' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
-					${this.topAppBarHeaderTemplate}
-				</mo-flex>
-
-				<slot slot='actionItems' name='actionItems'>
-					<mo-flex ${style({ height: 'var(--mo-top-app-bar-height)' })} alignItems='center' justifyContent='center'>
-						${this.topAppBarActionItemsTemplate}
-					</mo-flex>
-				</slot>
-
-				<mo-drawer
-					?open=${this.drawerOpen}
-					@MDCDrawer:opened=${() => this.drawerOpen = true}
-					@MDCDrawer:closed=${() => this.drawerOpen = false}
-				>
-					<mo-flex slot='title'>
-						${this.drawerTitleTemplate}
-					</mo-flex>
-
-					<mo-flex ${style({ height: '100%' })}>
-						<mo-navigation-list ${style({ height: '*' })} open root>
-							${this.drawerTemplate}
-						</mo-navigation-list>
-
-						<mo-navigation-list open root>
-							${this.drawerFooterTemplate}
-						</mo-navigation-list>
-					</mo-flex>
-
-					<mo-flex slot='appContent' ${style({ height: '100%' })}>
-						${this.pageHostTemplate}
-					</mo-flex>
-				</mo-drawer>
-			</mo-top-app-bar>
-
-			<mo-dialog-host></mo-dialog-host>
-			<mo-notification-host></mo-notification-host>
+			${super.template}
 			<mo-context-menu-host></mo-context-menu-host>
 			<mo-confetti></mo-confetti>
 		`
 	}
 
-	protected get topAppBarNavigationTemplate() {
+	protected override get bodyTemplate() {
 		return html`
-			${this.menuIconButtonTemplate}
-			${this.logoTemplate}
-			${this.applicationNameTemplate}
+			${this.navbarTemplate}
+			${super.bodyTemplate}
 		`
 	}
 
-	protected get menuIconButtonTemplate() {
+	protected get navbarTemplate() {
 		return html`
-			<mo-icon-button icon='menu' @click=${() => this.drawerOpen = !this.drawerOpen}></mo-icon-button>
+			<mo-flex direction='horizontal' ${style({ background: 'var(--mo-color-accent)' })}>
+				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
+					${this.navbarLeadingTemplate}
+				</mo-flex>
+
+				<mo-flex alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
+					${this.navbarHeadingTemplate}
+				</mo-flex>
+
+				<mo-flex ${style({ height: 'var(--mo-top-app-bar-height)' })} alignItems='center' justifyContent='center'>
+					${this.navbarActionItemsTemplate}
+				</mo-flex>
+			</mo-flex>
 		`
 	}
 
-	protected get logoTemplate() {
+	protected get drawerTemplate() {
+		return html`
+			<mo-drawer
+				?open=${this.drawerOpen}
+				@MDCDrawer:opened=${() => this.drawerOpen = true}
+				@MDCDrawer:closed=${() => this.drawerOpen = false}
+			>
+				<mo-flex slot='title'>
+					${this.drawerTitleTemplate}
+				</mo-flex>
+
+				<mo-flex ${style({ height: '100%' })}>
+					<mo-navigation-list ${style({ height: '*' })} open root>
+						${this.drawerContentTemplate}
+					</mo-navigation-list>
+
+					<mo-navigation-list open root>
+						${this.drawerFooterTemplate}
+					</mo-navigation-list>
+				</mo-flex>
+			</mo-drawer>
+		`
+	}
+
+	protected get navbarLeadingTemplate() {
+		return html`
+			${this.navbarMenuTemplate}
+			${this.navbarLogoTemplate}
+			${this.navbarHeadingTemplate}
+		`
+	}
+
+	protected get navbarMenuTemplate() {
+		return html`
+			<mo-icon-button icon='menu'
+				${style({ fontSize: '20px' })}
+				@click=${() => this.drawerOpen = !this.drawerOpen}
+			></mo-icon-button>
+		`
+	}
+
+	protected get navbarLogoTemplate() {
 		return html`
 			<mo-application-logo ${style({ height: '30px', margin: '0 0 0 var(--mo-thickness-xl)' })}></mo-application-logo>
 		`
 	}
 
-	protected get applicationNameTemplate() {
+	protected get navbarHeadingTemplate() {
 		return html`
-			<span class='applicationTitle'>${Manifest?.short_name}</span>
+			<span class='applicationTitle'>${manifest?.short_name}</span>
 		`
 	}
 
-	protected get topAppBarHeaderTemplate() {
-		return html`
-			<mo-flex id='pageHeading' direction='horizontal'>
-				${this.pageHeadingTemplate}
-			</mo-flex>
-			${this.pageHeadingDetailsTemplate}
-		`
-	}
-
-	protected get pageHeadingTemplate() {
-		return html`
-			<span style='font-size: var(--mo-font-size-l)'>${this.pageHeading}</span>
-			<slot name='pageHeading'></slot>
-		`
-	}
-
-	protected get pageHeadingDetailsTemplate() {
-		return html`
-			<slot name='pageHeadingDetails'></slot>
-		`
-	}
-
-	protected get topAppBarActionItemsTemplate() {
-		return !AuthenticationHelper.hasAuthenticator() ? nothing : html`
+	protected get navbarActionItemsTemplate() {
+		return !Authentication.hasAuthenticator() ? nothing : html`
 			<mo-user-avatar>
 				${this.userAvatarMenuItemsTemplate}
 			</mo-user-avatar>
@@ -228,20 +168,12 @@ export abstract class Application extends Component {
 		`
 	}
 
-	protected get drawerTemplate() {
+	protected get drawerContentTemplate() {
 		return nothing
 	}
 
-	protected get pageHostTemplate() {
-		return html`
-			<mo-page-host ${style({ width: '100%', height: '100%' })}
-				@headingChange=${(e: CustomEvent<string>) => this.pageHeading = e.detail}
-			></mo-page-host>
-		`
-	}
-
 	protected get drawerTitleTemplate() {
-		return this.applicationNameTemplate
+		return this.navbarHeadingTemplate
 	}
 
 	protected get drawerFooterTemplate() {

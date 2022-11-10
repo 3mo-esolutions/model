@@ -1,4 +1,4 @@
-import { component, html, property, style } from '../../../library'
+import { component, html, property, style } from '@a11d/lit'
 import { FormatHelper } from '../../../utilities'
 import { FieldNumber } from './FieldNumber'
 

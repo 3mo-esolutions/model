@@ -1,5 +1,5 @@
-import { html, component, state, style } from '../../../library'
-import { DialogComponent } from '../../../shell'
+import { html, component, state, style } from '@a11d/lit'
+import { DialogComponent } from '@a11d/lit-application'
 import { Localizer } from '../../../localization'
 import { DialogDeletion } from '../..'
 import { ModdableDataGrid, Mode } from '..'

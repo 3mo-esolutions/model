@@ -1,4 +1,4 @@
-import { Component, component, property, html, css, state, event, eventListener, nothing, style } from '../../library'
+import { Component, component, property, html, css, state, event, eventListener, nothing, style } from '@a11d/lit'
 import { ColumnDefinition, DataGrid } from '.'
 
 /** @fires columnUpdate {CustomEvent} */

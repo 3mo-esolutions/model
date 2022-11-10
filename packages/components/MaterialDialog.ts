@@ -1,7 +1,12 @@
-import { component, property, query, render, html, css, renderContainer, nothing, event, PropertyValues, ComponentMixin, state, eventListener } from '../../library'
-import { DialogActionKey, DialogComponent, isDialogActionKey } from '../shell'
+import { component, property, query, render, html, css, nothing, event, PropertyValues, state, eventListener } from '@a11d/lit'
+import { Dialog, DialogActionKey, DialogComponent } from '@a11d/lit-application'
+import { renderContainer, ComponentMixin } from '../../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import type { IconButton } from '.'
+
+function isDialogActionKey(key: string): key is DialogActionKey {
+	return key === DialogActionKey.Primary || key === DialogActionKey.Secondary || key === DialogActionKey.Cancellation
+}
 
 export const enum MaterialDialogSize {
 	Large = 'large',
@@ -23,7 +28,7 @@ export const enum MaterialDialogSize {
  */
 @component('mo-dialog')
 @DialogComponent.dialogElement()
-export class MaterialDialog extends ComponentMixin(MwcDialog) {
+export class MaterialDialog extends ComponentMixin(MwcDialog) implements Dialog {
 	static readonly executingActionAdaptersByComponent = new Map<Constructor<HTMLElement>, (actionElement: HTMLElement, isExecuting: boolean) => void>()
 
 	@event({ bubbles: true, cancelable: true, composed: true }) readonly dialogHeadingChange!: EventDispatcher<string>
@@ -223,6 +228,14 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 		this.secondarySlot.addEventListener('click', () => this.handleAction(DialogActionKey.Secondary))
 	}
 
+	override async disconnected() {
+		const host = await DialogComponent.getHost()
+		const dialogComponents = [...host.children].filter(e => e instanceof DialogComponent)
+		if (dialogComponents.length === 0) {
+			document.body.style.removeProperty('overflow')
+		}
+	}
+
 	protected override updated(props: PropertyValues<this>) {
 		super.updated(props)
 		this.decideFooterVisibility()
@@ -259,8 +272,10 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 
 	private changeCloseBehavior() {
 		const closeBase = this.mdcFoundation.close
-		this.mdcFoundation.close = (action?: string) => {
-			if (MoDeL.application.dialogHost.focusedDialogComponent?.dialogElement === this && isDialogActionKey(action)) {
+		this.mdcFoundation.close = async (action?: string) => {
+			const host = await DialogComponent.getHost()
+			const dialogComponents = [...host.children].filter(e => e instanceof DialogComponent)
+			if (action && dialogComponents.reverse()[0] === this && isDialogActionKey(action)) {
 				closeBase.call(this.mdcFoundation, action)
 				this.handleAction(action)
 			}
@@ -275,7 +290,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) {
 	@renderContainer('#divHeaderOptions')
 	protected get headerOptionsTemplate() {
 		return html`
-			${this.boundToWindow || !this.poppable ? nothing : html`<mo-icon-button icon='launch' hidden @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
+			${this.boundToWindow || !this.poppable ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
 			${this.boundToWindow || this.blocking ? nothing : html`<mo-icon-button icon='close' @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>`}
 		`
 	}

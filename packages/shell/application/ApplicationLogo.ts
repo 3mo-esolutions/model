@@ -1,4 +1,4 @@
-import { Component, component, css, html, ifDefined, property } from '../../library'
+import { Component, component, css, html, ifDefined, property } from '@a11d/lit'
 import { ThemeHelper } from '..'
 
 @component('mo-application-logo')

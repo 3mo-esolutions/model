@@ -1,11 +1,10 @@
-import { html, component, style } from '../../library'
+import { html, component, style } from '@a11d/lit'
 import { FeatureFlagHelper } from '../../utilities'
-import { route, routeHost } from '../../shell'
-import { PagePreferences, PageSettings } from '.'
+import { route } from '@a11d/lit-application'
+import { PageSettings } from '.'
 
 @component('mo-page-preferences-feature-flags')
 @route('/preferences/feature-flags')
-@routeHost(PagePreferences)
 export class PagePreferencesFeatureFlags extends PageSettings {
 	protected override get template() {
 		return html`

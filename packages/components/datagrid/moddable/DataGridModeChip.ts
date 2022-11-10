@@ -1,4 +1,4 @@
-import { html, component, css, property, eventListener, Component, nothing, style } from '../../../library'
+import { html, component, css, property, eventListener, Component, nothing, style } from '@a11d/lit'
 import { DialogAcknowledge, DialogAlert, DialogDeletion } from '../..'
 import { ContextMenuHost } from '../../../shell'
 import { Localizer } from '../../../localization'

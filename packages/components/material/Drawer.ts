@@ -1,5 +1,7 @@
-import { component, property, css, ComponentMixin, PropertyValues } from '../../library'
-import { ClientInfoHelper, LocalStorageEntry } from '../../utilities'
+import { component, css, PropertyValues } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
+import { ClientInfoHelper } from '../../utilities'
+import { LocalStorageEntry } from '@a11d/lit-application'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 // This is defined by MWC and cannot be renamed
@@ -72,13 +74,12 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		]
 	}
 
-	@property({ reflect: true }) override type: DrawerType = 'modal'
+	override readonly type: DrawerType = 'modal'
 
 	constructor() {
 		super()
 		this.hasHeader = !!Array.from(this.children).find(child => child.slot === 'title')
 		this.addEventListener('MDCTopAppBar:nav', () => this.open = !this.open)
-		this.setupType()
 	}
 
 	protected override updated(changedProperties: PropertyValues<this>) {
@@ -96,13 +97,6 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 		const aside = this.renderRoot.querySelector('aside')
 		aside?.classList.remove('mdc-drawer--open')
 		aside?.classList.remove('mdc-drawer--closing')
-	}
-
-	private setupType() {
-		const changeHandler = () => this.type = Drawer.isDocked.value && MoDeL.application.view === 'desktop' ? 'dismissible' : 'modal'
-		Drawer.isDocked.changed.subscribe(() => changeHandler())
-		MoDeL.application.viewChange.subscribe(() => changeHandler())
-		changeHandler()
 	}
 }
 

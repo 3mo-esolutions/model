@@ -1,4 +1,4 @@
-import { component, property, Component, css, state, html, nothing, event, query, ifDefined } from '../../library'
+import { component, property, Component, css, state, html, nothing, event, query, ifDefined } from '@a11d/lit'
 import { FieldNumber, style } from '../..'
 import { ColumnDefinition, DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
@@ -100,15 +100,14 @@ export class DataGridFooter<TData> extends Component {
 				></mo-icon-button>
 
 				<div ${style({ cursor: 'pointer', width: hasUnknownDataLength ? '40px' : '75px', textAlign: 'center' })}>
-					<div ${style({ fontSize: 'var(--mo-font-size-s)' })}
-						?hidden=${this.manualPagination === true}
-						@click=${() => this.manualPagination = hasUnknownDataLength === false}
-					>${pageText}</div>
-
-					<mo-field-number dense ?hidden=${this.manualPagination === false}
-						value=${this.page}
-						@change=${(e: CustomEvent<number>) => this.handleManualPageChange(e.detail)}>
-					</mo-field-number>
+					${this.manualPagination ? html`
+						<mo-field-number dense
+							value=${this.page}
+							@change=${(e: CustomEvent<number>) => this.handleManualPageChange(e.detail)}>
+						</mo-field-number>
+					` : html`
+						<div ${style({ fontSize: 'var(--mo-font-size-s)' })} @click=${() => this.manualPagination = hasUnknownDataLength === false}>${pageText}</div>
+					`}
 				</div>
 
 				<mo-icon-button dense icon='keyboard_arrow_right'
@@ -123,17 +122,15 @@ export class DataGridFooter<TData> extends Component {
 			</mo-flex>
 
 			<div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
-				<div ${style({ fontSize: 'var(--mo-font-size-s)' })}
-					?hidden=${this.manualPageSize === true}
-					@click=${() => this.manualPageSize = true}
-				>${pageSizeText}</div>
-
-				<mo-field-select-data-grid-page-size dense ${style({ width: '90px' })}
-					.dataGrid=${this.dataGrid}
-					?hidden=${this.manualPageSize === false}
-					value=${ifDefined(this.dataGrid.pagination)}
-					@change=${(e: CustomEvent<DataGridPagination>) => this.handlePaginationChange(e.detail)}>
-				</mo-field-select-data-grid-page-size>
+				${!this.manualPageSize ? html`
+					<div ${style({ fontSize: 'var(--mo-font-size-s)' })} @click=${() => this.manualPageSize = true}>${pageSizeText}</div>
+				` : html`
+					<mo-field-select-data-grid-page-size dense ${style({ width: '90px' })}
+						.dataGrid=${this.dataGrid}
+						value=${ifDefined(this.dataGrid.pagination)}
+						@change=${(e: CustomEvent<DataGridPagination>) => this.handlePaginationChange(e.detail)}>
+					</mo-field-select-data-grid-page-size>
+				`}
 			</div>
 		`
 	}

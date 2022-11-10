@@ -1,4 +1,4 @@
-import { component, html, Component, state, query, css } from '../library'
+import { component, html, Component, state, query, css } from '@a11d/lit'
 
 class ConfettiParticle {
 	constructor(

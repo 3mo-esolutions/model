@@ -1,4 +1,4 @@
-import { Component, component, css, html, property, style } from '../../library'
+import { Component, component, css, html, nothing, property, style } from '@a11d/lit'
 import { SlotController } from '../../utilities'
 
 /**
@@ -48,9 +48,8 @@ export class Section extends Component {
 	}
 
 	protected get contentTemplate() {
-		const hasContent = this.slotController.hasAssignedElements('')
-		return html`
-			<mo-grid ?hidden=${!hasContent} ${style({ height: '*' })}>
+		return this.slotController.hasAssignedElements('') ? nothing : html`
+			<mo-grid ${style({ height: '*' })}>
 				<slot></slot>
 			</mo-grid>
 		`

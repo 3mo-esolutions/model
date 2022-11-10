@@ -1,8 +1,9 @@
-import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing, unsafeCSS, style } from '../../library'
-import { MaterialIcon } from '../../components'
-import { nonInertable, NotificationType } from '..'
-import { PeriodicTimer } from '../../utilities'
+import { component, html, css, ComponentMixin, renderContainer, property, eventListener, ifDefined, nothing, unsafeCSS, style } from '@a11d/lit'
+import { MaterialIcon } from '.'
+import { nonInertable, NotificationType } from '../shell'
+import { PeriodicTimer } from '../utilities'
 import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
+import { Notification, NotificationComponent, NotificationHost } from '@a11d/lit-application'
 
 /**
  * @attr stacked
@@ -15,7 +16,8 @@ import { Snackbar as MwcSnackbar } from '@material/mwc-snackbar'
  */
 @component('mo-snackbar')
 @nonInertable()
-export class Snackbar extends ComponentMixin(MwcSnackbar) {
+@NotificationHost.notificationComponent()
+export class Snackbar extends ComponentMixin(MwcSnackbar) implements NotificationComponent {
 	private static readonly defaultDuration = 5_000
 
 	private static readonly defaultTimerPeriodByType = new Map<NotificationType, number>([
@@ -31,6 +33,8 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) {
 		[NotificationType.Warning, 'warning'],
 		[NotificationType.Error, 'error'],
 	])
+
+	notification!: Notification
 
 	static override get styles() {
 		return [

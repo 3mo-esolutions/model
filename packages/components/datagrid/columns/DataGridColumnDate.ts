@@ -1,4 +1,4 @@
-import { component, html, property } from '../../../library'
+import { component, html, property } from '@a11d/lit'
 import { FormatHelper } from '../../../utilities'
 import { DataGridColumn } from '.'
 

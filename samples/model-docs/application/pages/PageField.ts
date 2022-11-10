@@ -1,4 +1,4 @@
-import { component, html, PageComponent, homePage, route } from '@3mo/model'
+import { component, html, PageComponent, homePage, route, style } from '@3mo/model'
 
 @homePage()
 @route('/field')

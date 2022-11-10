@@ -1,4 +1,4 @@
-import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener, style } from '../../../library'
+import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener, style } from '@a11d/lit'
 import { SplitterItem, CSSDirection, SplitterResizerHost } from '../..'
 import { MutationController } from '../../../utilities'
 import type * as CSS from 'csstype'

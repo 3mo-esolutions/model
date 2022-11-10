@@ -1,4 +1,4 @@
-import { component, html, ifDefined, nothing } from '../../../library'
+import { component, html, ifDefined, nothing } from '@a11d/lit'
 import { FormatHelper } from '../../../utilities'
 import { DataGridColumnNumberBase } from '.'
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { LocalStorageEntry } from '../utilities'
+import { LocalStorageEntry } from '@a11d/lit-application'
 import { CardinalPluralizationRulesByLanguage } from './CardinalPluralizationRulesByLanguage'
 
 type Dictionary = Map<string, string | Array<string>>

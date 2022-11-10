@@ -1,4 +1,4 @@
-import { component, Component, css, html } from '../library'
+import { component, Component, css, html } from '@a11d/lit'
 
 @component('mo-line')
 export class SeparatorLine extends Component {

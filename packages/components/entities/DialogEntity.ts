@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { html, PropertyValues, state, TemplateHelper } from '../../library'
-import { DialogComponent, DialogParameters } from '../../shell'
+import { html, PropertyValues, state } from '@a11d/lit'
+import { DialogComponent, DialogParameters } from '@a11d/lit-application'
+import { TemplateHelper } from '../../library'
 import { Entity, EntityId } from '.'
 
 export abstract class DialogEntity<TEntity, T extends Exclude<DialogParameters, void> = Entity> extends DialogComponent<T, TEntity | undefined> {

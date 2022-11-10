@@ -1,5 +1,5 @@
-import { Component, component, event, html, property, query } from '../../library'
-import { NotificationHost } from '../../shell'
+import { Component, component, event, html, property, query } from '@a11d/lit'
+import { NotificationHost } from '@a11d/lit-application'
 
 /**
  * @fires change {CustomEvent<TResult | undefined>}
@@ -36,7 +36,7 @@ export abstract class Upload<TResult> extends Component {
 			this.inputElement.value = ''
 			this.change.dispatch(undefined)
 		} catch (error) {
-			NotificationHost.instance.notifyError('Upload ist fehlgeschlagen. Versuche erneut.')
+			NotificationHost.instance?.notifyError('Upload ist fehlgeschlagen. Versuche erneut.')
 		}
 	}
 

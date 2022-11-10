@@ -1,4 +1,4 @@
-import { component, html } from '../../library'
+import { component, html } from '@a11d/lit'
 import { DialogEntity } from '.'
 
 class Entity { }

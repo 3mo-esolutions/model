@@ -1,5 +1,5 @@
 
-import { ClassInfo, component, property } from '../../../../library'
+import { ClassInfo, component, property } from '@a11d/lit'
 import { FormatHelper, DateHelper, html, classMap } from '../../../..'
 import { CalendarSelectionAdapter } from '../../calendar'
 import { FieldDateBase } from './FieldDateBase'

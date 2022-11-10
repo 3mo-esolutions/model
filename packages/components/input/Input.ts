@@ -1,4 +1,4 @@
-import { Component, property, query, event, PropertyValues } from '../../library'
+import { Component, property, query, event, PropertyValues } from '@a11d/lit'
 
 /**
  * @fires change {CustomEvent<T | undefined>}

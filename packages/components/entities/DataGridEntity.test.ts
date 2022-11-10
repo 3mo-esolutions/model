@@ -1,6 +1,6 @@
-import { html, component, style } from '../../library'
+import { html, component, style } from '@a11d/lit'
 import { PageEntities } from '.'
-import { ContextMenuHost } from '../../shell'
+import { ContextMenuHost } from '@a11d/lit-application'
 
 // TODO: Move to DataGridEntity
 

@@ -1,5 +1,5 @@
 
-import { html, nothing, property, query, style } from '../../../../library'
+import { html, nothing, property, query, style } from '@a11d/lit'
 import { MaterialIcon } from '../../..'
 import { CalendarSelectionAdapter, SelectableCalendar } from '../../calendar'
 import { Field } from '../../Field'
@@ -31,16 +31,17 @@ export abstract class FieldDateBase<T> extends Field<T> {
 					</mo-icon-button>
 				`}
 
-				<mo-menu
-					?hidden=${this.hideDatePicker}
-					?open=${this.open}
-					style='--mdc-theme-surface: var(--mo-color-background)'
-					fixed
-					.anchor=${this as any}
-					corner='BOTTOM_START'
-					@closed=${() => this.open = false}
-					@opened=${() => this.open = true}
-				>${!this.open ? nothing : this.menuContentTemplate}</mo-menu>
+				${this.hideDatePicker ? nothing : html`
+					<mo-menu
+						?open=${this.open}
+						style='--mdc-theme-surface: var(--mo-color-background)'
+						fixed
+						.anchor=${this as any}
+						corner='BOTTOM_START'
+						@closed=${() => this.open = false}
+						@opened=${() => this.open = true}
+					>${!this.open ? nothing : this.menuContentTemplate}</mo-menu>
+				`}
 			</div>
 		`
 	}

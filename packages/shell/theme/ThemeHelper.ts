@@ -1,5 +1,6 @@
-import { css, unsafeCSS } from '../../library'
-import { LocalStorageEntry, Color, RootCssInjector } from '../../utilities'
+import { css, unsafeCSS } from '@a11d/lit'
+import { LocalStorageEntry, RootCssInjector } from '@a11d/lit-application'
+import { Color } from '../../utilities'
 import { Background } from '.'
 
 export class ThemeHelper {

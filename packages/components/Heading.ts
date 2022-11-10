@@ -1,4 +1,4 @@
-import { component, css, Component, html, property } from '../library'
+import { component, css, Component, html, property } from '@a11d/lit'
 
 export const enum HeadingTypography {
 	Heading1 = 'heading1',

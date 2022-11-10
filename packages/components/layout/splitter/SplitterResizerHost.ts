@@ -1,4 +1,4 @@
-import { component, html, Component, css, property, event, query, eventListener } from '../../../library'
+import { component, html, Component, css, property, event, query, eventListener } from '@a11d/lit'
 import { CSSDirection, SplitterResizer } from '../..'
 
 /**

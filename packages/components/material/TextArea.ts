@@ -1,4 +1,5 @@
-import { component, property, event, css, ComponentMixin } from '../../library'
+import { component, property, event, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { TextArea as MwcTextArea } from '@material/mwc-textarea'
 import { MaterialIcon } from '..'
 

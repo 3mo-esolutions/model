@@ -1,5 +1,6 @@
-import { property, Component, component, html, css } from '../library'
-import { LocalStorageEntry, FormatHelper } from '../utilities'
+import { property, Component, component, html, css } from '@a11d/lit'
+import { FormatHelper } from '../utilities'
+import { LocalStorageEntry } from '@a11d/lit-application'
 
 @component('mo-amount')
 export class Amount extends Component {

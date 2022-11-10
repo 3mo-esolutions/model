@@ -1,4 +1,4 @@
-import { Component, property } from '../../../../library'
+import { Component, property } from '@a11d/lit'
 import { CSSDirection } from '../../..'
 
 export abstract class SplitterResizer extends Component {

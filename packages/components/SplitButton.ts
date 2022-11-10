@@ -1,4 +1,4 @@
-import { component, css, Component, html, property } from '../library'
+import { component, css, Component, html, property } from '@a11d/lit'
 
 @component('mo-split-button')
 export class SplitButton extends Component {

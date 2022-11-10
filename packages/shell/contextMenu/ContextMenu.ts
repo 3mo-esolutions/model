@@ -1,7 +1,5 @@
-import { component, PropertyValues } from '../../library'
-// eslint-disable-next-line import/no-internal-modules
+import { component, PropertyValues } from '@a11d/lit'
 import { Menu } from '../../components/material'
-// eslint-disable-next-line import/no-internal-modules
 import { MenuSurface as MwcMenuSurface } from '@material/mwc-menu/mwc-menu-surface'
 
 @component('mo-context-menu')

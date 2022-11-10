@@ -1,4 +1,4 @@
-import { component, Component, css, html, ifDefined, property } from '../../library'
+import { component, Component, css, html, ifDefined, nothing, property } from '@a11d/lit'
 import { Localizer } from '../../localization'
 import { Checkbox, style } from '../..'
 import { ColumnDefinition } from './ColumnDefinition'
@@ -74,20 +74,23 @@ export class DataGridSidePanel<TData> extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex ${style({ height: '100%' })}>
-				<mo-tab-bar
-					value=${ifDefined(this.dataGrid.sidePanelTab)}
-					?hidden=${this.dataGrid.hasToolbar || this.dataGrid.hasFilters === false}
-					preventFirstTabNavigation
-					@navigate=${(e: CustomEvent<DataGridSidePanelTab | undefined>) => this.dataGrid.navigateToSidePanelTab(e.detail ?? DataGridSidePanelTab.Settings)}
-				>
-					<mo-tab icon='filter_list' value=${DataGridSidePanelTab.Filters}></mo-tab>
-					<mo-tab icon='settings' value=${DataGridSidePanelTab.Settings}></mo-tab>
-				</mo-tab-bar>
+				${this.dataGrid.hasToolbar || this.dataGrid.hasFilters === false ? nothing : html`
+					<mo-tab-bar
+						value=${ifDefined(this.dataGrid.sidePanelTab)}
+						preventFirstTabNavigation
+						@navigate=${(e: CustomEvent<DataGridSidePanelTab | undefined>) => this.dataGrid.navigateToSidePanelTab(e.detail ?? DataGridSidePanelTab.Settings)}
+					>
+						<mo-tab icon='filter_list' value=${DataGridSidePanelTab.Filters}></mo-tab>
+						<mo-tab icon='settings' value=${DataGridSidePanelTab.Settings}></mo-tab>
+					</mo-tab-bar>
+				`}
 
-				<mo-flex id='flexHeading' direction='horizontal' alignItems='center' ?hidden=${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true}>
-					<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
-					<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
-				</mo-flex>
+				${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true ? nothing : html`
+					<mo-flex id='flexHeading' direction='horizontal' alignItems='center'>
+						<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
+						<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
+					</mo-flex>
+				`}
 
 				<mo-scroller ${style({ height: '*' })}>
 					${this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? this.filtersTemplate : this.settingsTemplate}

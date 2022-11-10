@@ -1,4 +1,5 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { MaterialIcon } from '..'
 import { MutationController } from '../../utilities'
 import { Tab as MwcTab } from '@material/mwc-tab'

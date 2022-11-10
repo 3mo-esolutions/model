@@ -1,4 +1,5 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { LabelMixin, InputMixin } from '../helpers'
 import { Radio as MwcRadio } from '@material/mwc-radio'
 
