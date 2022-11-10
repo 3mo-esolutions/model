@@ -1,8 +1,10 @@
 import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '@a11d/lit'
-import { NotificationHost } from '@a11d/lit-application'
+import { NotificationHost, LocalStorageEntry } from '@a11d/lit-application'
+import { SlotController } from '@3mo/slot-controller'
+import { observeResize } from '@3mo/resize-observer'
+import { observeMutation } from '@3mo/mutation-observer'
 import { ContextMenuHost } from '../../shell'
-import { observeMutation, SlotController, ExcelHelper, observeResize } from '../../utilities'
-import { LocalStorageEntry } from '@a11d/lit-application'
+import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 

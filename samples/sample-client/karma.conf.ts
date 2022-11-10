@@ -1,9 +1,4 @@
 /* eslint-disable */
 // @ts-nocheck
-const karmaConfig = require('@3mo/model/build/KarmaConfig.ts')
-
-module.exports = config => {
-	karmaConfig.logLevel = config.LOG_ERROR
-	karmaConfig.debugMode = true
-	config.set(karmaConfig)
-}
+const karmaConfig = require('@3mo/model/karma.conf.js')
+module.exports = config => config.set(karmaConfig)

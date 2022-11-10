@@ -1,5 +1,5 @@
 import { component, Component, html, property, nothing, css, style } from '@a11d/lit'
-import { Localizer } from '../../../localization'
+import { Localizer } from '../../localization'
 import { NotificationHost } from '@a11d/lit-application'
 import { ColumnDefinition, DataGridRow } from '.'
 

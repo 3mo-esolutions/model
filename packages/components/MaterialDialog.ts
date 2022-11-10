@@ -1,6 +1,6 @@
 import { component, property, query, render, html, css, nothing, event, PropertyValues, state, eventListener } from '@a11d/lit'
 import { Dialog, DialogActionKey, DialogComponent } from '@a11d/lit-application'
-import { renderContainer, ComponentMixin } from '../../library'
+import { renderContainer, ComponentMixin } from '../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import type { IconButton } from '.'
 

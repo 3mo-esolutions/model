@@ -41,6 +41,7 @@
 		"@3mo/mutation-observer": "^0.0.3",
 		"@3mo/resize-observer": "^0.0.1",
 		"@3mo/scroller": "^0.1.2",
+		"@3mo/slot-controller": "^0.2.0",
 		"@3mo/virtualized-scroller": "^0.1.1",
 		"@a11d/lit": "^0.0.34",
 		"@a11d/lit-application": "^0.0.8",
@@ -74,6 +75,8 @@
 	},
 	"devDependencies": {
 		"@a11d/eslint-config": "*",
+		"@types/copy-webpack-plugin": "^10.1.0",
+		"@types/glob": "^8.0.0",
 		"@typescript-eslint/eslint-plugin": "*",
 		"@typescript-eslint/parser": "*",
 		"concurrently": "*",

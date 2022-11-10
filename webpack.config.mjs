@@ -1,19 +1,16 @@
-/* eslint-disable */
-// @ts-nocheck
-const path = require('path')
-const MoDeLWebpackConfigFactory = require('./build/WebpackConfig.ts')
+import { resolve } from 'path'
+import MoDeLWebpackConfigFactory from './packages/webpack-config/WebpackConfigFactory.mjs'
 
 const config = MoDeLWebpackConfigFactory('test', {
 	entry: './test/TestApplication.ts',
 	mode: 'development',
-	context: path.resolve(__dirname),
 	output: {
 		filename: 'main.js',
-		path: path.resolve(__dirname, 'test-temp'),
+		path: resolve('test-temp'),
 		publicPath: '/'
 	}
 })
 
 config.entry = config.entry.filter(entry => entry.includes('/samples/') === false)
 
-module.exports = () => config
+export default () => config

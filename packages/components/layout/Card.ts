@@ -1,5 +1,5 @@
 import { component, html, property, Component, css, nothing, style } from '@a11d/lit'
-import { SlotController } from '../../utilities'
+import { SlotController } from '@3mo/slot-controller'
 
 /**
  * @slot action - Actions in the header

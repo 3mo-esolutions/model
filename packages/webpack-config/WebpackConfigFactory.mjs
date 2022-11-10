@@ -1,14 +1,11 @@
-/* eslint-disable */
-// @ts-nocheck
-
-const webpack = require('webpack')
-const CopyPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const Global = require('glob')
-const fs = require('fs')
+import webpack from 'webpack'
+import CopyPlugin from 'copy-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin'
+import Global from 'glob'
+import fs from 'fs'
 
 const sharedConfigs = {
 	stats: 'minimal',
@@ -71,7 +68,7 @@ const developmentConfigs = {
 	}
 }
 
-module.exports = (environment, config, plugins = []) => {
+export default (environment, config, plugins = []) => {
 	const getChangelog = () => {
 		try {
 			return fs.readFileSync('CHANGELOG.md', 'utf8')
