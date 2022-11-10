@@ -1,5 +1,4 @@
 import { LitElement, nothing, render } from '@a11d/lit'
-// eslint-disable-next-line import/no-internal-modules
 import { decorateLitElement } from '@a11d/lit/dist/decorateLitElement'
 
 export const customRendersSymbol = Symbol('customRenders')

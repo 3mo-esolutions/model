@@ -1,5 +1,5 @@
-import { DialogComponent, html } from "@3mo/model"
-import { component, style } from "@a11d/lit"
+import { DialogComponent, html } from '@3mo/model'
+import { component, style } from '@a11d/lit'
 
 @component('dialasdadsa-asdasd')
 export class DialogSample extends DialogComponent {

@@ -1,5 +1,0 @@
-import '@3mo/model'
-export * from './MoDeLDocs'
-export * from './helpers'
-export * from './components'
-export * from './pages'
