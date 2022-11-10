@@ -1,5 +1,5 @@
 import { component, html, property, Component, css, styleMap, nothing, queryAll, ifDefined, eventListener, style } from '@a11d/lit'
-import { SplitterItem, CSSDirection, SplitterResizerHost } from '../..'
+import { SplitterItem, SplitterResizerHost, Flex } from '../..'
 import { MutationController } from '@3mo/mutation-observer'
 import type * as CSS from 'csstype'
 
@@ -11,7 +11,7 @@ import type * as CSS from 'csstype'
 export class Splitter extends Component {
 	private static readonly itemSlotPrefix = 'item-'
 
-	@property() direction: CSSDirection = 'vertical'
+	@property() direction: Flex['direction'] = 'vertical'
 	@property() gap?: CSS.Property.Gap<string>
 	@property({ type: Boolean, reflect: true }) resizing = false
 	@property({ type: Object }) resizerTemplate = html`<mo-splitter-resizer-knob></mo-splitter-resizer-knob>`

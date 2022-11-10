@@ -1,5 +1,5 @@
 import { component, html, Component, css, property, event, query, eventListener } from '@a11d/lit'
-import { CSSDirection, SplitterResizer } from '../..'
+import { Flex, SplitterResizer } from '../..'
 
 /**
  * @event resizeStart
@@ -10,7 +10,7 @@ export class SplitterResizerHost extends Component {
 	@event() readonly resizeStart!: EventDispatcher
 	@event() readonly resizeStop!: EventDispatcher
 
-	@property({ reflect: true, updated(this: SplitterResizerHost) { !this.resizerElement ? void 0 : this.resizerElement.hostDirection = this.direction } }) direction?: CSSDirection
+	@property({ reflect: true, updated(this: SplitterResizerHost) { !this.resizerElement ? void 0 : this.resizerElement.hostDirection = this.direction } }) direction?: Flex['direction']
 	@property({ type: Boolean, reflect: true }) resizing = false
 	@property({ type: Boolean, reflect: true }) locked = false
 
