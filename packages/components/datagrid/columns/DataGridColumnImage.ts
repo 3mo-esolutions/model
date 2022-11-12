@@ -1,4 +1,4 @@
-import { component, html, nothing } from '../../../library'
+import { component, html, nothing } from '@a11d/lit'
 import { DataGridColumn } from '.'
 
 @component('mo-data-grid-column-image')

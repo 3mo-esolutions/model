@@ -1,4 +1,4 @@
-import { LocalStorageEntry } from '../../../utilities'
+import { LocalStorageEntry } from '@a11d/lit-application'
 import { FetchableDataGridParametersType, ModdableDataGrid } from '..'
 import { Mode } from './Mode'
 

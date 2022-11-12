@@ -1,10 +1,10 @@
-import { state, html, component, Component, property, css, nothing, style } from '../../library'
-import { AuthenticationHelper } from '..'
-import { DialogAuthenticator } from './DialogAuthenticator'
+import { state, html, component, Component, property, css, nothing, style } from '@a11d/lit'
+import { Authentication } from '@a11d/lit-application-authentication'
+import { DialogAuthenticator, User } from './DialogAuthenticator'
 
 @component('mo-user-avatar')
 export class UserAvatar extends Component {
-	@property({ type: Object }) user = DialogAuthenticator.authenticatedUser.value
+	@property({ type: Object }) user = DialogAuthenticator.authenticatedUserStorage.value as User
 
 	@state() private menuOpen = false
 
@@ -29,7 +29,7 @@ export class UserAvatar extends Component {
 	}
 
 	protected override initialized() {
-		DialogAuthenticator.authenticatedUser.changed.subscribe(user => this.user = user)
+		DialogAuthenticator.authenticatedUserStorage.changed.subscribe(user => this.user = user as User)
 	}
 
 	private get name() {
@@ -60,16 +60,17 @@ export class UserAvatar extends Component {
 
 				<li divider padded role='separator'></li>
 
-				<mo-list-item icon='exit_to_app' disabled style='cursor: pointer; pointer-events: auto;'
-					?hidden=${!AuthenticationHelper.hasAuthenticator() || !this.user}
-					@click=${() => AuthenticationHelper.unauthenticate()}
-				>Sign out</mo-list-item>
+				${!Authentication.hasAuthenticator() || !this.user ? nothing : html`
+					<mo-list-item icon='exit_to_app' disabled style='cursor: pointer; pointer-events: auto;' @click=${() => Authentication.unauthenticate()}>
+						Sign out
+					</mo-list-item>
+				`}
 			</mo-menu>
 		`
 	}
 
 	private get avatarTemplate() {
-		return !DialogAuthenticator.authenticatedUser.value ? nothing : html`
+		return !DialogAuthenticator.authenticatedUserStorage.value ? nothing : html`
 			<mo-list-item graphic='avatar' twoLine nonInteractive>
 				<span>${this.name}</span>
 				<span slot='secondary'>${this.user?.email}</span>
@@ -84,7 +85,7 @@ export class UserAvatar extends Component {
 
 	private get avatarContentTemplate() {
 		return this.user ? this.initials : html`
-			<mo-icon-button icon='account_circle' @click=${() => AuthenticationHelper.authenticateGloballyIfAvailable()}></mo-icon-button>
+			<mo-icon-button icon='account_circle' @click=${() => Authentication.authenticateGloballyIfAvailable()}></mo-icon-button>
 		`
 	}
 }

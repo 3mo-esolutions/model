@@ -1,4 +1,4 @@
-import { component, html, ifDefined } from '../../../library'
+import { component, html, ifDefined } from '@a11d/lit'
 import { DataGridColumn } from '.'
 
 @component('mo-data-grid-column-text')

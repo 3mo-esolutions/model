@@ -1,4 +1,4 @@
-import { component, css } from '../../library'
+import { component, css } from '@a11d/lit'
 import { ContextMenuItem } from '../../shell'
 
 @component('mo-data-grid-primary-context-menu-item')

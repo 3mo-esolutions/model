@@ -1,4 +1,4 @@
-import { property } from '../../../library'
+import { property } from '@a11d/lit'
 import { Field } from '../Field'
 
 export abstract class FieldTextBase extends Field<string> {

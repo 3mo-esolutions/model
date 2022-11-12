@@ -1,4 +1,4 @@
-import { component, css, html, nothing, property, event, style, Component } from '../library'
+import { component, css, html, nothing, property, event, style, Component } from '@a11d/lit'
 import { ButtonType } from '.'
 
 /**

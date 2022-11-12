@@ -1,5 +1,5 @@
-import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '../../library'
-import { SlotController } from '../../utilities'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '@a11d/lit'
+import { SlotController } from '@3mo/slot-controller'
 import { Input } from './Input'
 
 export type FieldInputType =

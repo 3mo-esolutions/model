@@ -1,7 +1,7 @@
-import { component, TemplateResult, html } from '../../library'
-import { LocalStorageEntry } from '../../utilities'
+import { component, TemplateResult, html } from '@a11d/lit'
+import { LocalStorageEntry } from '@a11d/lit-application'
 import { Localizer } from '../../localization'
-import { DialogComponent, NotificationHost } from '../../shell'
+import { DialogComponent, NotificationHost } from '@a11d/lit-application'
 
 Localizer.register(LanguageCode.German, {
 	'Deletion Confirmation': 'Löschbestätigung',
@@ -22,7 +22,7 @@ export class DialogDeletion extends DialogComponent<Parameters> {
 				await this.parameters.deletionAction?.()
 				return
 			} catch (e: any) {
-				NotificationHost.instance.notifyError(e.message)
+				NotificationHost.instance?.notifyError(e.message)
 				throw e
 			}
 		}

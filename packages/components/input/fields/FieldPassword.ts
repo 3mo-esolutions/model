@@ -1,4 +1,4 @@
-import { component, property } from '../../../library'
+import { component, property } from '@a11d/lit'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-password')

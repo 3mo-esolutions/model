@@ -1,4 +1,5 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { Slider as MwcSlider } from '@material/mwc-slider'
 
 /**

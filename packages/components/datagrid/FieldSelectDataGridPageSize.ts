@@ -1,4 +1,4 @@
-import { component, html, property, nothing } from '../../library'
+import { component, html, property, nothing } from '@a11d/lit'
 import { DataGrid, DataGridPagination, FieldFetchableSelect } from '..'
 import { ClientInfoHelper } from '../..'
 

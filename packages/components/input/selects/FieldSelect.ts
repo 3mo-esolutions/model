@@ -1,6 +1,7 @@
-import { html, property, state, css, event, component, PropertyValues, query, style } from '../../../library'
+import { html, property, state, css, event, component, PropertyValues, query, style } from '@a11d/lit'
 import { Option, Menu } from '../..'
 import { Field } from '../Field'
+import { Key } from '@a11d/lit-application'
 
 type PluralizeUnion<T> = Array<T> | T | undefined
 
@@ -141,9 +142,9 @@ export class FieldSelect<T> extends Field<Value> {
 		this.addEventListener('mouseout', () => this.manualClose = false)
 		this.divContainer.addEventListener('click', () => this.open = !this.open)
 		this.addEventListener('keydown', (e: KeyboardEvent) => {
-			const key = e.key as KeyboardKey
-			const openKeys = [KeyboardKey.Enter]
-			const navigationKeys = [KeyboardKey.ArrowDown, KeyboardKey.ArrowUp]
+			const key = e.key as Key
+			const openKeys = [Key.Enter]
+			const navigationKeys = [Key.ArrowDown, Key.ArrowUp]
 
 			if (openKeys.includes(key)) {
 				e.stopImmediatePropagation()

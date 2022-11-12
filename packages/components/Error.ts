@@ -1,4 +1,4 @@
-import { html, component, Component, property, nothing, css, style } from '../../library'
+import { html, component, Component, property, nothing, css, style } from '@a11d/lit'
 import { MaterialIcon } from '.'
 
 @component('mo-error')

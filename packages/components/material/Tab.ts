@@ -1,6 +1,7 @@
-import { component, property, ComponentMixin, css } from '../../library'
+import { component, property, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { MaterialIcon } from '..'
-import { MutationController } from '../../utilities'
+import { MutationController } from '@3mo/mutation-observer'
 import { Tab as MwcTab } from '@material/mwc-tab'
 
 class MwcTabWithCompatibleMinWidth extends MwcTab {

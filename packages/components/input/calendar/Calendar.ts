@@ -1,4 +1,4 @@
-import { Component, css, component, html, state, nothing, property, query, classMap, style } from '../../../library'
+import { Component, css, component, html, state, nothing, property, query, classMap, style } from '@a11d/lit'
 import { Flex } from '../..'
 
 @component('mo-calendar')

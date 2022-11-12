@@ -1,6 +1,6 @@
-import { component, html, state } from '../../../library'
+import { component, html, state } from '@a11d/lit'
 import { LanguageField, Language, Field } from '../..'
-import { DialogComponent } from '../../../shell'
+import { DialogComponent } from '@a11d/lit-application'
 
 @component('mo-dialog-language-field')
 export class DialogLanguageField<TLanguage extends Language, TField extends Field<T | undefined>, T> extends DialogComponent<{ readonly languageField: LanguageField<TLanguage, TField, T> }> {

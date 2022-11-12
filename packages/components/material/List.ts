@@ -1,4 +1,5 @@
-import { component, property, event, ComponentMixin } from '../../library'
+import { component, property, event } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { List as MwcList, MWCListIndex } from '@material/mwc-list'
 
 type ListValue = string | Array<string>

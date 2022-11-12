@@ -1,4 +1,4 @@
-import { LocalStorageEntry } from '.'
+import { LocalStorageEntry } from '@a11d/lit-application'
 
 type FeatureFlagKey = string
 

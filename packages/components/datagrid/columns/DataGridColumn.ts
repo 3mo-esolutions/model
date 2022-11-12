@@ -1,4 +1,4 @@
-import { Component, property, HTMLTemplateResult, AsteriskSyntaxStyleHandler } from '../../../library'
+import { Component, property, HTMLTemplateResult, AsteriskSyntaxStyleHandler } from '@a11d/lit'
 import { ColumnDefinition } from '../ColumnDefinition'
 import { DataGrid } from '../DataGrid'
 

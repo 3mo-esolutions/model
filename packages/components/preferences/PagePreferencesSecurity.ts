@@ -1,11 +1,12 @@
-import { html, component } from '../../library'
+import { html, component, nothing } from '@a11d/lit'
 import { DialogDeletion } from '..'
 import { PagePreferences, PageSettings } from '.'
-import { AuthenticationHelper, DialogAuthenticator, route, routeHost } from '../../shell'
+import { route } from '@a11d/lit-application'
+import { DialogAuthenticator } from '../../shell'
+import { Authentication } from '@a11d/lit-application-authentication'
 
 @component('mo-page-preferences-security')
-@route('/preferences/security')
-@routeHost(PagePreferences)
+@route(PagePreferences, '/preferences/security')
 export class PagePreferencesSecurity extends PageSettings {
 	protected override get template() {
 		return html`
@@ -17,16 +18,13 @@ export class PagePreferencesSecurity extends PageSettings {
 					>Vor dem Löschen bestätigen</mo-list-item-checkbox>
 
 					<mo-list-item-checkbox
-						?selected=${DialogAuthenticator.shallRemember.value}
-						@selectionChange=${(e: CustomEvent<boolean>) => DialogAuthenticator.shallRemember.value = e.detail}
+						?selected=${DialogAuthenticator.shallRememberStorage.value}
+						@selectionChange=${(e: CustomEvent<boolean>) => DialogAuthenticator.shallRememberStorage.value = e.detail}
 					>Passwort merken & eingeloggt bleiben</mo-list-item-checkbox>
 
-					<mo-list-item hidden>2-Faktor Authentifizierung</mo-list-item>
-
-					<mo-list-item
-						?hidden=${!AuthenticationHelper.hasAuthenticator()}
-						@click=${() => AuthenticationHelper['authenticator']?.resetPassword()}
-					>Passwort ändern</mo-list-item>
+					${!Authentication.hasAuthenticator() ? nothing : html`
+						<mo-list-item @click=${() => Authentication['authenticator']?.resetPassword()}>Passwort ändern</mo-list-item>
+					`}
 				</mo-flex>
 			</mo-page>
 		`

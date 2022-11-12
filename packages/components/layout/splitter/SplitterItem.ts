@@ -1,4 +1,4 @@
-import { Component, component, css, html, property } from '../../../library'
+import { Component, component, css, html, property } from '@a11d/lit'
 import { Splitter } from './Splitter'
 
 @component('mo-splitter-item')

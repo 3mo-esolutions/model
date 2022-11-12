@@ -1,4 +1,4 @@
-import { ClassInfo, css, HTMLTemplateResult } from '../../../library'
+import { ClassInfo, css, HTMLTemplateResult } from '@a11d/lit'
 import { SelectableCalendar } from './SelectableCalendar'
 
 export abstract class CalendarSelectionAdapter<T> {

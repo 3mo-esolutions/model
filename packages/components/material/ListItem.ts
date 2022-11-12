@@ -1,4 +1,5 @@
-import { component, css, property, ComponentMixin } from '../../library'
+import { component, css, property } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { ListItemMixin } from '../helpers'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
@@ -40,7 +41,7 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 					pointer-events: auto;
 				}
 			`
-		] as any
+		]
 	}
 
 	constructor() {
@@ -50,6 +51,10 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 				this.selectionChange.dispatch(e.detail.selected)
 			}
 		})
+	}
+
+	protected override initialized() {
+		this.renderRoot.querySelector('.mdc-deprecated-list-item__text')?.setAttribute('part', 'content')
 	}
 }
 

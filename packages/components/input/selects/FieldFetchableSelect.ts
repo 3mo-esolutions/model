@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, property, event, TemplateResult, html, TemplateHelper } from '../../../library'
+import { component, css, property, event, TemplateResult, html } from '@a11d/lit'
+import { TemplateHelper } from '../../../library'
 import { Debouncer, Enqueuer, PropertyValues } from '../../..'
 import { FieldSelect } from './FieldSelect'
 import { Option } from './Option'

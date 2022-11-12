@@ -1,5 +1,6 @@
-import { component, property, ComponentMixin } from '../../library'
+import { component, property } from '@a11d/lit'
 import { Menu as MwcMenu } from '@material/mwc-menu'
+import { ComponentMixin } from '../../library'
 
 /**
  * @attr open

@@ -1,4 +1,4 @@
-import { PropertyValues, query, event } from '../../library'
+import { PropertyValues, query, event } from '@a11d/lit'
 import { LitElement } from 'lit'
 import '@material/mwc-formfield'
 

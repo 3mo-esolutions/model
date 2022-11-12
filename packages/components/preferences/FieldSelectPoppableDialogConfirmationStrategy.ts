@@ -1,5 +1,5 @@
-import { component, html } from '../../library'
-import { DialogComponent, DialogConfirmationStrategy } from '../../shell'
+import { component, html } from '@a11d/lit'
+import { DialogComponent, DialogConfirmationStrategy } from '@a11d/lit-application'
 import { FieldFetchableSelect } from '../input'
 
 @component('mo-field-select-poppable-dialog-confirmation-strategy')

@@ -1,6 +1,6 @@
-import { state, component, html, ifDefined, query } from '../../library'
+import { state, component, html, ifDefined, query } from '@a11d/lit'
 import { FieldText, FieldTextArea } from '..'
-import { DialogComponent } from '../../shell'
+import { DialogComponent } from '@a11d/lit-application'
 import { BaseDialogParameters } from './BaseDialogParameters'
 import { Localizer, style } from '../..'
 

@@ -1,7 +1,8 @@
-import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css, TemplateHelper } from '../../library'
+import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css } from '@a11d/lit'
+import { TemplateHelper } from '../../library'
 import { Corner } from '@material/mwc-menu'
 import { ContextMenu, ListItem } from '../..'
-import { nonInertable } from '..'
+import { nonInertable } from '@a11d/lit-application'
 
 type Coordinates = [x: number, y: number]
 type MouseEventOpenArguments = [mouseEvent: MouseEvent, template: TemplateResult]

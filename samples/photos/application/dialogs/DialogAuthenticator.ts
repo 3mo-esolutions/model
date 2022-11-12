@@ -2,7 +2,7 @@ import { component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/
 
 @component('photos-dialog-authenticator')
 export class DialogAuthenticator extends DialogAuthenticatorBase {
-	protected authenticateProcess() {
+	protected requestAuthentication() {
 		return Promise.resolve({
 			id: 1,
 			name: 'Full Name',
@@ -11,15 +11,15 @@ export class DialogAuthenticator extends DialogAuthenticatorBase {
 		})
 	}
 
-	protected unauthenticateProcess() {
+	protected requestUnauthentication() {
 		return Promise.resolve()
 	}
 
-	protected checkAuthenticationProcess() {
+	protected isAuthenticatedServerSide() {
 		return Promise.resolve(true)
 	}
 
-	protected resetPasswordProcess() {
+	protected requestPasswordReset() {
 		return Promise.reject('Password cannot be reset')
 	}
 }

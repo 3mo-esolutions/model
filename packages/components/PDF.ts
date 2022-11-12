@@ -1,5 +1,5 @@
-import { component, html, Component, nothing, property, css, style } from '../../library'
-import { ClientInfoHelper } from '../../utilities'
+import { component, html, Component, nothing, property, css, style } from '@a11d/lit'
+import { ClientInfoHelper } from '../utilities'
 
 @component('mo-pdf')
 export class PDF extends Component {

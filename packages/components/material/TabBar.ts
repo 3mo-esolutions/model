@@ -1,4 +1,5 @@
-import { component, property, event, ComponentMixin } from '../../library'
+import { component, property, event } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { TabBar as MwcTabBar } from '@material/mwc-tab-bar'
 import { Tab } from '.'
 

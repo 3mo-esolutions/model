@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, event, html, nothing, property, style } from '../../library'
+import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { Localizer } from '../../localization'
 import { Debouncer, Enqueuer } from '../../utilities'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'

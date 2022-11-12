@@ -1,4 +1,4 @@
-import { component, property, css, event } from '../../../library'
+import { component, property, css, event } from '@a11d/lit'
 import { ListItemCheckbox } from '../../material'
 
 @component('mo-option')

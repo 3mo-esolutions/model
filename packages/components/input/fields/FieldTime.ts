@@ -1,4 +1,4 @@
-import { component, html, style } from '../../../library'
+import { component, html, style } from '@a11d/lit'
 import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-time')

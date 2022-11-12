@@ -1,4 +1,4 @@
-import { component, html, event, ifDefined, nothing, property, css, PropertyValues } from '../../library'
+import { component, html, event, ifDefined, nothing, property, css, PropertyValues } from '@a11d/lit'
 import { Input } from '.'
 import { Color } from '../../utilities'
 

@@ -1,4 +1,4 @@
-import { Component, event, html, ifDefined, property, PropertyValues, css, nothing, style } from '../../../library'
+import { Component, event, html, ifDefined, property, PropertyValues, css, nothing, style } from '@a11d/lit'
 import { FieldPairMode, DialogLanguageField, Language, Field } from '../../input'
 
 /** @fires change */

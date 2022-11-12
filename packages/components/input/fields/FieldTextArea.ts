@@ -1,4 +1,4 @@
-import { component } from '../../../library'
+import { component } from '@a11d/lit'
 import { TextArea } from '../..'
 
 /**

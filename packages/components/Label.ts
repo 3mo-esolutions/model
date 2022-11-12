@@ -1,4 +1,4 @@
-import { Component, component, html } from '../../library'
+import { Component, component, html } from '@a11d/lit'
 
 @component('mo-label')
 export class Label extends Component {

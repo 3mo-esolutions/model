@@ -1,6 +1,6 @@
-import { component, event, ComponentMixin, css } from '../../library'
+import { component, event, css } from '@a11d/lit'
+import { ComponentMixin } from '../../library'
 import { ListItemMixin } from '../helpers'
-// eslint-disable-next-line import/no-internal-modules
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
 class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {

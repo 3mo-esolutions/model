@@ -1,6 +1,6 @@
-import { component, Component, html, property, nothing, css, style } from '../../library'
-import { Localizer } from '../../../localization'
-import { NotificationHost } from '../../../shell'
+import { component, Component, html, property, nothing, css, style } from '@a11d/lit'
+import { Localizer } from '../../localization'
+import { NotificationHost } from '@a11d/lit-application'
 import { ColumnDefinition, DataGridRow } from '.'
 
 Localizer.register(LanguageCode.German, {
@@ -117,10 +117,10 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 	private readonly copyIconButtonClick = async (e: MouseEvent) => {
 		e.stopImmediatePropagation()
 		if (!window.isSecureContext) {
-			NotificationHost.instance.notifyAndThrowError(_('Using the clipboard is not allowed in an insecure browser environment'))
+			NotificationHost.instance?.notifyError(_('Using the clipboard is not allowed in an insecure browser environment'))
 		}
 		await navigator.clipboard.writeText(String(this.value))
-		NotificationHost.instance.notifySuccess(_('Copied to clipboard'))
+		NotificationHost.instance?.notifySuccess(_('Copied to clipboard'))
 	}
 }
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { css, html, nothing, property, event, style } from '../../../library'
+import { css, html, nothing, property, event, style } from '@a11d/lit'
+import { LocalStorageEntry } from '@a11d/lit-application'
 import { ContextMenuHost } from '../../../shell'
-import { LocalStorageEntry } from '../../../utilities'
 import { DataGrid, FetchableDataGridParametersType, FetchableDataGrid } from '..'
 import { DialogDataGridMode, Mode, ModeRepository, sortable } from '.'
 
@@ -89,9 +89,11 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	protected override get template() {
 		return html`
-			<mo-flex id='modebarFlex' direction='horizontal' ?hidden=${this.hasModebar === false}>
-				${this.modebarTemplate}
-			</mo-flex>
+			${!this.hasModebar ? nothing : html`
+				<mo-flex id='modebarFlex' direction='horizontal'>
+					${this.modebarTemplate}
+				</mo-flex>
+			`}
 			<mo-card ${style({ height: '100%', '--mo-card-body-padding': '0px' })}>
 				<mo-flex ${style({ height: '100%' })}>
 					${super.template}
@@ -131,10 +133,10 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 				</mo-scroller>
 				<mo-icon-button icon='add' @click=${this.createNewMode}></mo-icon-button>
 			</mo-flex>
-			<mo-icon-button icon='more_vert'
-				?hidden=${this.modesRepository.getArchived().length === 0}
-				@click=${(e: MouseEvent) => ContextMenuHost.open(e, this.archiveMenuTemplate)}
-			></mo-icon-button>
+
+			${this.modesRepository.getArchived().length === 0 ? nothing : html`
+				<mo-icon-button icon='more_vert' @click=${(e: MouseEvent) => ContextMenuHost.open(e, this.archiveMenuTemplate)}></mo-icon-button>
+			`}
 		`
 	}
 
@@ -164,7 +166,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	protected override get toolbarActionsTemplate() {
 		return html`
-			<mo-icon-button icon='visibility' ?hidden=${this.hasModebar} @click=${this.createNewMode}></mo-icon-button>
+			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode}></mo-icon-button>`}
 			${super.toolbarActionsTemplate}
 		`
 	}

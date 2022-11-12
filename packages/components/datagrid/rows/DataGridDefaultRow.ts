@@ -1,4 +1,4 @@
-import { css, component, html } from '../../../library'
+import { css, component, html } from '@a11d/lit'
 import { DataGridRow } from './DataGridRow'
 
 @component('mo-data-grid-default-row')

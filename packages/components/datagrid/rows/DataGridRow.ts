@@ -1,4 +1,4 @@
-import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult, LitElement } from '../../../library'
+import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult, LitElement } from '@a11d/lit'
 import { ContextMenuHost } from '../../../shell'
 import { KeyboardHelper } from '../../../utilities'
 import { ColumnDefinition } from '../ColumnDefinition'
@@ -148,25 +148,24 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	protected abstract get rowTemplate(): HTMLTemplateResult
 
 	protected get detailsExpanderTemplate() {
-		return html`
+		return this.dataGrid.hasDetails === false ? nothing : html`
 			<mo-flex justifyContent='center' alignItems='center' ${style({ width: 'var(--mo-data-grid-column-details-width)' })}
-				?hidden=${this.dataGrid.hasDetails === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
+			${this.hasDetails === false ? nothing : html`
 				<mo-icon-button id='detailsExpanderIconButton' icon='keyboard_arrow_right' ${style({ color: 'var(--mo-color-foreground)' })}
-					?hidden=${this.hasDetails === false}
 					?disabled=${this.dataGrid.hasDataDetail?.(this.data) === false}
 					@click=${() => this.toggleDetails()}
 				></mo-icon-button>
+			`}
 			</mo-flex>
 		`
 	}
 
 	protected get selectionTemplate() {
-		return html`
+		return this.dataGrid.hasSelection === false ? nothing : html`
 			<mo-flex id='selectionContainer' ${style({ width: 'var(--mo-data-grid-column-selection-width)' })} justifyContent='center' alignItems='center'
-				?hidden=${this.dataGrid.hasSelection === false}
 				@click=${(e: Event) => e.stopPropagation()}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
@@ -191,9 +190,8 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	}
 
 	protected get contextMenuIconButtonTemplate() {
-		return html`
+		return this.dataGrid.hasContextMenu === false ? nothing : html`
 			<mo-flex justifyContent='center' alignItems='center'
-				?hidden=${this.dataGrid.hasContextMenu === false}
 				@click=${this.openContextMenu}
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>

@@ -1,4 +1,4 @@
-import { component, css, html, ifDefined, property, style } from '../../library'
+import { component, css, html, ifDefined, property, style } from '@a11d/lit'
 import { FormatHelper } from '../../utilities'
 import { Field } from './Field'
 

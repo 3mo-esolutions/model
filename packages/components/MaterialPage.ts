@@ -1,55 +1,44 @@
-import { component, html, css, property, Component, event } from '../../library'
-import { PageComponent } from '../shell'
+import { component, html, css, property, Component, event, nothing } from '@a11d/lit'
+import { PageComponent } from '@a11d/lit-application'
+import { SlotController } from '@3mo/slot-controller'
 
 /**
  * @slot
- * @slot pageHeading
- * @slot pageHeadingDetails
+ * @slot heading
+ * @slot headingDetails
  */
 @component('mo-page')
 @PageComponent.pageElement()
 export class MaterialPage extends Component {
 	@event({ bubbles: true, composed: true, cancelable: true }) readonly pageHeadingChange!: EventDispatcher<string>
 
-	@property({ updated(this: MaterialPage) { this.pageHeadingChange.dispatch(this.heading) } }) heading = ''
+	@property({ updated(this: MaterialPage, value: string) { this.pageHeadingChange.dispatch(value) } }) heading = ''
 	@property({ type: Boolean, reflect: true }) fullHeight = false
-
-	protected override connected() {
-		this.connectPageElementsToApplicationSlot('pageHeading')
-		const elements = this.connectPageElementsToApplicationSlot('pageHeadingDetails')
-		MoDeL.application.topAppBarProminent = elements.length > 0
-	}
-
-	protected override disconnected() {
-		this.disconnectElementsFromApplicationSlot('pageHeading')
-		this.disconnectElementsFromApplicationSlot('pageHeadingDetails')
-	}
-
-	private connectPageElementsToApplicationSlot(slotName: string) {
-		if (MoDeL.environment === 'test') {
-			return []
-		}
-		const elements = this.querySelectorAll(`[slot=${slotName}]`)
-		this.disconnectElementsFromApplicationSlot(slotName)
-		MoDeL.application.append(...elements)
-		return Array.from(elements)
-	}
-
-	private disconnectElementsFromApplicationSlot(slotName: string) {
-		Array.from(MoDeL.application.querySelectorAll(`[slot=${slotName}]`)).forEach(element => element.remove())
-	}
 
 	static override get styles() {
 		return css`
 			:host {
-				margin: var(--mo-page-margin, var(--mo-thickness-xxl));
 				display: inherit;
 				animation: transitionIn var(--mo-duration-quick);
 			}
 
+			slot[name=heading] {
+				font-size: var(--mo-font-size-l);
+				color: var(--mo-color-accent);
+			}
+
 			:host([fullHeight]) {
-				height: calc(100% - 2 * var(--mo-page-margin, var(--mo-thickness-xxl)));
-				width: calc(100% - 2 * var(--mo-page-margin, var(--mo-thickness-xxl)));
+				box-sizing: border-box;
+				height: 100%;
+				width: 100%;
+			}
+
+			mo-flex[part=header] {
+				min-height: 42px;
+			}
+
+			#container {
+				height: 100%;
 			}
 
 			:host([fullHeight]) ::slotted(*:not([slot])) {
@@ -73,8 +62,32 @@ export class MaterialPage extends Component {
 		`
 	}
 
+	protected override initialized() {
+		this.setAttribute('exportparts', 'header:pageHeader,heading:pageHeading,headingDetails:pageHeadingDetails')
+	}
+
+	private readonly slotController = new SlotController(this)
+
+	private get hasHeading() {
+		return !!this.heading || this.slotController.hasAssignedElements('heading')
+	}
+
+	private get hasHeadingDetails() {
+		return this.slotController.hasAssignedElements('headingDetails')
+	}
+
 	protected override get template() {
-		return html`<slot></slot>`
+		return html`
+			<mo-flex id='container' gap='var(--mo-thickness-xl)'>
+				${!this.hasHeading && !this.hasHeadingDetails ? nothing : html`
+					<mo-flex part='header' direction='horizontal' justifyContent='space-between' alignItems='center'>
+						<slot name='heading' part='heading'>${this.heading}</slot>
+						<slot name='headingDetails' part='headingDetails'></slot>
+					</mo-flex>
+				`}
+				<slot></slot>
+			</mo-flex>
+		`
 	}
 }
 

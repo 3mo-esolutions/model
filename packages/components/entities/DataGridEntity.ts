@@ -1,4 +1,4 @@
-import { component, property, PropertyValues, html, nothing, TemplateResult } from '../../library'
+import { component, property, PropertyValues, html, nothing, TemplateResult } from '@a11d/lit'
 import { FetchableDataGridParametersType, FetchableDataGrid, DialogEntity, Entity } from '..'
 
 type CreateAction = (() => unknown | PromiseLike<unknown>)

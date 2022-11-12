@@ -1,6 +1,10 @@
-import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '../../library'
-import { ContextMenuHost, NotificationHost } from '../../shell'
-import { observeMutation, LocalStorageEntry, SlotController, ExcelHelper, observeResize } from '../../utilities'
+import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '@a11d/lit'
+import { NotificationHost, LocalStorageEntry } from '@a11d/lit-application'
+import { SlotController } from '@3mo/slot-controller'
+import { observeResize } from '@3mo/resize-observer'
+import { observeMutation } from '@3mo/mutation-observer'
+import { ContextMenuHost } from '../../shell'
+import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 
@@ -243,9 +247,9 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		try {
 			const selectors = this.visibleColumns.map(c => c.dataSelector)
 			ExcelHelper.generate(this.data, selectors)
-			NotificationHost.instance.notifyInfo(_('Exporting excel file'))
+			NotificationHost.instance?.notifyInfo(_('Exporting excel file'))
 		} catch (error: any) {
-			NotificationHost.instance.notifyError(error.message)
+			NotificationHost.instance?.notifyError(error.message)
 			throw error
 		}
 	}
@@ -532,7 +536,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				<mo-splitter-item ${style({ position: 'relative' })}>
 					<mo-flex ${style({ width: '*', position: 'relative' })}>
 						<!-- Do not try to cache the content via "cache" directive as it is problematic for virtualized DataGrids -->
-						${this.contentTemplate}
+						${this.dataGridTemplate}
 					</mo-flex>
 				</mo-splitter-item>
 			</mo-splitter>
@@ -557,7 +561,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	protected get contentTemplate() {
-		return !this.data.length ? this.noContentTemplate : this.dataGridTemplate
+		return !this.data.length ? this.noContentTemplate : this.rowsTemplate
 	}
 
 	protected get noContentTemplate() {
@@ -568,7 +572,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		`
 	}
 
-	private get dataGridTemplate() {
+	protected get dataGridTemplate() {
 		this.provideCssColumnsProperties()
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return !this.isSubDataGrid && !this.preventContentScroll ? html`
@@ -576,7 +580,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
 					<mo-grid ${style({ height: '100%' })} rows='auto *'>
 						${this.headerTemplate}
-						${this.rowsTemplate}
+						${this.contentTemplate}
 					</mo-grid>
 				</mo-scroller>
 				${this.footerTemplate}
@@ -584,15 +588,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		` : html`
 			<mo-grid ${style({ height: '*' })} rows='auto * auto'>
 				${this.headerTemplate}
-				${this.rowsTemplate}
+				${this.contentTemplate}
 				${this.footerTemplate}
 			</mo-grid>
 		`
 	}
 
 	protected get headerTemplate() {
-		return html`
-			<mo-data-grid-header .dataGrid=${this as any} ?hidden=${this.headerHidden}></mo-data-grid-header>
+		return this.headerHidden ? nothing : html`
+			<mo-data-grid-header .dataGrid=${this as any}></mo-data-grid-header>
 		`
 	}
 
@@ -638,14 +642,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				<mo-flex id='flexFab' direction='vertical-reversed' gap='var(--mo-thickness-l)'>
 					${this.fabTemplate}
 				</mo-flex>
-				<mo-data-grid-footer
-					.dataGrid=${this as any}
-					?hidden=${this.hasFooter === false}
-					page=${this.page}
-					@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
-				>
-					<slot name='sum' slot='sum'></slot>
-				</mo-data-grid-footer>
+				${this.hasFooter === false ? nothing : html`
+					<mo-data-grid-footer
+						.dataGrid=${this as any}
+						page=${this.page}
+						@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
+					>
+						<slot name='sum' slot='sum'></slot>
+					</mo-data-grid-footer>
+				`}
 			</mo-flex>
 		`
 	}
@@ -672,10 +677,12 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					<div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
 						${_('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</div>
-					<mo-flex id='flexActions' direction='horizontal' ?hidden=${!this.getRowContextMenuTemplate} @click=${this.openContextMenu}>
-						<div ${style({ width: '*' })}>${_('Options')}</div>
-						<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
-					</mo-flex>
+					${!this.getRowContextMenuTemplate ? nothing : html`
+						<mo-flex id='flexActions' direction='horizontal' @click=${this.openContextMenu}>
+							<div ${style({ width: '*' })}>${_('Options')}</div>
+							<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
+						</mo-flex>
+					`}
 					<div ${style({ width: '*' })}></div>
 					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>
 				</mo-flex>
@@ -684,9 +691,8 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	protected get toolbarActionsTemplate() {
-		return html`
+		return !this.hasFilters ? nothing : html`
 			<mo-icon-button icon='filter_list'
-				?hidden=${this.hasFilters === false}
 				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
 			></mo-icon-button>

@@ -1,5 +1,4 @@
 export * from './DateHelper'
-export * from './CSSDirection'
 export * from './LabelMixin'
 export * from './InputMixin'
 export * from './ListItemMixin'

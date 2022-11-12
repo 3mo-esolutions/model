@@ -1,4 +1,4 @@
-import { component, html, property, render } from '../../library'
+import { component, html, property, render } from '@a11d/lit'
 import { FeatureFlagHelper, FeatureFlag } from '../../utilities'
 import { ListItemCheckbox } from '../material'
 

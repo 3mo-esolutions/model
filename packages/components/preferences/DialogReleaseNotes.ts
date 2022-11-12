@@ -1,6 +1,5 @@
-import { component, css, html, state, style } from '../../library'
-import { LocalStorageEntry } from '../../utilities'
-import { DialogComponent } from '../../shell'
+import { component, css, html, state, style } from '@a11d/lit'
+import { LocalStorageEntry, DialogComponent } from '@a11d/lit-application'
 import { Marked } from '@ts-stack/markdown'
 
 @component('mo-dialog-release-notes')
@@ -10,10 +9,10 @@ export class DialogReleaseNotes extends DialogComponent {
 	@state() notes = !this.extractReleaseNotes() ? undefined : Marked.parse(this.extractReleaseNotes()!)
 
 	override confirm(...parameters: Parameters<DialogComponent['confirm']>) {
-		if (!Changelog || !Manifest?.version || DialogReleaseNotes.shownReleaseNoteVersion.value === Manifest.version) {
+		if (!Changelog || !manifest?.version || DialogReleaseNotes.shownReleaseNoteVersion.value === manifest.version) {
 			return Promise.resolve()
 		}
-		DialogReleaseNotes.shownReleaseNoteVersion.value = Manifest.version
+		DialogReleaseNotes.shownReleaseNoteVersion.value = manifest.version
 		return super.confirm(...parameters)
 	}
 
@@ -51,7 +50,7 @@ export class DialogReleaseNotes extends DialogComponent {
 		`
 	}
 
-	private extractReleaseNotes(version = Manifest?.version) {
+	private extractReleaseNotes(version = manifest?.version) {
 		return this.extractVersionChangelog(version)[1]?.trim()
 	}
 
@@ -60,7 +59,7 @@ export class DialogReleaseNotes extends DialogComponent {
 	 * `## [0.3.1](https://www.github.com/3mo-esolutions/ebusiness-client/compare/v0.3.0...v0.3.1) - January 2021`
 	 * will be converted to `January 2021 - v0.3.1`
 	 */
-	private extractVersionHeading(version = Manifest?.version) {
+	private extractVersionHeading(version = manifest?.version) {
 		const versionChangelog = this.extractVersionChangelog(version)
 		const htmlContent = Marked.parse(versionChangelog[0]!.split(versionChangelog[1]!)[0]!)
 		const div = document.createElement('div')
@@ -70,7 +69,7 @@ export class DialogReleaseNotes extends DialogComponent {
 		return versionHeading ?? ''
 	}
 
-	private extractVersionChangelog(version = Manifest?.version) {
+	private extractVersionChangelog(version = manifest?.version) {
 		version = version?.replace(/^v/, '')
 		const regExp = new RegExp(
 			`## v?\\[?${version}[^\\n]*\\n(.*?)(\\n##\\s|\\n### \\[?[0-9]+\\.|($(?![\r\n])))`,
@@ -80,7 +79,7 @@ export class DialogReleaseNotes extends DialogComponent {
 
 		if (!match) {
 			// eslint-disable-next-line no-console
-			console.error(new Error(`Could not find release notes for provided version ${version}`))
+			console.warn(new Error(`Could not find release notes for provided version ${version}`))
 			return ''
 		}
 

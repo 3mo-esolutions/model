@@ -1,4 +1,4 @@
-import { html, component, Component, css, property, eventListener, style } from '../../library'
+import { html, component, Component, css, property, eventListener, style } from '@a11d/lit'
 import { Fab } from '.'
 
 @component('mo-fab-group')
