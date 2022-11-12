@@ -99,7 +99,7 @@ export const styles = css`
 		--mdc-theme-text-primary-on-background: var(--mo-color-foreground) !important;
 	}
 
-	[application][theme=light] {
+	[application][data-theme=light] {
 		color-scheme: light;
 		--mo-color-background-base: 255, 255, 255;
 		--mo-color-foreground-base: 0, 0, 0;
@@ -117,7 +117,7 @@ export const styles = css`
 		--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
 	}
 
-	[application][theme=dark] {
+	[application][data-theme=dark] {
 		color-scheme: dark;
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;

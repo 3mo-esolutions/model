@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from '@a11d/lit'
-import { LocalStorageEntry, RootCssInjector } from '@a11d/lit-application'
+import { Application, LocalStorageEntry, RootCssInjector } from '@a11d/lit-application'
 import { Color } from '../../utilities'
 import { Background } from '.'
 
@@ -8,6 +8,12 @@ export class ThemeHelper {
 		constructor() {
 			super('MoDeL.Theme.Background', Background.System)
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.calculatedValue)
+			Application.addInitializer(application => {
+				application.setAttribute('data-theme', this.calculatedValue)
+				ThemeHelper.background.changed.subscribe(() => {
+					application.setAttribute('data-theme', this.calculatedValue)
+				})
+			})
 		}
 
 		get calculatedValue() {

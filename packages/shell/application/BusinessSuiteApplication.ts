@@ -2,17 +2,15 @@ import { css, html, property, nothing, query, style } from '@a11d/lit'
 import { PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
 import { DialogReleaseNotes, Drawer, PagePreferences } from '../../components'
 import { styles } from './styles.css'
-import { ThemeHelper } from '..'
 import { Localizer } from '../../localization'
-import { Application as ApplicationBase, deactivateInert } from '@a11d/lit-application'
+import { Application, deactivateInert } from '@a11d/lit-application'
 import { Authentication } from '@a11d/lit-application-authentication'
 
 Localizer.register(LanguageCode.German, {
 	'User Settings': 'Benutzereinstellungen',
 })
 
-export abstract class Application extends ApplicationBase {
-	@property({ reflect: true }) theme = ThemeHelper.background.calculatedValue
+export abstract class BusinessSuiteApplication extends Application {
 	@property({ type: Boolean }) drawerOpen = false
 
 	@query('mo-drawer') readonly drawer!: Drawer
@@ -31,7 +29,6 @@ export abstract class Application extends ApplicationBase {
 	}
 
 	override async connected() {
-		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
 		await new DialogReleaseNotes().confirm()
 	}
 
@@ -181,7 +178,7 @@ export abstract class Application extends ApplicationBase {
 declare global {
 	namespace MoDeL {
 		interface Globals {
-			readonly application: Application
+			readonly application: BusinessSuiteApplication
 		}
 	}
 }

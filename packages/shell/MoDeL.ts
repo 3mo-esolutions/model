@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Application } from '..'
+import type { BusinessSuiteApplication } from '..'
 
 declare const environment: string
 
@@ -19,7 +19,7 @@ class MoDeL {
 	}
 
 	static get application() {
-		return window.document.body.querySelector<Application>('[application]')!
+		return window.document.body.querySelector<BusinessSuiteApplication>('[application]')!
 	}
 }
 
