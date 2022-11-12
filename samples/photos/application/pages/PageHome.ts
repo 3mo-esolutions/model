@@ -28,7 +28,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					}
 				</style>
 
-				<mo-tab-bar slot='pageHeadingDetails' value=${this.tab} @navigate=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
+				<mo-tab-bar slot='headingDetails' value=${this.tab} @navigate=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
 					<mo-tab value=${Tab.Card}>Card</mo-tab>
 					<mo-tab value=${Tab.DataGrid}>DataGrid</mo-tab>
 				</mo-tab-bar>
