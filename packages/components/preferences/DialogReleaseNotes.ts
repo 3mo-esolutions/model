@@ -1,5 +1,5 @@
 import { component, css, html, state, style } from '@a11d/lit'
-import { LocalStorageEntry, Application, DialogComponent } from '@a11d/lit-application'
+import { LocalStorageEntry, DialogComponent } from '@a11d/lit-application'
 import { Marked } from '@ts-stack/markdown'
 
 @component('mo-dialog-release-notes')
@@ -86,8 +86,6 @@ export class DialogReleaseNotes extends DialogComponent {
 		return match as RegExpMatchArray
 	}
 }
-
-Application.connectedHooks.add(() => new DialogReleaseNotes().confirm())
 
 globalThis.Changelog = globalThis.Changelog || undefined
 

@@ -1,36 +1,26 @@
-import { html, css, property, nothing, TemplateResult, style } from '@a11d/lit'
-import { PageComponent, RouterController } from '@a11d/lit-application'
+import { html, css, property, TemplateResult, style } from '@a11d/lit'
+import { PageComponent, PageParameters, RouterController } from '@a11d/lit-application'
 
-export abstract class PageSettingsHost extends PageComponent {
+export abstract class PageSettingsHost<T extends PageParameters> extends PageComponent<T> {
 	abstract readonly router: RouterController
 
 	static override get styles() {
 		return css`
-			:host {
-				--mo-page-settings-host-padding: var(--mo-thickness-xl);
+			lit-page-host *::part(pageHeader) {
+				display: none;
 			}
 
-			mo-page-host::part(pageHolder) {
-				padding: var(--mo-page-settings-host-padding) var(--mo-page-settings-host-padding) 0px var(--mo-page-settings-host-padding);
-				height: calc(100% - var(--mo-page-settings-host-padding));
-			}
-
-			--mo-card {
-				--mo-card-body-padding: 0px;
+			lit-page-host {
+				padding: 0 var(--mo-thickness-xl);
 			}
 
 			mo-grid {
 				grid-template-columns: clamp(200px, 30%, 500px) 1fr;
 			}
 
-			#settings {
-				padding: var(--mo-page-settings-host-padding);
-			}
-
 			#contentToolbar {
 				display: none;
 				margin-left: -12px;
-				padding: var(--mo-page-settings-host-padding);
 				padding-bottom: 0px;
 			}
 
@@ -61,7 +51,7 @@ export abstract class PageSettingsHost extends PageComponent {
 	@property({ type: Boolean, reflect: true }) isContentOpen = false
 
 	@property({
-		updated(this: PageSettingsHost) {
+		updated(this: PageSettingsHost<any>) {
 			if (this.contentPageHeading) {
 				this.isContentOpen = true
 			}
@@ -70,7 +60,7 @@ export abstract class PageSettingsHost extends PageComponent {
 
 	protected override get template() {
 		return html`
-			<mo-page heading=${this.heading} fullHeight style='--mo-page-margin: 0px'>
+			<mo-page heading=${this.heading} fullHeight>
 				<mo-grid ${style({ height: '100%' })}>
 					<mo-flex id='settings'>${this.settingsTemplate}</mo-flex>
 					<mo-flex id='content'>${this.contentTemplate}</mo-flex>
@@ -82,12 +72,10 @@ export abstract class PageSettingsHost extends PageComponent {
 	protected get contentTemplate() {
 		return html`
 			<mo-flex gap='var(--mo-thickness-m)' ${style({ height: '*' })}>
-				${this.contentPageHeading === undefined ? nothing : html`
-					${this.contentToolbarTemplate}
-					<lit-page-host ${style({ height: '*' })} @pageHeadingChange=${(e: CustomEvent<string>) => this.contentPageHeading = e.detail}>
-						${this.router.outlet()}
-					</lit-page-host>
-				`}
+				${this.contentToolbarTemplate}
+				<lit-page-host ${style({ height: '*' })} @pageHeadingChange=${(e: CustomEvent<string>) => this.contentPageHeading = e.detail}>
+					${this.router.outlet()}
+				</lit-page-host>
 			</mo-flex>
 		`
 	}
@@ -95,7 +83,7 @@ export abstract class PageSettingsHost extends PageComponent {
 	private get contentToolbarTemplate() {
 		return html`
 			<mo-flex id='contentToolbar' gap='var(--mo-thickness-m)' alignItems='center' direction='horizontal'>
-				<mo-icon-button icon='arrow_back' @click=${() => this.isContentOpen = false}></mo-icon-button>
+				<mo-icon-button icon='arrow_back' @click=${() => new (this.constructor as any)().navigate()}></mo-icon-button>
 				<mo-heading typography='heading4'>${this.contentPageHeading}</mo-heading>
 			</mo-flex>
 		`

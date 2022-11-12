@@ -1,6 +1,6 @@
 import { css, html, property, nothing, query, style } from '@a11d/lit'
-import { PwaHelper } from '@a11d/lit-application'
-import { Drawer, PagePreferences } from '../../components'
+import { PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
+import { DialogReleaseNotes, Drawer, PagePreferences } from '../../components'
 import { styles } from './styles.css'
 import { ThemeHelper } from '..'
 import { Localizer } from '../../localization'
@@ -31,8 +31,8 @@ export abstract class Application extends ApplicationBase {
 	}
 
 	override async connected() {
-		await super.connected()
 		ThemeHelper.background.changed.subscribe(() => this.theme = ThemeHelper.background.calculatedValue)
+		await new DialogReleaseNotes().confirm()
 	}
 
 	static override get styles() {
@@ -49,19 +49,17 @@ export abstract class Application extends ApplicationBase {
 				min-height: 100%;
 			}
 
-			.applicationTitle {
-				margin: 2px 0 0 8px;
-				font-size: 23px;
-				font-family: Google Sans;
-			}
-
-			slot[name=pageHeadingDetails] {
+			slot[name=headingDetails] {
 				--mdc-theme-primary: var(--mo-color-accessible);
 				--mdc-tab-text-label-color-default: rgba(255,255,255,0.5);
 			}
 
 			[application][data-mobile-navigation] mo-flex[slot=navigationIcon] *:not(mo-icon-button[icon=menu]) {
 				display: none;
+			}
+
+			lit-page-host {
+				padding: var(--mo-thickness-xl);
 			}
 		`
 	}
@@ -76,6 +74,7 @@ export abstract class Application extends ApplicationBase {
 
 	protected override get bodyTemplate() {
 		return html`
+			${this.drawerTemplate}
 			${this.navbarTemplate}
 			${super.bodyTemplate}
 		`
@@ -83,43 +82,15 @@ export abstract class Application extends ApplicationBase {
 
 	protected get navbarTemplate() {
 		return html`
-			<mo-flex direction='horizontal' ${style({ background: 'var(--mo-color-accent)' })}>
+			<mo-flex direction='horizontal' ${style({ background: 'var(--mo-color-accent)', paddingLeft: '4px' })}>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
 					${this.navbarLeadingTemplate}
 				</mo-flex>
 
-				<mo-flex alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
-					${this.navbarHeadingTemplate}
-				</mo-flex>
-
 				<mo-flex ${style({ height: 'var(--mo-top-app-bar-height)' })} alignItems='center' justifyContent='center'>
-					${this.navbarActionItemsTemplate}
+					${this.navbarNavigationTemplate}
 				</mo-flex>
 			</mo-flex>
-		`
-	}
-
-	protected get drawerTemplate() {
-		return html`
-			<mo-drawer
-				?open=${this.drawerOpen}
-				@MDCDrawer:opened=${() => this.drawerOpen = true}
-				@MDCDrawer:closed=${() => this.drawerOpen = false}
-			>
-				<mo-flex slot='title'>
-					${this.drawerTitleTemplate}
-				</mo-flex>
-
-				<mo-flex ${style({ height: '100%' })}>
-					<mo-navigation-list ${style({ height: '*' })} open root>
-						${this.drawerContentTemplate}
-					</mo-navigation-list>
-
-					<mo-navigation-list open root>
-						${this.drawerFooterTemplate}
-					</mo-navigation-list>
-				</mo-flex>
-			</mo-drawer>
 		`
 	}
 
@@ -148,11 +119,13 @@ export abstract class Application extends ApplicationBase {
 
 	protected get navbarHeadingTemplate() {
 		return html`
-			<span class='applicationTitle'>${manifest?.short_name}</span>
+			<span ${style({ margin: '2px 0 0 8px', fontSize: '23px', fontFamily: 'Google Sans' })}>
+				${manifest?.short_name}
+			</span>
 		`
 	}
 
-	protected get navbarActionItemsTemplate() {
+	protected get navbarNavigationTemplate() {
 		return !Authentication.hasAuthenticator() ? nothing : html`
 			<mo-user-avatar>
 				${this.userAvatarMenuItemsTemplate}
@@ -160,11 +133,35 @@ export abstract class Application extends ApplicationBase {
 		`
 	}
 
+	protected get drawerTemplate() {
+		return html`
+			<mo-drawer
+				?open=${this.drawerOpen}
+				@MDCDrawer:opened=${() => this.drawerOpen = true}
+				@MDCDrawer:closed=${() => this.drawerOpen = false}
+			>
+				<mo-flex slot='title'>
+					${this.drawerTitleTemplate}
+				</mo-flex>
+
+				<mo-flex ${style({ height: '100%' })}>
+					<mo-list ${style({ height: '*' })}>
+						${this.drawerContentTemplate}
+					</mo-list>
+
+					<mo-list>
+						${this.drawerFooterTemplate}
+					</mo-list>
+				</mo-flex>
+			</mo-drawer>
+		`
+	}
+
 	protected get userAvatarMenuItemsTemplate() {
 		return html`
-			<mo-navigation-list-item icon='manage_accounts' .component=${new PagePreferences}>
-				${_('User Settings')}
-			</mo-navigation-list-item>
+			<mo-navigation-list-item icon='manage_accounts' label=${_('User Settings')}
+				${routerLink({ page: new PagePreferences({}), matchMode: RouteMatchMode.IgnoreParameters })}
+			></mo-navigation-list-item>
 		`
 	}
 

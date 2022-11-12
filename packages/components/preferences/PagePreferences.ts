@@ -1,31 +1,27 @@
 import { html, component, style, nothing } from '@a11d/lit'
 import { DialogReleaseNotes, PagePreferencesFeatureFlags, PagePreferencesSecurity, PagePreferencesUserInterface } from '..'
 import { PageSettingsHost } from '.'
-import { route, RouterController } from '@a11d/lit-application'
+import { route, RouterController, routerLink } from '@a11d/lit-application'
 
-@route('/preferences')
 @component('mo-page-preferences')
-export class PagePreferences extends PageSettingsHost {
-	readonly router = new RouterController(this,
-		[
-			{ path: '/preferences/security', render: () => new PagePreferencesSecurity() },
-			{ path: '/preferences/user-interface', render: () => new PagePreferencesUserInterface() },
-			{ path: '/preferences/feature-flags', render: () => new PagePreferencesFeatureFlags() },
-		]
-	)
+@route('/preferences/:page?')
+export class PagePreferences extends PageSettingsHost<{ readonly page?: string }> {
+	readonly router = new RouterController(this, [], {
+		fallback: {
+			render: () => html``
+		}
+	})
 
-	protected get heading() {
-		return 'Benutzereinstellungen'
-	}
+	protected get heading() { return 'Benutzereinstellungen' }
 
 	protected get settingsTemplate() {
 		return html`
 			<mo-card ${style({ height: '100%', '--mo-card-body-padding': '0px' })}>
 				<mo-flex ${style({ height: '100%' })} gap='var(--mo-thickness-xl)' justifyContent='space-between'>
 					<mo-list activatable>
-						<mo-navigation-list-item icon='security' .component=${new PagePreferencesSecurity}>Sicherheit</mo-navigation-list-item>
-						<mo-navigation-list-item icon='palette' .component=${new PagePreferencesUserInterface}>Design & Aussehen</mo-navigation-list-item>
-						<mo-navigation-list-item icon='fiber_new' .component=${new PagePreferencesFeatureFlags}>Feature-Flags</mo-navigation-list-item>
+						<mo-navigation-list-item icon='palette' ${routerLink(new PagePreferencesUserInterface)}>Design & Aussehen</mo-navigation-list-item>
+						<mo-navigation-list-item icon='security' ${routerLink(new PagePreferencesSecurity)}>Sicherheit</mo-navigation-list-item>
+						<mo-navigation-list-item icon='fiber_new' ${routerLink(new PagePreferencesFeatureFlags)}>Feature-Flags</mo-navigation-list-item>
 					</mo-list>
 
 					${!manifest ? nothing : html`

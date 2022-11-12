@@ -41,7 +41,7 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 					pointer-events: auto;
 				}
 			`
-		] as any
+		]
 	}
 
 	constructor() {
@@ -51,6 +51,10 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 				this.selectionChange.dispatch(e.detail.selected)
 			}
 		})
+	}
+
+	protected override initialized() {
+		this.renderRoot.querySelector('.mdc-deprecated-list-item__text')?.setAttribute('part', 'content')
 	}
 }
 

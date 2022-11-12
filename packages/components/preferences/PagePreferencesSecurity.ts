@@ -1,12 +1,12 @@
 import { html, component, nothing } from '@a11d/lit'
 import { DialogDeletion } from '..'
-import { PageSettings } from '.'
+import { PagePreferences, PageSettings } from '.'
 import { route } from '@a11d/lit-application'
 import { DialogAuthenticator } from '../../shell'
 import { Authentication } from '@a11d/lit-application-authentication'
 
 @component('mo-page-preferences-security')
-@route('/preferences/security')
+@route(PagePreferences, '/preferences/security')
 export class PagePreferencesSecurity extends PageSettings {
 	protected override get template() {
 		return html`

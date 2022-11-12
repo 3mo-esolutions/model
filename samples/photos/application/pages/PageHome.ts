@@ -6,7 +6,7 @@ const enum Tab {
 	DataGrid = 'dataGrid',
 }
 
-@route('/', '/home(/:albumId)')
+@route('/', '/home/:albumId?')
 @component('photos-page-home')
 export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 	@state() private photos = new Array<Photo>()
@@ -60,6 +60,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 			</mo-grid>
 		`
 	}
+
 	private get dataGridTemplate() {
 		return html`
 			<photos-data-grid-photo selectionMode='multiple' selectOnClick multipleDetails

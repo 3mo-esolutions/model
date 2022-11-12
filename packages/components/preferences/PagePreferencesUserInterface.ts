@@ -1,12 +1,12 @@
 import { html, component, css, style } from '@a11d/lit'
 import { Amount, DataGrid, DataGridPagination, Drawer, Slider } from '..'
-import { PageSettings } from '.'
+import { PagePreferences, PageSettings } from '.'
 import { route } from '@a11d/lit-application'
 import { Color } from '../../utilities'
 import { Background, ThemeHelper } from '../../shell'
 
 @component('mo-page-preferences-user-interface')
-@route('/preferences/user-interface', '/preferences/ui')
+@route(PagePreferences, '/preferences/user-interface', '/preferences/ui')
 export class PagePreferencesUserInterface extends PageSettings {
 	private static readonly accentPresetColors = [
 		new Color('rgb(0, 119, 200)'), // 3MO Blue
@@ -93,7 +93,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 	protected override get template() {
 		return html`
 			<mo-page heading='User-Interface'>
-				<mo-flex gap='var(--mo-thickness-l)'>
+				<mo-flex gap='var(--mo-thickness-xxl)'>
 					<mo-section heading='Farbthemen'>
 						<mo-card ${style({ height: '*', alignItems: 'center' })}>
 							<mo-flex direction='horizontal' gap='10px'>
