@@ -1,12 +1,11 @@
-import { component, DialogAuthenticator as DialogAuthenticatorBase } from '@3mo/model'
+import { component, DialogAuthenticator as DialogAuthenticatorBase, User } from '@3mo/model'
 
 @component('photos-dialog-authenticator')
-export class DialogAuthenticator extends DialogAuthenticatorBase {
+export class DialogAuthenticator extends DialogAuthenticatorBase<User> {
 	protected requestAuthentication() {
 		return Promise.resolve({
 			id: 1,
 			name: 'Full Name',
-			company: '3MO',
 			email: 'name@3mo.de',
 		})
 	}

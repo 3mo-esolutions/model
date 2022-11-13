@@ -3,6 +3,7 @@ import { TemplateResult } from '@a11d/lit'
 import { PageComponent, DialogComponent, RouteMatchMode } from '@a11d/lit-application'
 
 export type Navigation = {
+	key?: string
 	label: string | TemplateResult
 	icon?: MaterialIcon
 	hidden?: boolean
