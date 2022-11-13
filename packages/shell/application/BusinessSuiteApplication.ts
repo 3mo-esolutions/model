@@ -155,7 +155,7 @@ export abstract class BusinessSuiteApplication extends Application {
 	protected get userAvatarMenuItemsTemplate() {
 		return html`
 			<mo-navigation-list-item icon='manage_accounts' label=${_('User Settings')}
-				${routerLink({ page: new PagePreferences({}), matchMode: RouteMatchMode.IgnoreParameters })}
+				${routerLink({ page: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters })}
 			></mo-navigation-list-item>
 		`
 	}

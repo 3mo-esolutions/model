@@ -1,8 +1,21 @@
 import { html, css, property, TemplateResult, style } from '@a11d/lit'
 import { PageComponent, PageParameters, RouterController } from '@a11d/lit-application'
+import { Localizer } from '../../localization'
+
+Localizer.register(LanguageCode.German, {
+	'Select a page': 'Wählen Sie eine Seite'
+})
 
 export abstract class PageSettingsHost<T extends PageParameters = void> extends PageComponent<T> {
-	abstract readonly router: RouterController
+	readonly router = new RouterController(this, [], {
+		fallback: {
+			render: () => html`
+				<mo-error icon='touch_app'>
+					${_('Select a page')}
+				</mo-error>
+			`
+		}
+	})
 
 	static override get styles() {
 		return css`
@@ -12,6 +25,10 @@ export abstract class PageSettingsHost<T extends PageParameters = void> extends 
 
 			lit-page-host {
 				padding: 0 var(--mo-thickness-xl);
+			}
+
+			lit-page-host::part(pageHolder) {
+				min-height: 100%;
 			}
 
 			mo-grid {

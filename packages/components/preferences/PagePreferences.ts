@@ -1,17 +1,11 @@
 import { html, component, style, nothing } from '@a11d/lit'
 import { DialogReleaseNotes, PagePreferencesFeatureFlags, PagePreferencesSecurity, PagePreferencesUserInterface } from '..'
 import { PageSettingsHost } from '.'
-import { route, RouterController, routerLink } from '@a11d/lit-application'
+import { route, routerLink } from '@a11d/lit-application'
 
 @component('mo-page-preferences')
 @route('/preferences/:page?')
 export class PagePreferences extends PageSettingsHost {
-	readonly router = new RouterController(this, [], {
-		fallback: {
-			render: () => html``
-		}
-	})
-
 	protected get heading() { return 'Benutzereinstellungen' }
 
 	protected get settingsTemplate() {
