@@ -1,10 +1,10 @@
 import { state, html, component, Component, property, css, nothing, style } from '@a11d/lit'
 import { Authentication } from '@a11d/lit-application-authentication'
-import { DialogAuthenticator, User } from './DialogAuthenticator'
+import { BusinessSuiteDialogAuthenticator, User } from './DialogAuthenticator'
 
 @component('mo-user-avatar')
 export class UserAvatar extends Component {
-	@property({ type: Object }) user = DialogAuthenticator.authenticatedUserStorage.value as User
+	@property({ type: Object }) user = BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value as User
 
 	@state() private menuOpen = false
 
@@ -29,7 +29,7 @@ export class UserAvatar extends Component {
 	}
 
 	protected override initialized() {
-		DialogAuthenticator.authenticatedUserStorage.changed.subscribe(user => this.user = user as User)
+		BusinessSuiteDialogAuthenticator.authenticatedUserStorage.changed.subscribe(user => this.user = user as User)
 	}
 
 	private get name() {
@@ -70,7 +70,7 @@ export class UserAvatar extends Component {
 	}
 
 	private get avatarTemplate() {
-		return !DialogAuthenticator.authenticatedUserStorage.value ? nothing : html`
+		return !BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value ? nothing : html`
 			<mo-list-item graphic='avatar' twoLine nonInteractive>
 				<span>${this.name}</span>
 				<span slot='secondary'>${this.user?.email}</span>

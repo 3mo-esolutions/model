@@ -22,7 +22,7 @@ export type User = {
 	email: string
 }
 
-export abstract class DialogAuthenticator extends DialogAuthenticatorBase<User> {
+export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticatorBase<User> {
 	@state() primaryButtonText = _('Login')
 
 	protected override get template() {
