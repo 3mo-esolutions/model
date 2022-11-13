@@ -1,7 +1,6 @@
 import { component, css, PropertyValues } from '@a11d/lit'
 import { ComponentMixin } from '../../library'
 import { ClientInfoHelper } from '../../utilities'
-import { LocalStorageEntry } from '@a11d/lit-application'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 // This is defined by MWC and cannot be renamed
@@ -24,8 +23,6 @@ type DrawerType =
  */
 @component('mo-drawer')
 export class Drawer extends ComponentMixin(MwcDrawer) {
-	static readonly isDocked = new LocalStorageEntry('MoDeL.Components.Drawer.IsDocked', false)
-
 	static override get styles() {
 		return [
 			...super.styles,

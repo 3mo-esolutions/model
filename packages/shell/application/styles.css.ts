@@ -33,7 +33,6 @@ export const styles = css`
 	[application] {
 		--mo-font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		--mo-border-radius: 4px;
-		--mo-top-app-bar-height: 48px;
 		/* Duration */
 		--mo-duration-instant: 0ms;
 		--mo-duration-super-quick: 100ms;

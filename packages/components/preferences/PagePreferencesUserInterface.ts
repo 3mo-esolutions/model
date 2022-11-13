@@ -1,5 +1,5 @@
 import { html, component, css, style } from '@a11d/lit'
-import { Amount, DataGrid, DataGridPagination, Drawer, Slider } from '..'
+import { Amount, DataGrid, DataGridPagination, Slider } from '..'
 import { PagePreferences, PageSettings } from '.'
 import { route } from '@a11d/lit-application'
 import { Color } from '../../utilities'
@@ -14,7 +14,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 		new Color('rgb(171, 71, 188)'), // Purple
 		new Color('rgb(104, 159, 56)'), // Green
 		new Color('rgb(249, 168, 37)'), // Yellow
-		new Color('rgb(0, 119, 200)', 'rgb(0, 139, 220)', 'rgb(0, 159, 240)'), // Blue Gradienfet
+		new Color('rgb(0, 119, 200)', 'rgb(0, 139, 220)', 'rgb(0, 159, 240)'), // Blue Gradient
 		new Color('rgb(0, 128, 128)', 'rgb(0, 148, 148)', 'rgb(0, 168, 168)'), // Teal Gradient
 		new Color('rgb(171, 71, 188)', 'rgb(191, 91, 208)', 'rgb(211, 111, 228)'), // Purple Gradient
 		new Color('rgb(104, 159, 56)', 'rgb(124, 179, 76)', 'rgb(144, 199, 96)'), // Green Gradient
@@ -113,13 +113,6 @@ export class PagePreferencesUserInterface extends PageSettings {
 								</mo-grid>
 							</mo-flex>
 						</mo-card>
-					</mo-section>
-
-					<mo-section heading='Seitenleiste'>
-						<mo-list-item-checkbox
-							?selected=${Drawer.isDocked.value}
-							@selectionChange=${(e: CustomEvent<boolean>) => Drawer.isDocked.value = e.detail}
-						>Angedockte Seitenleiste</mo-list-item-checkbox>
 					</mo-section>
 
 					<mo-section heading='Beträge'>

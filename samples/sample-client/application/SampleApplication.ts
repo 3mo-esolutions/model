@@ -8,7 +8,7 @@ ApplicationLogo.source = 'data:image/svg+xml;utf8,<svg width="247" height="123" 
 export class Sample extends Application {
 	protected override get drawerContentTemplate() {
 		return html`
-			<mo-list-item icon='home' ${routerLink(new PageHome)}>Home</mo-list-item>
+			<mo-navigation-list-item icon='home' ${routerLink(new PageHome)}>Home</mo-navigation-list-item>
 		`
 	}
 }
