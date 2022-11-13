@@ -5,7 +5,7 @@ import { route, RouterController, routerLink } from '@a11d/lit-application'
 
 @component('mo-page-preferences')
 @route('/preferences/:page?')
-export class PagePreferences extends PageSettingsHost<{ readonly page?: string }> {
+export class PagePreferences extends PageSettingsHost {
 	readonly router = new RouterController(this, [], {
 		fallback: {
 			render: () => html``

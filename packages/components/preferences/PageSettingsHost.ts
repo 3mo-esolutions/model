@@ -1,7 +1,7 @@
 import { html, css, property, TemplateResult, style } from '@a11d/lit'
 import { PageComponent, PageParameters, RouterController } from '@a11d/lit-application'
 
-export abstract class PageSettingsHost<T extends PageParameters> extends PageComponent<T> {
+export abstract class PageSettingsHost<T extends PageParameters = void> extends PageComponent<T> {
 	abstract readonly router: RouterController
 
 	static override get styles() {
