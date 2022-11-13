@@ -134,7 +134,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected getNavigationItemTemplate(navigation: Navigation) {
 		return html`
-			<mo-navigation-item ${!navigation.component ? nothing : routerLink({ page: navigation.component as PageComponent, matchMode: navigation.matchMode })} .navigation=${navigation}>${navigation.label}</mo-navigation-item>
+			<mo-navigation-item ${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: navigation.matchMode })} .navigation=${navigation}>${navigation.label}</mo-navigation-item>
 		`
 	}
 
@@ -155,7 +155,7 @@ export abstract class BusinessSuiteApplication extends Application {
 	protected get userAvatarMenuItemsTemplate() {
 		return html`
 			<mo-navigation-list-item icon='manage_accounts' label=${_('User Settings')}
-				${routerLink({ page: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters })}
+				${routerLink({ component: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters })}
 			></mo-navigation-list-item>
 		`
 	}
@@ -193,7 +193,7 @@ export abstract class BusinessSuiteApplication extends Application {
 			<mo-navigation-list-item
 				icon=${ifDefined(navigation.icon)}
 				label=${navigation.label}
-				${!navigation.component ? nothing : routerLink({ page: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters })}
+				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters })}
 			>
 				${navigation.children?.map(child => this.getNavigationListItemTemplate(child))}
 			</mo-navigation-list-item>

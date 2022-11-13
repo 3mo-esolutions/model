@@ -32,7 +32,7 @@ export class NavigationItem extends Component {
 
 	private get menuTemplate() {
 		const getItemTemplate = (navigation: Navigation): TemplateResult => !navigation.children ? html`
-			<mo-navigation-list-item ${!navigation.component ? nothing : routerLink({ page: navigation.component as PageComponent, matchMode: navigation.matchMode })}>${navigation.label} ${navigation.openInNewPage ? '...' : ''}</mo-navigation-list-item>
+			<mo-navigation-list-item ${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: navigation.matchMode })}>${navigation.label} ${navigation.openInNewPage ? '...' : ''}</mo-navigation-list-item>
 		` : html`
 			<mo-context-menu-item>
 				${navigation.label}
