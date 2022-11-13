@@ -1,5 +1,5 @@
 import { html, component, style, nothing } from '@a11d/lit'
-import { DialogReleaseNotes, PagePreferencesFeatureFlags, PagePreferencesSecurity, PagePreferencesUserInterface } from '..'
+import { DialogReleaseNotes, PagePreferencesSecurity, PagePreferencesUserInterface } from '..'
 import { PageSettingsHost } from '.'
 import { route, routerLink } from '@a11d/lit-application'
 
@@ -12,10 +12,9 @@ export class PagePreferences extends PageSettingsHost {
 		return html`
 			<mo-card ${style({ height: '100%', '--mo-card-body-padding': '0px' })}>
 				<mo-flex ${style({ height: '100%' })} gap='var(--mo-thickness-xl)' justifyContent='space-between'>
-					<mo-list activatable>
+					<mo-list>
 						<mo-navigation-list-item icon='palette' ${routerLink(new PagePreferencesUserInterface)}>Design & Aussehen</mo-navigation-list-item>
 						<mo-navigation-list-item icon='security' ${routerLink(new PagePreferencesSecurity)}>Sicherheit</mo-navigation-list-item>
-						<mo-navigation-list-item icon='fiber_new' ${routerLink(new PagePreferencesFeatureFlags)}>Feature-Flags</mo-navigation-list-item>
 					</mo-list>
 
 					${!manifest ? nothing : html`
