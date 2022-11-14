@@ -1,10 +1,12 @@
-import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, eventListener } from '@a11d/lit'
+import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, query } from '@a11d/lit'
 import { Application, deactivateInert, PageComponent, PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
 import { Authentication } from '@a11d/lit-application-authentication'
 import { DialogReleaseNotes, PagePreferences } from '../../components'
 import { styles } from './styles.css'
 import { Localizer } from '../../localization'
 import { Navigation } from '../navigation'
+import { observeResize } from '@3mo/resize-observer'
+import { observeMutation } from '@3mo/mutation-observer'
 
 Localizer.register(LanguageCode.German, {
 	'User Settings': 'Benutzereinstellungen',
@@ -54,11 +56,7 @@ export abstract class BusinessSuiteApplication extends Application {
 		`
 	}
 
-	@eventListener({ target: window, type: 'resize' })
-	protected handleResize() {
-		const flexNavigation = this.renderRoot.querySelector('#navbarNavigations') as HTMLElement
-		this.mobileNavigation = flexNavigation.clientWidth < flexNavigation.scrollWidth
-	}
+	@query('#navbarNavigations') protected readonly navigationsContainer!: HTMLElement
 
 	protected override get template() {
 		return html`
@@ -83,7 +81,11 @@ export abstract class BusinessSuiteApplication extends Application {
 					${this.navbarLeadingTemplate}
 				</mo-flex>
 
-				<mo-flex id='navbarNavigations' direction='horizontal' alignItems='center' gap='8px' ${style({ flex: '1', overflow: 'hidden' })}>
+				<mo-flex id='navbarNavigations' direction='horizontal' alignItems='center' gap='8px'
+					${style({ flex: '1', overflow: 'hidden' })}
+					${observeResize(() => this.checkNavigationOverflow())}
+					${observeMutation(() => this.checkNavigationOverflow())}
+				>
 					${this.navbarNavigationTemplate}
 				</mo-flex>
 
@@ -92,6 +94,19 @@ export abstract class BusinessSuiteApplication extends Application {
 				</mo-flex>
 			</mo-flex>
 		`
+	}
+
+	private checkNavigationOverflow() {
+		const lastNavigationItem = this.navigationsContainer.style.flexDirection === 'row-reverse'
+			? this.navigationsContainer.firstElementChild
+			: this.navigationsContainer.lastElementChild
+
+		const firstNavigationItem = this.navigationsContainer.style.flexDirection === 'row-reverse'
+			? this.navigationsContainer.lastElementChild
+			: this.navigationsContainer.firstElementChild
+
+		const scrollWidth = (lastNavigationItem?.getBoundingClientRect().right ?? 0) - (firstNavigationItem?.getBoundingClientRect().left ?? 0)
+		this.mobileNavigation = this.navigationsContainer.clientWidth < scrollWidth
 	}
 
 	protected get navbarLeadingTemplate() {

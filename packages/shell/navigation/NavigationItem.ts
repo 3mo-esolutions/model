@@ -77,6 +77,7 @@ export class NavigationItem extends Component {
 					padding: 0 var(--mo-thickness-l);
 					color: var(--mo-color-accessible);
 					cursor: pointer;
+					white-space: nowrap;
 				}
 
 				:host([data-router-selected]) {
