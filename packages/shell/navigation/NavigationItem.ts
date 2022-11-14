@@ -75,7 +75,12 @@ export class NavigationItem extends Component {
 					display: inline-block;
 					border-radius: var(--mo-border-radius);
 					padding: 0 var(--mo-thickness-l);
+					color: var(--mo-color-accessible);
 					cursor: pointer;
+				}
+
+				:host([data-router-selected]) {
+					background-color: rgba(var(--mo-color-background-base), 0.12);
 				}
 
 				:host(:hover) {

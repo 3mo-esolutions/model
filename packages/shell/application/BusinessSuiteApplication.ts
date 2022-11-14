@@ -1,10 +1,9 @@
 import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, eventListener } from '@a11d/lit'
-import { PageComponent, PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
+import { Application, deactivateInert, PageComponent, PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
+import { Authentication } from '@a11d/lit-application-authentication'
 import { DialogReleaseNotes, PagePreferences } from '../../components'
 import { styles } from './styles.css'
 import { Localizer } from '../../localization'
-import { Application, deactivateInert } from '@a11d/lit-application'
-import { Authentication } from '@a11d/lit-application-authentication'
 import { Navigation } from '../navigation'
 
 Localizer.register(LanguageCode.German, {
@@ -192,9 +191,9 @@ export abstract class BusinessSuiteApplication extends Application {
 		return html`
 			<mo-navigation-list-item
 				icon=${ifDefined(navigation.icon)}
-				label=${navigation.label}
 				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters })}
 			>
+				${navigation.label}
 				${navigation.children?.map(child => this.getNavigationListItemTemplate(child))}
 			</mo-navigation-list-item>
 		`

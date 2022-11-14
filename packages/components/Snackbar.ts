@@ -35,7 +35,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 		[NotificationType.Error, 'error'],
 	])
 
-	notification!: Notification
+	@property() notification!: Notification
 
 	static override get styles() {
 		return [
@@ -97,18 +97,15 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 		]
 	}
 
-	@property({ reflect: true }) type?: NotificationType
-	@property({ type: Number }) duration?: number
-
 	private timer?: PeriodicTimer
 
 	override timeoutMs = -1
 
 	@renderContainer('div#icon')
 	protected get iconTemplate() {
-		return !this.type ? nothing : html`
+		return !this.notification.type ? nothing : html`
 			<mo-icon
-				icon=${ifDefined(Snackbar.iconByType.get(this.type))}
+				icon=${ifDefined(Snackbar.iconByType.get(this.notification.type))}
 				${style({ color: 'rgba(var(--mo-snackbar-color-base), 0.75)' })}
 			></mo-icon>
 		`
@@ -118,6 +115,15 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 	protected get dismissIconButtonTemplate() {
 		return html`
 			<mo-icon-button icon='close' ${style({ color: 'var(--mo-color-background)', fontSize: '18px' })}></mo-icon-button>
+		`
+	}
+
+	@renderContainer('slot[name="action"]')
+	protected get actionTemplate() {
+		return html`
+			${this.notification.actions?.map(action => html`
+				<mo-loading-button @click=${() => action.handleClick()}>${action.title}</mo-loading-button>
+			`)}
 		`
 	}
 
@@ -153,8 +159,10 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 	}
 
 	override async show() {
-		const typeDuration = !this.type ? undefined : Snackbar.defaultTimerPeriodByType.get(this.type)
-		const duration = this.duration ?? typeDuration ?? Snackbar.defaultDuration
+		this.labelText = this.notification.message
+		this.setAttribute('type', this.notification.type ?? NotificationType.Info)
+		const typeDuration = !this.notification.type ? undefined : Snackbar.defaultTimerPeriodByType.get(this.notification.type)
+		const duration = typeDuration ?? Snackbar.defaultDuration
 		this.timer = new PeriodicTimer(duration)
 		super.show()
 		await this.timer.waitForNextTick()
