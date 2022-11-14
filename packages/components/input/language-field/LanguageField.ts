@@ -57,9 +57,7 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 
 	protected override update(changedProperties: PropertyValues) {
 		super.update(changedProperties)
-		if (this.selectedLanguage) {
-			this.fieldElement.value = this.value.get(this.selectedLanguage[this.valueKey])
-		}
+		this.updateFieldValue()
 	}
 
 	static override get styles() {
@@ -112,7 +110,13 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 
 	private readonly handleLanguageChange = (e: CustomEvent<TLanguage>) => {
 		this.selectedLanguage = e.detail
-		this.fieldElement.value = this.value.get(this.selectedLanguage[this.valueKey])
+		this.updateFieldValue()
+	}
+
+	protected updateFieldValue() {
+		if (this.selectedLanguage) {
+			this.fieldElement.value = this.value.get(this.selectedLanguage[this.valueKey])
+		}
 	}
 
 	private readonly openDialog = async () => {
