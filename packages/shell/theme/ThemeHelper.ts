@@ -7,12 +7,11 @@ export class ThemeHelper {
 	static readonly background = new class extends LocalStorageEntry<Background> {
 		constructor() {
 			super('MoDeL.Theme.Background', Background.System)
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.value = this.calculatedValue)
-			Application.addInitializer(application => {
-				application.setAttribute('data-theme', this.calculatedValue)
-				ThemeHelper.background.changed.subscribe(() => {
-					application.setAttribute('data-theme', this.calculatedValue)
-				})
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.updateAttributeValue())
+			window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => this.updateAttributeValue())
+			Application.addInitializer(() => {
+				this.updateAttributeValue()
+				ThemeHelper.background.changed.subscribe(() => this.updateAttributeValue())
 			})
 		}
 
@@ -22,6 +21,10 @@ export class ThemeHelper {
 				: window.matchMedia('(prefers-color-scheme: dark)').matches
 					? Background.Dark
 					: Background.Light
+		}
+
+		private updateAttributeValue() {
+			Application.instance?.setAttribute('data-theme', this.calculatedValue)
 		}
 	}
 
