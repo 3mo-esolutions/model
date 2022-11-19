@@ -17,7 +17,9 @@ type ExtractType<T extends string> =
 			? GetMatchedType<Type>
 			: GetMatchedType<''>
 
-type GetMatchedType<T extends string> = T extends keyof LocalizationFormatterTypeMap ? LocalizationFormatterTypeMap[T] : string
+type GetMatchedType<T extends string> = T extends keyof LocalizationFormatterTypeMap
+	? LocalizationFormatterTypeMap[T]
+	: string
 
 interface LocalizationFormatterTypeMap {
 	[Localizer.pluralityIdentityType]: number
@@ -40,6 +42,8 @@ export class Localizer {
 			?? navigator.language.split('-')[0] as LanguageCode | undefined
 			?? LanguageCode.English
 	}
+
+	static set currentLanguage(value) { Localizer.languageCodeStorage.value = value }
 
 	private static readonly languageCodeStorage = new LocalStorageEntry<LanguageCode | undefined>('MoDeL.Localizer.Language', undefined)
 	private static readonly dictionariesByLanguageCode = new Map<LanguageCode, Dictionary>()
