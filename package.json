@@ -42,6 +42,7 @@
 		"@3mo/resize-observer": "x",
 		"@3mo/scroller": "x",
 		"@3mo/slot-controller": "x",
+		"@3mo/switch": "x",
 		"@3mo/virtualized-scroller": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

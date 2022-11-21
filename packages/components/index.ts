@@ -13,6 +13,7 @@ export * from '@3mo/button-group'
 export * from '@3mo/fab'
 export * from '@3mo/checkbox'
 export * from '@3mo/checkbox-group'
+export * from '@3mo/switch'
 
 import './composer'
 
