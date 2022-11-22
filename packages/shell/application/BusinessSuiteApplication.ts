@@ -43,7 +43,7 @@ export abstract class BusinessSuiteApplication extends Application {
 			}
 
 			[application][mobileNavigation] #navbarNavigations {
-				visibility: collapse;
+				visibility: hidden;
 			}
 
 			[application]:not([mobileNavigation]) mo-icon-button[icon=menu] {
