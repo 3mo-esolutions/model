@@ -5,11 +5,14 @@ import { Background } from '.'
 
 export class ThemeHelper {
 	static readonly background = new class extends LocalStorageEntry<Background> {
+		private application?: Application
+
 		constructor() {
 			super('MoDeL.Theme.Background', Background.System)
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.updateAttributeValue())
 			window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => this.updateAttributeValue())
-			Application.addInitializer(() => {
+			Application.addInitializer(application => {
+				this.application = application as Application
 				this.updateAttributeValue()
 				ThemeHelper.background.changed.subscribe(() => this.updateAttributeValue())
 			})
@@ -24,7 +27,7 @@ export class ThemeHelper {
 		}
 
 		private updateAttributeValue() {
-			Application.instance?.setAttribute('data-theme', this.calculatedValue)
+			this.application?.setAttribute('data-theme', this.calculatedValue)
 		}
 	}
 
