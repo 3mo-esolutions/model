@@ -49,10 +49,6 @@ export abstract class BusinessSuiteApplication extends Application {
 			[application]:not([mobileNavigation]) mo-icon-button[icon=menu] {
 				display: none;
 			}
-
-			lit-page-host {
-				padding: var(--mo-thickness-xl);
-			}
 		`
 	}
 
