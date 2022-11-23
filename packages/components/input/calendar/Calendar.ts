@@ -3,7 +3,7 @@ import { Flex } from '../..'
 
 @component('mo-calendar')
 export class Calendar extends Component {
-	private static readonly startingYearDate = new MoDate(1900, 0, 1)
+	private static readonly startingYearDate = new MoDate(1900, 6, 1)
 
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
 
