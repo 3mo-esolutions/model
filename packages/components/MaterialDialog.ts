@@ -152,7 +152,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) implements Dialog 
 				}
 
 				#title {
-					padding-right: 48px;
+					padding-inline-end: 48px;
 				}
 
 				:host([size=large]) #title {
@@ -186,7 +186,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) implements Dialog 
 				#flexHeader {
 					flex-direction: row;
 					position: absolute;
-					right: 8px;
+					inset-inline-end: 8px;
 					top: 13px;
 				}
 

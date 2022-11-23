@@ -31,7 +31,7 @@ export class NavigationListItem extends Component {
 
 			mo-list-item::part(content) {
 				width: 100%;
-				padding-left: calc(var(--mo-navigation-list-item-level, 0) * 35px);
+				padding-inline-start: calc(var(--mo-navigation-list-item-level, 0) * 35px);
 			}
 
 			mo-flex {

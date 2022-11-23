@@ -85,13 +85,15 @@ export class MoDate extends Date {
 
 	//#region Day
 	static get weekDayNames() {
-		return new Array(7)
-			.fill(undefined)
-			.map((_, i) => new Date(1970, 0, i - 2).toLocaleString(Localizer.currentLanguage, { weekday: 'long' }))
+		return new MoDate().weekRange.map(d => d.toLocaleString(Localizer.currentLanguage, { weekday: 'long' }))
 	}
 
 	get day() {
 		return this.getDate()
+	}
+
+	get dayName() {
+		return new Intl.DateTimeFormat(Localizer.currentLanguage, { day: 'numeric' }).format(this)
 	}
 
 	addDay(days: number) {
@@ -191,6 +193,17 @@ export class MoDate extends Date {
 
 	get yearEnd() {
 		return new MoDate(this.year + 1, 0, 1).addDay(-1)
+	}
+
+	get yearNames() {
+		const format = new Intl.DateTimeFormat(Localizer.currentLanguage, { year: 'numeric' })
+		return new Array(12)
+			.fill(undefined)
+			.map((_, i) => format.format(new Date(Date.UTC(this.year, i, 1, 0, 0, 0))))
+	}
+
+	get yearName() {
+		return this.yearNames[this.month]
 	}
 	//#endregion
 }

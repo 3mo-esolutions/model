@@ -72,7 +72,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get navbarTemplate() {
 		return html`
-			<mo-flex direction='horizontal' gap='32px' ${style({ background: 'var(--mo-color-accent)', paddingLeft: '4px', height: '48px' })}>
+			<mo-flex direction='horizontal' gap='32px' ${style({ background: 'var(--mo-color-accent)', paddingInlineStart: '4px', height: '48px' })}>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
 					${this.navbarLeadingTemplate}
 				</mo-flex>

@@ -5,11 +5,11 @@ import { Field } from './Field'
 export const iconButtonFieldIntegration = {
 	styles: css`
 		[data-leading-icon-button], ::slotted([data-leading-icon-button]) {
-			margin-left: -8px;
+			margin-inline-start: -8px;
 		}
 
 		[data-trailing-icon-button], ::slotted([data-trailing-icon-button]) {
-			margin-right: -8px;
+			margin-inline-end: -8px;
 		}
 	`,
 	async slotChangedHandler<T>(this: Field<T>) {

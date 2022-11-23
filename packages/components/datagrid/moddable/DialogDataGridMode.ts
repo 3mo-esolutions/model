@@ -44,7 +44,7 @@ export class DialogDataGridMode extends DialogComponent<{ readonly moddableDataG
 				></mo-field-text>
 
 				<mo-flex slot='footer'>
-					<mo-checkbox ${style({ width: '*',  marginLeft: '-8px' })}
+					<mo-checkbox ${style({ width: '*', marginInlineStart: '-8px' })}
 						label=${_('Archived')}
 						?checked=${this.mode.isArchived}
 						@change=${(e: CustomEvent<CheckboxValue>) => this.mode.isArchived = e.detail === 'checked'}

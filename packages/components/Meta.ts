@@ -43,7 +43,7 @@ export class Meta extends Component {
 				}
 
 				:host([icon]) mo-flex {
-					padding-left: var(--mo-thickness-m)
+					padding-inline-start: var(--mo-thickness-m)
 				}
 
 				:host([direction=vertical]) mo-flex, :host([direction=vertical-reversed]) mo-flex {
@@ -68,7 +68,7 @@ export class Meta extends Component {
 					position: absolute;
 					justify-content: center;
 					align-items: center;
-					right: var(--mo-thickness-xl);
+					inset-inline-end: var(--mo-thickness-xl);
 				}
 			</style>
 

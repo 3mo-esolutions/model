@@ -38,8 +38,8 @@ export class TextArea extends ComponentMixin(MwcTextArea) {
 				}
 
 				.mdc-text-field {
-					border-top-left-radius: var(--mo-field-border-top-left-radius, 4px);
-					border-top-right-radius: var(--mo-field-border-top-right-radius, 4px);
+					border-start-start-radius: var(--mo-field-border-start-start-radius, 4px);
+					border-start-end-radius: var(--mo-field-border-start-end-radius, 4px);
 				}
 			`
 		]

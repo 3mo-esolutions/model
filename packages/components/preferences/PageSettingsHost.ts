@@ -37,7 +37,7 @@ export abstract class PageSettingsHost<T extends PageParameters = void> extends 
 
 			#contentToolbar {
 				display: none;
-				margin-left: -12px;
+				margin-inline-start: -12px;
 				padding-bottom: 0px;
 			}
 

@@ -32,7 +32,7 @@ export class DataGridSidePanel<TData> extends Component {
 			}
 
 			:host(:not([hidden])) {
-				border-left: var(--mo-data-grid-border);
+				border-inline-start: var(--mo-data-grid-border);
 				background: var(--mo-color-transparent-gray-1);
 				opacity: 1;
 			}
@@ -47,7 +47,7 @@ export class DataGridSidePanel<TData> extends Component {
 				border-top: var(--mo-data-grid-border);
 				border-bottom: var(--mo-data-grid-border);
 				height: var(--mo-data-grid-header-height);
-				padding-left: var(--mo-thickness-xl);
+				padding-inline-start: var(--mo-thickness-xl);
 			}
 
 			mo-scroller {
@@ -62,11 +62,11 @@ export class DataGridSidePanel<TData> extends Component {
 			}
 
 			mo-section mo-checkbox {
-				margin-left: -6px;
+				margin-inline-start: -6px;
 			}
 
 			mo-section mo-icon-button {
-				margin-left: -10px;
+				margin-inline-start: -10px;
 			}
 		`
 	}

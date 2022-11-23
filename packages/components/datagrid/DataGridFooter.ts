@@ -1,10 +1,16 @@
 import { component, property, Component, css, state, html, nothing, event, query, ifDefined } from '@a11d/lit'
-import { FieldNumber, style } from '../..'
+import { FieldNumber, Localizer, style } from '../..'
 import { ColumnDefinition, DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
-/**
- * @fires pageChange {CustomEvent<number>}
- */
+Localizer.register(LanguageCode.German, {
+	'${page:number} of ${maxPage:number}': '${page} von ${maxPage}',
+})
+
+Localizer.register(LanguageCode.Farsi, {
+	'${page:number} of ${maxPage:number}': '${page} از ${maxPage}',
+})
+
+/** @fires pageChange {CustomEvent<number>} */
 @component('mo-data-grid-footer')
 export class DataGridFooter<TData> extends Component {
 	@event() readonly pageChange!: EventDispatcher<number>
@@ -72,7 +78,7 @@ export class DataGridFooter<TData> extends Component {
 					${this.paginationTemplate}
 				</mo-flex>
 
-				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' wrap='wrap-reverse' ${style({ textAlign: 'right', paddingRight: 'var(--mo-data-grid-footer-trailing-padding)' })}>
+				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' wrap='wrap-reverse' ${style({ textAlign: 'right', paddingInlineEnd: 'var(--mo-data-grid-footer-trailing-padding)' })}>
 					${this.dataGrid.columns.map(column => this.getSumTemplate(column))}
 					<slot name='sum'></slot>
 				</mo-flex>
@@ -82,7 +88,7 @@ export class DataGridFooter<TData> extends Component {
 
 	private get paginationTemplate() {
 		const hasUnknownDataLength = this.dataGrid.maxPage === undefined
-		const pageText = hasUnknownDataLength ? this.page : `${this.page} von ${this.dataGrid.maxPage}`
+		const pageText = hasUnknownDataLength ? this.page : _('${page:number} of ${maxPage:number}', { page: this.page, maxPage: this.dataGrid.maxPage ?? 0 })
 		const from = (this.page - 1) * this.dataGrid.pageSize + 1
 		const pageSizeText = hasUnknownDataLength
 			? `${from}-${from + this.dataGrid.renderData.length - 1}`
@@ -94,7 +100,7 @@ export class DataGridFooter<TData> extends Component {
 					@click=${() => this.setPage(1)}
 				></mo-icon-button>
 
-				<mo-icon-button dense icon='keyboard_arrow_left'
+				<mo-icon-button dense icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_right' : 'keyboard_arrow_left'}
 					?disabled=${this.page === 1}
 					@click=${() => this.setPage(this.page - 1)}
 				></mo-icon-button>
@@ -110,7 +116,7 @@ export class DataGridFooter<TData> extends Component {
 					`}
 				</div>
 
-				<mo-icon-button dense icon='keyboard_arrow_right'
+				<mo-icon-button dense icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_right' : 'keyboard_arrow_left'}
 					?disabled=${!this.dataGrid.hasNextPage}
 					@click=${() => this.setPage(this.page + 1)}
 				></mo-icon-button>
@@ -121,7 +127,7 @@ export class DataGridFooter<TData> extends Component {
 				></mo-icon-button>
 			</mo-flex>
 
-			<div ${style({ color: 'var(--mo-color-gray)', marginLeft: 'var(--mo-thickness-l)' })}>
+			<div ${style({ color: 'var(--mo-color-gray)', marginInlineStart: 'var(--mo-thickness-l)' })}>
 				${!this.manualPageSize ? html`
 					<div ${style({ fontSize: 'var(--mo-font-size-s)' })} @click=${() => this.manualPageSize = true}>${pageSizeText}</div>
 				` : html`

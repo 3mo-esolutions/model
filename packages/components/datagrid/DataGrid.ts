@@ -452,10 +452,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			#flexSelectionToolbar {
 				background: var(--mo-color-surface);
 				position: absolute;
-				top: 0px;
-				left: 0px;
-				right: 0px;
-				bottom: 0px;
+				inset: 0px;
 				width: 100%;
 				height: 100%;
 				z-index: 1;
@@ -486,7 +483,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			#flexFab {
 				position: absolute;
 				top: -28px;
-				right: 16px;
+				inset-inline-end: 16px;
 				transition: var(--mo-data-grid-fab-transition, var(--mo-duration-quick));
 			}
 

@@ -47,7 +47,7 @@ class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRan
 			<mo-flex
 				class=${classMap(classes)}
 				@click=${() => this.handleClick(day)}
-			>${day.day}</mo-flex>
+			>${day.dayName}</mo-flex>
 		`
 	}
 

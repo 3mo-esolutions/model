@@ -5,7 +5,7 @@ export type ColumnDefinition<TData, TValue = unknown> = {
 	title?: string
 	dataSelector: KeyPathOf<TData>
 	width?: string
-	alignment?: 'left' | 'center' | 'right'
+	alignment?: 'start' | 'center' | 'end'
 	hidden?: boolean
 	sortable?: boolean
 	editable?: boolean

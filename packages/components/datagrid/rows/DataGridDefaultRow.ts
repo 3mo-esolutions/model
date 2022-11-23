@@ -39,7 +39,7 @@ export class DataGridDefaultRow<TData, TDetailsElement extends Element | undefin
 					content: '';
 					width: var(--mo-data-grid-row-tree-line-width, 8px);
 					border-top: 2px solid var(--mo-color-gray);
-					margin-left: calc(var(--mo-details-data-grid-left-margin) * -1);
+					margin-inline-start: calc(var(--mo-details-data-grid-left-margin) * -1);
 					position: absolute;
 					top: calc(50% - 1px);
 					height: 0px;

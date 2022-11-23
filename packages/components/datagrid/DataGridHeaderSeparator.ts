@@ -23,7 +23,7 @@ export class DataGridHeaderSeparator extends Component {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				left: calc(var(--mo-data-grid-columns-gap) * -1);
+				inset-inline-start: calc(var(--mo-data-grid-columns-gap) * -1);
 				width: var(--mo-data-grid-columns-gap);
 				height: 100%;
 				cursor: col-resize;
@@ -62,7 +62,7 @@ export class DataGridHeaderSeparator extends Component {
 			</div>
 
 			${this.isResizing === false ? nothing : html`
-				<div class='resizerOverlay' ${style({ marginLeft: `${this.delta}px` })}></div>
+				<div class='resizerOverlay' ${style({ marginInlineStart: `${this.delta}px` })}></div>
 			`}
 		`
 	}

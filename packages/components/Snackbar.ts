@@ -74,7 +74,7 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 				}
 
 				.mdc-snackbar__label {
-					padding-left: 8px;
+					padding-inline-start: 8px;
 					color: rgba(var(--mo-color-background-base), 0.87)
 				}
 
@@ -83,14 +83,14 @@ export class Snackbar extends ComponentMixin(MwcSnackbar) implements Notificatio
 					height: 100%;
 					align-items: center;
 					justify-content: center;
-					padding-left: 8px;
+					padding-inline-start: 8px;
 				}
 
 				div#progress {
 					position: absolute;
 					bottom: 0;
-					left: 0;
-					right: 0px;
+					inset-inline-start: 0;
+					inset-inline-end: 0px;
 					width: 100%;
 				}
 			`

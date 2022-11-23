@@ -35,12 +35,12 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 				display: grid;
 			}
 
-			:host([alignment=right]) {
-				text-align: right;
+			:host([alignment=end]) {
+				text-align: end;
 			}
 
-			:host([alignment=left]) {
-				text-align: left;
+			:host([alignment=start]) {
+				text-align: start
 			}
 
 			:host([alignment=center]) {
@@ -70,11 +70,11 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 			}
 
 			:host([alignment=right]:not([editing]):hover) {
-				padding-left: 30px;
+				padding-inline-start: 30px;
 			}
 
 			:host(:not([alignment=right]):not([editing]):hover) {
-				padding-right: 30px;
+				padding-inline-end: 30px;
 			}
 
 			:host > :first-child {
@@ -97,7 +97,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 		this.title = this.tooltip
 		const contentTemplate = this.column.getContentTemplate?.(this.value, this.data) ?? this.value
 		const editContentTemplate = this.column.getEditContentTemplate?.(this.value, this.data)
-		this.setAttribute('alignment', this.column.alignment || 'left')
+		this.setAttribute('alignment', this.column.alignment || 'start')
 		return this.column.editable && this.editing && editContentTemplate ? editContentTemplate : html`
 			${contentTemplate}
 			${this.copyIconButtonTemplate}
@@ -108,7 +108,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 		return !window.isSecureContext ? nothing : html`
 			<mo-icon-button id='copyIconButton' icon='content_copy' dense
 				title=${`${this.column.heading} kopieren`}
-				${style({ right: this.column.alignment === 'right' ? 'unset' : '4px', left: this.column.alignment !== 'right' ? 'unset' : '4px' })}
+				${style({ right: this.column.alignment === 'end' ? 'unset' : '4px', insetInlineStart: this.column.alignment !== 'end' ? 'unset' : '4px' })}
 				@click=${this.copyIconButtonClick}
 			></mo-icon-button>
 		`

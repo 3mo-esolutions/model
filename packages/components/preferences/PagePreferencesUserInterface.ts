@@ -35,7 +35,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 				position: absolute;
 				bottom: 0px;
 				top: 0px;
-				right: 16px;
+				inset-inline-end: 16px;
 				height: var(--height, 32px);
 				width: 100px;
 				bottom: calc(calc(48px - var(--height, 32px)) / 2);
@@ -176,7 +176,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 				>
 					<mo-flex gap='var(--mo-thickness-l)'>
 						<div ${style({ position: 'relative', opacity: 1, background: 'var(--mo-color-accent)', height: '20px', width: '100%' })}>
-							<div ${style({ left: '30%', top: '8px', position: 'absolute', background: 'var(--mo-color-accessible)', height: '4px', width: '40%', opacity: '1' })}></div>
+							<div ${style({ insetInlineStart: '30%', top: '8px', position: 'absolute', background: 'var(--mo-color-accessible)', height: '4px', width: '40%', opacity: '1' })}></div>
 						</div>
 						<div ${style({ background: 'var(--mo-color-accent)', height: '4px', width: '50%', opacity: '1' })}></div>
 						<div ${style({ width: '100%' })}></div>

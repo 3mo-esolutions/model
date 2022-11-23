@@ -62,17 +62,19 @@ export class DateHelper {
 	}
 
 	private static parseDateFromLocalDate(dateText: string, referenceDate = new MoDate) {
+		const date = new MoDate(dateText)
+
+		if (String(date) === 'Invalid Date') {
+			return undefined
+		}
+
 		const dateParts = dateText.split(FormatHelper.getDateSeparator()!)
 
 		if (dateParts.length === 2) {
-			return new MoDate(referenceDate.getFullYear(), parseInt(dateParts[1]!) - 1, parseInt(dateParts[0]!))
+			date.setFullYear(referenceDate.getFullYear())
 		}
 
-		if (dateParts.length === 3) {
-			return new MoDate(parseInt(dateParts[2]!), parseInt(dateParts[1]!) - 1, parseInt(dateParts[0]!))
-		}
-
-		return undefined
+		return date
 	}
 
 	private static parseDateFromOperation(dateText: string, referenceDate = new MoDate) {

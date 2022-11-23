@@ -22,11 +22,11 @@ export class SeparatorLine extends Component {
 			}
 
 			:host(:not(:empty)) div::before {
-				margin-right: .25em;
+				margin-inline-end: .25em;
 			}
 
 			:host(:not(:empty)) div::after {
-				margin-left: .25em;
+				margin-inline-start: .25em;
 			}
 		`
 	}

@@ -19,7 +19,7 @@ export abstract class DataGridColumn<TData, TValue> extends Component {
 			dataSelector: this.dataSelector,
 			heading: this.heading,
 			title: this.title || undefined,
-			alignment: this.textAlign as 'left' | 'center' | 'right',
+			alignment: this.textAlign as 'start' | 'center' | 'end',
 			hidden: this.hidden,
 			width: !AsteriskSyntaxStyleHandler.regex.test(this.width) ? this.width : `${AsteriskSyntaxStyleHandler.getProportion(this.width)}fr`,
 			sortable: !this.nonSortable,

@@ -32,7 +32,7 @@ export class Chip extends Component {
 			}
 
 			:host([hasDelete]) mo-button::part(button) {
-				padding-right: 4px;
+				padding-inline-end: 4px;
 			}
 
 			mo-button::part(button) {

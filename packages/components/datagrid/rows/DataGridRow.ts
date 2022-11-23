@@ -65,7 +65,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				width: 2px;
 				height: 100%;
 				top: 0;
-				left: 0;
+				inset-inline-start: 0;
 				position: absolute;
 				background-color: var(--mo-color-accent);
 			}
@@ -87,7 +87,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				content: '';
 				position: absolute;
 				bottom: 0;
-				left: 0;
+				inset-inline-start: 0;
 				width: 100%;
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
 			}
@@ -154,7 +154,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				@dblclick=${(e: Event) => e.stopPropagation()}
 			>
 			${this.hasDetails === false ? nothing : html`
-				<mo-icon-button id='detailsExpanderIconButton' icon='keyboard_arrow_right' ${style({ color: 'var(--mo-color-foreground)' })}
+				<mo-icon-button id='detailsExpanderIconButton' icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_left' : 'keyboard_arrow_right'} ${style({ color: 'var(--mo-color-foreground)' })}
 					?disabled=${this.dataGrid.hasDataDetail?.(this.data) === false}
 					@click=${() => this.toggleDetails()}
 				></mo-icon-button>

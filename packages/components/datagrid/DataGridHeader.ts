@@ -135,7 +135,7 @@ export class DataGridHeader<TData> extends Component {
 			: this.dataGrid.sorting.strategy === DataGridSortingStrategy.Ascending ? 'arrow_upward' : 'arrow_downward'
 
 		return html`
-			<mo-flex direction=${column.alignment === 'right' ? 'horizontal-reversed' : 'horizontal'}
+			<mo-flex direction=${column.alignment === 'end' ? 'horizontal-reversed' : 'horizontal'}
 				${style({ overflow: 'hidden', position: 'relative', cursor: 'pointer', userSelect: 'none' })}
 				@click=${() => this.sort(column)}
 			>

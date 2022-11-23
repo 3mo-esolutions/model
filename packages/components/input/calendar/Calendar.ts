@@ -3,7 +3,7 @@ import { Flex } from '../..'
 
 @component('mo-calendar')
 export class Calendar extends Component {
-	private static readonly startingYear = 1900
+	private static readonly startingYearDate = new MoDate(1900, 0, 1)
 
 	@property({ type: Boolean, reflect: true }) includeWeekNumbers = false
 
@@ -13,7 +13,7 @@ export class Calendar extends Component {
 	@query('.year.selected') private readonly selectedYearElement!: Flex
 
 	private readonly today = new MoDate().round({ smallestUnit: 'day', roundingMode: 'floor' })
-	private readonly years = new Array(200).fill(undefined).map((_n, i) => Calendar.startingYear + i)
+	private readonly years = new Array(200).fill(undefined).map((_n, i) => Calendar.startingYearDate.addYear(i))
 
 	static override get styles() {
 		return css`
@@ -89,14 +89,14 @@ export class Calendar extends Component {
 		return html`
 			<mo-flex alignItems='center' justifyContent='center' ${style({ width: 'var(--mo-calendar-max-width)', minHeight: 'var(--mo-calendar-min-height)' })}>
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' ${style({ width: '100%' })}>
-					<mo-icon-button icon='keyboard_arrow_left'
+					<mo-icon-button icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_right' : 'keyboard_arrow_left'}
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}
 					></mo-icon-button>
 					<div>
 						<a class='navigatingMonth'>${this.navigatingDate.monthName}</a>
-						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingDate.year}</a>
+						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingDate.yearName}</a>
 					</div>
-					<mo-icon-button icon='keyboard_arrow_right'
+					<mo-icon-button icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(+1)}
 					></mo-icon-button>
 				</mo-flex>
@@ -136,7 +136,7 @@ export class Calendar extends Component {
 
 	protected getDayTemplate(day: MoDate) {
 		return html`
-			<mo-flex class=${classMap(this.getDefaultDayElementClasses(day))}>${day.day}</mo-flex>
+			<mo-flex class=${classMap(this.getDefaultDayElementClasses(day))}>${day.dayName}</mo-flex>
 		`
 	}
 
@@ -153,8 +153,8 @@ export class Calendar extends Component {
 			<mo-scroller ${style({ height: '*' })}>
 				<mo-grid rows='repeat(50, var(--mo-calendar-day-size))' columns='repeat(4, 1fr)'>
 					${this.years.map(year => html`
-						<mo-flex class=${classMap({ year: true, selected: this.navigatingDate.year === year })} @click=${() => this.selectYear(year)}>
-							${year}
+						<mo-flex class=${classMap({ year: true, selected: this.navigatingDate.year === year.year })} @click=${() => this.selectYear(year.year)}>
+							${year.yearName}
 						</mo-flex>
 					`)}
 				</mo-grid>

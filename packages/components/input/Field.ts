@@ -151,15 +151,15 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-label-translate-on-focus: translateY(var(--mo-field-label-translate-value-on-focus));
 				--mo-field-label-transform-on-focus: var(--mo-field-label-translate-on-focus) var(--mo-field-label-scale-on-focus);
 				--mo-field-label-top-on-focus: 14px;
-				--mo-field-border-top-left-radius: var(--mo-border-radius);
+				--mo-field-border-start-start-radius: var(--mo-border-radius);
 				--mo-field-border-top-right-radius: var(--mo-border-radius);
 				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
 				display: flex;
 				min-width: 0;
 
-				border-top-left-radius: var(--mo-field-border-top-left-radius);
-				border-top-right-radius: var(--mo-field-border-top-right-radius);
+				border-start-start-radius: var(--mo-field-border-start-start-radius);
+				border-start-end-radius: var(--mo-field-border-top-right-radius);
 				box-sizing: border-box;
 				background-color: var(--mo-field-background);
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
@@ -207,7 +207,7 @@ export abstract class Field<T> extends Input<T> {
 			label {
 				position: absolute;
 				font-size: var(--mo-field-font-size);
-				left: 0;
+				inset-inline-start: 0;
 				top: calc(var(--mo-field-label-translate-value-on-focus) * -1);
 				transform: var(--mo-field-label-translate-on-focus);
 				color: var(--mo-color-gray);
@@ -226,7 +226,7 @@ export abstract class Field<T> extends Input<T> {
 				position: absolute;
 				bottom: -1px;
 				height: 2px;
-				left: calc(calc(100% - var(--mo-field-initial-outline-width)) / 2);
+				inset-inline-start: calc(calc(100% - var(--mo-field-initial-outline-width)) / 2);
 				width: var(--mo-field-initial-outline-width);
 				visibility: hidden;
 				background-color: var(--mo-color-accent);
@@ -236,7 +236,7 @@ export abstract class Field<T> extends Input<T> {
 			:host([active]):after, :host([open]):after {
 				visibility: visible;
 				width: 100%;
-				left: 0px;
+				inset-inline-start: 0px;
 			}
 
 			input {

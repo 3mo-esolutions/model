@@ -10,7 +10,7 @@ class DateCalendarSelectionAdapter extends CalendarSelectionAdapter<MoDate> {
 			<mo-flex
 				class=${classMap({ ...classInfo, selected: this.calendar.value?.equals(day) ?? false })}
 				@click=${() => this.select(day)}
-			>${day.day}</mo-flex>
+			>${day.dayName}</mo-flex>
 		`
 	}
 

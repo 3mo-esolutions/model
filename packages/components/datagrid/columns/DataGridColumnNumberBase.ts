@@ -3,7 +3,7 @@ import { DataGridColumn } from '.'
 
 export abstract class DataGridColumnNumberBase<TData> extends DataGridColumn<TData, number> {
 	@property() sumHeading: string | undefined = undefined
-	@property() override textAlign = 'right'
+	@property() override textAlign = 'end'
 
 	override get definition() {
 		return {

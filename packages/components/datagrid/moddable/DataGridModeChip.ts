@@ -60,7 +60,7 @@ export class DataGridModeChip extends Component {
 			}
 
 			:host([selected]:not([readOnly])) mo-button::part(button) {
-				padding-right: 8px !important;
+				padding-inline-end: 8px !important;
 			}
 
 			mo-icon-button {
@@ -69,7 +69,7 @@ export class DataGridModeChip extends Component {
 			}
 
 			:host([selected]:not([readOnly])) mo-icon-button:not([data-no-border]) {
-				border-left: 1px solid var(--mo-color-gray-transparent);
+				border-inline-start: 1px solid var(--mo-color-gray-transparent);
 			}
 		`
 	}
@@ -132,7 +132,7 @@ export class DataGridModeChip extends Component {
 				${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
 					<span id='spanUnsaved'>*</span>
 
-					<mo-icon-button icon='undo' tabindex='-1' dense ${style({ marginLeft: '0 0 0 12px' })}
+					<mo-icon-button icon='undo' tabindex='-1' dense ${style({ marginInlineStart: '0 0 0 12px' })}
 						title=${_('Discard changes')}
 						@click=${this.discardChanges}
 					></mo-icon-button>

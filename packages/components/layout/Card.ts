@@ -111,7 +111,7 @@ export class Card extends Component {
 	protected get defaultHeaderAvatarTemplate() {
 		return html`
 			<slot name='avatar'>
-				${!this.avatar ? nothing : html`<mo-avatar part='avatar' ${style({ marginRight: 'var(--mo-thickness-m)' })}>${this.avatar}</mo-avatar>`}
+				${!this.avatar ? nothing : html`<mo-avatar part='avatar' ${style({ marginInlineEnd: 'var(--mo-thickness-m)' })}>${this.avatar}</mo-avatar>`}
 			</slot>
 		`
 	}

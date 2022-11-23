@@ -15,7 +15,7 @@ export class DialogLanguageField<TLanguage extends Language, TField extends Fiel
 					}
 
 					mo-flex > img {
-						padding-right: var(--mo-thickness-m);
+						padding-inline-end: var(--mo-thickness-m);
 					}
 				</style>
 				${this.parameters.languageField['languages'].map(language => html`

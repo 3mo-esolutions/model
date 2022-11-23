@@ -34,20 +34,20 @@ export class FieldPair<TField extends Field<unknown>, TFieldAttachment extends F
 				:host([mode=overlay]) div {
 					height: auto;
 					position: absolute;
-					right: 0;
+					inset-inline-end: 0;
 					top: 0;
 				}
 
 				::slotted(:not([slot])) {
 					width: 100%;
 					height: 100%;
-					--mo-field-border-top-right-radius: 0px;
+					--mo-field-border-start-end-radius: 0px;
 				}
 
 				::slotted([slot=attachment]) {
 					height: 100%;
 					align-items: center;
-					--mo-field-border-top-left-radius: 0px;
+					--mo-field-border-start-start--radius: 0px;
 				}
 			</style>
 
