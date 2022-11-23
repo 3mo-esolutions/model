@@ -70,11 +70,6 @@ export class DateHelper {
 
 		const dateParts = dateText.split(FormatHelper.getDateSeparator()!)
 
-		console.log({
-			dateParts, dateText
-		});
-
-
 		if (dateParts.length === 2) {
 			date.setFullYear(referenceDate.getFullYear())
 		}

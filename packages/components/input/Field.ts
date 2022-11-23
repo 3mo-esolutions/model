@@ -152,14 +152,14 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-label-transform-on-focus: var(--mo-field-label-translate-on-focus) var(--mo-field-label-scale-on-focus);
 				--mo-field-label-top-on-focus: 14px;
 				--mo-field-border-start-start-radius: var(--mo-border-radius);
-				--mo-field-border-top-right-radius: var(--mo-border-radius);
+				--mo-field-border-start-end-radius: var(--mo-border-radius);
 				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
 				display: flex;
 				min-width: 0;
 
 				border-start-start-radius: var(--mo-field-border-start-start-radius);
-				border-start-end-radius: var(--mo-field-border-top-right-radius);
+				border-start-end-radius: var(--mo-field-border-start-end-radius);
 				box-sizing: border-box;
 				background-color: var(--mo-field-background);
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
@@ -212,7 +212,7 @@ export abstract class Field<T> extends Input<T> {
 				transform: var(--mo-field-label-translate-on-focus);
 				color: var(--mo-color-gray);
 				transition: .1s ease-out;
-				transform-origin: left top;
+				transform-origin: var(--mo-field-label-transform-origin);
 				pointer-events: none;
 				white-space: nowrap;
 				overflow: hidden !important;
@@ -243,6 +243,7 @@ export abstract class Field<T> extends Input<T> {
 				border: 0px;
 				width: 100%;
 				font-size: var(--mo-field-font-size);
+				font-family: inherit;
 				outline: none;
 				padding: 0.8rem 0 0 0;
 				height: calc(100% - 0.8rem);
@@ -305,6 +306,7 @@ export abstract class Field<T> extends Input<T> {
 	}
 
 	protected override get template() {
+		this.style.setProperty('--mo-field-label-transform-origin', getComputedStyle(this).direction === 'rtl' ? 'right top' : 'left top')
 		return html`
 			${!this.slotController.hasAssignedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
 			<div part='container'>
