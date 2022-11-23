@@ -80,8 +80,8 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 	override getRowContextMenuTemplate = (entities: Array<TEntity>) => {
 		return html`
 			${this.rowContextMenuTemplate?.(entities) ?? nothing}
-			${!this.edit || entities.length !== 1 ? nothing : html`<mo-context-menu-item icon='edit' data-test-id='edit' @click=${() => this.editAndRefetch(entities[0]!)}>Bearbeiten</mo-context-menu-item>`}
-			${!this.delete ? nothing : html`<mo-context-menu-item icon='delete' data-test-id='delete' @click=${() => this.deleteAndRefetch(entities)}>Löschen</mo-context-menu-item>`}
+			${!this.edit || entities.length !== 1 ? nothing : html`<mo-context-menu-item icon='edit' data-test-id='edit' @click=${() => this.editAndRefetch(entities[0]!)}>${_('Edit')}</mo-context-menu-item>`}
+			${!this.delete ? nothing : html`<mo-context-menu-item icon='delete' data-test-id='delete' @click=${() => this.deleteAndRefetch(entities)}>${_('Delete')}</mo-context-menu-item>`}
 		`
 	}
 

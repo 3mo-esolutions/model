@@ -10,7 +10,18 @@ Localizer.register(LanguageCode.German, {
 	'Name': 'Bezeichnung',
 	'Archived': 'Archiviert',
 	'Save': 'Speichern',
+	'Edit': 'Bearbeiten',
 	'Delete': 'Löschen',
+})
+
+Localizer.register(LanguageCode.Farsi, {
+	'Mode ${name:string}': 'نمایش "${name}"',
+	'New Mode': 'نمایش جدید',
+	'Name': 'نام',
+	'Archived': 'بایگانی شده',
+	'Save': 'ذخیره',
+	'Edit': 'ویرایش',
+	'Delete': 'حذف',
 })
 
 @component('mo-dialog-data-grid-mode')

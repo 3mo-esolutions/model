@@ -11,6 +11,13 @@ Localizer.register(LanguageCode.German, {
 	'Input': 'Eingabe'
 })
 
+Localizer.register(LanguageCode.Farsi, {
+	'OK': 'تایید',
+	'Cancel': 'لغو',
+	'Apply': 'اعمال',
+	'Input': 'ورودی'
+})
+
 type Parameters = BaseDialogParameters & {
 	readonly inputLabel?: string
 	readonly value?: string

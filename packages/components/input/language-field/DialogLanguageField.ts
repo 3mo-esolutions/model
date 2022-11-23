@@ -8,7 +8,7 @@ export class DialogLanguageField<TLanguage extends Language, TField extends Fiel
 
 	protected override get template() {
 		return html`
-			<mo-dialog heading=${this.parameters.languageField.fieldElement.label} primaryButtonText='Übernehmen'>
+			<mo-dialog heading=${this.parameters.languageField.fieldElement.label} primaryButtonText=${_('Apply')}>
 				<style>
 					mo-flex {
 						padding: var(--mo-thickness-m) 0;
