@@ -31,6 +31,7 @@
 		"@3mo/checkbox-group": "x",
 		"@3mo/switch": "x",
 		"@3mo/radio": "x",
+		"@3mo/slider": "x",
 		"@3mo/circular-progress": "x",
 		"@3mo/fab": "x",
 		"@3mo/flex": "x",

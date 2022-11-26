@@ -1,5 +1,4 @@
 export * from './ListItemMixin'
-export * from './Slider'
 export * from './Tab'
 export * from './TabBar'
 export * from './TextArea'
