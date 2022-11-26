@@ -1,6 +1,6 @@
 import { component, css, property } from '@a11d/lit'
 import { ComponentMixin } from '../../library'
-import { ListItemMixin } from '../helpers'
+import { ListItemMixin } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 /**

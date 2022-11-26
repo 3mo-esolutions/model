@@ -1,4 +1,4 @@
-import { FormatHelper } from '../..'
+import { FormatHelper } from '../../../..'
 
 declare global {
 	type DateRange = [start?: MoDate, end?: MoDate]

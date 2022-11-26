@@ -17,7 +17,6 @@ export * from '@3mo/switch'
 
 import './composer'
 
-export * from './helpers'
 export * from './Confetti'
 export * from './material'
 export * from './input'

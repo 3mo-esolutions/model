@@ -1,6 +1,6 @@
 import { component, event, css } from '@a11d/lit'
 import { ComponentMixin } from '../../library'
-import { ListItemMixin } from '../helpers'
+import { ListItemMixin } from '.'
 import { CheckListItem as MwcCheckListItem } from '@material/mwc-list/mwc-check-list-item'
 
 class MwcCheckListItemWidthCompatibleLeft extends MwcCheckListItem {
