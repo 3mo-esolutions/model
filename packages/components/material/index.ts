@@ -1,4 +1,3 @@
-export * from './Radio'
 export * from './Slider'
 export * from './Tab'
 export * from './TabBar'

@@ -89,14 +89,14 @@ export class Calendar extends Component {
 		return html`
 			<mo-flex alignItems='center' justifyContent='center' ${style({ width: 'var(--mo-calendar-max-width)', minHeight: 'var(--mo-calendar-min-height)' })}>
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' ${style({ width: '100%' })}>
-					<mo-icon-button icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_right' : 'keyboard_arrow_left'}
+					<mo-icon-button icon=${getComputedStyle(this).direction === 'rtl' ? 'keyboard_arrow_right' : 'keyboard_arrow_left'}
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(-1)}
 					></mo-icon-button>
 					<div>
 						<a class='navigatingMonth'>${this.navigatingDate.monthName}</a>
 						<a class='navigatingYear' @click=${() => this.toggleYearSelection()}>${this.navigatingDate.yearName}</a>
 					</div>
-					<mo-icon-button icon=${getComputedStyle(this)['direction'] === 'rtl' ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}
+					<mo-icon-button icon=${getComputedStyle(this).direction === 'rtl' ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}
 						@click=${() => this.navigatingDate = this.navigatingDate.addMonth(+1)}
 					></mo-icon-button>
 				</mo-flex>
