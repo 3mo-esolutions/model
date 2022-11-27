@@ -18,6 +18,7 @@ export * from '@3mo/radio'
 export * from '@3mo/slider'
 export * from '@3mo/switch'
 export * from '@3mo/heading'
+export * from '@3mo/card'
 
 import './composer'
 
