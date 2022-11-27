@@ -144,7 +144,11 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected getNavigationItemTemplate(navigation: Navigation) {
 		return html`
-			<mo-navigation-item ${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: navigation.matchMode })} .navigation=${navigation}>${navigation.label}</mo-navigation-item>
+			<mo-navigation-item .navigation=${navigation} ${!navigation.component ? nothing : routerLink({
+				component: navigation.component as PageComponent,
+				matchMode: navigation.matchMode,
+				invocationHandler: () => this.drawerOpen = false
+			})}>${navigation.label}</mo-navigation-item>
 		`
 	}
 
@@ -165,7 +169,7 @@ export abstract class BusinessSuiteApplication extends Application {
 	protected get userAvatarMenuItemsTemplate() {
 		return html`
 			<mo-navigation-list-item icon='manage_accounts' label=${_('User Settings')}
-				${routerLink({ component: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters })}
+				${routerLink({ component: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters, invocationHandler: () => this.drawerOpen = false })}
 			></mo-navigation-list-item>
 		`
 	}
@@ -202,7 +206,7 @@ export abstract class BusinessSuiteApplication extends Application {
 		return html`
 			<mo-navigation-list-item
 				icon=${ifDefined(navigation.icon)}
-				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters })}
+				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters, invocationHandler: () => this.drawerOpen = false })}
 			>
 				${navigation.label}
 				${navigation.children?.map(child => this.getNavigationListItemTemplate(child))}
@@ -211,7 +215,11 @@ export abstract class BusinessSuiteApplication extends Application {
 	}
 
 	protected get drawerTitleTemplate() {
-		return this.navbarHeadingTemplate
+		return html`
+			<mo-flex direction='horizontal' alignItems='center'>
+				${this.navbarHeadingTemplate}
+			</mo-flex>
+		`
 	}
 
 	protected get drawerFooterTemplate() {
