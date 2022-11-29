@@ -143,7 +143,7 @@ export abstract class BusinessSuiteApplication extends Application {
 	}
 
 	protected getNavigationItemTemplate(navigation: Navigation) {
-		return html`
+		return navigation.hidden ? nothing : html`
 			<mo-navigation-item .navigation=${navigation} ${!navigation.component ? nothing : routerLink({
 				component: navigation.component as PageComponent,
 				matchMode: navigation.matchMode,

@@ -31,7 +31,7 @@ export class NavigationItem extends Component {
 	override tabIndex = 0
 
 	private get menuTemplate() {
-		const getItemTemplate = (navigation: Navigation): TemplateResult => !navigation.children ? html`
+		const getItemTemplate = (navigation: Navigation): TemplateResult => navigation.hidden ? nothing : !navigation.children ? html`
 			<mo-navigation-list-item ${!navigation.component ? nothing : routerLink({
 				component: navigation.component as PageComponent,
 				matchMode: navigation.matchMode,
@@ -41,19 +41,19 @@ export class NavigationItem extends Component {
 			<mo-context-menu-item>
 				${navigation.label}
 				<mo-context-menu activatable absolute slot='details'>
-					${navigation.children.filter(child => !child.hidden).map(child => getItemTemplate(child))}
+					${navigation.children.map(child => getItemTemplate(child))}
 				</mo-context-menu>
 			</mo-context-menu-item>
 		`
 
-		return !this.navigation.children ? nothing : html`
+		return !this.navigation.children || this.navigation.hidden ? nothing : html`
 			<style>
 				mo-navigation-list-item[selected] {
 					background: var(--mo-color-accent-gradient-transparent);
 					color: var(--mo-color-accent)
 				}
 			</style>
-			${this.navigation.children.filter(c => !c.hidden).map(child => getItemTemplate(child))}
+			${this.navigation.children.map(child => getItemTemplate(child))}
 		`
 	}
 
