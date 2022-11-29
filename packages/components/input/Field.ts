@@ -107,6 +107,11 @@ export abstract class Field<T> extends Input<T> {
 	@property({ type: Boolean, reflect: true }) dense = false
 	@property({ type: Boolean, reflect: true }) active = false
 	@property({ type: Boolean, reflect: true }) selectOnFocus = false
+	protected min?: number
+	protected max?: number
+	protected step?: number
+	protected minLength?: number
+	protected maxLength?: number
 
 	@state({ updated(this: Field<T>, value: boolean) { this.switchAttribute('invalid', value) } }) protected invalid = false
 
@@ -320,6 +325,11 @@ export abstract class Field<T> extends Input<T> {
 					?readonly=${this.readonly}
 					?required=${this.required}
 					?disabled=${this.disabled}
+					minlength=${ifDefined(this.minLength)}
+					maxlength=${ifDefined(this.maxLength)}
+					min=${ifDefined(this.min)}
+					max=${ifDefined(this.max)}
+					step=${ifDefined(this.step)}
 					pattern=${ifDefined(this.pattern)}
 					@focus=${() => this.handleFocus()}
 					@blur=${() => this.handleBlur()}

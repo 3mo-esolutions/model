@@ -12,12 +12,21 @@ export class FieldNumber extends Field<number> {
 	override get value(): number | undefined { return super.value }
 	override set value(value: number | undefined) { super.value = value }
 
+	@property({ type: Number, reflect: true }) override min?: number
+	@property({ type: Number, reflect: true }) override max?: number
+	@property({ type: Number, reflect: true }) override step?: number
+
 	protected fromValue(value: number | undefined): string {
-		return typeof value === 'number' ? FormatHelper.number(value) : ''
+		return typeof value === 'number' ? FormatHelper.number(this.inRange(value)) : ''
 	}
 
 	protected toValue(value: string): number | undefined {
-		return FormatHelper.localNumberToNumber(value)
+		const v = FormatHelper.localNumberToNumber(value)
+		return v === undefined ? undefined : this.inRange(v)
+	}
+
+	private inRange(value: number) {
+		return Math.min(Math.max(value, this.min ?? -Infinity), this.max ?? Infinity)
 	}
 }
 

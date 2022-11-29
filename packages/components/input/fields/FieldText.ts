@@ -3,17 +3,8 @@ import { FieldTextBase } from './FieldTextBase'
 
 @component('mo-field-text')
 export class FieldText extends FieldTextBase {
-	@property({
-		type: Number,
-		reflect: true,
-		updated(this: FieldText) { this.inputElement.setAttribute('minLength', String(this.minLength || '')) }
-	}) minLength?: number
-
-	@property({
-		type: Number,
-		reflect: true,
-		updated(this: FieldText) { this.inputElement.setAttribute('maxLength', String(this.maxLength || '')) }
-	}) maxLength?: number
+	@property({ type: Number, reflect: true }) override minLength?: number
+	@property({ type: Number, reflect: true }) override maxLength?: number
 
 	protected override get template() {
 		return html`
