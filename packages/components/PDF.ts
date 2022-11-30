@@ -1,6 +1,8 @@
 import { component, html, Component, nothing, property, css, style } from '@a11d/lit'
 import { ClientInfoHelper } from '../utilities'
 
+// Migrate to detect-browser
+
 @component('mo-pdf')
 export class PDF extends Component {
 	@property() source?: string
