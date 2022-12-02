@@ -203,7 +203,7 @@ export abstract class BusinessSuiteApplication extends Application {
 	}
 
 	private getNavigationListItemTemplate(navigation: Navigation): HTMLTemplateResult {
-		return html`
+		return navigation.hidden ? nothing : html`
 			<mo-navigation-list-item
 				icon=${ifDefined(navigation.icon)}
 				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters, invocationHandler: () => this.drawerOpen = false })}
