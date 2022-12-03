@@ -3,24 +3,16 @@ import { Localizer, Temporal } from '..'
 export class MoDate extends Date {
 	static readonly isoRegularExpression = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/
 
-	static get weekStartDay() {
+	static get weekStartDay(): number {
 		// @ts-expect-error weekInfo is not standardized yet and is supported only by Chrome as of 2022-03
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo
 		return new Intl.Locale(Localizer.currentLanguage).weekInfo?.firstDay ?? 1
 	}
 
-	static getWeekRange([year, weekNumber]: DateWeek) {
-		const firstDayOfTheFirstCalendarWeekOfTheYear = new Array(7)
+	static rangeOf(startDate: MoDate, endDate: MoDate) {
+		return new Array(Math.abs(Math.round(endDate.until(startDate).days)) + 1)
 			.fill(undefined)
-			.map((_, i) => new MoDate(year, 0, 1).addDay(i))
-			.find(d => d.week === 1) as MoDate
-
-		const aDayInTheSpecifiedWeek = firstDayOfTheFirstCalendarWeekOfTheYear.addDay(7 * (weekNumber - 1))
-		const weekStart = aDayInTheSpecifiedWeek.addDay(MoDate.weekStartDay - aDayInTheSpecifiedWeek.weekDay)
-
-		return new Array(7)
-			.fill(undefined)
-			.map((_, i) => weekStart.addDay(i))
+			.map((_, i) => startDate.addDay(i))
 	}
 
 	static fromEpochNanoseconds(epochNanoseconds: bigint) {
@@ -115,18 +107,17 @@ export class MoDate extends Date {
 	}
 
 	get weekRange() {
-		const weekStart = this.addDay(MoDate.weekStartDay - this.weekDay)
-		return new Array(this.zonedDateTime.daysInWeek)
-			.fill(undefined)
-			.map((_, i) => weekStart.addDay(i))
+		const weekStart = this.addDay(-Math.abs(MoDate.weekStartDay - this.weekDay))
+		const weekEnd = weekStart.addDay(this.zonedDateTime.daysInWeek - 1)
+		return MoDate.rangeOf(weekStart, weekEnd)
 	}
 
 	get weekStart() {
-		return this.weekRange[0]
+		return this.weekRange[0]!
 	}
 
 	get weekEnd() {
-		return this.weekRange[this.weekRange.length - 1]
+		return this.weekRange[this.weekRange.length - 1]!
 	}
 
 	addWeek(weeks: number) {
@@ -146,31 +137,28 @@ export class MoDate extends Date {
 		return this.getMonth()
 	}
 
+	get localMonth() {
+		return Number(new Intl.DateTimeFormat(Localizer.currentLanguage, { month: 'numeric', numberingSystem: 'latn' }).format(this))
+	}
+
 	get monthName() {
 		return MoDate.monthNames[this.month]
 	}
 
+	get monthRange() {
+		const start = new MoDate(this.year, this.month, 1)
+		const dayDifference = Number(new Intl.DateTimeFormat(Localizer.currentLanguage, { day: 'numeric', numberingSystem: 'latn' }).format(start)) - 1
+		const startDay = start.addDay(-dayDifference)
+		const endDay = startDay.addMonth(1).addDay(-1)
+		return MoDate.rangeOf(startDay, endDay)
+	}
+
 	get monthStart() {
-		return new MoDate(this.year, this.month, 1)
+		return this.monthRange[0]!
 	}
 
 	get monthEnd() {
-		return new MoDate(this.year, this.month + 1, 0)
-	}
-
-	get monthRange() {
-		return new Array(this.monthEnd.day - this.monthStart.day + 1)
-			.fill(undefined)
-			.map((_, i) => new MoDate(this.year, this.month, i + 1))
-	}
-
-	get monthWeeks() {
-		return this.monthRange
-			.map(date => [date.weekStart!.year, date.week] as const)
-			.reduce((acc, [year, week]) =>
-				acc = acc.some(([y, w]) => y === year && w === week) ? acc : [...acc, [year, week]],
-				[] as Array<DateWeek>
-			)
+		return this.monthRange[this.monthRange.length - 1]!
 	}
 
 	addMonth(months: number) {
@@ -196,10 +184,10 @@ export class MoDate extends Date {
 	}
 
 	get yearNames() {
-		const format = new Intl.DateTimeFormat(Localizer.currentLanguage, { year: 'numeric' })
+		const formatter = new Intl.DateTimeFormat(Localizer.currentLanguage, { year: 'numeric', numberingSystem: 'latn' })
 		return new Array(12)
 			.fill(undefined)
-			.map((_, i) => format.format(new Date(Date.UTC(this.year, i, 1, 0, 0, 0))))
+			.map((_, i) => formatter.format(new Date(Date.UTC(this.year, i, 1, 0, 0, 0))))
 	}
 
 	get yearName() {

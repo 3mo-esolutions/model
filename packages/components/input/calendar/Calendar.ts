@@ -107,6 +107,11 @@ export class Calendar extends Component {
 	}
 
 	private get daySelectionTemplate() {
+		const start = this.navigatingDate.monthStart.weekStart
+		const end = this.navigatingDate.monthEnd.weekEnd
+		const range = MoDate.rangeOf(start, end)
+		const weekDaysInMonth = [...range.groupToMap(d => String(d.week)).entries()]
+			.sort(([, dates1], [, dates2]) => dates1[0]?.isBefore(dates2[0]!) ? -1 : +1)
 		return html`
 			<mo-grid class='month'
 				rows='repeat(auto-fill, var(--mo-calendar-day-size))'
@@ -121,14 +126,14 @@ export class Calendar extends Component {
 					</div>
 				`)}
 
-				${this.navigatingDate.monthWeeks.map(([year, weekNumber]) => html`
+				${weekDaysInMonth.map(([weekNumber, days]) => html`
 					${this.includeWeekNumbers === false ? nothing : html`
 						<div class='week'>
 							${weekNumber}
 						</div>
 					`}
 
-					${MoDate.getWeekRange([year, weekNumber]).map(day => this.getDayTemplate(day))}
+					${days.map(day => this.getDayTemplate(day))}
 				`)}
 			</mo-grid>
 		`
@@ -141,10 +146,12 @@ export class Calendar extends Component {
 	}
 
 	protected getDefaultDayElementClasses(day: MoDate) {
+		const daysOfMonth = [...this.navigatingDate.monthRange.groupToMap(day => String(day.month))]
+			.sort(([, days1], [, days2]) => days1.length > days2.length ? -1 : +1)[0]?.[1]
 		return {
 			day: true,
 			today: day.equals(this.today),
-			isInMonth: day.month === this.navigatingDate.month,
+			isInMonth: day.localMonth === daysOfMonth?.[0]?.localMonth,
 		}
 	}
 
