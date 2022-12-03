@@ -31,8 +31,24 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		return css`
 			${super.styles}
 
-			:host([fetching]) {
-				cursor: wait;
+			:host([fetching]):after {
+				visibility: visible;
+				animation: fetching 1s linear infinite;
+			}
+
+			@keyframes fetching {
+				0% {
+					inset-inline-start: -40%;
+					width: 0%;
+				}
+				50% {
+					inset-inline-start: 20%;
+					width: 80%;
+				}
+				100% {
+					inset-inline-start: 100%;
+					width: 100%;
+				}
 			}
 		`
 	}

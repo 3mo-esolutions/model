@@ -158,6 +158,7 @@ export abstract class Field<T> extends Input<T> {
 				--mo-field-border-start-end-radius: var(--mo-border-radius);
 				--mdc-icon-size: var(--mo-font-size-icon, 20px);
 				position: relative;
+				overflow: hidden;
 				display: flex;
 				min-width: 0;
 
