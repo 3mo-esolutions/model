@@ -50,7 +50,7 @@ export class TabBar extends ComponentMixin(MwcTabBar) {
 		this.activeIndex = this.tabs.findIndex(tab => tab.value === this.value)
 		await Promise.all(this.tabs.map(tab => tab.updateComplete))
 		this.tabs.forEach(tab => tab.deactivate())
-		this.selectedTab?.activate({} as ClientRect)
+		this.selectedTab?.activate({} as DOMRect)
 	}
 
 	protected override initialized() {

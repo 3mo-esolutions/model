@@ -4,11 +4,6 @@ import { MaterialIcon } from '..'
 import { MutationController } from '@3mo/mutation-observer'
 import { Tab as MwcTab } from '@material/mwc-tab'
 
-class MwcTabWithCompatibleMinWidth extends MwcTab {
-	// @ts-expect-error It is actually a boolean to resolve TS error
-	minWidth: string
-}
-
 /**
  * @attr label
  * @attr hasImageIcon
@@ -19,7 +14,7 @@ class MwcTabWithCompatibleMinWidth extends MwcTab {
  * @fires MDCTab:interacted {CustomEvent<{ tabId: string }>}
  */
 @component('mo-tab')
-export class Tab extends ComponentMixin(MwcTabWithCompatibleMinWidth) {
+export class Tab extends ComponentMixin(MwcTab) {
 	@property({ reflect: true }) value!: string
 	@property({ reflect: true }) override icon!: MaterialIcon
 

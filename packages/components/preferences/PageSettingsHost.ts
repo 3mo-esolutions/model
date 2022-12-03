@@ -98,9 +98,10 @@ export abstract class PageSettingsHost<T extends PageParameters = void> extends 
 	}
 
 	private get contentToolbarTemplate() {
+		const icon = getComputedStyle(this).direction === 'rtl' ? 'arrow_forward' : 'arrow_back'
 		return html`
 			<mo-flex id='contentToolbar' gap='var(--mo-thickness-m)' alignItems='center' direction='horizontal'>
-				<mo-icon-button icon='arrow_back' @click=${() => new (this.constructor as any)().navigate()}></mo-icon-button>
+				<mo-icon-button icon=${icon} @click=${() => new (this.constructor as any)().navigate()}></mo-icon-button>
 				<mo-heading typography='heading4'>${this.contentPageHeading}</mo-heading>
 			</mo-flex>
 		`

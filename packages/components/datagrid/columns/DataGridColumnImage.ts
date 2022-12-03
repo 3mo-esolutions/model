@@ -6,7 +6,7 @@ export class DataGridColumnImage<TData> extends DataGridColumn<TData, string> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	getContentTemplate(value: string | undefined, _data: TData) {
 		return !value ? nothing : html`
-			<img style='vertical-align: middle' src=${value} onerror='this.hidden = true'/>
+			<img style='vertical-align: middle' src=${value} onload='this.hidden = false' onerror='this.hidden = true'/>
 		`
 	}
 
