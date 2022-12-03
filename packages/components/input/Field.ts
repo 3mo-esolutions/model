@@ -1,4 +1,4 @@
-import { css, html, property, ifDefined, query, event, PropertyValues, nothing, CSSResult, unsafeCSS, state } from '@a11d/lit'
+import { css, html, property, ifDefined, query, event, PropertyValues, nothing, state } from '@a11d/lit'
 import { SlotController } from '@3mo/slot-controller'
 import { Input } from './Input'
 
@@ -92,8 +92,6 @@ export type FieldAutoComplete =
  * @fires validityChange {CustomEvent<boolean>}
  */
 export abstract class Field<T> extends Input<T> {
-	static readonly slotIntegrations = new Set<{ slotChangedHandler?: () => void, styles?: CSSResult }>()
-
 	@event() readonly input!: EventDispatcher<T | undefined>
 	@event() readonly validityChange!: EventDispatcher<boolean>
 
@@ -119,7 +117,7 @@ export abstract class Field<T> extends Input<T> {
 
 	protected inputType: FieldInputType = 'text'
 
-	readonly slotController = new SlotController(this, () => Field.slotIntegrations.forEach(({ slotChangedHandler }) => slotChangedHandler?.call(this)))
+	readonly slotController = new SlotController(this)
 
 	override get value() { return super.value }
 	override set value(value) {
@@ -305,8 +303,6 @@ export abstract class Field<T> extends Input<T> {
 				justify-content: center;
 				align-items: center;
 			}
-
-			${unsafeCSS([...Field.slotIntegrations].map(integration => integration.styles))}
 		`
 	}
 

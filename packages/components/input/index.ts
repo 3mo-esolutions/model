@@ -1,5 +1,4 @@
 export * from './Input'
-export * from './iconButtonFieldIntegration'
 export * from './Field'
 export * from './fields'
 export * from './selects'
