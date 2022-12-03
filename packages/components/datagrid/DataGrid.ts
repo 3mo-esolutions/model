@@ -688,11 +688,13 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	protected get toolbarActionsTemplate() {
-		return !this.hasFilters ? nothing : html`
-			<mo-icon-button icon='filter_list'
-				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
-				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
-			></mo-icon-button>
+		return html`
+			${!this.hasFilters ? nothing : html`
+				<mo-icon-button icon='filter_list'
+					${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
+					@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
+				></mo-icon-button>
+			`}
 
 			<mo-icon-button icon='settings'
 				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
