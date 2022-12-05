@@ -28,9 +28,9 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					}
 				</style>
 
-				<mo-tab-bar slot='headingDetails' value=${this.tab} @navigate=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
-					<mo-tab value=${Tab.Card}>Card</mo-tab>
-					<mo-tab value=${Tab.DataGrid}>DataGrid</mo-tab>
+				<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
+					<mo-tab label='Card' value=${Tab.Card}></mo-tab>
+					<mo-tab label='DataGrid' value=${Tab.DataGrid}></mo-tab>
 				</mo-tab-bar>
 
 				${cache(this.tab === Tab.Card ? this.cardTemplate : this.dataGridTemplate)}
@@ -70,7 +70,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 				@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
 				@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
 			>
-				<mo-field-date slot='toolbar' label='Hello'></mo-field-date>
+				<mo-field-date slot='filter' label='Hello'></mo-field-date>
 
 				<app-field-select-album multiple slot='toolbar' default='All'
 					.value=${this.dataGridParameters.albumIds}

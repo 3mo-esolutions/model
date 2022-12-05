@@ -77,8 +77,7 @@ export class DataGridSidePanel<TData> extends Component {
 				${this.dataGrid.hasToolbar || this.dataGrid.hasFilters === false ? nothing : html`
 					<mo-tab-bar
 						value=${ifDefined(this.dataGrid.sidePanelTab)}
-						preventFirstTabNavigation
-						@navigate=${(e: CustomEvent<DataGridSidePanelTab | undefined>) => this.dataGrid.navigateToSidePanelTab(e.detail ?? DataGridSidePanelTab.Settings)}
+						@change=${(e: CustomEvent<DataGridSidePanelTab | undefined>) => this.dataGrid.navigateToSidePanelTab(e.detail ?? DataGridSidePanelTab.Settings)}
 					>
 						<mo-tab icon='filter_list' value=${DataGridSidePanelTab.Filters}></mo-tab>
 						<mo-tab icon='settings' value=${DataGridSidePanelTab.Settings}></mo-tab>

@@ -23,6 +23,7 @@ export * from '@3mo/section'
 export * from '@3mo/group-box'
 export * from '@3mo/alert'
 export * from '@3mo/fab-group'
+export * from '@3mo/tab'
 
 import './composer'
 
