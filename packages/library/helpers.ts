@@ -8,11 +8,6 @@ HTMLElement.prototype.switchAttribute = function (attribute: string, value: bool
 	}
 }
 
-HTMLElement.prototype.removeChildren = function () {
-	Array.from(this.children).forEach(child => child.remove())
-}
-
 interface HTMLElement {
 	switchAttribute(attribute: string, value: boolean): void
-	removeChildren(): void
 }

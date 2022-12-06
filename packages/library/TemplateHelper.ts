@@ -1,6 +1,8 @@
 import { TemplateResult, render, nothing } from 'lit'
 
 export class TemplateHelper {
+	private constructor() { }
+
 	static isEmpty(template: TemplateResult) {
 		return !template || template === nothing as any
 	}
