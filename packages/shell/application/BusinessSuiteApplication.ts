@@ -72,8 +72,8 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get navbarTemplate() {
 		return html`
-			<mo-flex direction='horizontal' gap='32px' ${style({ background: 'var(--mo-color-accent)', paddingInlineStart: '4px', height: '48px' })}>
-				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)' })}>
+			<mo-flex direction='horizontal' gap='32px' ${style({ background: 'var(--mo-color-accent)', paddingInlineStart: '4px', height: '48px', overflow: 'hidden' })}>
+				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
 					${this.navbarLeadingTemplate}
 				</mo-flex>
 
@@ -130,7 +130,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get navbarHeadingTemplate() {
 		return html`
-			<span ${style({ margin: '2px 0 0 8px', fontSize: '23px', fontFamily: 'Google Sans' })}>
+			<span ${style({ margin: '2px 0 0 8px', fontSize: '23px', fontFamily: 'Google Sans', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
 				${manifest?.short_name}
 			</span>
 		`
