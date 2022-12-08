@@ -508,6 +508,21 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			mo-error, ::slotted(mo-error) {
 				height: 100%;
 			}
+
+			#overlayModeContainer {
+				position: relative;
+				height: 100%;
+				width: 100%;
+			}
+
+			#overlayModeContainer mo-data-grid-side-panel {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+				background-color: var(--mo-color-surface);
+			}
 		`
 	}
 
@@ -515,28 +530,46 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			<slot name='column' hidden ${observeMutation(() => this.requestUpdate())}>${this.columnsTemplate}</slot>
 			${this.toolbarTemplate}
+			${this.clientWidth >= 768 ? this.splitterModeTemplate : this.overlayModeTemplate}
+		`
+	}
+
+	private get splitterModeTemplate() {
+		return html`
 			<mo-splitter direction='horizontal-reversed' ${style({ height: '100%' })} .resizerTemplate=${html`
 				<mo-splitter-resizer-line style='--mo-splitter-resizer-line-thickness: 1px; --mo-splitter-resizer-line-idle-background: var(--mo-color-transparent-gray-3); --mo-splitter-resizer-line-horizontal-transform: scaleX(5);'></mo-splitter-resizer-line>
 			`}>
 				${this.sidePanelTab === undefined ? nothing : html`
 					<mo-splitter-item size='min(25%, 300px)' min='max(15%, 250px)' max='clamp(100px, 50%, 750px)'>
-						<mo-data-grid-side-panel
-							.dataGrid=${this as any}
-							tab=${ifDefined(this.sidePanelTab)}
-						>
-							<slot slot='settings' name='settings'></slot>
-							<slot slot='filter' name='filter'></slot>
-						</mo-data-grid-side-panel>
+						${this.sidePanelTemplate}
 					</mo-splitter-item>
 				`}
 
 				<mo-splitter-item min='0px' ${style({ position: 'relative' })}>
-					<mo-flex ${style({ width: '*', position: 'relative' })}>
-						<!-- Do not try to cache the content via "cache" directive as it is problematic for virtualized DataGrids -->
-						${this.dataGridTemplate}
-					</mo-flex>
+					${this.dataGridTemplate}
 				</mo-splitter-item>
 			</mo-splitter>
+		`
+	}
+
+	private get overlayModeTemplate() {
+		return html`
+			<mo-flex id='overlayModeContainer'>
+				${this.dataGridTemplate}
+				${this.sidePanelTab === undefined ? nothing : this.sidePanelTemplate}
+			</mo-flex>
+		`
+	}
+
+	private get sidePanelTemplate() {
+		return html`
+			<mo-data-grid-side-panel
+				.dataGrid=${this as any}
+				tab=${ifDefined(this.sidePanelTab)}
+			>
+				<slot slot='settings' name='settings'></slot>
+				<slot slot='filter' name='filter'></slot>
+			</mo-data-grid-side-panel>
 		`
 	}
 
@@ -572,22 +605,26 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	protected get dataGridTemplate() {
 		this.provideCssColumnsProperties()
 		this.switchAttribute('hasDetails', this.hasDetails)
-		return !this.isSubDataGrid && !this.preventContentScroll ? html`
-			<mo-grid ${style({ height: '*' })} rows='* auto'>
-				<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
-					<mo-grid ${style({ height: '100%' })} rows='auto *'>
+		return html`
+			<mo-flex ${style({ width: '*', position: 'relative' })}>
+				${!this.isSubDataGrid && !this.preventContentScroll ? html`
+					<mo-grid ${style({ height: '*' })} rows='* auto'>
+						<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
+							<mo-grid ${style({ height: '100%' })} rows='auto *'>
+								${this.headerTemplate}
+								${this.contentTemplate}
+							</mo-grid>
+						</mo-scroller>
+						${this.footerTemplate}
+					</mo-grid>
+				` : html`
+					<mo-grid ${style({ height: '*' })} rows='auto * auto'>
 						${this.headerTemplate}
 						${this.contentTemplate}
+						${this.footerTemplate}
 					</mo-grid>
-				</mo-scroller>
-				${this.footerTemplate}
-			</mo-grid>
-		` : html`
-			<mo-grid ${style({ height: '*' })} rows='auto * auto'>
-				${this.headerTemplate}
-				${this.contentTemplate}
-				${this.footerTemplate}
-			</mo-grid>
+				`}
+			</mo-flex>
 		`
 	}
 
