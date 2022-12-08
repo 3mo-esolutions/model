@@ -567,10 +567,18 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				.dataGrid=${this as any}
 				tab=${ifDefined(this.sidePanelTab)}
 			>
-				<slot slot='settings' name='settings'></slot>
-				<slot slot='filter' name='filter'></slot>
+				<slot slot='settings' name='settings'>${this.defaultSettingsTemplate}</slot>
+				<slot slot='filter' name='filter'>${this.defaultFiltersTemplate}</slot>
 			</mo-data-grid-side-panel>
 		`
+	}
+
+	protected get defaultSettingsTemplate() {
+		return nothing
+	}
+
+	protected get defaultFiltersTemplate() {
+		return nothing
 	}
 
 	protected get columnsTemplate() {
@@ -693,15 +701,23 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.hasToolbar === false ? nothing : html`
 			<mo-flex id='flexToolbar' direction='horizontal' gap='var(--mo-thickness-l)' wrap='wrap' justifyContent='end' alignItems='center'>
 				<mo-flex direction='horizontal' alignItems='inherit' gap='var(--mo-thickness-l)' wrap='wrap' ${style({ width: '*' })}>
-					<slot name='toolbar'></slot>
+					<slot name='toolbar'>${this.toolbarDefaultTemplate}</slot>
 				</mo-flex>
 				<mo-flex direction='horizontal' gap='var(--mo-thickness-l)'>
-					<slot name='toolbarAction'></slot>
+					<slot name='toolbarAction'>${this.toolbarActionDefaultTemplate}</slot>
 					${this.toolbarActionsTemplate}
 					${this.selectionToolbarTemplate}
 				</mo-flex>
 			</mo-flex>
 		`
+	}
+
+	protected get toolbarDefaultTemplate() {
+		return nothing
+	}
+
+	protected get toolbarActionDefaultTemplate() {
+		return nothing
 	}
 
 	protected get selectionToolbarTemplate() {
