@@ -31,6 +31,7 @@
 		"@3mo/card": "x",
 		"@3mo/checkbox": "x",
 		"@3mo/checkbox-group": "x",
+		"@3mo/chip": "^0.0.1",
 		"@3mo/circular-progress": "x",
 		"@3mo/fab": "x",
 		"@3mo/fab-group": "x",
