@@ -167,7 +167,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	protected override get toolbarActionsTemplate() {
 		return html`
-			<mo-icon-button icon='visibility' ?hidden=${this.hasModebar} @click=${this.createNewMode} ${tooltip(this, _('New Mode'))}></mo-icon-button>
+			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode} ${tooltip(this, _('New Mode'))}></mo-icon-button>`}
 			${super.toolbarActionsTemplate}
 		`
 	}
