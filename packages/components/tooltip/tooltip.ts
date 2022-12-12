@@ -1,5 +1,5 @@
 import { ReactiveController } from 'lit'
-import { directive, Directive, ElementPart, HTMLTemplateResult, PartInfo, PartType, ReactiveControllerHost, render } from '../../library'
+import { directive, Directive, ElementPart, HTMLTemplateResult, PartInfo, PartType, ReactiveControllerHost, render } from '@a11d/lit'
 import { Tooltip } from './TooltipHost'
 
 export const tooltip = directive(class extends Directive {

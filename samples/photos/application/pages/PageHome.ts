@@ -1,4 +1,4 @@
-import { PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip, nothing } from '@3mo/model'
+import { PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 const enum Tab {
