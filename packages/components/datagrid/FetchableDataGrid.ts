@@ -2,6 +2,7 @@
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { Localizer } from '../../localization'
 import { Debouncer, Enqueuer } from '../../utilities'
+import { tooltip } from '../tooltip'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 
 export type FetchableDataGridParametersType = Record<string, unknown>
@@ -20,6 +21,7 @@ type Result<TData> = PaginatedResult<TData> | NonPaginatedResult<TData>
 
 Localizer.register(LanguageCode.German, {
 	'Make a filter selection': 'Filterauswahl vornehmen',
+	'Refetch': 'Neu laden',
 })
 
 /**
@@ -191,6 +193,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected override get toolbarActionsTemplate() {
 		return html`
 			<mo-icon-button icon='refresh'
+				${tooltip(this, _('Refetch'))}
 				${style({ color: this.fetching ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.refetchData()}
 			></mo-icon-button>

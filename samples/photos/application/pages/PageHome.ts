@@ -1,4 +1,4 @@
-import { PageComponent, component, html, route, state, ContextMenuHost, cache, style, nothing } from '@3mo/model'
+import { nothing, PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 const enum Tab {
@@ -40,11 +40,19 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 
 	private get cardTemplate() {
 		return html`
-			<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
+		<mo-flex direction='horizontal' alignItems='center' ${style({ height: '40px' })}>
 				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
-				${this.selectedPhotos.length === 0 ? nothing : html`<mo-icon-button icon='edit'></mo-icon-button>`}
-				${this.selectedPhotos.length === 0 ? nothing : html`<mo-icon-button icon='delete'></mo-icon-button>`}
-			</mo-flex>
+				${this.selectedPhotos.length === 0 ? nothing : html`
+					<mo-icon-button icon='edit'
+						${tooltip(this, html`
+							<mo-card heading='Tooltip'>
+								Edit <b>${this.selectedPhotos.length}</b> Photos
+							</mo-card>
+						`)}
+					></mo-icon-button>
+					<mo-icon-button icon='delete' ${tooltip(this, 'Delete!')}></mo-icon-button>
+				`}
+		</mo-flex>
 			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='var(--mo-thickness-m)'>
 				${this.photos.filter(photo => !this.parameters.albumId || photo.albumId === this.parameters.albumId).slice(0, 50).map(photo => html`
 					<photos-photo-card

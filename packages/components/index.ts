@@ -28,6 +28,7 @@ export * from '@3mo/chip'
 
 import './composer'
 
+export * from './tooltip'
 export * from './Confetti'
 export * from './material'
 export * from './input'
