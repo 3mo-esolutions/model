@@ -108,6 +108,8 @@ export class Tooltip extends Component {
 		const { left: anchorLeft, width: anchorWidth, top: anchorTop, height: anchorHeight } = this.anchor!.getBoundingClientRect()
 		const { height: tooltipHeight, width: tooltipWidth } = this.getBoundingClientRect()
 
+		// TODO: Support RTL
+
 		const leftOf = (value: number) => Math.max(0, Math.min(value, window.innerWidth - tooltipWidth))
 		const topOf = (value: number) => Math.max(0, Math.min(value, window.innerHeight - tooltipHeight))
 

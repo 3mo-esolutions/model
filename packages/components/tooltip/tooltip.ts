@@ -1,6 +1,6 @@
 import { ReactiveController } from 'lit'
 import { directive, Directive, ElementPart, HTMLTemplateResult, PartInfo, PartType, ReactiveControllerHost, render } from '@a11d/lit'
-import { Tooltip } from './TooltipHost'
+import { Tooltip, TooltipPosition } from './TooltipHost'
 
 export const tooltip = directive(class extends Directive {
 	private readonly tooltip?: Tooltip
@@ -19,12 +19,16 @@ export const tooltip = directive(class extends Directive {
 		this.tooltip ??= new Tooltip(this.element)
 	}
 
-	async render(host: ReactiveControllerHost, content: string | HTMLTemplateResult) {
+	async render(host: ReactiveControllerHost, content: string | HTMLTemplateResult, position?: TooltipPosition) {
 		if (typeof content === 'string') {
 			this.element.ariaLabel = content
 		}
 
 		render(content, this.tooltip!)
+
+		if (position) {
+			this.tooltip!.position = position
+		}
 
 		await host.updateComplete
 		host.addController(new TooltipController(this.tooltip!))
