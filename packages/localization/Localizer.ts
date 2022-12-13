@@ -38,9 +38,10 @@ export class Localizer {
 	static readonly pluralityIdentityType = 'pluralityNumber'
 
 	static get currentLanguage() {
-		return Localizer.languageCodeStorage.value
-			?? navigator.language.split('-')[0] as LanguageCode | undefined
-			?? LanguageCode.English
+		return window.location.search.split('lang=')[1]?.split('&')[0] as LanguageCode | undefined
+			|| Localizer.languageCodeStorage.value
+			|| navigator.language.split('-')[0] as LanguageCode | undefined
+			|| LanguageCode.English
 	}
 
 	static set currentLanguage(value) { Localizer.languageCodeStorage.value = value }
