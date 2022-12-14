@@ -1,9 +1,14 @@
 import { Component, event, html, ifDefined, property, PropertyValues, css, nothing, style } from '@a11d/lit'
 import { FieldPairMode, DialogLanguageField, Language, Field } from '../../input'
 
-/** @fires change */
+/**
+ * @fires change
+ * @fires languageChange
+ * @fires languagesFetch
+ */
 export abstract class LanguageField<TLanguage extends Language, TField extends Field<T | undefined>, T> extends Component {
 	@event() readonly change!: EventDispatcher<Map<TLanguage[keyof TLanguage], T | undefined>>
+	@event() readonly languageChange!: EventDispatcher<TLanguage>
 	@event() readonly languagesFetch!: EventDispatcher<Array<TLanguage>>
 
 	@property() mode = FieldPairMode.Attach
@@ -110,6 +115,7 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 
 	private readonly handleLanguageChange = (e: CustomEvent<TLanguage>) => {
 		this.selectedLanguage = e.detail
+		this.languageChange.dispatch(this.selectedLanguage)
 		this.updateFieldValue()
 	}
 
