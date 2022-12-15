@@ -1,5 +1,5 @@
 import { html, component, css, property, eventListener, Component, nothing, style } from '@a11d/lit'
-import { DialogAcknowledge, DialogAlert, DialogDeletion } from '../..'
+import { DialogAcknowledge, DialogAlert, DialogDeletion, tooltip } from '../..'
 import { ContextMenuHost } from '../../../shell'
 import { Localizer } from '../../../localization'
 import { DialogDataGridMode, ModdableDataGrid, Mode } from '.'
@@ -12,6 +12,7 @@ Localizer.register(LanguageCode.German, {
 	'Unarchive': 'Dearchivieren',
 	'Edit': 'Bearbeiten',
 	'Discard': 'Verwerfen',
+	'More options': 'Weitere Optionen',
 	'Do you want to delete the view "${name:string}"?': 'Soll die Ansicht "${name}" gelöscht werden?',
 	'This process is irreversible.': 'Dieser Vorgang ist unwiderruflich.',
 	'Don\'t Save': 'Nicht speichern',
@@ -119,7 +120,7 @@ export class DataGridModeChip extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-chip title=${this.mode.name}>
+			<mo-chip>
 				${this.mode.isArchived ? `[${this.mode.name}]` : this.mode.name}
 				${this.trailingSlotTemplate}
 			</mo-chip>
@@ -133,17 +134,20 @@ export class DataGridModeChip extends Component {
 					<span id='spanUnsaved'>*</span>
 
 					<mo-icon-button icon='undo' tabindex='-1' dense ${style({ marginInlineStart: '0 0 0 12px' })}
-						title=${_('Discard changes')}
+						${tooltip(_('Discard changes'))}
 						@click=${this.discardChanges}
 					></mo-icon-button>
 
 					<mo-icon-button icon='save' tabindex='-1' dense
-						title=${_('Save changes')}
+						${tooltip(_('Save changes'))}
 						@click=${this.saveChanges}
 					></mo-icon-button>
 				`}
 
-				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' dense @click=${this.openMenu}></mo-icon-button>
+				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' dense
+					${tooltip(_('More options'))}
+					@click=${this.openMenu}
+				></mo-icon-button>
 			</mo-flex>
 		`
 	}

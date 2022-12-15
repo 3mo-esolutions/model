@@ -44,13 +44,13 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 				<mo-heading typography='heading4' ${style({ color: 'var(--mo-color-accent)', width: '*' })}>${this.selectedPhotos.length > 0 ? `${this.selectedPhotos.length} Photo${this.selectedPhotos.length > 1 ? 's' : ''} selected` : 'Photos'}</mo-heading>
 				${this.selectedPhotos.length === 0 ? nothing : html`
 					<mo-icon-button icon='edit'
-						${tooltip(this, html`
+						${tooltip(html`
 							<mo-card heading='Tooltip'>
 								Edit <b>${this.selectedPhotos.length}</b> Photos
 							</mo-card>
 						`)}
 					></mo-icon-button>
-					<mo-icon-button icon='delete' ${tooltip(this, 'Delete!')}></mo-icon-button>
+					<mo-icon-button icon='delete' ${tooltip('Delete!')}></mo-icon-button>
 				`}
 		</mo-flex>
 			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='var(--mo-thickness-m)'>

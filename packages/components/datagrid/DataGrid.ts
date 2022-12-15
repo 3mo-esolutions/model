@@ -745,13 +745,14 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			${!this.hasFilters ? nothing : html`
 				<mo-icon-button icon='filter_list'
+					${tooltip(_('More Filters'))}
 					${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 					@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
 				></mo-icon-button>
 			`}
 
 			<mo-icon-button icon='settings'
-				${tooltip(this, _('Settings'))}
+				${tooltip(_('Settings'))}
 				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>

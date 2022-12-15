@@ -132,7 +132,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 						})}
 					</mo-flex>
 				</mo-scroller>
-				<mo-icon-button icon='add' @click=${this.createNewMode}></mo-icon-button>
+				<mo-icon-button icon='add' ${tooltip('New Mode')} @click=${this.createNewMode}></mo-icon-button>
 			</mo-flex>
 
 			${this.modesRepository.getArchived().length === 0 ? nothing : html`
@@ -167,7 +167,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	protected override get toolbarActionsTemplate() {
 		return html`
-			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode} ${tooltip(this, _('New Mode'))}></mo-icon-button>`}
+			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode} ${tooltip(_('New Mode'))}></mo-icon-button>`}
 			${super.toolbarActionsTemplate}
 		`
 	}

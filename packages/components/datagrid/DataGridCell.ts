@@ -2,6 +2,7 @@ import { component, Component, html, property, nothing, css, style } from '@a11d
 import { Localizer } from '../../localization'
 import { NotificationHost } from '@a11d/lit-application'
 import { ColumnDefinition, DataGridRow } from '.'
+import { tooltip } from '..'
 
 Localizer.register(LanguageCode.German, {
 	'Using the clipboard is not allowed in an insecure browser environment': 'In einer unsicheren Browser-Umgebung darf kein Text in die Zwischenablage kopiert werden',
@@ -105,9 +106,9 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 	}
 
 	private get copyIconButtonTemplate() {
-		return !window.isSecureContext ? nothing : html`
+		return !window.isSecureContext || true as boolean ? nothing : html`
 			<mo-icon-button id='copyIconButton' icon='content_copy' dense
-				title=${`${this.column.heading} kopieren`}
+				${tooltip(`${this.column.heading} kopieren`)}
 				${style({ right: this.column.alignment === 'end' ? 'unset' : '4px', insetInlineStart: this.column.alignment !== 'end' ? 'unset' : '4px' })}
 				@click=${this.copyIconButtonClick}
 			></mo-icon-button>

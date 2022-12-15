@@ -1,6 +1,6 @@
 import { component, Component, css, html, ifDefined, nothing, property } from '@a11d/lit'
 import { Localizer } from '../../localization'
-import { Checkbox, style } from '../..'
+import { Checkbox, style, tooltip } from '../..'
 import { ColumnDefinition } from './ColumnDefinition'
 import { DataGrid } from './DataGrid'
 
@@ -117,7 +117,7 @@ export class DataGridSidePanel<TData> extends Component {
 
 				<mo-section heading='Tools'>
 					<mo-icon-button icon='file_download'
-						title=${_('Export as Excel file')}
+						${tooltip('Export as Excel file')}
 						@click=${() => this.dataGrid.exportExcelFile()}
 					></mo-icon-button>
 				</mo-section>
