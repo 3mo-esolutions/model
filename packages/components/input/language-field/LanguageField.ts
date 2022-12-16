@@ -86,23 +86,33 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 		return html`
 			<mo-field-pair mode=${this.mode} ${style({ height: '100%' })}>
 				<slot></slot>
-				${!this.languages.length ? nothing : html`
-					<mo-field-select slot='attachment' label=''
-						.data=${this.selectedLanguage}
-						@dataChange=${this.handleLanguageChange}
-					>
-						${this.languages.length === 1 ? nothing : html`<mo-icon-button slot='leading' icon='launch' ${style({ display: 'flex', alignItems: 'center' })} @click=${this.openDialog}></mo-icon-button>`}
-						<img slot='leading' src=${ifDefined(this.flagPath)} style='width: 30px'>
-						${this.languages.map((language, index) => html`
-							<mo-option value=${language.code} .data=${language} ?selected=${index === 0} graphic='avatar'>
-								<img src=${this.getFlagPath(language)} slot='graphic' style='width:30px'>
-								${language.name}
-							</mo-option>
-						`)}
-					</mo-field-select>
-				`}
+				${this.languageTemplate}
 			</mo-field-pair>
 		`
+	}
+
+	protected get languageTemplate() {
+		return html`
+			${!this.languages.length ? nothing : html`
+				<mo-field-select slot=${this.languageSelectFieldSlotName} label=''
+					.data=${this.selectedLanguage}
+					@dataChange=${this.handleLanguageChange}
+				>
+					${this.languages.length === 1 ? nothing : html`<mo-icon-button slot='leading' icon='launch' ${style({ display: 'flex', alignItems: 'center' })} @click=${this.openDialog}></mo-icon-button>`}
+					<img slot='leading' src=${ifDefined(this.flagPath)} style='width: 30px'>
+					${this.languages.map((language, index) => html`
+						<mo-option value=${language.code} .data=${language} ?selected=${index === 0} graphic='avatar'>
+							<img src=${this.getFlagPath(language)} slot='graphic' style='width:30px'>
+							${language.name}
+						</mo-option>
+					`)}
+				</mo-field-select>
+			`}
+		`
+	}
+
+	protected get languageSelectFieldSlotName() {
+		return 'attachment'
 	}
 
 	private getFlagPath(language: Language) {

@@ -1,5 +1,4 @@
 import { Component, component, html, property } from '@a11d/lit'
-import { Field } from './Field'
 
 export const enum FieldPairMode {
 	Attach = 'attach',
@@ -7,11 +6,8 @@ export const enum FieldPairMode {
 }
 
 @component('mo-field-pair')
-export class FieldPair<TField extends Field<unknown>, TFieldAttachment extends Field<unknown>> extends Component {
+export class FieldPair extends Component {
 	@property({ reflect: true }) mode = FieldPairMode.Attach
-
-	get fieldElement() { return this.children[0] as TField }
-	get fieldAttachmentElement() { return this.children[1] as TFieldAttachment }
 
 	protected override get template() {
 		return html`
@@ -62,6 +58,6 @@ export class FieldPair<TField extends Field<unknown>, TFieldAttachment extends F
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-field-pair': FieldPair<any, any>
+		'mo-field-pair': FieldPair
 	}
 }
