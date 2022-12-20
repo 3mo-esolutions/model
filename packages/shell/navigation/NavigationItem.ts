@@ -57,6 +57,10 @@ export class NavigationItem extends Component {
 		`
 	}
 
+	override disconnected() {
+		ContextMenuHost.contextMenu?.close()
+	}
+
 	@eventListener('click')
 	protected readonly clickHandler = () => this.open = true
 
