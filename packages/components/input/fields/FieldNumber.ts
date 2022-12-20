@@ -6,6 +6,7 @@ import { Field } from '../Field'
 export class FieldNumber extends Field<number> {
 	override readonly inputMode = 'decimal'
 	override readonly autoComplete = 'off'
+	override readonly selectOnFocus = true
 
 	// For lit-analyzer to solve generic error
 	@property({ type: Number, reflect: true })
