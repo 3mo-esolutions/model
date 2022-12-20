@@ -1,4 +1,4 @@
-import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, query } from '@a11d/lit'
+import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, query, repeat } from '@a11d/lit'
 import { Application, deactivateInert, PageComponent, PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
 import { Authentication } from '@a11d/lit-application-authentication'
 import { DialogReleaseNotes, PagePreferences } from '../../components'
@@ -138,7 +138,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get navbarNavigationTemplate() {
 		return html`
-			${this.navigations.map(navigation => this.getNavigationItemTemplate(navigation))}
+			${repeat(this.navigations, navigation => navigation.key, navigation => this.getNavigationItemTemplate(navigation))}
 		`
 	}
 
