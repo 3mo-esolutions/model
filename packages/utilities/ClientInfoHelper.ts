@@ -22,8 +22,4 @@ export class ClientInfoHelper {
 	static get operatingSystem() {
 		return this.bowser.getOSName() as OperatingSystem
 	}
-
-	static get browserZoomLevel() {
-		return window.outerWidth / window.innerWidth / 1.27617148554337
-	}
 }
