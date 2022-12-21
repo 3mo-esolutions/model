@@ -2,12 +2,12 @@ import { property, component, Component, html, css, TemplateResult, live, query,
 import { NotificationHost, LocalStorageEntry } from '@a11d/lit-application'
 import { SlotController } from '@3mo/slot-controller'
 import { observeResize } from '@3mo/resize-observer'
+import { tooltip } from '@3mo/tooltip'
 import { observeMutation } from '@3mo/mutation-observer'
 import { ContextMenuHost } from '../../shell'
 import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
-import { tooltip } from '../tooltip'
 
 Localizer.register(LanguageCode.English, {
 	'${count:pluralityNumber} entries selected': [

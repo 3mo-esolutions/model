@@ -54,6 +54,7 @@
 		"@3mo/splitter": "x",
 		"@3mo/switch": "x",
 		"@3mo/tab": "x",
+		"@3mo/tooltip": "x",
 		"@3mo/virtualized-scroller": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

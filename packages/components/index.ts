@@ -25,10 +25,10 @@ export * from '@3mo/alert'
 export * from '@3mo/fab-group'
 export * from '@3mo/tab'
 export * from '@3mo/chip'
+export * from '@3mo/tooltip'
 
 import './composer'
 
-export * from './tooltip'
 export * from './Confetti'
 export * from './material'
 export * from './input'

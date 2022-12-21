@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
+import { tooltip } from '@3mo/tooltip'
 import { Localizer } from '../../localization'
 import { Debouncer, Enqueuer } from '../../utilities'
-import { tooltip } from '../tooltip'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 
 export type FetchableDataGridParametersType = Record<string, unknown>
