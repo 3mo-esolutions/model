@@ -1,5 +1,5 @@
 export type Language = {
-	id: number
+	id?: string | number
 	name: string
-	code: string
+	flagSource?: string
 }

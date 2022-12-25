@@ -1,42 +1,30 @@
-import { component, html, state } from '@a11d/lit'
-import { LanguageField, Language, Field } from '../..'
+import { component, css, html, ifDefined } from '@a11d/lit'
 import { DialogComponent } from '@a11d/lit-application'
+import type { LanguageField, Language } from '..'
 
 @component('mo-dialog-language-field')
-export class DialogLanguageField<TLanguage extends Language, TField extends Field<T | undefined>, T> extends DialogComponent<{ readonly languageField: LanguageField<TLanguage, TField, T> }> {
-	@state() private readonly value = new Map<TLanguage[keyof TLanguage], T | undefined>(this.parameters.languageField.value)
+export class DialogLanguageField<TValue, TLanguage extends Language> extends DialogComponent<{ readonly languageField: LanguageField<TValue, TLanguage> }> {
+	static override get styles() {
+		return css`
+			mo-flex { padding: var(--mo-thickness-m) 0; }
+			img { padding-inline-end: var(--mo-thickness-m); }
+		`
+	}
 
 	protected override get template() {
 		return html`
-			<mo-dialog heading=${this.parameters.languageField.fieldElement.label} primaryButtonText=${_('Apply')}>
-				<style>
-					mo-flex {
-						padding: var(--mo-thickness-m) 0;
-					}
-
-					mo-flex > img {
-						padding-inline-end: var(--mo-thickness-m);
-					}
-				</style>
-				${this.parameters.languageField['languages'].map(language => html`
-					<mo-flex direction='horizontal'>
-						<img src='/assets/images/flags/${language.code}.svg' style='width: 30px; margin-top: 3px;'>
-						${this.getFieldTemplate(language)}
-					</mo-flex>
-				`)}
+			<mo-dialog heading=${this.parameters.languageField.label} primaryButtonText=${_('Apply')}>
+				<mo-flex gap='4px'>
+					${this.parameters.languageField.languages.map(language => html`
+						<mo-grid columns='auto 1fr' alignItems='center' gap='4px'>
+							<img src=${ifDefined(language?.flagSource)} style='width: 30px'>
+							${this.parameters.languageField.getFieldTemplateByLanguage(language)}
+						</mo-grid>
+					`)}
+				</mo-flex>
 			</mo-dialog>
 		`
 	}
 
-	private readonly getFieldTemplate = (language: TLanguage) => {
-		const field = this.parameters.languageField.fieldElement.cloneNode(true) as TField
-		field.value = this.parameters.languageField.value.get(language[this.parameters.languageField.valueKey])
-		field.style.flex = '1'
-		field.change.subscribe(value => this.value.set(language[this.parameters.languageField.valueKey], value))
-		return field
-	}
-
-	protected override primaryAction = () => {
-		this.parameters.languageField.value = this.value
-	}
+	protected override primaryAction() { }
 }

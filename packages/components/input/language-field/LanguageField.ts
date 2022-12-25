@@ -1,68 +1,67 @@
-import { Component, event, html, ifDefined, property, PropertyValues, css, nothing, style } from '@a11d/lit'
-import { FieldPairMode, DialogLanguageField, Language, Field } from '../../input'
+import { Component, event, html, ifDefined, property, css, nothing, style, HTMLTemplateResult, state } from '@a11d/lit'
+import { FieldPairMode, DialogLanguageField, Language } from '../../input'
 
 /**
+ * @attr mode
+ * @attr valueKey
+ * @attr label
+ * @attr value
+ * @attr selectedLanguage
+ * @attr defaultLanguage
+ * @attr fieldTemplate
  * @fires change
  * @fires languageChange
  * @fires languagesFetch
  */
-export abstract class LanguageField<TLanguage extends Language, TField extends Field<T | undefined>, T> extends Component {
-	@event() readonly change!: EventDispatcher<Map<TLanguage[keyof TLanguage], T | undefined>>
+export abstract class LanguageField<TValue, TLanguage extends Language> extends Component {
+	static applyDefaultLanguageBehavior = true
+
+	@event() readonly change!: EventDispatcher<Map<TLanguage[keyof TLanguage], TValue | undefined>>
 	@event() readonly languageChange!: EventDispatcher<TLanguage>
 	@event() readonly languagesFetch!: EventDispatcher<Array<TLanguage>>
 
 	@property() mode = FieldPairMode.Attach
 	@property() valueKey: keyof TLanguage = 'id'
-	@property({ type: Object }) value = new Map<TLanguage[keyof TLanguage], T | undefined>()
-	@property({ type: Object }) defaultLanguage?: TLanguage
+	@property() label!: string
+	@property({ type: Object }) value = new Map<TLanguage[keyof TLanguage], TValue | undefined>()
 	@property({ type: Object }) selectedLanguage?: TLanguage
+	@property({ type: Object }) defaultLanguage?: TLanguage
+	@property({ type: Object }) fieldTemplate?: (value: TValue, handleChange: (value: TValue) => void, label: string, language: TLanguage) => HTMLTemplateResult
 
-	private languages = new Array<TLanguage>()
+	@state() protected _languages = new Array<TLanguage>()
+	get languages() { return this._languages }
 
 	protected abstract fetch(): Promise<Array<TLanguage>>
 
-	get fieldElement() { return this.children[0] as TField }
+	get getFieldTemplate() {
+		return this.fieldTemplate
+	}
 
 	protected override initialized() {
-		this.fieldElement.change.subscribe(this.handleFieldChange)
 		this.fetchLanguages()
 	}
 
-	protected override disconnected() {
-		this.fieldElement.change.unsubscribe(this.handleFieldChange)
-	}
-
 	protected async fetchLanguages() {
-		this.languages = await this.fetch()
-		this.selectedLanguage = this.languages[0]
-		this.defaultLanguage = this.languages[0]
-		this.languagesFetch.dispatch(this.languages)
+		this._languages = await this.fetch()
+		this.languagesFetch.dispatch(this._languages)
+		if (!this.selectedLanguage && this._languages[0]) {
+			this.handleLanguageChange(this._languages[0])
+		}
+		this.defaultLanguage ??= this._languages[0]
 	}
 
-	private readonly handleFieldChange = (value?: T) => {
-		if (!this.selectedLanguage) {
-			return
-		}
+	handleFieldChange(language: TLanguage, value: TValue) {
+		this.value.set(language[this.valueKey], value)
+		this.change.dispatch(this.value)
 
-		this.value.set(this.selectedLanguage[this.valueKey], value)
-
-		const applyDefaultLanguageBehaviorIfApplicable = () => {
+		if (LanguageField.applyDefaultLanguageBehavior) {
 			if (!!value &&
-				this.selectedLanguage === this.defaultLanguage &&
+				language === this.defaultLanguage &&
 				[...this.value].filter(([key]) => key !== this.defaultLanguage?.[this.valueKey]).every(v => v === undefined)
 			) {
-				this.languages.forEach(lang => this.value.set(lang[this.valueKey], value))
+				this._languages.forEach(lang => this.value.set(lang[this.valueKey], value))
 			}
 		}
-
-		applyDefaultLanguageBehaviorIfApplicable()
-
-		this.change.dispatch(this.value)
-	}
-
-	protected override update(changedProperties: PropertyValues) {
-		super.update(changedProperties)
-		this.updateFieldValue()
 	}
 
 	static override get styles() {
@@ -82,27 +81,38 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 	}
 
 	protected override get template() {
-		this.switchAttribute('single', this.languages.length === 1)
-		return html`
+		this.switchAttribute('single', this._languages.length === 1)
+		return !this.selectedLanguage ? nothing : html`
 			<mo-field-pair mode=${this.mode} ${style({ height: '100%' })}>
-				<slot></slot>
-				${this.languageTemplate}
+				${this.getFieldTemplateByLanguage(this.selectedLanguage)}
+				${this.languageSelectorTemplate}
 			</mo-field-pair>
 		`
 	}
 
-	protected get languageTemplate() {
+	getFieldTemplateByLanguage(language: TLanguage) {
+		return !this.getFieldTemplate ? nothing : this.getFieldTemplate(
+			this.value.get(language?.[this.valueKey]!)!,
+			value => this.handleFieldChange(language, value),
+			this.label,
+			language
+		)
+	}
+
+	protected get languageSelectorTemplate() {
 		return html`
-			${!this.languages.length ? nothing : html`
-				<mo-field-select slot=${this.languageSelectFieldSlotName} label=''
-					.data=${this.selectedLanguage}
-					@dataChange=${this.handleLanguageChange}
+			${!this._languages.length ? nothing : html`
+				<mo-field-select slot='attachment' label=''
+					value=${ifDefined(this.selectedLanguage?.[this.valueKey])}
+					@change=${(e: CustomEvent<TLanguage[keyof TLanguage]>) => this.handleLanguageChange(this._languages.find(l => l[this.valueKey] === e.detail) as TLanguage)}
 				>
-					${this.languages.length === 1 ? nothing : html`<mo-icon-button slot='leading' icon='launch' ${style({ display: 'flex', alignItems: 'center' })} @click=${this.openDialog}></mo-icon-button>`}
-					<img slot='leading' src=${ifDefined(this.flagPath)} style='width: 30px'>
-					${this.languages.map((language, index) => html`
-						<mo-option value=${language.code} .data=${language} ?selected=${index === 0} graphic='avatar'>
-							<img src=${this.getFlagPath(language)} slot='graphic' style='width:30px'>
+					<mo-flex slot='leading' direction='horizontal' gap='4px'>
+						${this.languageSelectorLeadingTemplate}
+					</mo-flex>
+
+					${this._languages.map(language => html`
+						<mo-option value=${language[this.valueKey]} .data=${language} graphic='avatar'>
+							<img src=${ifDefined(language?.flagSource)} slot='graphic' style='width: 30px'>
 							${language.name}
 						</mo-option>
 					`)}
@@ -111,32 +121,28 @@ export abstract class LanguageField<TLanguage extends Language, TField extends F
 		`
 	}
 
-	protected get languageSelectFieldSlotName() {
-		return 'attachment'
+	protected get languageSelectorLeadingTemplate() {
+		return html`
+			${this._languages.length === 1 ? nothing : html`
+				<mo-icon-button icon='launch' ${style({ display: 'flex', alignItems: 'center' })} @click=${() => this.openDialog()}></mo-icon-button>
+			`}
+			${this.flagTemplate}
+		`
 	}
 
-	private getFlagPath(language: Language) {
-		return `/assets/images/flags/${language.code}.svg`
+	protected get flagTemplate() {
+		return !this.selectedLanguage?.flagSource ? nothing : html`
+			<img src=${ifDefined(this.selectedLanguage.flagSource)} style='width: 30px'>
+		`
 	}
 
-	private get flagPath() {
-		return this.selectedLanguage ? this.getFlagPath(this.selectedLanguage) : undefined
+	protected handleLanguageChange(language: TLanguage) {
+		this.selectedLanguage = language
+		this.languageChange.dispatch(language)
 	}
 
-	private readonly handleLanguageChange = (e: CustomEvent<TLanguage>) => {
-		this.selectedLanguage = e.detail
-		this.languageChange.dispatch(this.selectedLanguage)
-		this.updateFieldValue()
-	}
-
-	protected updateFieldValue() {
-		if (this.selectedLanguage) {
-			this.fieldElement.value = this.value.get(this.selectedLanguage[this.valueKey])
-		}
-	}
-
-	private readonly openDialog = async () => {
+	protected async openDialog() {
 		await new DialogLanguageField({ languageField: this }).confirm()
-		this.change.dispatch(this.value)
+		this.requestUpdate()
 	}
 }

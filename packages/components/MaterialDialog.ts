@@ -16,10 +16,17 @@ export const enum MaterialDialogSize {
 
 /**
  * @attr heading
- * @attr hideActions
- * @attr defaultAction
- * @attr actionAttribute
+ * @attr size
+ * @attr blocking
+ * @attr primaryOnEnter
+ * @attr manualClose
+ * @attr primaryButtonText
+ * @attr secondaryButtonText
  * @attr initialFocusAttribute
+ * @attr scrimClickAction
+ * @attr preventCancellationOnEscape
+ * @attr poppable
+ * @attr boundToWindow
  * @slot
  * @slot primaryAction
  * @slot secondaryAction
