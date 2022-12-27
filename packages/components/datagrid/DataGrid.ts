@@ -691,7 +691,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 						page=${this.page}
 						@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
 					>
-						<slot name='sum' slot='sum'></slot>
+						<slot name='sum' slot='sum'>${this.sumDefaultTemplate}</slot>
 					</mo-data-grid-footer>
 				`}
 			</mo-flex>
@@ -718,6 +718,10 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	protected get toolbarActionDefaultTemplate() {
+		return nothing
+	}
+
+	protected get sumDefaultTemplate() {
 		return nothing
 	}
 
