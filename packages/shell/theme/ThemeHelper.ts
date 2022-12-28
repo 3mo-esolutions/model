@@ -9,8 +9,8 @@ export class ThemeHelper {
 
 		constructor() {
 			super('MoDeL.Theme.Background', Background.System)
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.updateAttributeValue())
-			window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => this.updateAttributeValue())
+			window.matchMedia('(prefers-color-scheme: dark)').onchange = () => this.updateAttributeValue()
+			window.matchMedia('(prefers-color-scheme: light)').onchange = () => this.updateAttributeValue()
 			Application.addInitializer(application => {
 				this.application = application as Application
 				this.updateAttributeValue()
