@@ -25,6 +25,10 @@ export class NavigationListItem extends Component {
 				list-style: none;
 			}
 
+			summary::-webkit-details-marker, summary::marker {
+				display: none;
+			}
+
 			slot[name=details] {
 				display: block;
 			}
