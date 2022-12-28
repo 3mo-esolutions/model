@@ -1,4 +1,4 @@
-import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css } from '@a11d/lit'
+import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css, event } from '@a11d/lit'
 import { TemplateHelper } from '../../library'
 import { Corner } from '@material/mwc-menu'
 import { ContextMenu, ListItem } from '../..'
@@ -21,7 +21,10 @@ export class ContextMenuHost extends Component {
 	static get instance() { return MoDeL.application.renderRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get open() { return this.instance.open }
 	static get close() { return this.instance.close }
+	static get closed() { return this.instance.closed }
 	static get contextMenu() { return this.instance.contextMenu }
+
+	@event() readonly closed!: EventDispatcher
 
 	@property({ type: Object }) menuContent?: TemplateResult
 
@@ -30,6 +33,9 @@ export class ContextMenuHost extends Component {
 	@query('mo-context-menu') private readonly contextMenu!: ContextMenu
 
 	open = (...args: OpenArguments) => {
+		if (this.contextMenu.open) {
+			this.closed.dispatch()
+		}
 		switch (true) {
 			case args[0] instanceof MouseEvent:
 				return this.openByMouseEvent(...args as MouseEventOpenArguments)
@@ -40,12 +46,12 @@ export class ContextMenuHost extends Component {
 			default:
 				throw new TypeError('Invalid arguments')
 		}
-
 	}
 
-	close = async () => {
+	readonly close = async () => {
 		this.menuContent = undefined
 		await this.updateComplete
+		this.closed.dispatch()
 	}
 
 	private openByMouseEvent(mouseEvent: MouseEvent, template: TemplateResult) {
@@ -114,7 +120,7 @@ export class ContextMenuHost extends Component {
 
 	protected override get template() {
 		return html`
-			<mo-context-menu fixed quick ?open=${!!this.menuContent} @closed=${() => this.menuContent = undefined}>
+			<mo-context-menu fixed quick ?open=${!!this.menuContent} @closed=${this.close}>
 				${this.menuContent ?? nothing}
 			</mo-context-menu>
 		`

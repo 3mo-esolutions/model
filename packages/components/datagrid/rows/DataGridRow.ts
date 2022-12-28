@@ -10,6 +10,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	@property({ type: Object }) dataGrid!: DataGrid<TData, TDetailsElement>
 	@property({ type: Object }) data!: TData
 	@property({ type: Boolean, reflect: true }) selected = false
+	@property({ type: Boolean, reflect: true }) contextMenuOpen = false
 	@property({ type: Boolean, reflect: true }) detailsOpen = false
 	@state() protected editing = false
 
@@ -19,10 +20,16 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	protected override connected() {
 		this.dataGrid.rowConnected.dispatch(this)
+		ContextMenuHost.closed.subscribe(this.handleContextMenuClosed)
 	}
 
 	protected override disconnected() {
 		this.dataGrid.rowDisconnected.dispatch(this)
+		ContextMenuHost.closed.unsubscribe(this.handleContextMenuClosed)
+	}
+
+	protected readonly handleContextMenuClosed = () => {
+		this.contextMenuOpen = false
 	}
 
 	protected override initialized() {
@@ -79,7 +86,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				background: var(--mo-data-grid-row-background-on-opened-detail-element, var(--mo-color-accent-transparent));
 			}
 
-			:host([selected]) #contentContainer {
+			:host([selected]) #contentContainer, :host([contextMenuOpen]) #contentContainer {
 				background: var(--mo-data-grid-selection-background) !important;
 			}
 
@@ -98,7 +105,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 				color: var(--mo-color-gray);
 			}
 
-			:host([selected]) #contextMenuIconButton {
+			:host([selected]) #contextMenuIconButton, :host([contextMenuOpen]) #contextMenuIconButton {
 				color: var(--mo-color-foreground);
 				opacity: 1;
 			}
@@ -309,6 +316,8 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 			? [pointerEvent, contextMenuTemplate]
 			: [[this.clientLeft, this.clientTop], contextMenuTemplate]
 		))
+
+		this.contextMenuOpen = true
 	}
 
 	async closeContextMenu() {
