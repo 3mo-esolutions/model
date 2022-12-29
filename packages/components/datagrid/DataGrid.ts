@@ -222,6 +222,12 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.requestUpdate()
 	}
 
+	extractColumnsIfNotSetExplicitly() {
+		if (this.columns.length === 0) {
+			this.extractColumns()
+		}
+	}
+
 	extractColumns() {
 		const extractedColumns = this.elementExtractedColumns.length > 0
 			? this.elementExtractedColumns
@@ -371,7 +377,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
-		this.extractColumns()
+		this.extractColumnsIfNotSetExplicitly()
 		this.rowEdit.subscribe(() => this.requestUpdate())
 		this.cellEdit.subscribe(() => this.requestUpdate())
 		this.setPage(1)
