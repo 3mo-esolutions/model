@@ -1,8 +1,6 @@
-import { component, Component, html, property, nothing, css, style } from '@a11d/lit'
+import { component, Component, html, property, css } from '@a11d/lit'
 import { Localizer } from '../../localization'
-import { NotificationHost } from '@a11d/lit-application'
 import { ColumnDefinition, DataGridRow } from '.'
-import { tooltip } from '..'
 
 Localizer.register(LanguageCode.German, {
 	'Using the clipboard is not allowed in an insecure browser environment': 'In einer unsicheren Browser-Umgebung darf kein Text in die Zwischenablage kopiert werden',
@@ -48,36 +46,6 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 				text-align: center;
 			}
 
-			#copyIconButton {
-				visibility: hidden;
-				opacity: 0;
-				transition: all var(--mo-duration-quick) ease-in-out;
-				border-radius: 50%;
-				height: 30px;
-				background: var(--mo-color-surface);
-				color: var(--mo-color-accent);
-				position: absolute;
-				top: calc((var(--mo-data-grid-row-height) - 30px) / 2);
-			}
-
-			:host(:not([editing]):hover) #copyIconButton {
-				visibility: visible;
-				opacity: 1;
-				transition-delay: 0.25s;
-			}
-
-			:host(:not([editing]):hover) {
-				transition: padding var(--mo-duration-quick) ease-in-out;
-			}
-
-			:host([alignment=right]:not([editing]):hover) {
-				padding-inline-start: 30px;
-			}
-
-			:host(:not([alignment=right]):not([editing]):hover) {
-				padding-inline-end: 30px;
-			}
-
 			:host > :first-child {
 				line-height: var(--mo-data-grid-row-height);
 			}
@@ -101,27 +69,7 @@ export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDe
 		this.setAttribute('alignment', this.column.alignment || 'start')
 		return this.column.editable && this.editing && editContentTemplate ? editContentTemplate : html`
 			${contentTemplate}
-			${this.copyIconButtonTemplate}
 		`
-	}
-
-	private get copyIconButtonTemplate() {
-		return !window.isSecureContext || true as boolean ? nothing : html`
-			<mo-icon-button id='copyIconButton' icon='content_copy' dense
-				${tooltip(`${this.column.heading} kopieren`)}
-				${style({ right: this.column.alignment === 'end' ? 'unset' : '4px', insetInlineStart: this.column.alignment !== 'end' ? 'unset' : '4px' })}
-				@click=${this.copyIconButtonClick}
-			></mo-icon-button>
-		`
-	}
-
-	private readonly copyIconButtonClick = async (e: MouseEvent) => {
-		e.stopImmediatePropagation()
-		if (!window.isSecureContext) {
-			NotificationHost.instance?.notifyError(_('Using the clipboard is not allowed in an insecure browser environment'))
-		}
-		await navigator.clipboard.writeText(String(this.value))
-		NotificationHost.instance?.notifySuccess(_('Copied to clipboard'))
 	}
 }
 

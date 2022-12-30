@@ -49,10 +49,7 @@ export class DataGridHeader<TData> extends Component {
 				border-bottom: var(--mo-data-grid-border);
 				position: relative;
 				height: var(--mo-data-grid-header-height);
-			}
-
-			:host-context([mo-data-grid]:is([subDataGrid]):not([headerHidden])) #grdHeader {
-				background-color: rgba(var(--mo-color-foreground-base), 0.04);
+				background: var(--mo-data-grid-header-background);
 			}
 
 			.headerContent {
@@ -152,7 +149,7 @@ export class DataGridHeader<TData> extends Component {
 	}
 
 	private get moreTemplate() {
-		return this.dataGrid.hasToolbar || this.dataGrid.sidePanelHidden || this.dataGrid.isSubDataGrid ? nothing : html`
+		return this.dataGrid.hasToolbar || this.dataGrid.sidePanelHidden ? nothing : html`
 			<mo-flex alignItems='center' justifyContent='center' ${style({ margin: '0px 8px 0px 0px', cursor: 'pointer', position: 'relative' })}>
 				<mo-icon-button dense icon='settings' ${style({ color: 'var(--mo-color-accent)', fontSize: 'var(--mo-font-size-l)' })}
 					@click=${() => this.dataGrid.navigateToSidePanelTab(this.dataGrid.sidePanelTab ? undefined : DataGridSidePanelTab.Settings)}

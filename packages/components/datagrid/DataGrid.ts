@@ -1,9 +1,10 @@
 import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '@a11d/lit'
 import { NotificationHost, LocalStorageEntry } from '@a11d/lit-application'
+import { InstanceofAttributeController } from '@3mo/instanceof-attribute-controller'
 import { SlotController } from '@3mo/slot-controller'
-import { observeResize } from '@3mo/resize-observer'
 import { tooltip } from '@3mo/tooltip'
 import { observeMutation } from '@3mo/mutation-observer'
+import { MediaQueryController } from '@3mo/media-query-observer'
 import { ContextMenuHost } from '../../shell'
 import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
@@ -57,6 +58,34 @@ export type DataGridSorting<TData> = {
 }
 
 /**
+ * @element mo-data-grid
+ *
+ * @attr data - The data to be displayed in the DataGrid. It is an array of objects, where each object represents a row.
+ * @attr columns - The columns to be displayed in the DataGrid. It is an array of objects, where each object represents a column.
+ * @attr headerHidden - Whether the header should be hidden.
+ * @attr preventVerticalContentScroll - Whether the content should be prevented from scrolling vertically.
+ * @attr page - The current page.
+ * @attr pagination - The pagination mode. It can be either `auto` or a number.
+ * @attr sorting - The sorting mode. It is an object with `selector` and `strategy` properties.
+ * @attr selectionMode - The selection mode.
+ * @attr isDataSelectable - Whether data of a given row is selectable.
+ * @attr selectedData - The selected data.
+ * @attr selectOnClick - Whether the row should be selected on click.
+ * @attr selectionBehaviorOnDataChange - The behavior of the selection when the data changes.
+ * @attr multipleDetails - Whether multiple details can be opened at the same time.
+ * @attr subDataGridDataSelector - The key path of the sub data grid data.
+ * @attr hasDataDetail - Whether the data has a detail.
+ * @attr detailsOnClick - Whether the details should be opened on click.
+ * @attr primaryContextMenuItemOnDoubleClick - The primary context menu item on double click.
+ * @attr editability - The editability mode.
+ * @attr getRowDetailsTemplate - A function which returns a template for the details of a given row.
+ * @attr getRowContextMenuTemplate - A function which returns a template for the context menu of a given row.
+ * @attr sidePanelTab - The side panel tab.
+ * @attr sidePanelHidden - Whether the side panel should be hidden.
+ * @attr selectionToolbarDisabled - Whether the selection toolbar should be disabled.
+ * @attr hasAlternatingBackground - Whether the rows should have alternating background.
+ * @attr preventFabCollapse - Whether the FAB should be prevented from collapsing.
+ *
  * @slot - Use this slot only for declarative DataGrid APIs e.g. setting ColumnDefinitions via `mo-data-grid-columns` tag
  * @slot toolbar - The horizontal bar above DataGrid's contents
  * @slot filter - A vertical bar for elements which filter DataGrid's data. It is opened through an icon-button in the toolbar.
@@ -64,6 +93,7 @@ export type DataGridSorting<TData> = {
  * @slot settings - A vertical bar for elements which change DataGrid's settings. It is pre-filled with columns' settings and can be opened through an icon-button in the toolbar.
  * @slot fab - A wrapper at the bottom right edge, floating right above the footer, expecting Floating Action Button to be placed in.
  * @slot error-no-content - A slot for displaying an error message when no data is available.
+ *
  * @fires dataChange {CustomEvent<Array<TData>>}
  * @fires selectionChange {CustomEvent<Array<TData>>}
  * @fires pageChange {CustomEvent<number>}
@@ -109,7 +139,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	@property({ type: Array }) columns = new Array<ColumnDefinition<TData>>()
 
 	@property({ type: Boolean, reflect: true }) headerHidden = false
-	@property({ type: Boolean }) preventContentScroll = false
+	@property({ type: Boolean, reflect: true }) preventVerticalContentScroll = false
 	@property({ type: Number }) page = 1
 	@property({ reflect: true, converter: (value: string | null) => Number.isNaN(Number(value)) ? value : Number(value) }) pagination?: DataGridPagination
 
@@ -136,7 +166,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	@property() sidePanelTab: DataGridSidePanelTab | undefined
 	@property({ type: Boolean }) sidePanelHidden = false
 	@property({ type: Boolean }) selectionToolbarDisabled = false
-	@property({ type: Boolean, reflect: true }) hasAlternatingBackground = DataGrid.hasAlternatingBackground.value
+	@property({ type: Boolean }) hasAlternatingBackground = DataGrid.hasAlternatingBackground.value
 
 	@property({ type: Boolean }) preventFabCollapse = false
 	@property({ type: Boolean, reflect: true }) protected fabSlotCollapsed = false
@@ -265,12 +295,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.rows.filter(row => this.hasDetail(row.data))
 	}
 
-	get isSubDataGrid() {
-		const isSubDataGrid = this.parentElement?.tagName.toLowerCase() === 'slot'
-		this.switchAttribute('subDataGrid', isSubDataGrid)
-		return isSubDataGrid
-	}
-
 	get hasDetails() {
 		return !!this.getRowDetailsTemplate
 			&& this.data.some(data => this.hasDetail(data))
@@ -355,17 +379,16 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.page !== this.maxPage
 	}
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	constructor() {
-		super()
-		this.switchAttribute('mo-data-grid', true)
-		new SlotController(this, async () => {
-			this.hasSums
-			this.hasFabs
-			await this.updateComplete
-			this.style.setProperty('--mo-data-grid-fab-slot-width', `${this.renderRoot.querySelector('slot[name=fab]')?.getBoundingClientRect().width || 75}px`)
-		})
-	}
+	protected readonly slotController = new SlotController(this, async () => {
+		this.hasSums
+		this.hasFabs
+		await this.updateComplete
+		this.style.setProperty('--mo-data-grid-fab-slot-width', `${this.renderRoot.querySelector('slot[name=fab]')?.getBoundingClientRect().width || 75}px`)
+	})
+
+	protected readonly instanceofAttributeController = new InstanceofAttributeController(this)
+
+	protected readonly smallScreenObserverController = new MediaQueryController(this, '(max-width: 768px)')
 
 	protected override updated(...parameters: Parameters<Component['updated']>) {
 		this.header?.requestUpdate()
@@ -412,8 +435,16 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			}
 
 			/* Don't try to use ":nth-child(even)" as it won't work for virtualized data-grids */
-			:host([hasAlternatingBackground]:not([subDataGrid])) [mo-data-grid-row][data-has-alternating-background] {
+			[mo-data-grid-row][data-has-alternating-background] {
 				background: var(--mo-alternating-background);
+			}
+
+			:host([preventVerticalContentScroll]) #rowsContainer {
+				overflow-y: hidden;
+			}
+
+			:host([preventVerticalContentScroll]) #rowsContainer::part(container) {
+				position: relative;
 			}
 
 			:host(:not([selectionMode="none"])) {
@@ -422,28 +453,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 			:host([hasDetails]) {
 				--mo-data-grid-row-tree-line-width: 18px;
-			}
-
-			:host([subDataGrid]) mo-data-grid-header {
-				--mo-data-grid-border: hidden;
-			}
-
-			:host([subDataGrid]:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple]))) {
-				padding: 0px !important;
-			}
-
-			:host([subDataGrid]:not([headerHidden])) {
-				background: var(--mo-color-transparent-gray-1);
-			}
-
-			:host(:not([headerHidden])[subDataGrid]:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple]))) {
-				margin: 16px var(--mo-details-data-grid-left-margin);
-				width: calc(100% - calc(var(--mo-details-data-grid-left-margin) * 2));
-			}
-
-			:host([headerHidden][subDataGrid]:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple]))) {
-				margin: 0px 0px 0px var(--mo-details-data-grid-left-margin);
-				width: calc(100% - var(--mo-details-data-grid-left-margin));
 			}
 
 			#flexToolbar {
@@ -537,7 +546,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			<slot name='column' hidden ${observeMutation(() => this.requestUpdate())}>${this.columnsTemplate}</slot>
 			${this.toolbarTemplate}
-			${this.clientWidth >= 768 ? this.splitterModeTemplate : this.overlayModeTemplate}
+			${this.smallScreenObserverController.matches ? this.overlayModeTemplate : this.splitterModeTemplate}
 		`
 	}
 
@@ -622,7 +631,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return html`
 			<mo-flex ${style({ width: '*', position: 'relative' })}>
-				${!this.isSubDataGrid && !this.preventContentScroll ? html`
+				${!this.preventVerticalContentScroll ? html`
 					<mo-grid ${style({ height: '*' })} rows='* auto'>
 						<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
 							<mo-grid ${style({ height: '100%' })} rows='auto *'>
@@ -651,22 +660,13 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	private get rowsTemplate() {
 		const getRowTemplate = (data: TData, index: number) => this.getRowTemplate(data, index)
-		const shallVirtualize = this.isSubDataGrid === false && this.renderData.length > DataGrid.virtualizationThreshold
+		const shallVirtualize = !this.preventVerticalContentScroll && this.renderData.length > DataGrid.virtualizationThreshold
 		const content = shallVirtualize === false
 			? this.renderData.map(getRowTemplate)
 			: html`<mo-virtualized-scroller .items=${this.renderData} .getItemTemplate=${getRowTemplate as any}></mo-virtualized-scroller>`
-		return this.preventContentScroll || this.isSubDataGrid ? html`
-			<mo-flex id='rowsContainer'
-				${style({ gridRow: '2', gridColumn: '1 / last-line' })}
-				${observeResize(() => this.requestUpdate())}
-				@scroll=${this.handleScroll}
-			>
-				${content}
-			</mo-flex>
-		` : html`
+		return html`
 			<mo-scroller id='rowsContainer'
 				${style({ gridRow: '2', gridColumn: '1 / last-line' })}
-				${observeResize(() => this.requestUpdate())}
 				@scroll=${this.handleScroll}
 			>
 				${content}
@@ -680,7 +680,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				.dataGrid=${this as any}
 				.data=${data}
 				?selected=${live(this.selectedData.includes(data))}
-				?data-has-alternating-background=${index % 2 === 1}
+				?data-has-alternating-background=${this.hasAlternatingBackground && index % 2 === 1}
 			></${this.rowElementTag}>
 		`
 	}

@@ -1,5 +1,6 @@
 import { css, component, html } from '@a11d/lit'
 import { DataGridRow } from './DataGridRow'
+import type { DataGrid } from '../DataGrid'
 
 @component('mo-data-grid-default-row')
 export class DataGridDefaultRow<TData, TDetailsElement extends Element | undefined = undefined> extends DataGridRow<TData, TDetailsElement> {
@@ -23,29 +24,37 @@ export class DataGridDefaultRow<TData, TDetailsElement extends Element | undefin
 				height: var(--mo-data-grid-row-height);
 			}
 
-			/* Tree-view borders
-				#detailsContainer [mo-data-grid]::before {
-					content: '';
-					width: 2px;
-					height: calc(100% - var(--mo-details-data-grid-left-margin) + 5px - calc(var(--mo-data-grid-row-height)));
-					top: calc(var(--mo-data-grid-row-height) / 2 + 3px);
-					position: absolute;
-					background-color: var(--mo-color-gray-alpha-1);
-					/* Because of the background color of rows
-					z-index: 1;
-				}
+			#detailsContainer [instanceof*=mo-data-grid] {
+				--mo-data-grid-header-background: rgba(var(--mo-color-foreground-base), 0.04);
+				--mo-alternating-background: transparent;
+			}
 
-				:host([isSubRow]) mo-grid::before {
-					content: '';
-					width: var(--mo-data-grid-row-tree-line-width, 8px);
-					border-top: 2px solid var(--mo-color-gray);
-					margin-inline-start: calc(var(--mo-details-data-grid-left-margin) * -1);
-					position: absolute;
-					top: calc(50% - 1px);
-					height: 0px;
-				}
-			*/
+			#detailsContainer [instanceof*=mo-data-grid]:not([headerHidden]) {
+				background: var(--mo-color-transparent-gray-1);
+			}
+
+			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid]:not([headerHidden]) {
+				margin: 16px var(--mo-details-data-grid-left-margin);
+				width: calc(100% - calc(var(--mo-details-data-grid-left-margin) * 2));
+			}
+
+			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid] {
+				padding: 0px !important;
+			}
+
+			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid][headerHidden] {
+				margin: 0px 0px 0px var(--mo-details-data-grid-left-margin);
+				width: calc(100% - var(--mo-details-data-grid-left-margin));
+			}
 		`
+	}
+
+	override updated(...parameters: Parameters<DataGridRow<TData, TDetailsElement>['updated']>) {
+		super.updated(...parameters)
+		const subDataGrid = this.renderRoot.querySelector<DataGrid<TData, TDetailsElement>>('[instanceof*=mo-data-grid]')
+		if (subDataGrid) {
+			subDataGrid.preventVerticalContentScroll = true
+		}
 	}
 
 	protected override get rowTemplate() {
