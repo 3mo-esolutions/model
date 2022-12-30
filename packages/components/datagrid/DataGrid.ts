@@ -439,11 +439,11 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				background: var(--mo-alternating-background);
 			}
 
-			:host([preventVerticalContentScroll]) #rowsContainer {
+			:host([preventVerticalContentScroll]) mo-scroller {
 				overflow-y: hidden;
 			}
 
-			:host([preventVerticalContentScroll]) #rowsContainer::part(container) {
+			:host([preventVerticalContentScroll]) mo-scroller::part(container) {
 				position: relative;
 			}
 
@@ -631,23 +631,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.switchAttribute('hasDetails', this.hasDetails)
 		return html`
 			<mo-flex ${style({ width: '*', position: 'relative' })}>
-				${!this.preventVerticalContentScroll ? html`
-					<mo-grid ${style({ height: '*' })} rows='* auto'>
-						<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
-							<mo-grid ${style({ height: '100%' })} rows='auto *'>
-								${this.headerTemplate}
-								${this.contentTemplate}
-							</mo-grid>
-						</mo-scroller>
-						${this.footerTemplate}
-					</mo-grid>
-				` : html`
-					<mo-grid ${style({ height: '*' })} rows='auto * auto'>
-						${this.headerTemplate}
-						${this.contentTemplate}
-						${this.footerTemplate}
-					</mo-grid>
-				`}
+				<mo-grid ${style({ height: '*' })} rows='* auto'>
+					<mo-scroller ${style({ minHeight: 'var(--mo-data-grid-content-min-height, calc(2.5 * var(--mo-data-grid-row-height) + var(--mo-data-grid-header-height)))' })}>
+						<mo-grid ${style({ height: '100%' })} rows='auto *'>
+							${this.headerTemplate}
+							${this.contentTemplate}
+						</mo-grid>
+					</mo-scroller>
+					${this.footerTemplate}
+				</mo-grid>
 			</mo-flex>
 		`
 	}
