@@ -1,4 +1,4 @@
-import { component, property, Component, css, state, html, nothing, event, query, ifDefined } from '@a11d/lit'
+import { component, property, Component, css, state, html, nothing, query, ifDefined } from '@a11d/lit'
 import { FieldNumber, Localizer, style } from '../..'
 import { ColumnDefinition, DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
@@ -10,11 +10,8 @@ Localizer.register(LanguageCode.Farsi, {
 	'${page:number} of ${maxPage:number}': '${page} از ${maxPage}',
 })
 
-/** @fires pageChange {CustomEvent<number>} */
 @component('mo-data-grid-footer')
 export class DataGridFooter<TData> extends Component {
-	@event() readonly pageChange!: EventDispatcher<number>
-
 	@property({ type: Object }) dataGrid!: DataGrid<TData, any>
 
 	@property({ type: Number }) page = 1
@@ -160,6 +157,14 @@ export class DataGridFooter<TData> extends Component {
 		`
 	}
 
+	private handlePaginationChange(value: DataGridPagination) {
+		if (this.dataGrid.maxPage && this.dataGrid.page > this.dataGrid.maxPage) {
+			this.dataGrid.page = this.dataGrid.maxPage
+		}
+		this.dataGrid.handlePaginationChange(value)
+		this.manualPageSize = false
+	}
+
 	private handleManualPageChange(value: number) {
 		if (this.page === value) {
 			return
@@ -167,14 +172,6 @@ export class DataGridFooter<TData> extends Component {
 
 		this.setPage(value)
 		this.manualPagination = false
-	}
-
-	private handlePaginationChange(value: DataGridPagination) {
-		if (this.dataGrid.maxPage && this.dataGrid.page > this.dataGrid.maxPage) {
-			this.dataGrid.page = this.dataGrid.maxPage
-		}
-		this.dataGrid.setPagination(value)
-		this.manualPageSize = false
 	}
 
 	private setPage(value: number) {
@@ -189,7 +186,7 @@ export class DataGridFooter<TData> extends Component {
 		this.manualPagination = false
 		this.manualPageSize = false
 		this.page = value
-		this.pageChange.dispatch(value)
+		this.dataGrid.handlePageChange(value)
 	}
 }
 

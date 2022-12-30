@@ -185,9 +185,17 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		this.pageChange.dispatch(page)
 	}
 
+	handlePageChange(page: number) {
+		this.setPage(page)
+	}
+
 	setPagination(pagination?: DataGridPagination) {
 		this.pagination = pagination
 		this.paginationChange.dispatch(pagination)
+	}
+
+	handlePaginationChange(pagination?: DataGridPagination) {
+		this.setPagination(pagination)
 	}
 
 	setData(data: Array<TData>, selectionBehavior = this.selectionBehaviorOnDataChange) {
@@ -244,6 +252,10 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	unsort() {
 		this.sort(undefined)
+	}
+
+	handleSortChange(sorting?: DataGridSorting<TData>) {
+		this.sort(sorting)
 	}
 
 	setColumns(columns: Array<ColumnDefinition<TData>>) {
@@ -367,12 +379,12 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.hasPagination || this.hasSums
 	}
 
-	get dataLength(): number | undefined {
+	get dataLength() {
 		return this.data.length
 	}
 
 	get maxPage() {
-		return this.dataLength ? Math.ceil(this.dataLength / this.pageSize) : undefined
+		return Math.ceil(this.dataLength / this.pageSize)
 	}
 
 	get hasNextPage() {
@@ -687,7 +699,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 					<mo-data-grid-footer
 						.dataGrid=${this as any}
 						page=${this.page}
-						@pageChange=${(e: CustomEvent<number>) => this.setPage(e.detail)}
 					>
 						<slot name='sum' slot='sum'>${this.sumDefaultTemplate}</slot>
 					</mo-data-grid-footer>

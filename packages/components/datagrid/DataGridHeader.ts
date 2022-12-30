@@ -166,11 +166,11 @@ export class DataGridHeader<TData> extends Component {
 		const defaultSortingStrategy = DataGridSortingStrategy.Descending
 
 		if (this.dataGrid.sorting?.selector !== column.dataSelector) {
-			this.dataGrid.sort({ selector: column.dataSelector, strategy: defaultSortingStrategy })
+			this.dataGrid.handleSortChange({ selector: column.dataSelector, strategy: defaultSortingStrategy })
 		} else if (this.dataGrid.sorting.strategy === DataGridSortingStrategy.Descending) {
-			this.dataGrid.sort({ selector: column.dataSelector, strategy: DataGridSortingStrategy.Ascending })
+			this.dataGrid.handleSortChange({ selector: column.dataSelector, strategy: DataGridSortingStrategy.Ascending })
 		} else {
-			this.dataGrid.unsort()
+			this.dataGrid.handleSortChange(undefined)
 		}
 
 		this.requestUpdate()

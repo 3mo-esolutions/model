@@ -53,7 +53,8 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 			if (oldValue) {
 				await this.fetchDebouncer.debounce(this.debounce)
 			}
-			this.refetchData()
+
+			this.resetPageAndRefetch()
 		}
 	}) parameters?: TDataFetcherParameters
 
@@ -91,32 +92,35 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	protected fetchDirty?(parameters: TDataFetcherParameters): Array<TData> | undefined
 
-	private _preventFetchOnSettingPage = true
-	override setPage(...args: Parameters<DataGrid<TData, TDetailsElement>['setPage']>) {
-		super.setPage(...args)
-		if (this.getPaginationParameters && this._preventFetchOnSettingPage === false) {
-			this.refetchData()
-		}
-		this._preventFetchOnSettingPage = false
-	}
-
-	override setPagination(...args: Parameters<DataGrid<TData, TDetailsElement>['setPagination']>) {
-		super.setPagination(...args)
-		if (this.getPaginationParameters) {
-			this.refetchData()
-		}
-	}
-
 	setParameters(parameters: TDataFetcherParameters) {
 		this.parameters = parameters
 		this.parametersChange.dispatch(this.parameters)
 	}
 
-	override sort(...args: Parameters<DataGrid<TData, TDetailsElement>['sort']>) {
-		super.sort(...args)
-		if (this.getSortParameters) {
+	override handlePageChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePageChange']>) {
+		super.handlePageChange(...args)
+		if (this.getPaginationParameters) {
 			this.refetchData()
 		}
+	}
+
+	override handlePaginationChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePaginationChange']>) {
+		super.handlePaginationChange(...args)
+		if (this.getPaginationParameters) {
+			this.resetPageAndRefetch()
+		}
+	}
+
+	override handleSortChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handleSortChange']>) {
+		super.handleSortChange(...args)
+		if (this.getSortParameters) {
+			this.resetPageAndRefetch()
+		}
+	}
+
+	private resetPageAndRefetch() {
+		this.setPage(1)
+		this.refetchData()
 	}
 
 	override get renderData() {
@@ -187,6 +191,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 			result instanceof Array ? result : result.data,
 			this.silentFetch ? DataGridSelectionBehaviorOnDataChange.Maintain : this.selectionBehaviorOnDataChange,
 		)
+
 		this.fetching = false
 	}
 
