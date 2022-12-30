@@ -1,5 +1,4 @@
 import './Promise'
-import './Json'
 import './CurrencyCode'
 import './MoDate'
 import './ObjectExtensions'
