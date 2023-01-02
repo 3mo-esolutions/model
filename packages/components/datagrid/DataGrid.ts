@@ -24,7 +24,8 @@ Localizer.register(LanguageCode.German, {
 		'1 Eintrag ausgewählt',
 		'${count} Einträge ausgewählt',
 	],
-	'Options': 'Optionen'
+	'Options': 'Optionen',
+	'More Filters': 'Weitere Filter',
 })
 
 export type DataGridPagination = 'auto' | number
@@ -234,7 +235,8 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	hasDetail(data: TData) {
-		return this.hasDataDetail?.(data) ?? true
+		const hasAutomatedSubDataGrid = !this.subDataGridDataSelector || this.subDataGridDataSelector && Array.isArray(getValueByKeyPath(data, this.subDataGridDataSelector))
+		return hasAutomatedSubDataGrid && (this.hasDataDetail?.(data) ?? true)
 	}
 
 	async openRowDetails() {
@@ -308,9 +310,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	}
 
 	get hasDetails() {
-		return !!this.getRowDetailsTemplate
-			&& this.data.some(data => this.hasDetail(data))
-			&& (!this.subDataGridDataSelector || this.data.some(data => Array.isArray(getValueByKeyPath(data, this.subDataGridDataSelector!))))
+		return !!this.getRowDetailsTemplate && this.data.some(data => this.hasDetail(data))
 	}
 
 	get hasSelection() {
