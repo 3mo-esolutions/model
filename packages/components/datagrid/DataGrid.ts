@@ -5,6 +5,7 @@ import { SlotController } from '@3mo/slot-controller'
 import { tooltip } from '@3mo/tooltip'
 import { observeMutation } from '@3mo/mutation-observer'
 import { MediaQueryController } from '@3mo/media-query-observer'
+import { observeResize } from '@3mo/resize-observer'
 import { ContextMenuHost } from '../../shell'
 import { ExcelHelper } from '../../utilities'
 import { Localizer } from '../../localization'
@@ -671,6 +672,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			<mo-scroller id='rowsContainer'
 				${style({ gridRow: '2', gridColumn: '1 / last-line' })}
+				${observeResize(() => this.requestUpdate())}
 				@scroll=${this.handleScroll}
 			>
 				${content}
