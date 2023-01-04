@@ -1,11 +1,12 @@
-import { LitElement, nothing, render } from '@a11d/lit'
-import { decorateLitElement } from '@a11d/lit/dist/decorateLitElement'
+import { ReactiveElement, nothing, render } from '@a11d/lit'
+import { decorateReactiveElement } from '@a11d/lit/dist/decorateReactiveElement'
 
 export const customRendersSymbol = Symbol('customRenders')
 
+/** @deprecated */
 export const renderContainer = (containerQuery: string) => {
-	return (prototype: LitElement, _property: string, descriptor: PropertyDescriptor) => {
-		decorateLitElement({
+	return (prototype: ReactiveElement, _property: string, descriptor: PropertyDescriptor) => {
+		decorateReactiveElement({
 			prototype,
 			constructorPropertyKey: customRendersSymbol,
 			initialValue: new Map,
@@ -17,7 +18,7 @@ export const renderContainer = (containerQuery: string) => {
 	}
 }
 
-function renderAllTemplates(this: LitElement, customRenders: Map<string, PropertyDescriptor>) {
+function renderAllTemplates(this: ReactiveElement, customRenders: Map<string, PropertyDescriptor>) {
 	const extractTemplate = (descriptor: PropertyDescriptor) => {
 		if (typeof descriptor.get === 'function') {
 			return descriptor.get.call(this)
