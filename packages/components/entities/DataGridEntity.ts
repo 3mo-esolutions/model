@@ -40,7 +40,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 				: this.create()
 		)
 
-		await this.refetchData()
+		await this.requestFetch()
 	}
 
 	async editAndRefetch(entity: TEntity) {
@@ -54,7 +54,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 				: this.edit(entity)
 		)
 
-		await this.refetchData()
+		await this.requestFetch()
 	}
 
 	protected override firstUpdated(props: PropertyValues) {
@@ -98,7 +98,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 			return
 		}
 		await this.delete(...entities)
-		await this.refetchData()
+		await this.requestFetch()
 	}
 
 	// eslint-disable-next-line @typescript-eslint/ban-types

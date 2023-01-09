@@ -3,9 +3,9 @@ import { Photo, PhotoService } from '../../sdk'
 
 @component('photos-data-grid-photo')
 export class DataGridPhoto extends ModdableDataGrid<Photo, FirstParameter<typeof PhotoService.getAll>> {
-	protected override fetchData = PhotoService.getAll
+	override readonly fetch = PhotoService.getAll
 
-	protected override getPaginationParameters = () => ({
+	override readonly paginationParameters = () => ({
 		take: this.pageSize,
 		skip: (this.page - 1) * this.pageSize
 	})

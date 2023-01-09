@@ -1,8 +1,4 @@
 export class Debouncer {
-	static debounce(delay: number) {
-		return new Debouncer().debounce(delay)
-	}
-
 	private timerId = -1
 
 	debounce(delay: number) {

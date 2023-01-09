@@ -41,7 +41,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 			const cache = !this.mode?.id ? undefined : this.dataCache.get(this.mode.id)
 			this.page = cache?.page ?? 1
 
-			this.refetchData()
+			this.requestFetch()
 			this.modeChange.dispatch(mode)
 		}
 	}) mode = !this.modeStorage.value ? undefined : this.modesRepository.get(this.modeStorage.value)
@@ -71,10 +71,10 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 	}
 
 	private preventFetch = false
-	protected override enqueueFetch(...parameters: Parameters<FetchableDataGrid<TData, TDataFetcherParameters, TDetailsElement>['enqueueFetch']>) {
+	override requestFetch() {
 		return this.preventFetch
 			? Promise.resolve()
-			: super.enqueueFetch(...parameters)
+			: super.requestFetch()
 	}
 
 	override setData(...parameters: Parameters<DataGrid<TData, TDetailsElement>['setData']>) {

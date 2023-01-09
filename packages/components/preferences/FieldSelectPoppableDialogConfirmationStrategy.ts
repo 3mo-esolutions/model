@@ -10,11 +10,11 @@ export class FieldSelectPoppableDialogConfirmationStrategy extends FieldFetchabl
 		[DialogConfirmationStrategy.Window, 'in neuem Fenster'],
 	])
 
-	protected override fetchData() {
+	override readonly fetch = () => {
 		return Promise.resolve([...FieldSelectPoppableDialogConfirmationStrategy.labelByData.keys()])
 	}
 
-	protected override getOptionTemplate(strategy: DialogConfirmationStrategy) {
+	override readonly optionTemplate = (strategy: DialogConfirmationStrategy) => {
 		return html`
 			<mo-option value=${strategy}>${FieldSelectPoppableDialogConfirmationStrategy.labelByData.get(strategy)}</mo-option>
 		`

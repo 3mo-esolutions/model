@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, property, event, TemplateResult, html } from '@a11d/lit'
+import { component, css, property, event, html, HTMLTemplateResult } from '@a11d/lit'
 import { TemplateHelper } from '../../../library'
-import { Debouncer, Enqueuer, PropertyValues } from '../../..'
+import { FetcherController } from '../../../utilities'
+import { PropertyValues } from '../../..'
 import { FieldSelect } from './FieldSelect'
 import { Option } from './Option'
 
@@ -15,17 +16,31 @@ export type FieldFetchableSelectParametersType = Record<string, unknown> | void
 export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchableSelectParametersType = void> extends FieldSelect<T> {
 	private static readonly fetchedOptionsRenderLimit = 200
 
-	@event() readonly parametersChange!: EventDispatcher<TDataFetcherParameters | undefined>
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
-	@property({ type: Number }) debounce = 500
 	@property({ type: Number }) optionsRenderLimit = FieldFetchableSelect.fetchedOptionsRenderLimit
-	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.refetchData() } }) parameters?: TDataFetcherParameters
-	@property({ type: Object }) optionTemplate?: FieldFetchableSelect<T, TDataFetcherParameters>['getOptionTemplate']
-	@property({ type: Object }) searchParameters?: FieldFetchableSelect<T, TDataFetcherParameters>['getSearchParameters']
-	@property({ type: Object }) fetch: FieldFetchableSelect<T, TDataFetcherParameters>['fetchData'] = () => Promise.resolve([])
+	@property({ type: Object }) optionTemplate?: (data: T, index: number, array: Array<T>) => HTMLTemplateResult
 
-	@property({ type: Boolean, reflect: true }) protected fetching = false
+	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.requestFetch() } }) parameters?: TDataFetcherParameters
+	@property({ type: Object }) searchParameters?: (keyword: string) => Partial<TDataFetcherParameters>
+
+	@property({ type: Object }) fetch?: (parameters: TDataFetcherParameters | undefined) => Promise<Array<T>>
+
+	@property({ type: Number })
+	get debounce() { return this.fetcherController.debounce }
+	set debounce(value) { this.fetcherController.debounce = value }
+
+	readonly fetcherController = new FetcherController(this, {
+		fetchEvent: this.dataFetch,
+		fetcher: async () => {
+			const searchParameters = this.searchParameters?.(this.searchKeyword) ?? {}
+			const parameters = {
+				...this.parameters,
+				...searchParameters
+			} as TDataFetcherParameters
+			return await this.fetch?.(parameters) || []
+		},
+	})
 
 	static override get styles() {
 		return css`
@@ -53,63 +68,40 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		`
 	}
 
-	private readonly fetchEnqueuer = new Enqueuer<Array<T>>()
-	private readonly searchDebouncer = new Debouncer()
-
-	protected fetchedData = new Array<T>()
+	protected override get template() {
+		this.switchAttribute('fetching', this.fetcherController.isFetching)
+		return super.template
+	}
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		if (!this.parameters) {
-			this.refetchData()
+			this.requestFetch()
 		}
 	}
 
-	protected fetchData(parameters: TDataFetcherParameters | undefined): Promise<Array<T>> {
-		return this.fetch(parameters)
-	}
-
-	protected getOptionTemplate(data: T, index: number, array: Array<T>): TemplateResult {
-		return this.optionTemplate?.(data, index, array) ?? html`
-			<mo-option .data=${data} value=${index}>${data}</mo-option>
-		`
-	}
-
-	protected getSearchParameters(keyword: string): Partial<TDataFetcherParameters> | undefined {
-		return this.searchParameters?.(keyword)
-	}
-
-	protected override async search(keyword: string) {
-		const searchParameters = this.getSearchParameters(keyword)
-		if (!searchParameters) {
-			return super.search(keyword)
+	protected override async search() {
+		if (!this.searchParameters) {
+			return super.search()
 		} else {
-			await this.searchDebouncer.debounce(this.debounce)
-			await this.refetchData({
-				...this.parameters,
-				...searchParameters,
-			} as TDataFetcherParameters, true)
+			await this.requestFetch(true)
 		}
 	}
 
-	async refetchData(parameters = this.parameters, skipValueEvaluation = false) {
-		this.parametersChange.dispatch(parameters)
-		const fetchPromise = this.fetchData(parameters)
-
-		this.fetching = true
-		const data = await this.fetchEnqueuer.enqueue(fetchPromise)
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		this.fetchedData = data || []
-		this.dataFetch.dispatch(this.fetchedData)
+	async requestFetch(skipValueEvaluation = false) {
+		await this.fetcherController.fetch()
 		this.renderFetchedDataOptions()
-		this.fetching = false
 		if (!skipValueEvaluation) {
 			this.value = this['_value']
 		}
 	}
 
 	private renderFetchedDataOptions() {
-		const optionsTemplate = html`${this.fetchedData.map((...args) => this.getOptionTemplate(...args))}`
+		const optionsTemplate = html`
+			${this.fetcherController.data?.map((data, index, array) => this.optionTemplate?.(data, index, array) ?? html`
+				<mo-option .data=${data} value=${index}>${data}</mo-option>
+			`)}
+		`
 		this.fetchedOptions = TemplateHelper.extractAllBySelector(optionsTemplate, 'mo-option') as Array<Option<T>>
 	}
 

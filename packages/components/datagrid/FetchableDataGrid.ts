@@ -2,7 +2,7 @@
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { tooltip } from '@3mo/tooltip'
 import { Localizer } from '../../localization'
-import { Debouncer, Enqueuer } from '../../utilities'
+import { FetcherController } from '../../utilities'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 
 export type FetchableDataGridParametersType = Record<string, unknown>
@@ -27,41 +27,58 @@ Localizer.register(LanguageCode.German, {
 /**
  * @slot error-no-selection - A slot for displaying an error message when user action is required in order for DataGrid to initiate the fetch.
  * @fires parametersChange {CustomEvent<TDataFetcherParameters>}
+ * @fires dataFetch {CustomEvent<Result<TData>>}
  */
 @component('mo-fetchable-data-grid')
 export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDataGridParametersType = Record<string, never>, TDetailsElement extends Element | undefined = undefined> extends DataGrid<TData, TDetailsElement> {
 	@event() readonly parametersChange!: EventDispatcher<TDataFetcherParameters | undefined>
+	@event() readonly dataFetch!: EventDispatcher<Result<TData>>
 
 	@property({ type: Object }) fetch: (parameters: TDataFetcherParameters) => Promise<Result<TData>> = () => Promise.resolve([])
 	@property({ type: Boolean }) silentFetch = false
-	@property({ type: Number }) debounce = 500
+	@property({ type: Number })
+	get debounce() { return this.fetcherController.debounce }
+	set debounce(value) { this.fetcherController.debounce = value }
 	@property({
 		type: Object,
-		async updated(this: FetchableDataGrid<TData, TDataFetcherParameters>, _, oldValue?: TDataFetcherParameters) {
+		updated(this: FetchableDataGrid<TData, TDataFetcherParameters>, value?: TDataFetcherParameters) {
 			// Ignore if the data is being set directly
-			if (!this.parameters && this.data.length > 0) {
+			if (!value && this.data.length > 0) {
 				return
 			}
 
 			// "CustomEvent"s convert undefined values to null on event handling
-			for (const key in this.parameters) {
-				if (this.parameters[key] === null) {
-					delete this.parameters[key]
+			for (const key in value) {
+				if (value[key] === null) {
+					delete value[key]
 				}
 			}
 
-			if (oldValue) {
-				await this.fetchDebouncer.debounce(this.debounce)
-			}
-
-			this.resetPageAndRefetch()
+			this.resetPageAndRequestFetch()
 		}
 	}) parameters?: TDataFetcherParameters
+	@property({ type: Object }) paginationParameters?: () => Partial<TDataFetcherParameters>
+	@property({ type: Object }) sortParameters?: () => Partial<TDataFetcherParameters>
+	// protected filterParameters?: () => TDataFetcherParameters
 
-	@property({ type: Boolean, reflect: true }) protected fetching = false
+	protected fetchDirty?(parameters: TDataFetcherParameters): Array<TData> | undefined
 
-	private readonly fetchEnqueuer = new Enqueuer<Result<TData>>()
-	private readonly fetchDebouncer = new Debouncer()
+	readonly fetcherController = new FetcherController<Result<TData> | undefined>(this, {
+		fetchEvent: this.dataFetch,
+		fetcher: async () => {
+			if (!this.parameters) {
+				return undefined
+			}
+
+			const paginationParameters = this.paginationParameters?.() ?? {}
+			const sortParameters = this.sortParameters?.() ?? {}
+			return await this.fetch({
+				...this.parameters,
+				...paginationParameters,
+				...sortParameters,
+			}) ?? []
+		},
+	})
 
 	static override get styles() {
 		return css`
@@ -82,16 +99,6 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 		`
 	}
 
-	protected fetchData(parameters: TDataFetcherParameters): Promise<Result<TData>> {
-		return this.fetch(parameters)
-	}
-
-	protected getPaginationParameters?: () => Partial<TDataFetcherParameters>
-	protected getSortParameters?(): Partial<TDataFetcherParameters>
-	// protected getFilterParameters?: () => TDataFetcherParameters
-
-	protected fetchDirty?(parameters: TDataFetcherParameters): Array<TData> | undefined
-
 	setParameters(parameters: TDataFetcherParameters) {
 		this.parameters = parameters
 		this.parametersChange.dispatch(this.parameters)
@@ -99,45 +106,45 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	override handlePageChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePageChange']>) {
 		super.handlePageChange(...args)
-		if (this.getPaginationParameters) {
-			this.refetchData()
+		if (this.paginationParameters) {
+			this.requestFetch()
 		}
 	}
 
 	override handlePaginationChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePaginationChange']>) {
 		super.handlePaginationChange(...args)
-		if (this.getPaginationParameters) {
-			this.resetPageAndRefetch()
+		if (this.paginationParameters) {
+			this.resetPageAndRequestFetch()
 		}
 	}
 
 	override handleSortChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handleSortChange']>) {
 		super.handleSortChange(...args)
-		if (this.getSortParameters) {
-			this.resetPageAndRefetch()
+		if (this.sortParameters) {
+			this.resetPageAndRequestFetch()
 		}
 	}
 
-	private resetPageAndRefetch() {
+	private resetPageAndRequestFetch() {
 		this.setPage(1)
-		this.refetchData()
+		this.requestFetch()
 	}
 
 	override get renderData() {
 		if (this.hasFooter === false) {
 			return this.sortedData
 		}
-		return this.getPaginationParameters
+		return this.paginationParameters
 			? this.sortedData.slice(0, this.pageSize)
 			: super.renderData
 	}
 
 	override get hasPagination() {
-		return super.hasPagination || this.getPaginationParameters !== undefined
+		return super.hasPagination || this.paginationParameters !== undefined
 	}
 
 	override get supportsDynamicPageSize() {
-		return super.supportsDynamicPageSize && this.getPaginationParameters === undefined
+		return super.supportsDynamicPageSize && this.paginationParameters === undefined
 	}
 
 	private _hasNextPage?: boolean
@@ -147,32 +154,10 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	private _dataLength = 0
 	override get dataLength() {
-		return this.getPaginationParameters ? this._dataLength : super.dataLength
+		return this.paginationParameters ? this._dataLength : super.dataLength
 	}
 
-	private _fetchComplete?: Promise<void>
-	get fetchComplete() { return this._fetchComplete }
-
-	async refetchData() {
-		if (!this.parameters) {
-			return
-		}
-
-		const paginationParameters = this.getPaginationParameters?.() ?? {}
-		const sortParameters = this.getSortParameters?.() ?? {}
-		const fetchPromise = this.fetchData({
-			...this.parameters,
-			...paginationParameters,
-			...sortParameters,
-		})
-
-		this._fetchComplete = this.enqueueFetch(fetchPromise)
-		await this._fetchComplete
-	}
-
-	protected async enqueueFetch(fetchPromise: Promise<Result<TData>>) {
-		this.fetching = true
-
+	async requestFetch() {
 		if (this.parameters && this.fetchDirty) {
 			const dirtyData = this.fetchDirty(this.parameters)
 			if (dirtyData) {
@@ -180,7 +165,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 			}
 		}
 
-		const result = await this.fetchEnqueuer.enqueue(fetchPromise)
+		const result = await this.fetcherController.fetch() || []
 
 		if (!(result instanceof Array)) {
 			this._dataLength = result.dataLength ?? 0
@@ -191,24 +176,23 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 			result instanceof Array ? result : result.data,
 			this.silentFetch ? DataGridSelectionBehaviorOnDataChange.Maintain : this.selectionBehaviorOnDataChange,
 		)
-
-		this.fetching = false
 	}
 
 	protected override get toolbarActionsTemplate() {
 		return html`
 			<mo-icon-button icon='refresh'
 				${tooltip(_('Refetch'))}
-				${style({ color: this.fetching ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
-				@click=${() => this.refetchData()}
+				${style({ color: this.fetcherController.isFetching ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
+				@click=${() => this.requestFetch()}
 			></mo-icon-button>
 			${super.toolbarActionsTemplate}
 		`
 	}
 
 	protected override get contentTemplate() {
+		this.switchAttribute('fetching', this.fetcherController.isFetching)
 		switch (true) {
-			case this.fetching && this.silentFetch === false:
+			case this.fetcherController.isFetching && this.silentFetch === false:
 				return this.fetchingTemplate
 			case this.parameters === undefined && this.data.length === 0:
 				return this.noSelectionTemplate
@@ -232,7 +216,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	}
 
 	protected override get selectionToolbarTemplate() {
-		return this.fetching ? nothing : super.selectionToolbarTemplate
+		return this.fetcherController.isFetching ? nothing : super.selectionToolbarTemplate
 	}
 }
 

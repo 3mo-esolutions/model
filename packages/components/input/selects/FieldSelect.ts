@@ -310,19 +310,22 @@ export class FieldSelect<T> extends Field<Value> {
 		this.menuOptions?.select(this.multiple ? new Set<number>() : -1)
 	}
 
+	protected get searchKeyword() {
+		return this.inputElement.value.toLowerCase()
+	}
+
 	private async searchOptions() {
-		const keyword = this.inputElement.value.toLowerCase()
-		await this.search(keyword)
+		await this.search()
 		await this.updateComplete
 		this.open = this.options.length > 0
 	}
 
-	protected async search(keyword: string) {
+	protected search() {
 		const matchedValues = this.options
-			.filter(option => option.text.toLowerCase().includes(keyword))
+			.filter(option => option.text.toLowerCase().includes(this.searchKeyword))
 			.map(option => option.value)
 		this.filterOptions(matchedValues)
-		await Promise.resolve()
+		return Promise.resolve()
 	}
 
 	private filterOptions(matchedValues: Array<Value>) {

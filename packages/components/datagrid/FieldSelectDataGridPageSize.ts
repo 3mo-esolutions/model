@@ -8,11 +8,9 @@ export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPa
 
 	@property({ type: Object }) dataGrid?: DataGrid<any>
 
-	protected override fetchData() {
-		return Promise.resolve(FieldSelectDataGridPageSize.data)
-	}
+	override readonly fetch = () => Promise.resolve(FieldSelectDataGridPageSize.data)
 
-	protected override getOptionTemplate(size: DataGridPagination) {
+	override readonly optionTemplate = (size: DataGridPagination) => {
 		return size === 'auto' && (!this.dataGrid || this.dataGrid.supportsDynamicPageSize === false) ? nothing : html`
 			<mo-option value=${size}>${size === 'auto' ? 'Auto' : size}</mo-option>
 		`
