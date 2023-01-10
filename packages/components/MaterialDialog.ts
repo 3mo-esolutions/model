@@ -2,7 +2,12 @@ import { component, property, query, render, html, css, nothing, event, Property
 import { Dialog, DialogActionKey, DialogComponent } from '@a11d/lit-application'
 import { renderContainer, ComponentMixin } from '../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
-import type { IconButton } from '.'
+import { IconButton, tooltip } from '.'
+import { Localizer } from '../localization'
+
+Localizer.register(LanguageCode.German, {
+	'Close': 'Schließen'
+})
 
 function isDialogActionKey(key: string): key is DialogActionKey {
 	return key === DialogActionKey.Primary || key === DialogActionKey.Secondary || key === DialogActionKey.Cancellation
@@ -297,8 +302,12 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) implements Dialog 
 	@renderContainer('#divHeaderOptions')
 	protected get headerOptionsTemplate() {
 		return html`
-			${this.boundToWindow || !this.poppable || true as boolean ? nothing : html`<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>`}
-			${this.boundToWindow || this.blocking ? nothing : html`<mo-icon-button icon='close' @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>`}
+			${this.boundToWindow || !this.poppable || true as boolean ? nothing : html`
+				<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>
+			`}
+			${this.boundToWindow || this.blocking ? nothing : html`
+				<mo-icon-button icon='close' ${tooltip(_('Close'))} @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>
+			`}
 		`
 	}
 
