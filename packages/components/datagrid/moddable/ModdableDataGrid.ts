@@ -8,6 +8,8 @@ import { DialogDataGridMode, Mode, ModeRepository, sortable } from '.'
 
 /** @fires modeChange {CustomEvent<Mode<TData, TDataFetcherParameters> | undefined>} */
 export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends FetchableDataGridParametersType = Record<string, never>, TDetailsElement extends Element | undefined = undefined> extends FetchableDataGrid<TData, TDataFetcherParameters, TDetailsElement> {
+	static disableModes = false
+
 	readonly modesRepository = new ModeRepository<TData, TDataFetcherParameters>(this as any)
 	private readonly modeStorage = new LocalStorageEntry<number | undefined>(`MoDeL.Components.ModdableDataGrids.${this.tagName.toLowerCase()}.Mode`, undefined, (_, value) => Number(value))
 	private readonly dataCache = new Map<number, { page: number, data: Array<TData> }>()
@@ -88,6 +90,12 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 		return this.disableModeCache || !this.mode?.id ? undefined : this.dataCache.get(this.mode.id)?.data
 	}
 
+	private get hasModebar() {
+		const hasModebar = ModdableDataGrid.disableModes === false && (this.modesRepository.getAll().length !== 0 || this.modes.length !== 0)
+		this.switchAttribute('hasModebar', hasModebar)
+		return hasModebar
+	}
+
 	protected override get template() {
 		return html`
 			${!this.hasModebar ? nothing : html`
@@ -103,10 +111,11 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 		`
 	}
 
-	private get hasModebar() {
-		const hasModebar = this.modesRepository.getAll().length !== 0 || this.modes.length !== 0
-		this.switchAttribute('hasModebar', hasModebar)
-		return hasModebar
+	protected override get toolbarActionsTemplate() {
+		return html`
+			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode} ${tooltip(_('New Mode'))}></mo-icon-button>`}
+			${super.toolbarActionsTemplate}
+		`
 	}
 
 	private get modebarTemplate() {
@@ -162,13 +171,6 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 					@click=${() => this.mode = mode}
 				>${mode.name}</mo-context-menu-item>
 			`)}
-		`
-	}
-
-	protected override get toolbarActionsTemplate() {
-		return html`
-			${this.hasModebar ? nothing : html`<mo-icon-button icon='visibility' @click=${this.createNewMode} ${tooltip(_('New Mode'))}></mo-icon-button>`}
-			${super.toolbarActionsTemplate}
 		`
 	}
 
