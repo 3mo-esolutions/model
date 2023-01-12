@@ -20,8 +20,7 @@ export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 			</mo-dialog>
 		`
 	}
-
 	protected override primaryAction = () => true
-
 	protected override secondaryAction = () => false
+	protected override cancellationAction = () => false
 }

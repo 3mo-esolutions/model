@@ -6,6 +6,7 @@ type Parameters<TResult> = BaseDialogParameters & { readonly secondaryButtonText
 	readonly primaryAction?: () => DialogAction<TResult>
 	readonly secondaryButtonText?: string
 	readonly secondaryAction?: () => DialogAction<TResult>
+	readonly cancellationAction?: () => DialogAction<TResult>
 }
 
 @component('mo-dialog-default')
@@ -31,5 +32,9 @@ export class DialogDefault<TResult = void> extends DialogComponent<Parameters<TR
 
 	protected override secondaryAction() {
 		return this.parameters.secondaryAction ? this.parameters.secondaryAction() : super.secondaryAction()
+	}
+
+	protected override cancellationAction() {
+		return this.parameters.cancellationAction ? this.parameters.cancellationAction() : super.cancellationAction()
 	}
 }
