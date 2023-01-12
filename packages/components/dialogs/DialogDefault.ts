@@ -1,11 +1,11 @@
 import { component, html, ifDefined } from '@a11d/lit'
-import { DialogComponent } from '@a11d/lit-application'
+import { DialogAction, DialogComponent } from '@a11d/lit-application'
 import { BaseDialogParameters } from './BaseDialogParameters'
 
 type Parameters<TResult> = BaseDialogParameters & { readonly secondaryButtonText?: string } & {
-	readonly primaryAction?: () => TResult | PromiseLike<TResult>
+	readonly primaryAction?: () => DialogAction<TResult>
 	readonly secondaryButtonText?: string
-	readonly secondaryAction?: () => TResult | PromiseLike<TResult>
+	readonly secondaryAction?: () => DialogAction<TResult>
 }
 
 @component('mo-dialog-default')
