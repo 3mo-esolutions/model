@@ -44,10 +44,15 @@ export abstract class LanguageField<TValue, TLanguage extends Language> extends 
 	protected async fetchLanguages() {
 		this._languages = await this.fetch()
 		this.languagesFetch.dispatch(this._languages)
-		if (!this.selectedLanguage && this._languages[0]) {
-			this.handleLanguageChange(this._languages[0])
+		if (!this.selectedLanguage) {
+			const languageToSelect = this.getLanguageToSelectOnFirstFetch(this._languages)
+			this.handleLanguageChange(languageToSelect)
 		}
 		this.defaultLanguage ??= this._languages[0]
+	}
+
+	protected getLanguageToSelectOnFirstFetch(languages: Array<TLanguage>) {
+		return languages[0] as TLanguage
 	}
 
 	handleFieldChange(language: TLanguage, value: TValue) {
