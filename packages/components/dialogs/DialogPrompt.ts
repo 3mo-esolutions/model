@@ -34,7 +34,7 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
-				primaryButtonText=${this.parameters.primaryButtonText ?? _('Apply')}
+				primaryButtonText=${this.parameters.primaryButtonText ?? t('Apply')}
 				?blocking=${this.parameters.blocking}
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
@@ -50,13 +50,13 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 	private get textFieldTemplate() {
 		return this.parameters.isTextArea ? html`
 			<mo-field-text-area id='inputElement' data-focus
-				label=${this.parameters.inputLabel ?? _('Input')}
+				label=${this.parameters.inputLabel ?? t('Input')}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}
 			></mo-field-text-area>
 		` : html`
 			<mo-field-text id='inputElement' data-focus
-				label=${this.parameters.inputLabel ?? _('Input')}
+				label=${this.parameters.inputLabel ?? t('Input')}
 				value=${this.value}
 				@input=${(e: CustomEvent<string>) => this.value = e.detail}
 			></mo-field-text>

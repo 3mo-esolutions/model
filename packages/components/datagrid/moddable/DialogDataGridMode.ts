@@ -1,6 +1,6 @@
 import { html, component, state, style } from '@a11d/lit'
 import { DialogComponent } from '@a11d/lit-application'
-import { Localizer } from '../../../localization'
+import { Localizer } from '@3mo/localization'
 import { DialogDeletion } from '../..'
 import { ModdableDataGrid, Mode } from '..'
 
@@ -36,8 +36,8 @@ export class DialogDataGridMode extends DialogComponent<{ readonly moddableDataG
 
 	private get heading() {
 		return this.parameters.mode
-			? _('View ${name:string}"', { name: this.parameters.mode.name })
-			: _('New Mode')
+			? t('View ${name:string}"', { name: this.parameters.mode.name })
+			: t('New Mode')
 	}
 
 	protected override get template() {
@@ -45,18 +45,18 @@ export class DialogDataGridMode extends DialogComponent<{ readonly moddableDataG
 			<mo-dialog
 				heading=${this.heading}
 				primaryOnEnter
-				primaryButtonText=${_('Save')}
-				secondaryButtonText=${this.parameters.mode ? _('Delete') : ''}
+				primaryButtonText=${t('Save')}
+				secondaryButtonText=${this.parameters.mode ? t('Delete') : ''}
 			>
 				<mo-field-text selectOnFocus data-focus
-					label=${_('Name')}
+					label=${t('Name')}
 					value=${this.mode.name}
 					@input=${(e: CustomEvent<string>) => this.mode.name = e.detail.trim()}
 				></mo-field-text>
 
 				<mo-flex slot='footer'>
 					<mo-checkbox ${style({ width: '*', marginInlineStart: '-8px' })}
-						label=${_('Archived')}
+						label=${t('Archived')}
 						?checked=${this.mode.isArchived}
 						@change=${(e: CustomEvent<CheckboxValue>) => this.mode.isArchived = e.detail === 'checked'}
 					></mo-checkbox>
@@ -82,7 +82,7 @@ export class DialogDataGridMode extends DialogComponent<{ readonly moddableDataG
 		}
 
 		await new DialogDeletion({
-			content: _('Do you want to delete the view ${name:string}?', { name: mode.name }),
+			content: t('Do you want to delete the view ${name:string}?', { name: mode.name }),
 			deletionAction: () => this.parameters.moddableDataGrid.modesRepository.remove(mode)
 		}).confirm()
 	}

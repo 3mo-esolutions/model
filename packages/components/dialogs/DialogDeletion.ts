@@ -1,6 +1,6 @@
 import { component, TemplateResult, html } from '@a11d/lit'
 import { LocalStorageEntry } from '@a11d/lit-application'
-import { Localizer } from '../../localization'
+import { Localizer } from '@3mo/localization'
 import { DialogComponent, NotificationHost } from '@a11d/lit-application'
 
 Localizer.register(LanguageCode.German, {
@@ -32,7 +32,7 @@ export class DialogDeletion extends DialogComponent<Parameters> {
 
 	protected override get template() {
 		return html`
-			<mo-dialog heading=${_('Deletion Confirmation')} primaryButtonText=${_('Delete')}>
+			<mo-dialog heading=${t('Deletion Confirmation')} primaryButtonText=${t('Delete')}>
 				${this.parameters.content}
 			</mo-dialog>
 		`

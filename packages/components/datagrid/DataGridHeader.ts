@@ -132,17 +132,14 @@ export class DataGridHeader<TData> extends Component {
 			: this.dataGrid.sorting.strategy === DataGridSortingStrategy.Ascending ? 'arrow_upward' : 'arrow_downward'
 
 		return html`
-			<mo-flex direction=${column.alignment === 'end' ? 'horizontal-reversed' : 'horizontal'}
+			<mo-flex direction=${column.alignment === 'end' ? 'horizontal-reversed' : 'horizontal'} alignItems='center'
 				${style({ overflow: 'hidden', position: 'relative', cursor: 'pointer', userSelect: 'none' })}
 				@click=${() => this.sort(column)}
 			>
 				<div class='headerContent' ${style({ width: '100%', textAlign: column.alignment })} title=${column.title || column.heading}>${column.heading}</div>
 
 				${sortIcon === undefined ? nothing : html`
-					<mo-icon
-						${style({ color: 'var(--mo-color-accent)', margin: '0 3px 3px 3px', lineHeight: 'calc(var(--mo-data-grid-header-height) - 3px)' })}
-						icon=${ifDefined(sortIcon)}
-					></mo-icon>
+					<mo-icon ${style({ color: 'var(--mo-color-accent)' })} icon=${ifDefined(sortIcon)}></mo-icon>
 				`}
 			</mo-flex>
 		`

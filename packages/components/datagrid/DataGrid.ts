@@ -8,7 +8,7 @@ import { MediaQueryController } from '@3mo/media-query-observer'
 import { observeResize } from '@3mo/resize-observer'
 import { ContextMenuHost } from '../../shell'
 import { ExcelHelper } from '../../utilities'
-import { Localizer } from '../../localization'
+import { Localizer } from '@3mo/localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 
 Localizer.register(LanguageCode.English, {
@@ -299,7 +299,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		try {
 			const selectors = this.visibleColumns.map(c => c.dataSelector)
 			ExcelHelper.generate(this.data, selectors)
-			NotificationHost.instance?.notifyInfo(_('Exporting excel file'))
+			NotificationHost.instance?.notifyInfo(t('Exporting excel file'))
 		} catch (error: any) {
 			NotificationHost.instance?.notifyError(error.message)
 			throw error
@@ -634,7 +634,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	protected get noContentTemplate() {
 		return html`
 			<slot name='error-no-content'>
-				<mo-error icon='youtube_searched_for'>${_('No results')}</mo-error>
+				<mo-error icon='youtube_searched_for'>${t('No results')}</mo-error>
 			</slot>
 		`
 	}
@@ -741,11 +741,11 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			<mo-flex id='flexSelectionToolbar'>
 				<mo-flex direction='horizontal' gap='30px' ${style({ placeSelf: 'stretch' })}>
 					<div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
-						${_('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
+						${t('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</div>
 					${!this.getRowContextMenuTemplate ? nothing : html`
 						<mo-flex id='flexActions' direction='horizontal' @click=${this.openContextMenu}>
-							<div ${style({ width: '*' })}>${_('Options')}</div>
+							<div ${style({ width: '*' })}>${t('Options')}</div>
 							<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
 						</mo-flex>
 					`}
@@ -760,14 +760,14 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return html`
 			${!this.hasFilters ? nothing : html`
 				<mo-icon-button icon='filter_list'
-					${tooltip(_('More Filters'))}
+					${tooltip(t('More Filters'))}
 					${style({ color: this.sidePanelTab === DataGridSidePanelTab.Filters ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 					@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Filters ? undefined : DataGridSidePanelTab.Filters)}
 				></mo-icon-button>
 			`}
 
 			<mo-icon-button icon='settings'
-				${tooltip(_('Settings'))}
+				${tooltip(t('Settings'))}
 				${style({ color: this.sidePanelTab === DataGridSidePanelTab.Settings ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>

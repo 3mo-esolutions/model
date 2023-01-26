@@ -23,7 +23,7 @@ export type User = {
 }
 
 export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticatorBase<User> {
-	@state() primaryButtonText = _('Login')
+	@state() primaryButtonText = t('Login')
 
 	protected override get template() {
 		return html`
@@ -61,25 +61,25 @@ export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticat
 		return html`
 			<mo-flex gap='var(--mo-thickness-l)' ${style({ height: '*', width: '100%', paddingBottom: '25px' })}>
 				<mo-field-text data-focus
-					label=${_('Username')}
+					label=${t('Username')}
 					.value=${this.username}
 					@input=${(e: CustomEvent<string>) => this.username = e.detail}
 				></mo-field-text>
 
 				<mo-field-password
-					label=${_('Password')}
+					label=${t('Password')}
 					.value=${this.password}
 					@input=${(e: CustomEvent<string>) => this.password = e.detail}
 				></mo-field-password>
 
 				<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse'>
 					<mo-checkbox
-						label=${_('Remember Password')}
+						label=${t('Remember Password')}
 						?checked=${this.shallRememberPassword}
 						@change=${(e: CustomEvent<CheckboxValue>) => this.shallRememberPassword = e.detail === 'checked'}
 					></mo-checkbox>
 
-					<mo-anchor ${style({ fontSize: 'small' })} @click=${() => this.resetPassword()}>${_('Reset Password')}</mo-anchor>
+					<mo-anchor ${style({ fontSize: 'small' })} @click=${() => this.resetPassword()}>${t('Reset Password')}</mo-anchor>
 				</mo-flex>
 			</mo-flex>
 		`

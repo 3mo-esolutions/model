@@ -22,13 +22,13 @@ export abstract class DialogEntity<TEntity, T extends Exclude<DialogParameters, 
 	}
 
 	private renderPrimaryButton() {
-		const buttonTemplate = html`<mo-loading-button slot='primaryAction' type='raised'>${_('Save')}</mo-loading-button>`
+		const buttonTemplate = html`<mo-loading-button slot='primaryAction' type='raised'>${t('Save')}</mo-loading-button>`
 		const button = TemplateHelper.extractBySelector(buttonTemplate, 'mo-loading-button')
 		this.dialogElement.insertBefore(button, this.dialogElement.firstElementChild)
 	}
 
 	private renderDeleteButton() {
-		const buttonTemplate = html`<mo-loading-button slot='secondaryAction' type='outlined' style='--mdc-theme-primary: var(--mo-color-error);'>${_('Delete')}</mo-loading-button>`
+		const buttonTemplate = html`<mo-loading-button slot='secondaryAction' type='outlined' style='--mdc-theme-primary: var(--mo-color-error);'>${t('Delete')}</mo-loading-button>`
 		const button = TemplateHelper.extractBySelector(buttonTemplate, 'mo-loading-button')
 		this.dialogElement.insertBefore(button, this.dialogElement.firstElementChild)
 	}

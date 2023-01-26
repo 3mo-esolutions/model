@@ -3,7 +3,7 @@ import { Dialog, DialogActionKey, DialogComponent } from '@a11d/lit-application'
 import { renderContainer, ComponentMixin } from '../library'
 import { Dialog as MwcDialog } from '@material/mwc-dialog'
 import { IconButton, tooltip } from '.'
-import { Localizer } from '../localization'
+import { Localizer } from '@3mo/localization'
 
 Localizer.register(LanguageCode.German, {
 	'Close': 'Schließen'
@@ -306,7 +306,7 @@ export class MaterialDialog extends ComponentMixin(MwcDialog) implements Dialog 
 				<mo-icon-button icon='launch' @click=${() => this.requestPopup.dispatch()}></mo-icon-button>
 			`}
 			${this.boundToWindow || this.blocking ? nothing : html`
-				<mo-icon-button icon='close' ${tooltip(_('Close'))} @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>
+				<mo-icon-button icon='close' ${tooltip(t('Close'))} @click=${() => this.handleAction(DialogActionKey.Cancellation)}></mo-icon-button>
 			`}
 		`
 	}

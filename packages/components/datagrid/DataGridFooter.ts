@@ -86,7 +86,7 @@ export class DataGridFooter<TData> extends Component {
 	private get paginationTemplate() {
 		const isRtl = getComputedStyle(this).direction === 'rtl'
 		const hasUnknownDataLength = this.dataGrid.maxPage === undefined
-		const pageText = hasUnknownDataLength ? this.page : _('${page:number} of ${maxPage:number}', { page: this.page, maxPage: this.dataGrid.maxPage ?? 0 })
+		const pageText = hasUnknownDataLength ? this.page : t('${page:number} of ${maxPage:number}', { page: this.page, maxPage: this.dataGrid.maxPage ?? 0 })
 		const from = (this.page - 1) * this.dataGrid.pageSize + 1
 		const pageSizeText = hasUnknownDataLength
 			? `${from}-${from + this.dataGrid.renderData.length - 1}`

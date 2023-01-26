@@ -1,7 +1,7 @@
 import { html, component, css, property, eventListener, Component, nothing, style } from '@a11d/lit'
 import { DialogAcknowledge, DialogAlert, DialogDeletion, tooltip } from '../..'
 import { ContextMenuHost } from '../../../shell'
-import { Localizer } from '../../../localization'
+import { Localizer } from '@3mo/localization'
 import { DialogDataGridMode, ModdableDataGrid, Mode } from '.'
 
 Localizer.register(LanguageCode.German, {
@@ -97,10 +97,10 @@ export class DataGridModeChip extends Component {
 		} else {
 			if (this.moddableDataGrid.modesRepository.isSelectedModeSaved === false) {
 				const result = await new DialogAcknowledge({
-					heading: _('Unsaved changes'),
-					content: _('Do you want to save the new changes to "${name:string}" before switching views?'),
-					primaryButtonText: _('Save'),
-					secondaryButtonText: _('Don\'t Save'),
+					heading: t('Unsaved changes'),
+					content: t('Do you want to save the new changes to "${name:string}" before switching views?'),
+					primaryButtonText: t('Save'),
+					secondaryButtonText: t('Don\'t Save'),
 				}).confirm()
 
 				if (result === true) {
@@ -134,18 +134,18 @@ export class DataGridModeChip extends Component {
 					<span id='spanUnsaved'>*</span>
 
 					<mo-icon-button icon='undo' tabindex='-1' dense ${style({ marginInlineStart: '0 0 0 12px' })}
-						${tooltip(_('Discard changes'))}
+						${tooltip(t('Discard changes'))}
 						@click=${this.discardChanges}
 					></mo-icon-button>
 
 					<mo-icon-button icon='save' tabindex='-1' dense
-						${tooltip(_('Save changes'))}
+						${tooltip(t('Save changes'))}
 						@click=${this.saveChanges}
 					></mo-icon-button>
 				`}
 
 				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' dense
-					${tooltip(_('More options'))}
+					${tooltip(t('More options'))}
 					@click=${this.openMenu}
 				></mo-icon-button>
 			</mo-flex>
@@ -156,30 +156,30 @@ export class DataGridModeChip extends Component {
 		e.stopImmediatePropagation()
 		ContextMenuHost.open(this, 'BOTTOM_START', html`
 			${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
-				<mo-context-menu-item icon='undo' @click=${this.discardChanges}>${_('Discard changes')}</mo-context-menu-item>
-				<mo-context-menu-item icon='save' @click=${this.saveChanges}>${_('Save changes')}</mo-context-menu-item>
+				<mo-context-menu-item icon='undo' @click=${this.discardChanges}>${t('Discard changes')}</mo-context-menu-item>
+				<mo-context-menu-item icon='save' @click=${this.saveChanges}>${t('Save changes')}</mo-context-menu-item>
 				<mo-line ${style({ margin: '4px 0' })}></mo-line>
 			`}
-			<mo-context-menu-item icon='edit' @click=${this.editMode}>${_('Edit')}</mo-context-menu-item>
+			<mo-context-menu-item icon='edit' @click=${this.editMode}>${t('Edit')}</mo-context-menu-item>
 			${this.mode.isArchived === false ? html`
 				<mo-context-menu-item icon='archive'
 					@click=${() => this.moddableDataGrid.modesRepository.archive(this.mode)}
-				>${_('Archive')}</mo-context-menu-item>
+				>${t('Archive')}</mo-context-menu-item>
 			` : html`
 				<mo-context-menu-item icon='unarchive'
 					@click=${() => this.moddableDataGrid.modesRepository.unarchive(this.mode)}
-				>${_('Unarchive')}</mo-context-menu-item>
+				>${t('Unarchive')}</mo-context-menu-item>
 			`}
-			<mo-context-menu-item icon='delete' @click=${this.deleteMode}>${_('Delete')}</mo-context-menu-item>
+			<mo-context-menu-item icon='delete' @click=${this.deleteMode}>${t('Delete')}</mo-context-menu-item>
 		`)
 	}
 
 	private readonly discardChanges = async (e: MouseEvent) => {
 		e.stopImmediatePropagation()
 		await new DialogAlert({
-			heading: _('Discard changes'),
-			content: _('Do you want to discard changes of "${name:string}"?', { name: this.mode.name }),
-			primaryButtonText: _('Discard'),
+			heading: t('Discard changes'),
+			content: t('Do you want to discard changes of "${name:string}"?', { name: this.mode.name }),
+			primaryButtonText: t('Discard'),
 		}).confirm()
 		this.moddableDataGrid.modesRepository.save(this.mode)
 	}
@@ -197,7 +197,7 @@ export class DataGridModeChip extends Component {
 	private readonly deleteMode = async (e: MouseEvent) => {
 		e.stopImmediatePropagation()
 		await new DialogDeletion({
-			content: `${_('Do you want to delete the view "${name:string}"?', { name: this.mode.name })} ${_('This process is irreversible.')}`,
+			content: `${t('Do you want to delete the view "${name:string}"?', { name: this.mode.name })} ${t('This process is irreversible.')}`,
 			deletionAction: () => this.moddableDataGrid.modesRepository.remove(this.mode)
 		}).confirm()
 	}

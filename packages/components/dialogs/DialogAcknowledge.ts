@@ -10,8 +10,8 @@ export class DialogAcknowledge extends DialogComponent<Parameters, boolean> {
 		return html`
 			<mo-dialog
 				heading=${this.parameters.heading}
-				primaryButtonText=${this.parameters.primaryButtonText ?? _('OK')}
-				secondaryButtonText=${this.parameters.secondaryButtonText ?? _('Cancel')}
+				primaryButtonText=${this.parameters.primaryButtonText ?? t('OK')}
+				secondaryButtonText=${this.parameters.secondaryButtonText ?? t('Cancel')}
 				?blocking=${this.parameters.blocking}
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter

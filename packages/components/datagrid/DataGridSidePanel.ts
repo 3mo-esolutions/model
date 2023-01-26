@@ -1,5 +1,5 @@
 import { component, Component, css, html, ifDefined, nothing, property } from '@a11d/lit'
-import { Localizer } from '../../localization'
+import { Localizer } from '@3mo/localization'
 import { Checkbox, style, tooltip } from '../..'
 import { ColumnDefinition } from './ColumnDefinition'
 import { DataGrid } from './DataGrid'
@@ -86,7 +86,7 @@ export class DataGridSidePanel<TData> extends Component {
 
 				${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true ? nothing : html`
 					<mo-flex id='flexHeading' direction='horizontal' alignItems='center'>
-						<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${_(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
+						<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${t(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
 						<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
 					</mo-flex>
 				`}
@@ -111,7 +111,7 @@ export class DataGridSidePanel<TData> extends Component {
 			<mo-flex gap='var(--mo-thickness-xl)'>
 				<slot name='settings'></slot>
 
-				<mo-section heading=${_('Columns')}>
+				<mo-section heading=${t('Columns')}>
 					${this.dataGrid.columns.map(this.getColumnTemplate)}
 				</mo-section>
 

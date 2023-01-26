@@ -13,7 +13,7 @@ export class DialogLanguageField<TValue, TLanguage extends Language> extends Dia
 
 	protected override get template() {
 		return html`
-			<mo-dialog heading=${this.parameters.languageField.label} primaryButtonText=${_('Apply')}>
+			<mo-dialog heading=${this.parameters.languageField.label} primaryButtonText=${t('Apply')}>
 				<mo-flex gap='4px'>
 					${this.parameters.languageField.languages.map(language => html`
 						<mo-grid columns='auto 1fr' alignItems='center' gap='4px'>

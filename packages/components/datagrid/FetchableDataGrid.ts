@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { tooltip } from '@3mo/tooltip'
-import { Localizer } from '../../localization'
+import { Localizer } from '@3mo/localization'
 import { FetcherController } from '../../utilities'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 
@@ -181,7 +181,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected override get toolbarActionsTemplate() {
 		return html`
 			<mo-icon-button icon='refresh'
-				${tooltip(_('Refetch'))}
+				${tooltip(t('Refetch'))}
 				${style({ color: this.fetcherController.isFetching ? 'var(--mo-color-accent)' : 'var(--mo-color-gray)' })}
 				@click=${() => this.requestFetch()}
 			></mo-icon-button>
@@ -210,7 +210,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected get noSelectionTemplate() {
 		return html`
 			<slot name='error-no-selection'>
-				<mo-error icon='touch_app'>${_('Make a filter selection')}</mo-error>
+				<mo-error icon='touch_app'>${t('Make a filter selection')}</mo-error>
 			</slot>
 		`
 	}
