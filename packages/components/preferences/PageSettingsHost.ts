@@ -32,7 +32,7 @@ export abstract class PageSettingsHost<T extends PageParameters = void> extends 
 			}
 
 			mo-grid {
-				grid-template-columns: clamp(200px, 30%, 500px) 1fr;
+				grid-template-columns: var(--mo-page-settings-host-sidebar-width, clamp(200px, 30%, 500px)) 1fr;
 			}
 
 			#contentToolbar {
