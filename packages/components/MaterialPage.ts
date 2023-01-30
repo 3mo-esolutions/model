@@ -3,9 +3,16 @@ import { PageComponent } from '@a11d/lit-application'
 import { SlotController } from '@3mo/slot-controller'
 
 /**
- * @slot
+ * @element mo-page
+ *
+ * @attr heading
+ * @attr fullHeight
+ *
+ * @slot - Page content
  * @slot heading
  * @slot headingDetails
+ *
+ * @fires pageHeadingChange - Dispatched when the page heading changes
  */
 @component('mo-page')
 @PageComponent.pageElement()

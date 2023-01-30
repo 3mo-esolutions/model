@@ -20,6 +20,8 @@ export const enum MaterialDialogSize {
 }
 
 /**
+ * @element mo-dialog
+ *
  * @attr heading
  * @attr size
  * @attr blocking
@@ -32,11 +34,15 @@ export const enum MaterialDialogSize {
  * @attr preventCancellationOnEscape
  * @attr poppable
  * @attr boundToWindow
- * @slot
+ *
+ * @slot -
  * @slot primaryAction
  * @slot secondaryAction
  * @slot header
  * @slot footer
+ *
+ * @fires dialogHeadingChange - Dispatched when the dialog heading changes
+ * @fires requestPopup - Dispatched when the dialog is requested to be popped up
  */
 @component('mo-dialog')
 @DialogComponent.dialogElement()

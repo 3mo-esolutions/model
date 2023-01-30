@@ -4,6 +4,11 @@ import { MaterialIcon } from '../../..'
 import { CalendarSelectionAdapter, SelectableCalendar } from '../../calendar'
 import { Field } from '../../Field'
 
+/**
+ * @attr open - Whether the date picker is open
+ * @attr hideDatePicker - Hide the date picker
+ * @attr shortcutReferenceDate - The date to use as a reference for shortcuts
+ */
 export abstract class FieldDateBase<T> extends Field<T> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) hideDatePicker = false

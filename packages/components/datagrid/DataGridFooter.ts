@@ -10,6 +10,11 @@ Localizer.register(LanguageCode.Farsi, {
 	'${page:number} of ${maxPage:number}': '${page} از ${maxPage}',
 })
 
+/**
+ * @element mo-data-grid-footer
+ * @attr dataGrid
+ * @attr page
+ */
 @component('mo-data-grid-footer')
 export class DataGridFooter<TData> extends Component {
 	@property({ type: Object }) dataGrid!: DataGrid<TData, any>

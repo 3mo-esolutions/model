@@ -45,7 +45,7 @@ export class DialogReleaseNotes extends DialogComponent {
 	protected override get template() {
 		return html`
 			<mo-dialog heading=${this.extractVersionHeading()}>
-				<mo-flex ${style({ padding: '0 var(--mo-thickness-l)', minHeight: '200px', minWidth: '400px' })} .innerHTML=${this.notes}></mo-flex>
+				<mo-flex ${style({ padding: '0 var(--mo-thickness-l)', minHeight: '200px', minWidth: '400px' })} .innerHTML=${this.notes || ''}></mo-flex>
 			</mo-dialog>
 		`
 	}

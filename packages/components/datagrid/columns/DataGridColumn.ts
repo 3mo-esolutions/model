@@ -2,6 +2,16 @@ import { Component, property, HTMLTemplateResult, AsteriskSyntaxStyleHandler } f
 import { ColumnDefinition } from '../ColumnDefinition'
 import { DataGrid } from '../DataGrid'
 
+/**
+ * @attr width - The width of the column
+ * @attr hidden - Whether the column is hidden. The column can be made visible by the user in the settings panel if available.
+ * @attr heading - The heading of the column
+ * @attr textAlign - The text alignment of the column
+ * @attr title - The title of the column
+ * @attr dataSelector - The data selector of the column
+ * @attr nonSortable - Whether the column is sortable
+ * @attr nonEditable - Whether the column is editable
+ */
 export abstract class DataGridColumn<TData, TValue> extends Component {
 	@property({ type: Object }) dataGrid?: DataGrid<TData, any> | undefined
 

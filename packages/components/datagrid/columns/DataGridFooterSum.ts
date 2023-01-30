@@ -1,5 +1,10 @@
 import { component, property, Component, html, css } from '@a11d/lit'
 
+/**
+ * @element mo-data-grid-footer-sum
+ * @attr heading
+ * @slot - Sum of values
+ */
 @component('mo-data-grid-footer-sum')
 export class DataGridFooterSum extends Component {
 	@property() heading = ''

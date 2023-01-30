@@ -2,6 +2,15 @@ import { property, Component, component, html, css } from '@a11d/lit'
 import { FormatHelper } from '../utilities'
 import { LocalStorageEntry } from '@a11d/lit-application'
 
+/**
+ * @element mo-amount
+ *
+ * @attr currency - The currency code
+ * @attr currencySymbol - The currency symbol
+ * @attr signDisplay - The sign display
+ * @attr redNegative - Whether to show negative amounts in red
+ * @attr value - The amount
+ */
 @component('mo-amount')
 export class Amount extends Component {
 	static readonly redNegative = new LocalStorageEntry('MoDeL.Components.Amount.RedNegative', false)

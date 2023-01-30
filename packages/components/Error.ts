@@ -1,6 +1,11 @@
 import { html, component, Component, property, nothing, css, style } from '@a11d/lit'
 import { MaterialIcon } from '.'
 
+/**
+ * @element mo-error
+ * @attr icon
+ * @slot - Error message
+ */
 @component('mo-error')
 export class Error extends Component {
 	@property() icon?: MaterialIcon

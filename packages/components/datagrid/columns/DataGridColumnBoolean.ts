@@ -2,6 +2,14 @@ import { component, html, property, style } from '@a11d/lit'
 import { MaterialIcon } from '../..'
 import { DataGridColumn } from '.'
 
+/**
+ * @element mo-data-grid-column-boolean
+ *
+ * @attr trueIcon - Icon to show for true values
+ * @attr falseIcon - Icon to show for false values
+ * @attr trueIconColor - Color of the true icon
+ * @attr falseIconColor - Color of the false icon
+ */
 @component('mo-data-grid-column-boolean')
 export class DataGridColumnBoolean<TData> extends DataGridColumn<TData, boolean> {
 	@property() trueIcon: MaterialIcon = 'done'

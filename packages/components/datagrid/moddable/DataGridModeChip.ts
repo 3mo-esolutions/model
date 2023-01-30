@@ -21,6 +21,14 @@ Localizer.register(LanguageCode.German, {
 	'Do you want to discard changes of "${name:string}"?': 'Sollen die Änderungen vor "${name}" verworfen werden?'
 })
 
+/**
+ * @element mo-data-grid-mode-chip
+ *
+ * @attr moddableDataGrid
+ * @attr mode
+ * @attr selected
+ * @attr readOnly
+ */
 @component('mo-data-grid-mode-chip')
 export class DataGridModeChip extends Component {
 	@property({

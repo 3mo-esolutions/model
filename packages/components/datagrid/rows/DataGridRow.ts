@@ -4,6 +4,13 @@ import { KeyboardHelper } from '../../../utilities'
 import { ColumnDefinition } from '../ColumnDefinition'
 import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenuItem, DataGridSelectionMode } from '..'
 
+/**
+ * @attr dataGrid
+ * @attr data
+ * @attr selected
+ * @attr contextMenuOpen
+ * @attr detailsOpen
+ */
 export abstract class DataGridRow<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
 	@queryAll('mo-data-grid-cell') readonly cells!: Array<DataGridCell<any, TData, TDetailsElement>>
 

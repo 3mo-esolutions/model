@@ -1,6 +1,7 @@
 import { component, html, ifDefined } from '@a11d/lit'
 import { DataGridColumn } from '.'
 
+/** @element mo-data-grid-column-text */
 @component('mo-data-grid-column-text')
 export class DataGridColumnText<TData> extends DataGridColumn<TData, string> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,6 +1,7 @@
 import { component, html, ifDefined, style } from '@a11d/lit'
 import { DataGridColumnNumberBase } from '.'
 
+/** @element mo-data-grid-column-amount */
 @component('mo-data-grid-column-amount')
 export class DataGridColumnAmount<TData> extends DataGridColumnNumberBase<TData> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

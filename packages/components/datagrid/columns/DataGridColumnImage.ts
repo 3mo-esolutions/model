@@ -1,6 +1,7 @@
 import { component, html, nothing } from '@a11d/lit'
 import { DataGridColumn } from '.'
 
+/** @element mo-data-grid-column-image */
 @component('mo-data-grid-column-image')
 export class DataGridColumnImage<TData> extends DataGridColumn<TData, string> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

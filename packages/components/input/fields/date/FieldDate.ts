@@ -20,6 +20,7 @@ class DateCalendarSelectionAdapter extends CalendarSelectionAdapter<MoDate> {
 	}
 }
 
+/** @element mo-field-date */
 @component('mo-field-date')
 export class FieldDate extends FieldDateBase<Date | undefined> {
 	protected calendarSelectionAdapterConstructor = DateCalendarSelectionAdapter

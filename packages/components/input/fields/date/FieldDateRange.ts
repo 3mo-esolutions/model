@@ -78,6 +78,7 @@ class DateRangeCalendarSelectionAdapter extends CalendarSelectionAdapter<DateRan
 	}
 }
 
+/** @element mo-field-date-range */
 @component('mo-field-date-range')
 export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 	@state()

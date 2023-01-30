@@ -134,7 +134,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 
 							<mo-list-item>
 								Höhe der Zeilen
-								<mo-slider slot='meta' max='50' min='30' step='5' withTickMarks
+								<mo-slider slot='meta' max='50' min='30' step='5'
 									${style({ right: '0px', width: '150px', '--height': '48px' })}
 									value=${DataGrid.rowHeight.value}
 									@change=${(e: CustomEvent<unknown, Slider>) => DataGrid.rowHeight.value = e.source.value}

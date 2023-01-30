@@ -1,6 +1,7 @@
 import { Component, property, query, event, PropertyValues } from '@a11d/lit'
 
 /**
+ * @attr value - The value of the input
  * @fires change {CustomEvent<T | undefined>}
  */
 export abstract class Input<T> extends Component {

@@ -26,9 +26,7 @@ class PageTest extends PageEntities<Data> {
 			<mo-page heading='Settings page' fullHeight>
 				<mo-group-box heading='Data' ${style({ height: '100%' })}>
 					<mo-data-grid>
-						<mo-data-grid-columns>
-							<mo-data-grid-column-text heading='Name' dataSelector='name'></mo-data-grid-column-text>
-						</mo-data-grid-columns>
+						<mo-data-grid-column-text heading='Name' dataSelector='name'></mo-data-grid-column-text>
 						<mo-fab slot='fab' icon='add'></mo-fab>
 					</mo-data-grid>
 				</mo-group-box>

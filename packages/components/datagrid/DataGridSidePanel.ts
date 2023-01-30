@@ -16,6 +16,11 @@ export const enum DataGridSidePanelTab {
 	Filters = 'filters',
 }
 
+/**
+ * @element mo-data-grid-side-panel
+ * @attr dataGrid
+ * @attr tab
+ */
 @component('mo-data-grid-side-panel')
 export class DataGridSidePanel<TData> extends Component {
 	@property({ type: Object }) dataGrid!: DataGrid<TData, any>

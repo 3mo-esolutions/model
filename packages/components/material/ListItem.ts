@@ -4,7 +4,10 @@ import { ListItemMixin } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 /**
+ * @element mo-list-item
+ *
  * @attr value
+ * @attr icon
  * @attr group
  * @attr disabled
  * @attr activated
@@ -14,6 +17,12 @@ import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
  * @attr hasMeta
  * @attr graphic
  * @attr twoline
+ *
+ * @slot graphic
+ * @slot meta
+ * @slot - The primary content of the list item
+ * @slot secondary
+ *
  * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
 @component('mo-list-item')

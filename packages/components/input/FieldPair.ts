@@ -5,6 +5,14 @@ export const enum FieldPairMode {
 	Overlay = 'overlay',
 }
 
+/**
+ * @element mo-field-pair
+ *
+ * @attr mode
+ *
+ * @slot - Field
+ * @slot attachment - Attachment
+ */
 @component('mo-field-pair')
 export class FieldPair extends Component {
 	@property({ reflect: true }) mode = FieldPairMode.Attach

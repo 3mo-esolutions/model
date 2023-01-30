@@ -2,6 +2,11 @@ import { Component, component, css, html, ifDefined, nothing, property, query, s
 import { SlotController } from '@3mo/slot-controller'
 import type { MaterialIcon } from '@3mo/icon'
 
+/**
+ * @element mo-navigation-list-item
+ * @attr icon
+ * @attr label
+ */
 @component('mo-navigation-list-item')
 export class NavigationListItem extends Component {
 	@property() label?: string

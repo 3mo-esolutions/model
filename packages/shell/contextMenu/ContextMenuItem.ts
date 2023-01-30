@@ -4,7 +4,12 @@ import { ListItem, Menu } from '../../components/material'
 import { ContextMenu } from '..'
 
 /**
+ * @element mo-context-menu-item
+ *
+ * @attr open
+ *
  * @slot details
+ *
  * @fires openChange {CustomEvent<boolean>}
  */
 @component('mo-context-menu-item')

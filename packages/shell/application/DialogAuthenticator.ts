@@ -45,7 +45,7 @@ export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticat
 
 	protected get applicationInfoTemplate() {
 		return !manifest ? nothing : html`
-			<mo-heading typography='subheading1' ${style({ color: 'var(--mo-color-gray)' })}>
+			<mo-heading typography='subtitle1' ${style({ color: 'var(--mo-color-gray)' })}>
 				${manifest.name} ${!manifest.version ? nothing : html`v${manifest.version}`}
 			</mo-heading>
 		`

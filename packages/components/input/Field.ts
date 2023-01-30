@@ -88,6 +88,18 @@ export type FieldAutoComplete =
 /**
  * @slot leading
  * @slot trailing
+ *
+ * @attr label
+ * @attr pattern
+ * @attr autocomplete
+ * @attr inputMode
+ * @attr readonly
+ * @attr disabled
+ * @attr required
+ * @attr dense
+ * @attr active
+ * @attr selectOnFocus
+ *
  * @fires input {CustomEvent<T | undefined>}
  * @fires validityChange {CustomEvent<boolean>}
  */

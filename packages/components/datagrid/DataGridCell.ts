@@ -7,6 +7,14 @@ Localizer.register(LanguageCode.German, {
 	'Copied to clipboard': 'In die Zwischenablage kopiert',
 })
 
+/**
+ * @element mo-data-grid-cell
+ *
+ * @attr value
+ * @attr column
+ * @attr row
+ * @attr editing
+ */
 @component('mo-data-grid-cell')
 export class DataGridCell<TValue extends KeyPathValueOf<TData>, TData = any, TDetailsElement extends Element | undefined = undefined> extends Component {
 	@property({ type: Object }) value!: TValue

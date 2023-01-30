@@ -3,6 +3,7 @@ import { nothing } from 'lit'
 import { FormatHelper } from '../../../utilities'
 import { DataGridColumnNumberBase } from '.'
 
+/** @element mo-data-grid-column-number */
 @component('mo-data-grid-column-number')
 export class DataGridColumnNumber<TData> extends DataGridColumnNumberBase<TData> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

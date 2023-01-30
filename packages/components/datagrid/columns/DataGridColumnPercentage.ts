@@ -2,6 +2,7 @@ import { component, html, ifDefined, nothing } from '@a11d/lit'
 import { FormatHelper } from '../../../utilities'
 import { DataGridColumnNumberBase } from '.'
 
+/** @element mo-data-grid-column-percentage */
 @component('mo-data-grid-column-percentage')
 export class DataGridColumnPercentage<TData> extends DataGridColumnNumberBase<TData> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

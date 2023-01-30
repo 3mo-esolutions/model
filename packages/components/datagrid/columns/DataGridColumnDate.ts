@@ -2,6 +2,10 @@ import { component, html, property } from '@a11d/lit'
 import { FormatHelper } from '../../../utilities'
 import { DataGridColumn } from '.'
 
+/**
+ * @element mo-data-grid-column-date
+ * @attr hideDatePicker - Hide the date picker
+ */
 @component('mo-data-grid-column-date')
 export class DataGridColumnDate<TData> extends DataGridColumn<TData, Date> {
 	@property({ type: Boolean }) hideDatePicker = false

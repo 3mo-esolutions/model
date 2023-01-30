@@ -172,7 +172,7 @@ export class FieldSelect<T> extends Field<Value> {
 				<mo-icon-button
 					part='dropDownIcon'
 					tabindex='-1'
-					small
+					dense
 					icon='expand_more'
 					${style({ color: 'var(--mo-color-gray)' })}
 					@click=${() => this.open = !this.open}

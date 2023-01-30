@@ -17,6 +17,7 @@ import { ComponentMixin } from '../../library'
  * @attr innerRole
  * @attr multi
  * @attr activatable
+ * @attr manualClose
  * @slot
  * @fires opened {CustomEvent}
  * @fires closing {CustomEvent}
