@@ -11,7 +11,7 @@ export class KeyboardHelper {
 	private static _meta = false
 	static get meta() { return this._meta }
 
-	static initialize() {
+	static {
 		window.addEventListener('keydown', e => {
 			KeyboardHelper._ctrl = e.ctrlKey
 			KeyboardHelper._shift = e.shiftKey
@@ -34,5 +34,3 @@ export class KeyboardHelper {
 		})
 	}
 }
-
-KeyboardHelper.initialize()

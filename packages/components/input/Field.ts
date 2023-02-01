@@ -179,7 +179,6 @@ export abstract class Field<T> extends Input<T> {
 				box-sizing: border-box;
 				background-color: var(--mo-field-background);
 				border-bottom: 1px solid var(--mo-color-gray-transparent);
-				padding: 0 10px;
 				gap: 6px;
 				height: var(--mo-field-height);
 				justify-content: center;
@@ -213,6 +212,14 @@ export abstract class Field<T> extends Input<T> {
 				border-bottom: 1px solid var(--mo-color-accent);
 			}
 
+			:host > :first-child {
+				padding-inline-start: 10px;
+			}
+
+			:host > :last-child {
+				padding-inline-end: 10px;
+			}
+
 			div[part=container] {
 				flex: 1;
 				display: grid;
@@ -222,8 +229,9 @@ export abstract class Field<T> extends Input<T> {
 
 			label {
 				position: absolute;
+				padding-inline-start: inherit;
+				margin-inline-start: 1px;
 				font-size: var(--mo-field-font-size);
-				inset-inline-start: 0;
 				top: calc(var(--mo-field-label-translate-value-on-focus) * -1);
 				transform: var(--mo-field-label-translate-on-focus);
 				color: var(--mo-color-gray);
@@ -323,7 +331,7 @@ export abstract class Field<T> extends Input<T> {
 		this.style.setProperty('--mo-field-label-transform-origin', getComputedStyle(this).direction === 'rtl' ? 'right top' : 'left top')
 		return html`
 			${!this.slotController.hasAssignedElements('leading') ? nothing : html`<slot name='leading'></slot>`}
-			<div part='container'>
+			<div part='container' @click=${() => this.focus()}>
 				<input
 					id='input'
 					part='input'
