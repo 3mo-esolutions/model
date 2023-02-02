@@ -19,7 +19,7 @@ export class FieldText extends FieldTextBase {
 		}
 		const remainingLength = this.maxLength - this.fromValue(this.value).length
 		return html`
-			<div ${style({ color: 'var(--mo-color-gray-transparent)' })}>${remainingLength}</div>
+			<div @click=${() => this.focus()} ${style({ color: 'var(--mo-color-gray-transparent)' })}>${remainingLength}</div>
 		`
 	}
 }

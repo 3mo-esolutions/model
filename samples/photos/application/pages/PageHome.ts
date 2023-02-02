@@ -78,8 +78,6 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 				@selectionChange=${(event: CustomEvent<Array<Photo>>) => this.selectedPhotos = event.detail}
 				@parametersChange=${(event: CustomEvent<FirstParameter<typeof PhotoService.getAll>>) => this.dataGridParameters = event.detail}
 			>
-				<mo-field-date slot='filter' label='Hello'></mo-field-date>
-
 				<app-field-select-album multiple slot='toolbar' default='All'
 					.value=${this.dataGridParameters.albumIds}
 					@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>

@@ -19,7 +19,7 @@ export class FieldPercentage extends FieldNumber {
 	protected override get template() {
 		return html`
 			${super.template}
-			<div ${style({ fontSize: '20px', fontWeight: '600', color: 'var(--mo-color-gray)' })}>
+			<div @click=${() => this.focus()} ${style({ fontSize: '20px', fontWeight: '600', color: 'var(--mo-color-gray)' })}>
 				${this.percentageSign}
 			</div>
 		`

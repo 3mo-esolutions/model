@@ -7,7 +7,7 @@ export class FieldTime extends FieldTextBase {
 
 	protected override get template() {
 		return html`
-			<mo-icon icon='schedule' ${style({ color: 'var(--mo-color-gray)' })}></mo-icon>
+			<mo-icon @click=${() => this.focus()} icon='schedule' ${style({ color: 'var(--mo-color-gray)' })}></mo-icon>
 			${super.template}
 		`
 	}
