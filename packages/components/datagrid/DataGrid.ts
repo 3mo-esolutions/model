@@ -709,6 +709,24 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		`
 	}
 
+	getSumTemplate(column: ColumnDefinition<TData>) {
+		if (column.sumHeading === undefined || column.getSumTemplate === undefined) {
+			return
+		}
+
+		const sum = this.renderData
+			.map(data => parseFloat(getValueByKeyPath(data, column.dataSelector) as unknown as string))
+			.filter(n => isNaN(n) === false)
+			.reduce(((a, b) => a + b), 0)
+			|| 0
+
+		return html`
+			<mo-data-grid-footer-sum heading=${column.sumHeading}>
+				${column.getSumTemplate(sum)}
+			</mo-data-grid-footer-sum>
+		`
+	}
+
 	protected get toolbarTemplate() {
 		return this.hasToolbar === false ? nothing : html`
 			<mo-flex id='flexToolbar' direction='horizontal' gap='var(--mo-thickness-l)' wrap='wrap' justifyContent='end' alignItems='center'>

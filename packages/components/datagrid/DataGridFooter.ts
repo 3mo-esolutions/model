@@ -1,6 +1,6 @@
 import { component, property, Component, css, state, html, nothing, query, ifDefined } from '@a11d/lit'
 import { FieldNumber, Localizer, style } from '../..'
-import { ColumnDefinition, DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
+import { DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
 Localizer.register(LanguageCode.German, {
 	'${page:number} of ${maxPage:number}': '${page} von ${maxPage}',
@@ -81,7 +81,7 @@ export class DataGridFooter<TData> extends Component {
 				</mo-flex>
 
 				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' wrap='wrap-reverse' ${style({ textAlign: 'right', paddingInlineEnd: 'var(--mo-data-grid-footer-trailing-padding)' })}>
-					${this.dataGrid.columns.map(column => this.getSumTemplate(column))}
+					${this.dataGrid.columns.map(column => this.dataGrid.getSumTemplate(column))}
 					<slot name='sum'></slot>
 				</mo-flex>
 			</mo-flex>
@@ -141,24 +141,6 @@ export class DataGridFooter<TData> extends Component {
 					</mo-field-select-data-grid-page-size>
 				`}
 			</div>
-		`
-	}
-
-	private getSumTemplate(column: ColumnDefinition<TData>) {
-		if (column.sumHeading === undefined || column.getSumTemplate === undefined) {
-			return
-		}
-
-		const sum = this.dataGrid.renderData
-			.map(data => parseFloat(getValueByKeyPath(data, column.dataSelector) as unknown as string))
-			.filter(n => isNaN(n) === false)
-			.reduce(((a, b) => a + b), 0)
-			|| 0
-
-		return html`
-			<mo-data-grid-footer-sum heading=${column.sumHeading}>
-				${column.getSumTemplate(sum)}
-			</mo-data-grid-footer-sum>
 		`
 	}
 
