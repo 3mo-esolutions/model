@@ -81,7 +81,7 @@ export class DataGridFooter<TData> extends Component {
 				</mo-flex>
 
 				<mo-flex direction='horizontal' alignItems='center' gap='var(--mo-thickness-l)' wrap='wrap-reverse' ${style({ textAlign: 'right', paddingInlineEnd: 'var(--mo-data-grid-footer-trailing-padding)' })}>
-					${this.dataGrid.columns.map(column => this.dataGrid.getSumTemplate(column))}
+					${this.dataGrid.sumsTemplate}
 					<slot name='sum'></slot>
 				</mo-flex>
 			</mo-flex>

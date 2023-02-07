@@ -709,6 +709,10 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		`
 	}
 
+	get sumsTemplate() {
+		return html`${this.columns.map(column => this.getSumTemplate(column))}`
+	}
+
 	getSumTemplate(column: ColumnDefinition<TData>) {
 		if (column.sumHeading === undefined || column.getSumTemplate === undefined) {
 			return
