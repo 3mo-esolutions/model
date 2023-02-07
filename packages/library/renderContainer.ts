@@ -5,10 +5,13 @@ export const renderContainer = (containerQuery: string) => {
 	return (prototype: ReactiveElement, _: string, descriptor: PropertyDescriptor) => {
 		const Constructor = prototype.constructor as typeof ReactiveElement
 		Constructor.addInitializer(element => {
-			element.addController({
+			element.addController(new class {
 				async hostUpdated() {
-					await element.updateComplete
-					const container = element.renderRoot.querySelector<HTMLElement>(containerQuery)
+					let container = this.container
+					if (!container) {
+						await element.updateComplete
+						container = this.container
+					}
 					if (container) {
 						const template = typeof descriptor.get === 'function'
 							? descriptor.get.call(element)
@@ -17,6 +20,10 @@ export const renderContainer = (containerQuery: string) => {
 								: nothing
 						render(template, container)
 					}
+				}
+
+				private get container() {
+					return element.renderRoot.querySelector<HTMLElement>(containerQuery)
 				}
 			})
 		})
