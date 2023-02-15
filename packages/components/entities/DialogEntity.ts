@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { html, PropertyValues, state } from '@a11d/lit'
 import { DialogComponent, DialogParameters } from '@a11d/lit-application'
 import { TemplateHelper } from '../../library'
 import { Entity, EntityId } from '.'
 
 export abstract class DialogEntity<TEntity, T extends Exclude<DialogParameters, void> = Entity> extends DialogComponent<T, TEntity | undefined> {
+	@state() protected abstract entity: TEntity
 	protected abstract fetch(id: EntityId): TEntity | PromiseLike<TEntity>
 	protected abstract save(entity: TEntity): (TEntity | void) | PromiseLike<TEntity | void>
 	protected abstract delete?(entity: TEntity): void | PromiseLike<void>
-	@state() protected abstract entity: TEntity
 
 	protected override async firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)

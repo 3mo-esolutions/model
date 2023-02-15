@@ -1,4 +1,4 @@
-import { MaterialDialog, MaterialDialogSize } from '../MaterialDialog'
+import { Dialog, DialogSize } from '@3mo/dialog'
 import { DialogDefault } from './DialogDefault'
 
 describe(DialogDefault.name, () => {
@@ -8,7 +8,7 @@ describe(DialogDefault.name, () => {
 		heading: 'Heading',
 		content: 'Content',
 		blocking: true,
-		size: MaterialDialogSize.Medium,
+		size: DialogSize.Medium,
 		primaryButtonText: 'Primary Button',
 		primaryAction: jasmine.createSpy('primaryAction').and.returnValue('Primary Button Clicked!'),
 		secondaryButtonText: 'Secondary Button',
@@ -22,10 +22,10 @@ describe(DialogDefault.name, () => {
 	it('should have used parameters to customize dialog', () => {
 		expect(fixture.component.dialogElement.heading).toBe(parameters.heading)
 		expect(fixture.component.dialogElement.innerText).toBe(parameters.content as string)
-		expect((fixture.component.dialogElement as MaterialDialog).primaryButtonText).toBe(parameters.primaryButtonText!)
-		expect((fixture.component.dialogElement as MaterialDialog).secondaryButtonText).toBe(parameters.secondaryButtonText)
-		expect((fixture.component.dialogElement as MaterialDialog).blocking).toBe(parameters.blocking!)
-		expect((fixture.component.dialogElement as MaterialDialog).size).toBe(parameters.size!)
+		expect((fixture.component.dialogElement as Dialog).primaryButtonText).toBe(parameters.primaryButtonText!)
+		expect((fixture.component.dialogElement as Dialog).secondaryButtonText).toBe(parameters.secondaryButtonText)
+		expect((fixture.component.dialogElement as Dialog).blocking).toBe(parameters.blocking!)
+		expect((fixture.component.dialogElement as Dialog).size).toBe(parameters.size!)
 	})
 
 	it('should call "primaryAction" parameter and return its value when the primary button is clicked', async () => {
