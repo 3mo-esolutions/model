@@ -2,6 +2,7 @@ import { LitElement, PropertyValues } from '@a11d/lit'
 
 LitElement.enabledWarnings = []
 
+/** @deprecated */
 export const ComponentMixin = <T extends AbstractConstructor<LitElement>>(Constructor: T) => {
 	abstract class ComponentMixinConstructor extends Constructor {
 		/** Invoked after first update i.e. render is completed */

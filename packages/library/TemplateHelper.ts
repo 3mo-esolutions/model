@@ -1,5 +1,6 @@
 import { TemplateResult, render, nothing } from 'lit'
 
+/** @deprecated */
 export class TemplateHelper {
 	private constructor() { }
 
