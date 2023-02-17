@@ -64,6 +64,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected fetchDirty?(parameters: TDataFetcherParameters): Array<TData> | undefined
 
 	readonly fetcherController = new FetcherController<Result<TData> | undefined>(this, {
+		debounce: 500,
 		fetchEvent: this.dataFetch,
 		fetcher: async () => {
 			if (!this.parameters) {

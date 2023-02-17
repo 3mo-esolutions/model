@@ -1,5 +1,5 @@
 import { component, property, PropertyValues, html, nothing, TemplateResult } from '@a11d/lit'
-import { FetchableDataGridParametersType, FetchableDataGrid, DialogEntity, Entity } from '..'
+import { FetchableDataGridParametersType, FetchableDataGrid, EntityDialogComponent, Entity } from '..'
 
 type CreateAction = (() => unknown | PromiseLike<unknown>)
 type EditAction<TEntity extends Entity> = ((entity: TEntity) => unknown | PromiseLike<unknown>)
@@ -9,8 +9,8 @@ type CreateOrEditAction<TEntity extends Entity> = CreateAction | EditAction<TEnt
 @component('mo-data-grid-entity')
 export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters extends FetchableDataGridParametersType = Record<string, never>, TDetailsElement extends Element | undefined = undefined> extends FetchableDataGrid<TEntity, TDataFetcherParameters, TDetailsElement> {
 	@property({ type: Boolean }) disableEditOnClick = false
-	@property({ type: Object }) create?: CreateAction | Constructor<DialogEntity<TEntity>>
-	@property({ type: Object }) edit?: EditAction<TEntity> | Constructor<DialogEntity<TEntity>>
+	@property({ type: Object }) create?: CreateAction | Constructor<EntityDialogComponent<TEntity>>
+	@property({ type: Object }) edit?: EditAction<TEntity> | Constructor<EntityDialogComponent<TEntity>>
 	@property({ type: Object }) delete?: (...entities: Array<TEntity>) => void | PromiseLike<void>
 	@property({ type: Object }) rowContextMenuTemplate?: (rowData: Array<TEntity>) => TemplateResult
 	@property({ type: Boolean }) hideFab = false
@@ -23,7 +23,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 				this.edit = this.createOrEdit
 			}
 		}
-	}) createOrEdit?: CreateOrEditAction<TEntity> | Constructor<DialogEntity<TEntity>>
+	}) createOrEdit?: CreateOrEditAction<TEntity> | Constructor<EntityDialogComponent<TEntity>>
 
 	override silentFetch = true
 
@@ -36,7 +36,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 		await (
 			this.isEntityDialogClass(this.create)
-				? this.confirmDialogEntity(new this.create({}))
+				? this.confirmEntityDialog(new this.create({}))
 				: this.create()
 		)
 
@@ -50,7 +50,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 		await (
 			this.isEntityDialogClass(this.edit)
-				? this.confirmDialogEntity(new this.edit({ id: entity.id }))
+				? this.confirmEntityDialog(new this.edit({ id: entity.id }))
 				: this.edit(entity)
 		)
 
@@ -85,7 +85,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 		`
 	}
 
-	private async confirmDialogEntity(dialog: DialogEntity<TEntity>) {
+	private async confirmEntityDialog(dialog: EntityDialogComponent<TEntity>) {
 		try {
 			await dialog.confirm()
 		} finally {
@@ -102,7 +102,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 	}
 
 	// eslint-disable-next-line @typescript-eslint/ban-types
-	private isEntityDialogClass(fn: Function): fn is Constructor<DialogEntity<TEntity>> {
+	private isEntityDialogClass(fn: Function): fn is Constructor<EntityDialogComponent<TEntity>> {
 		return typeof fn === 'function' && /^class\s/.test(fn.toString())
 	}
 }

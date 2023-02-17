@@ -23,5 +23,5 @@ export default new class PhotoService {
 		return [...result.slice(0, this.count), ...result]
 	}
 
-	get = (id: number) => ApiClient.get<Photo>(`/photo/${id}`)
+	get = (id: number) => ApiClient.get<Photo>(`/photos/${id}`)
 }

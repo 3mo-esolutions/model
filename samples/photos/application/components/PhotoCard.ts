@@ -55,7 +55,7 @@ export class PhotoCard extends Component {
 			return
 		}
 
-		await new DialogPhoto({ photo: this.photo }).confirm()
+		await new DialogPhoto({ id: this.photo.id }).confirm()
 	}
 
 	private readonly selectCard = (event: Event) => {

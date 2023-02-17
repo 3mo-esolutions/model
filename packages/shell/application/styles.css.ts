@@ -80,6 +80,7 @@ export const styles = css`
 		--mo-color-accent-transparent: rgba(var(--mo-color-accent-base), 0.25);
 		--mo-color-accent-gradient: linear-gradient(135deg, rgb(var(--mo-color-accent-gradient-1)), rgb(var(--mo-color-accent-gradient-2)), rgb(var(--mo-color-accent-gradient-3)));
 		--mo-color-accent-gradient-transparent: linear-gradient(135deg, rgba(var(--mo-color-accent-gradient-1), 0.25), rgba(var(--mo-color-accent-gradient-2), 0.25), rgba(var(--mo-color-accent-gradient-3), 0.25));
+		--mo-color-surface: rgb(var(--mo-color-surface-base)) !important;
 		/* Override Material Web Components variables */
 		--mdc-icon-font: Material Icons Sharp !important;
 		--mdc-theme-primary: var(--mo-color-accent) !important;
@@ -103,7 +104,7 @@ export const styles = css`
 		--mo-color-background: rgb(220, 221, 225) !important;
 		--mo-color-foreground: black !important;
 		--mo-color-foreground-transparent: rgb(48, 48, 48) !important;
-		--mo-color-surface: rgb(255, 255, 255) !important;
+		--mo-color-surface-base: 255, 255, 255;
 		--mo-color-gray-base: 121, 121, 121;
 		--mo-shadow-base: 95, 81, 78;
 		--mo-color-error-base: 176, 0, 32;
@@ -119,7 +120,7 @@ export const styles = css`
 		--mo-color-background-base: 0, 0, 0;
 		--mo-color-foreground-base: 255, 255, 255;
 		--mo-color-background: rgb(16, 17, 20) !important;
-		--mo-color-surface: rgb(42, 43, 47) !important;
+		--mo-color-surface-base: 42, 43, 47;
 		--mo-color-foreground: white !important;
 		--mo-color-foreground-transparent: rgb(220, 220, 220) !important;
 		--mo-color-gray-base: 165, 165, 165;

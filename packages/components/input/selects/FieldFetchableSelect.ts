@@ -31,6 +31,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 	set debounce(value) { this.fetcherController.debounce = value }
 
 	readonly fetcherController = new FetcherController(this, {
+		debounce: 500,
 		fetchEvent: this.dataFetch,
 		fetcher: async () => {
 			const searchParameters = this.searchParameters?.(this.searchKeyword) ?? {}

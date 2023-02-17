@@ -1,19 +1,25 @@
-import { component, DialogComponent, html, state } from '@3mo/model'
-import { Album, ApiClient, Photo, User } from '../../sdk'
+import { component, FetchableDialogComponent, html, state } from '@3mo/model'
+import { Album, ApiClient, Photo, PhotoService, User } from '../../sdk'
 
 @component('photos-photo-details-dialog')
-export class DialogPhoto extends DialogComponent<{ readonly photo: Photo }> {
+export class DialogPhoto extends FetchableDialogComponent<Photo> {
+	protected entity = {} as Photo
+
+	protected fetch = async (id: number) => {
+		const photo = await PhotoService.get(id)
+		this.album = await ApiClient.get<Album>(`/albums/${photo.albumId}`)
+		this.photographer = await ApiClient.get(`/users/${this.album.userId}`)
+		return photo
+	}
+
 	@state() private album?: Album
 	@state() private photographer?: User
 
-	protected override async initialized() {
-		this.album = await ApiClient.get<Album>(`/albums/${this.parameters.photo.albumId}`)
-		this.photographer = await ApiClient.get(`/users/${this.album.userId}`)
-	}
+	private get photo() { return this.entity }
 
 	protected override get template() {
 		return html`
-			<mo-dialog heading=${this.parameters.photo.title}>
+			<mo-fetchable-dialog heading=${this.photo.title}>
 				<style>
 					img {
 						border-radius: 50%;
@@ -22,7 +28,7 @@ export class DialogPhoto extends DialogComponent<{ readonly photo: Photo }> {
 				</style>
 				<mo-flex direction='horizontal' gap='var(--mo-thickness-xxl)'>
 					<mo-flex justifyContent='center'>
-						<img src=${this.parameters.photo.thumbnailUrl} alt=${this.parameters.photo.title}>
+						<img src=${this.photo.thumbnailUrl} alt=${this.photo.title}>
 					</mo-flex>
 					<mo-flex gap='var(--mo-thickness-xl)'>
 						<mo-meta heading='Album'>${this.album?.title}</mo-meta>
@@ -34,7 +40,7 @@ export class DialogPhoto extends DialogComponent<{ readonly photo: Photo }> {
 						<mo-meta heading='Company'>${this.photographer?.company.name}</mo-meta>
 					</mo-flex>
 				</mo-flex>
-			</mo-dialog>
+			</mo-fetchable-dialog>
 		`
 	}
 }
