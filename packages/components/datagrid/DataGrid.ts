@@ -967,6 +967,7 @@ function subDataGridSelectorChanged<TData>(this: DataGrid<TData>) {
 			sidePanelHidden
 			.columns=${this.columns}
 			.subDataGridDataSelector=${this.subDataGridDataSelector}
+			.hasDataDetail=${this.hasDataDetail}
 			.selectionMode=${this.selectionMode}
 			.isDataSelectable=${this.isDataSelectable}
 			?selectOnClick=${this.selectOnClick}
