@@ -22,4 +22,5 @@ Localizer.register(LanguageCode.German, {
 	'Cancel': 'Abbrechen',
 	'Expand': 'Erweitern',
 	'Collapse': 'Reduzieren',
+	'Loading': 'Lädt',
 })

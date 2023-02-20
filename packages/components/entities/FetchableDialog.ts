@@ -1,6 +1,6 @@
 import { component, property } from '@a11d/lit'
+import { LoadingDialog } from '@3mo/loading-dialog'
 import { FetcherController } from '../../utilities'
-import { LoadingDialog } from './LoadingDialog'
 
 @component('mo-fetchable-dialog')
 export class FetchableDialog<T> extends LoadingDialog {

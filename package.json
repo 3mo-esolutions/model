@@ -60,6 +60,7 @@
 		"@3mo/virtualized-scroller": "x",
 		"@3mo/localization": "x",
 		"@3mo/dialog": "x",
+		"@3mo/loading-dialog": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",
 		"@a11d/lit-application-authentication": "x",

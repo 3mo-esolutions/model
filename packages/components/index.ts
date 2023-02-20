@@ -28,6 +28,7 @@ export * from '@3mo/tab'
 export * from '@3mo/chip'
 export * from '@3mo/tooltip'
 export * from '@3mo/dialog'
+export * from '@3mo/loading-dialog'
 
 import './composer'
 
