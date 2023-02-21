@@ -1,4 +1,4 @@
-import { component, html, property } from '@a11d/lit'
+import { component, html, property, nothing } from '@a11d/lit'
 import { FetchableDialog } from './FetchableDialog'
 
 @component('mo-entity-dialog')
@@ -7,7 +7,7 @@ export class EntityDialog<TEntity> extends FetchableDialog<TEntity> {
 	@property({ type: Object }) delete?: () => void | PromiseLike<void>
 
 	protected override get primaryActionDefaultTemplate() {
-		return html`
+		return !this.primaryButtonText ? nothing : html`
 			<mo-loading-button type='raised' ?disabled=${this.fetcherController.isFetching}>
 				${this.primaryButtonText || t('Save')}
 			</mo-loading-button>
@@ -15,7 +15,7 @@ export class EntityDialog<TEntity> extends FetchableDialog<TEntity> {
 	}
 
 	protected override get secondaryActionDefaultTemplate() {
-		return !this.delete ? super.secondaryActionDefaultTemplate : html`
+		return !this.delete || !this.secondaryButtonText ? super.secondaryActionDefaultTemplate : html`
 			<mo-loading-button type='outlined' style='--mdc-theme-primary: var(--mo-color-error)' ?disabled=${this.fetcherController.isFetching}>
 				${this.secondaryButtonText || t('Delete')}
 			</mo-loading-button>
