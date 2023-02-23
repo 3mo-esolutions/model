@@ -596,17 +596,17 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				.dataGrid=${this as any}
 				tab=${ifDefined(this.sidePanelTab)}
 			>
-				<slot slot='settings' name='settings'>${this.defaultSettingsTemplate}</slot>
-				<slot slot='filter' name='filter'>${this.defaultFiltersTemplate}</slot>
+				<slot slot='settings' name='settings'>${this.settingsDefaultTemplate}</slot>
+				<slot slot='filter' name='filter'>${this.filtersDefaultTemplate}</slot>
 			</mo-data-grid-side-panel>
 		`
 	}
 
-	protected get defaultSettingsTemplate() {
+	protected get settingsDefaultTemplate() {
 		return nothing
 	}
 
-	protected get defaultFiltersTemplate() {
+	protected get filtersDefaultTemplate() {
 		return nothing
 	}
 
