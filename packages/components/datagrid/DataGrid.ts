@@ -501,7 +501,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			#flexActions {
 				align-items: center;
 				justify-content: center;
-				padding-inline: var(--mo-thickness-m) var(--mo-thickness-xl);
+				padding-inline: var(--mo-thickness-xl) var(--mo-thickness-m);
 				margin: var(--mo-thickness-m) 0;
 				cursor: pointer;
 				background: var(--mo-color-accent-transparent);
