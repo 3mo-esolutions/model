@@ -35,8 +35,8 @@ export class DataGridDefaultRow<TData, TDetailsElement extends Element | undefin
 			}
 
 			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid]:not([headerHidden]) {
-				margin: 16px var(--mo-details-data-grid-left-margin);
-				width: calc(100% - calc(var(--mo-details-data-grid-left-margin) * 2));
+				margin: 16px var(--mo-details-data-grid-start-margin);
+				width: calc(100% - calc(var(--mo-details-data-grid-start-margin) * 2));
 			}
 
 			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid] {
@@ -44,8 +44,8 @@ export class DataGridDefaultRow<TData, TDetailsElement extends Element | undefin
 			}
 
 			:host-context(:not([hasDetails]):not([selectionMode=single]):not([selectionMode=multiple])) #detailsContainer > [instanceof*=mo-data-grid][headerHidden] {
-				margin: 0px 0px 0px var(--mo-details-data-grid-left-margin);
-				width: calc(100% - var(--mo-details-data-grid-left-margin));
+				margin-inline-start: var(--mo-details-data-grid-start-margin);
+				width: calc(100% - var(--mo-details-data-grid-start-margin));
 			}
 		`
 	}

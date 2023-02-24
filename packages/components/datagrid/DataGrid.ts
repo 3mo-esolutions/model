@@ -435,7 +435,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				--mo-data-grid-columns-gap: 6px;
 
 				--mo-data-grid-row-tree-line-width: 8px;
-				--mo-details-data-grid-left-margin: 26px;
+				--mo-details-data-grid-start-margin: 26px;
 				--mo-data-grid-cell-padding: 3px;
 
 				--mo-data-grid-selection-background: rgba(var(--mo-color-accent-base), 0.5);
