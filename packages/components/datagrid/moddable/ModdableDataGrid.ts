@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { css, html, nothing, property, event, style } from '@a11d/lit'
-import { LocalStorageEntry } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { ContextMenuHost } from '../../../shell'
 import { tooltip } from '../../..'
 import { DataGrid, FetchableDataGridParametersType, FetchableDataGrid } from '..'
@@ -11,7 +11,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 	static disableModes = false
 
 	readonly modesRepository = new ModeRepository<TData, TDataFetcherParameters>(this as any)
-	private readonly modeStorage = new LocalStorageEntry<number | undefined>(`MoDeL.Components.ModdableDataGrids.${this.tagName.toLowerCase()}.Mode`, undefined, (_, value) => Number(value))
+	private readonly modeStorage = new LocalStorage<number | undefined>(`MoDeL.Components.ModdableDataGrids.${this.tagName.toLowerCase()}.Mode`, undefined, (_, value) => Number(value))
 	private readonly dataCache = new Map<number, { page: number, data: Array<TData> }>()
 
 	@event() readonly modeChange!: EventDispatcher<Mode<TData, TDataFetcherParameters> | undefined>

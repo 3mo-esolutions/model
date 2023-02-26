@@ -1,5 +1,5 @@
-import { PropertyValues } from '@a11d/lit'
-import { DialogParameters } from '@a11d/lit-application'
+import { eventListener, PropertyValues } from '@a11d/lit'
+import { DialogActionKey, DialogParameters } from '@a11d/lit-application'
 import { Entity } from '.'
 import { EntityDialog } from './EntityDialog'
 import { FetchableDialogComponent } from './FetchableDialogComponent'
@@ -20,6 +20,15 @@ export abstract class EntityDialogComponent<TEntity, TParameters extends Exclude
 		this.dialogElement.save = () => this.save(this.entity)
 		if (this.delete) {
 			this.dialogElement.delete = () => this.delete?.(this.entity)
+		}
+	}
+
+	@eventListener({ target: window, type: 'keydown' })
+	protected override async handleKeyDown(e: KeyboardEvent) {
+		await super.handleKeyDown(e)
+		if (!this.dialogElement.preventPrimaryOnCtrlS && e.key === 's' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault()
+			await this.handleAction(DialogActionKey.Primary)
 		}
 	}
 

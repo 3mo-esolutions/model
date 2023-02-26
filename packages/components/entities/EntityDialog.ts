@@ -3,6 +3,7 @@ import { FetchableDialog } from './FetchableDialog'
 
 @component('mo-entity-dialog')
 export class EntityDialog<TEntity> extends FetchableDialog<TEntity> {
+	@property({ type: Boolean }) preventPrimaryOnCtrlS = false
 	@property({ type: Object }) save!: () => (TEntity | void) | PromiseLike<TEntity | void>
 	@property({ type: Object }) delete?: () => void | PromiseLike<void>
 

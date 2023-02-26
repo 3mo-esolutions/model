@@ -1,8 +1,8 @@
-import { LocalStorageEntry } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { FetchableDataGridParametersType, ModdableDataGrid } from '..'
 import { Mode } from './Mode'
 
-export class ModeRepository<TData, TDataFetcherParameters extends FetchableDataGridParametersType> extends LocalStorageEntry<Array<Mode<TData, TDataFetcherParameters>>> {
+export class ModeRepository<TData, TDataFetcherParameters extends FetchableDataGridParametersType> extends LocalStorage<Array<Mode<TData, TDataFetcherParameters>>> {
 	private _defaultMode?: Required<Mode<TData, TDataFetcherParameters>>
 	get defaultMode() { return this._defaultMode! }
 

@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from '@a11d/lit'
-import { Application, LocalStorageEntry, RootCssInjector } from '@a11d/lit-application'
+import { Application, RootCssInjector } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { Color } from '../../utilities'
 import { Background } from '.'
 
 export class ThemeHelper {
-	static readonly background = new class extends LocalStorageEntry<Background> {
+	static readonly background = new class extends LocalStorage<Background> {
 		private application?: Application
 
 		constructor() {
@@ -31,7 +32,7 @@ export class ThemeHelper {
 		}
 	}
 
-	static readonly accent = new class extends LocalStorageEntry<Color> {
+	static readonly accent = new class extends LocalStorage<Color> {
 		private styleElement?: HTMLStyleElement
 
 		constructor() {

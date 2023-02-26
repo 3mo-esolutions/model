@@ -1,6 +1,6 @@
 import { property, Component, component, html, css } from '@a11d/lit'
 import { FormatHelper } from '../utilities'
-import { LocalStorageEntry } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 
 /**
  * @element mo-amount
@@ -13,7 +13,7 @@ import { LocalStorageEntry } from '@a11d/lit-application'
  */
 @component('mo-amount')
 export class Amount extends Component {
-	static readonly redNegative = new LocalStorageEntry('MoDeL.Components.Amount.RedNegative', false)
+	static readonly redNegative = new LocalStorage('MoDeL.Components.Amount.RedNegative', false)
 
 	@property() currency = CurrencyCode.EUR
 	@property({ type: String, reflect: true }) currencySymbol?: string

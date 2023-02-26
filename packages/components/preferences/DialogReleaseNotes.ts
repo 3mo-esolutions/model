@@ -1,10 +1,11 @@
 import { component, css, html, state, style } from '@a11d/lit'
-import { LocalStorageEntry, DialogComponent } from '@a11d/lit-application'
+import { DialogComponent } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { Marked } from '@ts-stack/markdown'
 
 @component('mo-dialog-release-notes')
 export class DialogReleaseNotes extends DialogComponent {
-	private static readonly shownReleaseNoteVersion = new LocalStorageEntry('MoDeL.ReleaseNotes.ShownVersion', '')
+	private static readonly shownReleaseNoteVersion = new LocalStorage('MoDeL.ReleaseNotes.ShownVersion', '')
 
 	@state() notes = !this.extractReleaseNotes() ? undefined : Marked.parse(this.extractReleaseNotes()!)
 

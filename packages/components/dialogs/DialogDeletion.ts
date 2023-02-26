@@ -1,5 +1,5 @@
 import { component, TemplateResult, html } from '@a11d/lit'
-import { LocalStorageEntry } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { Localizer } from '@3mo/localization'
 import { DialogComponent, NotificationHost } from '@a11d/lit-application'
 
@@ -14,7 +14,7 @@ type Parameters = {
 
 @component('mo-dialog-deletion')
 export class DialogDeletion extends DialogComponent<Parameters> {
-	static readonly deletionConfirmation = new LocalStorageEntry('MoDeL.DialogDeletion.DeletionConfirmation', true)
+	static readonly deletionConfirmation = new LocalStorage('MoDeL.DialogDeletion.DeletionConfirmation', true)
 
 	override async confirm() {
 		if (DialogDeletion.deletionConfirmation.value === false) {

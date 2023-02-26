@@ -1,5 +1,6 @@
 import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '@a11d/lit'
-import { NotificationHost, LocalStorageEntry } from '@a11d/lit-application'
+import { NotificationHost } from '@a11d/lit-application'
+import { LocalStorage } from '@a11d/local-storage'
 import { InstanceofAttributeController } from '@3mo/instanceof-attribute-controller'
 import { SlotController } from '@3mo/slot-controller'
 import { tooltip } from '@3mo/tooltip'
@@ -88,8 +89,8 @@ export type DataGridSorting<TData> = {
  * @attr hasAlternatingBackground - Whether the rows should have alternating background.
  * @attr preventFabCollapse - Whether the FAB should be prevented from collapsing.
  *
- * @slot - Use this slot only for declarative DataGrid APIs e.g. setting ColumnDefinitions via `mo-data-grid-columns` tag
- * @slot toolbar - The horizontal bar above DataGrid's contents
+ * @slot - Use this slot only for declarative DataGrid APIs e.g. setting ColumnDefinitions via `mo-data-grid-columns` tag.
+ * @slot toolbar - The horizontal bar above DataGrid's contents.
  * @slot filter - A vertical bar for elements which filter DataGrid's data. It is opened through an icon-button in the toolbar.
  * @slot sum - A horizontal bar in the DataGrid's footer for showing sums. Calculated sums are also placed here by default.
  * @slot settings - A vertical bar for elements which change DataGrid's settings. It is pre-filled with columns' settings and can be opened through an icon-button in the toolbar.
@@ -115,9 +116,9 @@ export type DataGridSorting<TData> = {
  */
 @component('mo-data-grid')
 export class DataGrid<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
-	static readonly rowHeight = new LocalStorageEntry<number>('MoDeL.Components.DataGrid.RowHeight', 35)
-	static readonly pageSize = new LocalStorageEntry<Exclude<DataGridPagination, 'auto'>>('MoDeL.Components.DataGrid.PageSize', 25)
-	static readonly hasAlternatingBackground = new LocalStorageEntry('MoDeL.Components.DataGrid.HasAlternatingBackground', true)
+	static readonly rowHeight = new LocalStorage<number>('MoDeL.Components.DataGrid.RowHeight', 35)
+	static readonly pageSize = new LocalStorage<Exclude<DataGridPagination, 'auto'>>('MoDeL.Components.DataGrid.PageSize', 25)
+	static readonly hasAlternatingBackground = new LocalStorage('MoDeL.Components.DataGrid.HasAlternatingBackground', true)
 	protected static readonly virtualizationThreshold: number = 50
 
 	@event() readonly dataChange!: EventDispatcher<Array<TData>>
