@@ -20,6 +20,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 
 	@property({ type: Number }) optionsRenderLimit = FieldFetchableSelect.fetchedOptionsRenderLimit
 	@property({ type: Object }) optionTemplate?: (data: T, index: number, array: Array<T>) => HTMLTemplateResult
+	@property({ type: Boolean }) preventShiftingSelectedItem = false
 
 	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.requestFetch() } }) parameters?: TDataFetcherParameters
 	@property({ type: Object }) searchParameters?: (keyword: string) => Partial<TDataFetcherParameters>
@@ -113,7 +114,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		const fieldValue = this.value
 		if (fieldValue instanceof Array && fieldValue.length > 0) {
 			optionsToAppend.push(...value.filter(o => fieldValue.includes(o.value)))
-		} else if (fieldValue) {
+		} else if (fieldValue && !this.preventShiftingSelectedItem) {
 			const preselectedValueOption = value.find(o => o.value === fieldValue)
 			if (preselectedValueOption) {
 				optionsToAppend.push(preselectedValueOption)
