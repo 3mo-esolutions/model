@@ -8,7 +8,7 @@ import { observeMutation } from '@3mo/mutation-observer'
 import { MediaQueryController } from '@3mo/media-query-observer'
 import { observeResize } from '@3mo/resize-observer'
 import { ContextMenuHost } from '../../shell'
-import { ExcelHelper } from '../../utilities'
+import { CsvGenerator } from '../../utilities'
 import { Localizer } from '@3mo/localization'
 import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 
@@ -299,7 +299,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	exportExcelFile() {
 		try {
 			const selectors = this.visibleColumns.map(c => c.dataSelector)
-			ExcelHelper.generate(this.data, selectors)
+			CsvGenerator.generate(this.data, selectors)
 			NotificationHost.instance?.notifyInfo(t('Exporting excel file'))
 		} catch (error: any) {
 			NotificationHost.instance?.notifyError(error.message)

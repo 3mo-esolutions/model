@@ -62,6 +62,7 @@
 		"@3mo/tab": "x",
 		"@3mo/tooltip": "x",
 		"@3mo/virtualized-scroller": "x",
+		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",
 		"@a11d/lit-application-authentication": "x",
