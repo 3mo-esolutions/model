@@ -2,7 +2,7 @@
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { tooltip } from '@3mo/tooltip'
 import { Localizer } from '@3mo/localization'
-import { FetcherController } from '../../utilities'
+import { FetcherController } from '@3mo/fetcher-controller'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 
 export type FetchableDataGridParametersType = Record<string, unknown>
@@ -36,9 +36,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	@property({ type: Object }) fetch: (parameters: TDataFetcherParameters) => Promise<Result<TData>> = () => Promise.resolve([])
 	@property({ type: Boolean }) silentFetch = false
-	@property({ type: Number })
-	get debounce() { return this.fetcherController.debounce }
-	set debounce(value) { this.fetcherController.debounce = value }
+
 	@property({
 		type: Object,
 		updated(this: FetchableDataGrid<TData, TDataFetcherParameters>, value?: TDataFetcherParameters) {
@@ -64,20 +62,21 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected fetchDirty?(parameters: TDataFetcherParameters): Array<TData> | undefined
 
 	readonly fetcherController = new FetcherController<Result<TData> | undefined>(this, {
-		debounce: 500,
-		fetchEvent: this.dataFetch,
-		fetcher: async () => {
+		throttle: 500,
+		fetch: async () => {
 			if (!this.parameters) {
 				return undefined
 			}
 
 			const paginationParameters = this.paginationParameters?.() ?? {}
 			const sortParameters = this.sortParameters?.() ?? {}
-			return await this.fetch({
+			const data = await this.fetch({
 				...this.parameters,
 				...paginationParameters,
 				...sortParameters,
 			}) ?? []
+			this.dataFetch.dispatch(data)
+			return data
 		},
 	})
 

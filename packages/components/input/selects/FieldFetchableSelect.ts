@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, property, event, html, HTMLTemplateResult } from '@a11d/lit'
+import { component, css, property, event, html, HTMLTemplateResult, PropertyValues } from '@a11d/lit'
 import { TemplateHelper } from '../../../library'
-import { FetcherController } from '../../../utilities'
-import { PropertyValues } from '../../..'
+import { FetcherController } from '@3mo/fetcher-controller'
 import { FieldSelect } from './FieldSelect'
 import { Option } from './Option'
 
@@ -27,20 +26,17 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 
 	@property({ type: Object }) fetch?: (parameters: TDataFetcherParameters | undefined) => Promise<Array<T>>
 
-	@property({ type: Number })
-	get debounce() { return this.fetcherController.debounce }
-	set debounce(value) { this.fetcherController.debounce = value }
-
 	readonly fetcherController = new FetcherController(this, {
-		debounce: 500,
-		fetchEvent: this.dataFetch,
-		fetcher: async () => {
+		throttle: 500,
+		fetch: async () => {
 			const searchParameters = this.searchParameters?.(this.searchKeyword) ?? {}
 			const parameters = {
 				...this.parameters,
 				...searchParameters
 			} as TDataFetcherParameters
-			return await this.fetch?.(parameters) || []
+			const data = await this.fetch?.(parameters) || []
+			this.dataFetch.dispatch(data)
+			return data
 		},
 	})
 
