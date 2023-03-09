@@ -18,8 +18,8 @@ Localizer.register(LanguageCode.German, {
 
 export type User = {
 	id: number
-	name: string
-	email: string
+	name?: string
+	email?: string
 }
 
 export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticatorBase<User> {

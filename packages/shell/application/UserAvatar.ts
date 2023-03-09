@@ -1,11 +1,9 @@
-import { state, html, component, Component, property, css, nothing, style } from '@a11d/lit'
+import { state, html, component, Component, css, nothing, style } from '@a11d/lit'
 import { Authentication } from '@a11d/lit-application-authentication'
 import { BusinessSuiteDialogAuthenticator, User } from './DialogAuthenticator'
 
 @component('mo-user-avatar')
 export class UserAvatar extends Component {
-	@property({ type: Object }) user = BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value as User
-
 	@state() private menuOpen = false
 
 	static override get styles() {
@@ -29,11 +27,15 @@ export class UserAvatar extends Component {
 	}
 
 	protected override initialized() {
-		BusinessSuiteDialogAuthenticator.authenticatedUserStorage.changed.subscribe(user => this.user = user as User)
+		BusinessSuiteDialogAuthenticator.authenticatedUserStorage.changed.subscribe(() => this.requestUpdate())
+	}
+
+	private get user() {
+		return BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value as User | undefined
 	}
 
 	private get name() {
-		return this.user?.name.split(' ').map(string => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')
+		return this.user?.name?.split(' ').map(string => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')
 	}
 
 	private get initials() {
