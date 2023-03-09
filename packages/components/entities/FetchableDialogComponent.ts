@@ -19,9 +19,7 @@ export abstract class FetchableDialogComponent<TEntity, TParameters extends Excl
 
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
-		if (this.parameters.id) {
-			this.dialogElement.fetch = () => this.fetch(this.parameters.id)
-		}
+		this.dialogElement.fetch = () => !this.parameters.id ? this.entity : this.fetch(this.parameters.id)
 	}
 
 	override async connectedCallback() {
