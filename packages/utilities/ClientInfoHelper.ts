@@ -1,5 +1,7 @@
 import Bowser from 'bowser'
 
+// TODO: Migrate to detect-browser
+
 type Browser =
 	| 'Chrome'
 	| 'Microsoft Edge'
