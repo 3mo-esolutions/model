@@ -1,6 +1,6 @@
 
 import { ClassInfo, component, property } from '@a11d/lit'
-import { FormatHelper, DateHelper, html, classMap } from '../../../..'
+import { DateHelper, html, classMap } from '../../../..'
 import { CalendarSelectionAdapter } from '../../calendar'
 import { FieldDateBase } from './FieldDateBase'
 
@@ -36,7 +36,7 @@ export class FieldDate extends FieldDateBase<Date | undefined> {
 	}
 
 	protected fromValue(value: Date | undefined) {
-		return value ? FormatHelper.date(value) ?? '' : ''
+		return value ? DateHelper.date(value) ?? '' : ''
 	}
 
 	protected toValue(value: string) {

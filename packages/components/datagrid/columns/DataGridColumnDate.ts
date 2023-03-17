@@ -1,5 +1,5 @@
 import { component, html, property } from '@a11d/lit'
-import { FormatHelper } from '../../../utilities'
+import { DateHelper } from '../../../utilities'
 import { DataGridColumn } from '.'
 
 /**
@@ -12,7 +12,7 @@ export class DataGridColumnDate<TData> extends DataGridColumn<TData, Date> {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	getContentTemplate(value: Date | undefined, _data: TData) {
-		return html`${value ? FormatHelper.date(value) ?? '' : ''}`
+		return html`${value ? DateHelper.date(value) ?? '' : ''}`
 	}
 
 	getEditContentTemplate(value: Date | undefined, data: TData) {

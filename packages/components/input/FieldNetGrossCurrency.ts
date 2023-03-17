@@ -1,21 +1,21 @@
 import { component, css, html, ifDefined, property, style } from '@a11d/lit'
-import { FormatHelper } from '../../utilities'
+import { Currency } from '@3mo/localization'
 import { Field } from './Field'
 
-@component('mo-field-net-gross-amount')
-export class FieldNetGrossAmount extends Field<NetGrossAmount> {
+@component('mo-field-net-gross-currency')
+export class FieldNetGrossCurrency extends Field<NetGrossCurrency> {
 	@property({ type: Boolean }) isGross = false
-	@property() currency = CurrencyCode.EUR
+	@property({ type: Object }) currency = Currency.EUR
 	@property() currencySymbol?: string
 
-	protected fromValue(value?: NetGrossAmount) {
+	protected fromValue(value?: NetGrossCurrency) {
 		this.isGross = value?.[1] ?? false
-		return typeof value?.[0] === 'number' ? FormatHelper.amount(value[0]) : ''
+		return typeof value?.[0] === 'number' ? value[0].formatAsCurrency() : ''
 	}
 
-	protected toValue(value: string): NetGrossAmount {
+	protected toValue(value: string): NetGrossCurrency {
 		return [
-			FormatHelper.localNumberToNumber(value),
+			value.toNumber(),
 			this.isGross,
 		]
 	}
@@ -60,7 +60,7 @@ export class FieldNetGrossAmount extends Field<NetGrossAmount> {
 				</mo-flex>
 
 				<div ${style({ fontSize: 'var(--mo-font-size-xl)' })}>
-					${this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)}
+					${this.currencySymbol ?? this.currency.symbol}
 				</div>
 			</mo-flex>
 		`
@@ -75,8 +75,8 @@ export class FieldNetGrossAmount extends Field<NetGrossAmount> {
 }
 
 declare global {
-	type NetGrossAmount = [amount: number | undefined, isGross: boolean]
+	type NetGrossCurrency = [amount: number | undefined, isGross: boolean]
 	interface HTMLElementTagNameMap {
-		'mo-field-net-gross-amount': FieldNetGrossAmount
+		'mo-field-net-gross-currency': FieldNetGrossCurrency
 	}
 }

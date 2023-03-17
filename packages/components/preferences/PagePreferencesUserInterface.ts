@@ -1,5 +1,5 @@
 import { html, component, css, style } from '@a11d/lit'
-import { Amount, DataGrid, DataGridPagination, Slider } from '..'
+import { Currency, DataGrid, DataGridPagination, Slider } from '..'
 import { PagePreferences, PageSettings } from '.'
 import { route } from '@a11d/lit-application'
 import { Color } from '../../utilities'
@@ -117,8 +117,8 @@ export class PagePreferencesUserInterface extends PageSettings {
 
 					<mo-section heading='Beträge'>
 						<mo-list-item-checkbox
-							?selected=${Amount.redNegative.value}
-							@selectionChange=${(e: CustomEvent<boolean>) => Amount.redNegative.value = e.detail}
+							?selected=${Currency.redNegative.value}
+							@selectionChange=${(e: CustomEvent<boolean>) => Currency.redNegative.value = e.detail}
 						>Rote negative Beträge</mo-list-item-checkbox>
 					</mo-section>
 

@@ -1,18 +1,18 @@
 import { component, html, property, style } from '@a11d/lit'
-import { FormatHelper } from '../../../utilities'
+import { Currency } from '@3mo/localization'
 import { FieldNumber } from './FieldNumber'
 
-@component('mo-field-amount')
-export class FieldAmount extends FieldNumber {
-	@property() currency = CurrencyCode.EUR
+@component('mo-field-currency')
+export class FieldCurrency extends FieldNumber {
+	@property({ type: Object }) currency = Currency.EUR
 	@property() currencySymbol?: string
 
 	protected override fromValue(value: number | undefined) {
-		return typeof value === 'number' ? FormatHelper.amount(value) : ''
+		return typeof value === 'number' ? value.formatAsCurrency() : ''
 	}
 
 	protected get currencySymbolText() {
-		return this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)
+		return this.currencySymbol ?? this.currency.symbol
 	}
 
 	protected override get template() {
@@ -25,6 +25,6 @@ export class FieldAmount extends FieldNumber {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-field-amount': FieldAmount
+		'mo-field-currency': FieldCurrency
 	}
 }

@@ -1,11 +1,34 @@
-import { FormatHelper } from '../../../..'
+import { Localizer } from '@3mo/localization'
 
 declare global {
 	type DateRange = [start?: MoDate, end?: MoDate]
 }
 
 export class DateHelper {
-	static readonly userDateRangeSeparators = [FormatHelper.dateRangeSeparator, ' ', '-', '~']
+	static readonly dateRangeSeparator = ' – '
+	static readonly userDateRangeSeparators = [DateHelper.dateRangeSeparator, ' ', '-', '~']
+
+	static getDateSeparator(language = Localizer.currentLanguage) {
+		return Intl.DateTimeFormat(language).format(new Date).replace(/\p{Number}/gu, '')[0]
+	}
+
+	static dateTime(value: Date, options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric' }) {
+		try {
+			return Intl.DateTimeFormat(Localizer.currentLanguage, options).format(value)
+		} catch {
+			return undefined
+		}
+	}
+
+	static date(value: Date) {
+		return this.dateTime(value, { year: 'numeric', month: '2-digit', day: '2-digit' })
+	}
+
+	static dateRange(value: DateRange) {
+		const [startText, endText] = value.map(d => !d ? undefined : this.date(d))
+		return !startText && !endText ? undefined :
+			[startText, endText].map(d => d || '').join(DateHelper.dateRangeSeparator)
+	}
 
 	static parseDateFromText(dateText: string, referenceDate = new MoDate) {
 		dateText = dateText.toLowerCase()
@@ -18,7 +41,7 @@ export class DateHelper {
 			return DateHelper.parseDateFromOperation(dateText, referenceDate)
 		}
 
-		if (dateText.includes(FormatHelper.getDateSeparator()!)) {
+		if (dateText.includes(DateHelper.getDateSeparator()!)) {
 			return DateHelper.parseDateFromLocalDate(dateText, referenceDate)
 		}
 
@@ -48,8 +71,8 @@ export class DateHelper {
 		let separator = DateHelper.userDateRangeSeparators.find(separator => dateRangeText.includes(separator))
 
 		if (!separator) {
-			dateRangeText += FormatHelper.dateRangeSeparator
-			separator = FormatHelper.dateRangeSeparator
+			dateRangeText += DateHelper.dateRangeSeparator
+			separator = DateHelper.dateRangeSeparator
 		}
 
 		const [startDateText, endDateText] = dateRangeText.toLowerCase().split(separator)
@@ -67,7 +90,7 @@ export class DateHelper {
 			return undefined
 		}
 
-		const dateParts = dateText.split(FormatHelper.getDateSeparator()!)
+		const dateParts = dateText.split(DateHelper.getDateSeparator()!)
 
 		if (dateParts.length === 2) {
 			date.setFullYear(referenceDate.getFullYear())

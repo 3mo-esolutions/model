@@ -1,9 +1,9 @@
 import { property, Component, component, html, css } from '@a11d/lit'
-import { FormatHelper } from '../utilities'
 import { LocalStorage } from '@a11d/local-storage'
+import * as Localization from '@3mo/localization'
 
 /**
- * @element mo-amount
+ * @element mo-currency
  *
  * @attr currency - The currency code
  * @attr currencySymbol - The currency symbol
@@ -11,15 +11,15 @@ import { LocalStorage } from '@a11d/local-storage'
  * @attr redNegative - Whether to show negative amounts in red
  * @attr value - The amount
  */
-@component('mo-amount')
-export class Amount extends Component {
+@component('mo-currency')
+export class Currency extends Component {
 	static readonly redNegative = new LocalStorage('MoDeL.Components.Amount.RedNegative', false)
 
-	@property() currency = CurrencyCode.EUR
+	@property({ type: Object }) currency = Localization.Currency.EUR
 	@property({ type: String, reflect: true }) currencySymbol?: string
 	@property({ type: String, reflect: true }) signDisplay?: Intl.NumberFormatOptions['signDisplay'] = 'auto'
-	@property({ type: Boolean, reflect: true }) redNegative = Amount.redNegative.value
-	@property({ type: Number, updated(this: Amount) { this.switchAttribute('negative', this.value < 0) } }) value = 0
+	@property({ type: Boolean, reflect: true }) redNegative = Currency.redNegative.value
+	@property({ type: Number, updated(this: Currency) { this.switchAttribute('negative', this.value < 0) } }) value = 0
 
 	static override get styles() {
 		return css`
@@ -27,7 +27,7 @@ export class Amount extends Component {
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
-				color: var(--mo-amount-color);
+				color: var(--mo-currency-color);
 			}
 
 			:host([negative][redNegative]) div {
@@ -50,16 +50,16 @@ export class Amount extends Component {
 	}
 
 	protected get amountText() {
-		return FormatHelper.amount(this.value, { signDisplay: this.signDisplay || 'auto' })
+		return this.value.formatAsCurrency({ signDisplay: this.signDisplay || 'auto' })
 	}
 
 	protected get currencySymbolText() {
-		return this.currencySymbol ?? FormatHelper.getCurrencySymbol(this.currency)
+		return this.currencySymbol ?? this.currency.symbol
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-amount': Amount
+		'mo-currency': Currency
 	}
 }

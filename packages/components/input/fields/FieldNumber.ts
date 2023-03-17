@@ -1,5 +1,4 @@
 import { component, property } from '@a11d/lit'
-import { FormatHelper } from '../../../utilities'
 import { Field } from '../Field'
 
 @component('mo-field-number')
@@ -18,11 +17,11 @@ export class FieldNumber extends Field<number> {
 	@property({ type: Number, reflect: true }) override step?: number
 
 	protected fromValue(value: number | undefined): string {
-		return typeof value === 'number' ? FormatHelper.number(this.inRange(value)) : ''
+		return typeof value === 'number' ? this.inRange(value).format() : ''
 	}
 
 	protected toValue(value: string): number | undefined {
-		const v = FormatHelper.localNumberToNumber(value)
+		const v = value.toNumber()
 		return v === undefined ? undefined : this.inRange(v)
 	}
 

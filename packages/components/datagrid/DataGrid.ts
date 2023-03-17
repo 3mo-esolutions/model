@@ -7,10 +7,9 @@ import { tooltip } from '@3mo/tooltip'
 import { observeMutation } from '@3mo/mutation-observer'
 import { MediaQueryController } from '@3mo/media-query-observer'
 import { observeResize } from '@3mo/resize-observer'
-import { ContextMenuHost } from '../../shell'
-import { CsvGenerator } from '../../utilities'
 import { Localizer } from '@3mo/localization'
-import { ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
+import { ContextMenuHost } from '../../shell'
+import { CsvGenerator, ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 
 Localizer.register(LanguageCode.English, {
 	'${count:pluralityNumber} entries selected': [
