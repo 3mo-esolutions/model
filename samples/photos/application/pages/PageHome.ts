@@ -1,4 +1,4 @@
-import { nothing, PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip } from '@3mo/model'
+import { nothing, PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip, NotificationHost } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 const enum Tab {
@@ -31,6 +31,17 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 				<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
 					<mo-tab label='Card' value=${Tab.Card}></mo-tab>
 					<mo-tab label='DataGrid' value=${Tab.DataGrid}></mo-tab>
+					<mo-tab label='Notif' value='Fake'
+						@click=${() => NotificationHost.instance?.notifySuccess({
+							message: 'Test',
+							actions: [
+								{
+									title: 'Action1',
+									handleClick: () => alert('Alert!')
+								}
+							]
+						})}
+					></mo-tab>
 				</mo-tab-bar>
 
 				${cache(this.tab === Tab.Card ? this.cardTemplate : this.dataGridTemplate)}
