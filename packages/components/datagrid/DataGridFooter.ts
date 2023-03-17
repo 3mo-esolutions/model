@@ -1,5 +1,6 @@
 import { component, property, Component, css, state, html, nothing, query, ifDefined } from '@a11d/lit'
-import { FieldNumber, Localizer, style } from '../..'
+import { FieldNumber, style } from '../..'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 
 Localizer.register(LanguageCode.German, {

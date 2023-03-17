@@ -1,6 +1,6 @@
 import { html, component, state, style } from '@a11d/lit'
 import { DialogComponent } from '@a11d/lit-application'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { DialogDeletion } from '../..'
 import { ModdableDataGrid, Mode } from '..'
 

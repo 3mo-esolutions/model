@@ -1,5 +1,4 @@
 export * from './TemplateHelper'
-export * from './renderContainer'
 export * from './ComponentMixin'
 import './event'
 import './helpers'

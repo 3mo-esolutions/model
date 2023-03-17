@@ -109,7 +109,7 @@
 		"ts-lit-plugin": "x",
 		"ts-loader": "x",
 		"tsconfig-paths-webpack-plugin": "x",
-		"typescript": "4.x",
+		"typescript": "5.x",
 		"webpack": "5.x",
 		"webpack-cli": "4.x"
 	}

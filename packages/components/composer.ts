@@ -2,7 +2,7 @@ import { Icon, IconVariant } from '@3mo/icon'
 import { LoadingButton } from '@3mo/loading-button'
 import { SplitButton } from './SplitButton'
 import { Dialog } from '@3mo/dialog'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 
 Icon.defaultVariant = IconVariant.Sharp
 

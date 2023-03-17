@@ -1,5 +1,5 @@
 import { component, Component, html, property, css } from '@a11d/lit'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { ColumnDefinition, DataGridRow } from '.'
 
 Localizer.register(LanguageCode.German, {

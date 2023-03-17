@@ -3,7 +3,7 @@ import { Application, deactivateInert, PageComponent, PwaHelper, RouteMatchMode,
 import { Authentication } from '@a11d/lit-application-authentication'
 import { DialogReleaseNotes, PagePreferences } from '../../components'
 import { styles } from './styles.css'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { Navigation } from '../navigation'
 import { observeResize } from '@3mo/resize-observer'
 import { observeMutation } from '@3mo/mutation-observer'

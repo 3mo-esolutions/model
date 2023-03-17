@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { component, css, event, html, nothing, property, style } from '@a11d/lit'
 import { tooltip } from '@3mo/tooltip'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { FetcherController } from '@3mo/fetcher-controller'
 import { DataGrid, DataGridSelectionBehaviorOnDataChange } from './DataGrid'
 

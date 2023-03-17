@@ -7,7 +7,7 @@ import { tooltip } from '@3mo/tooltip'
 import { observeMutation } from '@3mo/mutation-observer'
 import { MediaQueryController } from '@3mo/media-query-observer'
 import { observeResize } from '@3mo/resize-observer'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { ContextMenuHost } from '../../shell'
 import { CsvGenerator, ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 

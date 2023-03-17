@@ -1,5 +1,5 @@
 import { component, Component, css, html, ifDefined, nothing, property } from '@a11d/lit'
-import { Localizer } from '@3mo/localization'
+import { Localizer, LanguageCode } from '@3mo/localization'
 import { Checkbox, style, tooltip } from '../..'
 import { ColumnDefinition } from './ColumnDefinition'
 import { DataGrid } from './DataGrid'

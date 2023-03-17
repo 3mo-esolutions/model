@@ -1,6 +1,6 @@
-import { html, nothing, state } from '@a11d/lit'
+import { html, nothing, state, style } from '@a11d/lit'
 import { DialogAuthenticator as DialogAuthenticatorBase } from '@a11d/lit-application-authentication'
-import { Localizer, style } from '../..'
+import { Localizer, LanguageCode } from '@3mo/localization'
 
 Localizer.register(LanguageCode.German, {
 	'Authenticated successfully': 'Erfolgreich authentifiziert',
