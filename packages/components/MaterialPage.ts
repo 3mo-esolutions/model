@@ -86,15 +86,23 @@ export class MaterialPage extends Component {
 	protected override get template() {
 		return html`
 			<mo-flex id='container' gap='var(--mo-thickness-xl)'>
-				${!this.hasHeading && !this.hasHeadingDetails ? nothing : html`
-					<mo-flex part='header' direction='horizontal' justifyContent='space-between' alignItems='center'>
-						<slot name='heading' part='heading'>${this.heading}</slot>
-						<slot name='headingDetails' part='headingDetails'></slot>
-					</mo-flex>
-				`}
-				<slot></slot>
+				<mo-flex part='header' direction='horizontal' justifyContent='space-between' alignItems='center'>
+					${this.headingContentTemplate}
+				</mo-flex>
+				${this.contentTemplate}
 			</mo-flex>
 		`
+	}
+
+	protected get headingContentTemplate() {
+		return !this.hasHeading && !this.hasHeadingDetails ? nothing : html`
+			<slot name='heading' part='heading'>${this.heading}</slot>
+			<slot name='headingDetails' part='headingDetails'></slot>
+		`
+	}
+
+	protected get contentTemplate() {
+		return html`<slot></slot>`
 	}
 }
 
