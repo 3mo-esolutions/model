@@ -12,7 +12,7 @@ export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPa
 
 	override readonly optionTemplate = (size: DataGridPagination) => {
 		return size === 'auto' && (!this.dataGrid || this.dataGrid.supportsDynamicPageSize === false) ? nothing : html`
-			<mo-option value=${size}>${size === 'auto' ? 'Auto' : size}</mo-option>
+			<mo-option value=${size}>${size === 'auto' ? 'Auto' : size.format()}</mo-option>
 		`
 	}
 
