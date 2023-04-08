@@ -4,7 +4,7 @@ import { ListItemMixin } from '.'
 import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
 
 /**
- * @element mo-list-item
+ * @element mo-deprecated-list-item
  *
  * @attr value
  * @attr icon
@@ -25,12 +25,12 @@ import { ListItem as MwcListItem } from '@material/mwc-list/mwc-list-item'
  *
  * @fires selectionChange {CustomEvent<RequestSelectedDetail>}
  */
-@component('mo-list-item')
-export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
+@component('mo-deprecated-list-item')
+export class DeprecatedListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 	@property({
 		type: Boolean,
 		reflect: true,
-		updated(this: ListItem) {
+		updated(this: DeprecatedListItem) {
 			if (this.nonActivatable === true) {
 				this.disabled = true
 			}
@@ -69,6 +69,6 @@ export class ListItem extends ComponentMixin(ListItemMixin(MwcListItem)) {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-list-item': ListItem
+		'mo-deprecated-list-item': DeprecatedListItem
 	}
 }

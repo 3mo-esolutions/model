@@ -30,8 +30,8 @@ import { ComponentMixin } from '../../library'
  * @cssprop --mdc-menu-max-height
  * @cssprop --mdc-menu-z-index
  */
-@component('mo-menu')
-export class Menu extends ComponentMixin(MwcMenu) {
+@component('mo-deprecated-menu')
+export class DeprecatedMenu extends ComponentMixin(MwcMenu) {
 	@property({ type: Boolean, reflect: true }) manualClose = false
 
 	protected override initialized() {
@@ -64,6 +64,6 @@ export class Menu extends ComponentMixin(MwcMenu) {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-menu': Menu
+		'mo-deprecated-menu': DeprecatedMenu
 	}
 }

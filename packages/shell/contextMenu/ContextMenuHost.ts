@@ -1,7 +1,7 @@
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css, event } from '@a11d/lit'
 import { TemplateHelper } from '../../library'
 import { Corner } from '@material/mwc-menu'
-import { ContextMenu, ListItem } from '../..'
+import { ContextMenu, DeprecatedListItem } from '../..'
 import { nonInertable } from '@a11d/lit-application'
 
 type Coordinates = [x: number, y: number]
@@ -28,7 +28,7 @@ export class ContextMenuHost extends Component {
 
 	@property({ type: Object }) menuContent?: TemplateResult
 
-	@queryAll('[mwc-list-item]') readonly items!: Array<ListItem>
+	@queryAll('[mwc-list-item]') readonly items!: Array<DeprecatedListItem>
 
 	@query('mo-context-menu') private readonly contextMenu!: ContextMenu
 

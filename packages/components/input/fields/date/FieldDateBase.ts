@@ -37,7 +37,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 				`}
 
 				${this.hideDatePicker ? nothing : html`
-					<mo-menu
+					<mo-deprecated-menu
 						?open=${this.open}
 						style='--mdc-theme-surface: var(--mo-color-background)'
 						fixed
@@ -45,7 +45,7 @@ export abstract class FieldDateBase<T> extends Field<T> {
 						corner='BOTTOM_START'
 						@closed=${() => this.open = false}
 						@opened=${() => this.open = true}
-					>${!this.open ? nothing : this.menuContentTemplate}</mo-menu>
+					>${!this.open ? nothing : this.menuContentTemplate}</mo-deprecated-menu>
 				`}
 			</div>
 		`

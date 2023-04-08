@@ -1,6 +1,6 @@
 import { component, css, property, html, PropertyValues, event, query, style } from '@a11d/lit'
 import type { Flex } from '@3mo/flex'
-import { ListItem, Menu } from '../../components/material'
+import { DeprecatedListItem, DeprecatedMenu } from '../../components/material'
 import { ContextMenu } from '..'
 
 /**
@@ -13,7 +13,7 @@ import { ContextMenu } from '..'
  * @fires openChange {CustomEvent<boolean>}
  */
 @component('mo-context-menu-item')
-export class ContextMenuItem extends ListItem {
+export class ContextMenuItem extends DeprecatedListItem {
 	@event() readonly openChange!: EventDispatcher<boolean>
 
 	@property({
@@ -132,7 +132,7 @@ export class ContextMenuItem extends ListItem {
 	}
 
 	private get detailsMenu() {
-		return this.querySelector<Menu>('mo-context-menu[slot=details]')
+		return this.querySelector<DeprecatedMenu>('mo-context-menu[slot=details]')
 	}
 }
 

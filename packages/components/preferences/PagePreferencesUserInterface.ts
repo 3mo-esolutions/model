@@ -1,7 +1,7 @@
 import { html, component, css, style } from '@a11d/lit'
-import { Currency, DataGrid, DataGridPagination, Slider } from '..'
-import { PagePreferences, PageSettings } from '.'
 import { route } from '@a11d/lit-application'
+import { Currency, DataGrid, DataGridPagination } from '..'
+import { PagePreferences, PageSettings } from '.'
 import { Color } from '../../utilities'
 import { Background, ThemeHelper } from '../../shell'
 
@@ -30,17 +30,6 @@ export class PagePreferencesUserInterface extends PageSettings {
 	static override get styles() {
 		return css`
 			${super.styles}
-
-			[slot=meta] {
-				position: absolute;
-				bottom: 0px;
-				top: 0px;
-				inset-inline-end: 16px;
-				height: var(--height, 32px);
-				width: 100px;
-				bottom: calc(calc(48px - var(--height, 32px)) / 2);
-				top: calc(calc(48px - var(--height, 32px)) / 2);
-			}
 
 			.themePreview {
 				cursor: pointer;
@@ -116,17 +105,18 @@ export class PagePreferencesUserInterface extends PageSettings {
 					</mo-section>
 
 					<mo-section heading='Beträge'>
-						<mo-list-item-checkbox
-							?selected=${Currency.redNegative.value}
-							@selectionChange=${(e: CustomEvent<boolean>) => Currency.redNegative.value = e.detail}
-						>Rote negative Beträge</mo-list-item-checkbox>
+						<mo-checkbox-list-item
+							?checked=${Currency.redNegative.value}
+							@change=${(e: CustomEvent<CheckboxValue>) => Currency.redNegative.value = e.detail === 'checked'}
+						>Rote negative Beträge</mo-checkbox-list-item>
 					</mo-section>
 
 					<mo-section heading='Tabellen'>
 						<mo-flex gap='var(--mo-thickness-l)'>
-							<mo-list-item style='--mdc-list-item-meta-width: 100px'>
+							<mo-list-item>
 								Zeilen pro Seite
-								<mo-field-select-data-grid-page-size slot='meta' dense
+								<mo-field-select-data-grid-page-size dense
+									${style({ width: '150px' })}
 									value=${DataGrid.pageSize.value}
 									@change=${(e: CustomEvent<Exclude<DataGridPagination, 'auto'>>) => DataGrid.pageSize.value = e.detail}
 								></mo-field-select-data-grid-page-size>
@@ -134,24 +124,26 @@ export class PagePreferencesUserInterface extends PageSettings {
 
 							<mo-list-item>
 								Höhe der Zeilen
-								<mo-slider slot='meta' max='50' min='30' step='5'
-									${style({ right: '0px', width: '150px', '--height': '48px' })}
+								<mo-slider max='50' min='30' step='5'
+									${style({ width: '150px', margin: '0 -15px' })}
 									value=${DataGrid.rowHeight.value}
-									@change=${(e: CustomEvent<unknown, Slider>) => DataGrid.rowHeight.value = e.source.value}
+									@change=${(e: CustomEvent<number>) => DataGrid.rowHeight.value = e.detail}
 								></mo-slider>
 							</mo-list-item>
 
-							<mo-list-item-checkbox
-								?selected=${DataGrid.hasAlternatingBackground.value}
-								@selectionChange=${(e: CustomEvent<boolean>) => DataGrid.hasAlternatingBackground.value = e.detail}
-							>Wechselnder Hintergrund</mo-list-item-checkbox>
+							<mo-checkbox-list-item
+								?checked=${DataGrid.hasAlternatingBackground.value}
+								@change=${(e: CustomEvent<CheckboxValue>) => DataGrid.hasAlternatingBackground.value = e.detail === 'checked'}
+							>Wechselnder Hintergrund</mo-checkbox-list-item>
 						</mo-flex>
 					</mo-section>
 
 					<mo-section heading='Dialoge'>
-						<mo-list-item style='--mdc-list-item-meta-width: 150px'>
+						<mo-list-item>
 							Popup-fähige Dialoge immer öffnen
-							<mo-field-select-poppable-dialog-confirmation-strategy slot='meta' dense ${style({ width: '150px' })}></mo-field-select-poppable-dialog-confirmation-strategy>
+							<mo-field-select-poppable-dialog-confirmation-strategy dense
+								${style({ width: '150px' })}
+							></mo-field-select-poppable-dialog-confirmation-strategy>
 						</mo-list-item>
 					</mo-section>
 				</mo-flex>

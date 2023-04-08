@@ -169,9 +169,9 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get userAvatarMenuItemsTemplate() {
 		return html`
-			<mo-navigation-list-item icon='manage_accounts' label=${t('User Settings')}
+			<mo-navigation-list-item icon='manage_accounts'
 				${routerLink({ component: new PagePreferences, matchMode: RouteMatchMode.IgnoreParameters, invocationHandler: () => this.drawerOpen = false })}
-			></mo-navigation-list-item>
+			>${t('User Settings')}</mo-navigation-list-item>
 		`
 	}
 
@@ -203,14 +203,32 @@ export abstract class BusinessSuiteApplication extends Application {
 		return html`${this.navigations.map(navigation => this.getNavigationListItemTemplate(navigation))}`
 	}
 
-	private getNavigationListItemTemplate(navigation: Navigation): HTMLTemplateResult {
-		return navigation.hidden ? nothing : html`
+	private getNavigationListItemTemplate(navigation: Navigation, detailsSlot = false): HTMLTemplateResult {
+		if (navigation.hidden) {
+			return nothing
+		}
+
+		const iconTemplate = !navigation.icon ? nothing : html`
+			<mo-icon icon=${navigation.icon} style='opacity: 0.75; font-size: 24px'></mo-icon>
+		`
+
+		if (navigation.children?.length) {
+			return html`
+				<mo-collapsible-list-item slot=${ifDefined(detailsSlot ? 'details' : undefined)}>
+					${iconTemplate}
+					${navigation.label}
+					${navigation.children?.map(child => this.getNavigationListItemTemplate(child, true))}
+				</mo-collapsible-list-item>
+			`
+		}
+
+		return html`
 			<mo-navigation-list-item
-				icon=${ifDefined(navigation.icon)}
+				slot=${ifDefined(detailsSlot ? 'details' : undefined)}
 				${!navigation.component ? nothing : routerLink({ component: navigation.component as PageComponent, matchMode: RouteMatchMode.IgnoreParameters, invocationHandler: () => this.drawerOpen = false })}
 			>
+				${iconTemplate}
 				${navigation.label}
-				${navigation.children?.map(child => this.getNavigationListItemTemplate(child))}
 			</mo-navigation-list-item>
 		`
 	}

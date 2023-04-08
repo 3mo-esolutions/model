@@ -1,5 +1,5 @@
 import { html, property, state, css, event, component, PropertyValues, query, style } from '@a11d/lit'
-import { Option, Menu } from '../..'
+import { Option, DeprecatedMenu } from '../..'
 import { Field } from '../Field'
 import { Key } from '@a11d/lit-application'
 
@@ -76,7 +76,7 @@ export class FieldSelect<T> extends Field<Value> {
 
 	@state() private manualClose = false
 
-	@query('#menuOptions') protected readonly menuOptions?: Menu | null
+	@query('#menuOptions') protected readonly menuOptions?: DeprecatedMenu | null
 
 	private programmaticSelection = false
 
@@ -114,7 +114,7 @@ export class FieldSelect<T> extends Field<Value> {
 				color: var(--mo-color-accent);
 			}
 
-			mo-menu {
+			mo-deprecated-menu {
 				--mdc-theme-surface: var(--mo-color-background);
 				--mdc-menu-item-height: 36px;
 			}
@@ -178,7 +178,7 @@ export class FieldSelect<T> extends Field<Value> {
 					@click=${() => this.open = !this.open}
 				></mo-icon-button>
 
-				<mo-menu
+				<mo-deprecated-menu
 					id='menuOptions'
 					style=${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}
 					.anchor=${this as any}
@@ -194,7 +194,7 @@ export class FieldSelect<T> extends Field<Value> {
 					@selected=${() => this.handleOptionSelection()}
 				>
 					<slot></slot>
-				</mo-menu>
+				</mo-deprecated-menu>
 			</div>
 		`
 	}

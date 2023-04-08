@@ -1,6 +1,6 @@
 import { Icon, IconVariant } from '@3mo/icon'
 import { LoadingButton } from '@3mo/loading-button'
-import { SplitButton } from './SplitButton'
+import { SplitButton } from '@3mo/split-button'
 import { Dialog } from '@3mo/dialog'
 import { Localizer, LanguageCode } from '@3mo/localization'
 

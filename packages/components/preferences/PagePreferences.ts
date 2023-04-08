@@ -13,8 +13,12 @@ export class PagePreferences extends PageSettingsHost {
 			<mo-card ${style({ height: '100%', '--mo-card-body-padding': '0px' })}>
 				<mo-flex ${style({ height: '100%' })} gap='var(--mo-thickness-xl)' justifyContent='space-between'>
 					<mo-list>
-						<mo-navigation-list-item icon='palette' ${routerLink(new PagePreferencesUserInterface)}>Design & Aussehen</mo-navigation-list-item>
-						<mo-navigation-list-item icon='security' ${routerLink(new PagePreferencesSecurity)}>Sicherheit</mo-navigation-list-item>
+						<mo-navigation-list-item icon='palette' ${routerLink(new PagePreferencesUserInterface)}>
+							Design & Aussehen
+						</mo-navigation-list-item>
+						<mo-navigation-list-item icon='security' ${routerLink(new PagePreferencesSecurity)}>
+							Sicherheit
+						</mo-navigation-list-item>
 					</mo-list>
 
 					${!manifest ? nothing : html`
