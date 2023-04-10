@@ -8,6 +8,8 @@ export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPa
 
 	@property({ type: Object }) dataGrid?: DataGrid<any>
 
+	override readonly preventShiftingSelectedItem = true
+
 	override readonly fetch = () => Promise.resolve(FieldSelectDataGridPageSize.data)
 
 	override readonly optionTemplate = (size: DataGridPagination) => {

@@ -94,8 +94,9 @@ export class DataGridFooter<TData> extends Component {
 		const hasUnknownDataLength = this.dataGrid.maxPage === undefined
 		const pageText = hasUnknownDataLength ? this.page : t('${page:number} of ${maxPage:number}', { page: this.page, maxPage: this.dataGrid.maxPage ?? 0 })
 		const from = (this.page - 1) * this.dataGrid.pageSize + 1
+		const to = from + this.dataGrid.renderData.length - 1
 		const pageSizeText = [
-			`${from.format()}-${(from + this.dataGrid.renderData.length - 1).format()}`,
+			`${(Math.min(from, to)).format()}-${to.format()}`,
 			hasUnknownDataLength ? undefined : this.dataGrid.dataLength.format(),
 		].filter(Boolean).join(' / ')
 		return !this.dataGrid.hasPagination ? nothing : html`

@@ -1,24 +1,26 @@
-import { component, DialogAuthenticator as DialogAuthenticatorBase, User } from '@3mo/model'
+import { BusinessSuiteDialogAuthenticator, component } from '@3mo/model'
 
 @component('photos-dialog-authenticator')
-export class DialogAuthenticator extends DialogAuthenticatorBase<User> {
-	protected requestAuthentication() {
-		return Promise.resolve({
-			id: 1,
-			name: 'Full Name',
-			email: 'name@3mo.de',
-		})
+export class DialogAuthenticator extends BusinessSuiteDialogAuthenticator {
+	private static readonly user = {
+		id: 1,
+		name: 'Full Name',
+		email: 'name@3mo.de',
 	}
 
-	protected requestUnauthentication() {
+	protected authenticateAccount() {
+		return Promise.resolve(DialogAuthenticator.user)
+	}
+
+	protected unauthenticateAccount() {
 		return Promise.resolve()
 	}
 
-	protected isAuthenticatedServerSide() {
-		return Promise.resolve(true)
+	protected getAuthenticatedAccount() {
+		return Promise.resolve(DialogAuthenticator.user)
 	}
 
-	protected requestPasswordReset() {
-		return Promise.reject('Password cannot be reset')
+	protected override requestPasswordReset() {
+		return Promise.resolve()
 	}
 }

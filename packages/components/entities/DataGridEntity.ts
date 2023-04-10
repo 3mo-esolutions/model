@@ -25,8 +25,6 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 		}
 	}) createOrEdit?: CreateOrEditAction<TEntity> | Constructor<EntityDialogComponent<TEntity>>
 
-	override silentFetch = true
-
 	override parameters = {} as TDataFetcherParameters
 
 	async createAndRefetch() {

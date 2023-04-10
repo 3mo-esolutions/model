@@ -76,6 +76,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 				...sortParameters,
 			}) ?? []
 			this.dataFetch.dispatch(data)
+
 			return data
 		},
 	})
@@ -99,6 +100,14 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 		`
 	}
 
+	get hasServerSidePagination() {
+		return this.paginationParameters !== undefined
+	}
+
+	get hasServerSideSort() {
+		return this.sortParameters !== undefined
+	}
+
 	setParameters(parameters: TDataFetcherParameters) {
 		this.parameters = parameters
 		this.parametersChange.dispatch(this.parameters)
@@ -106,21 +115,21 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	override handlePageChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePageChange']>) {
 		super.handlePageChange(...args)
-		if (this.paginationParameters) {
+		if (this.hasServerSidePagination) {
 			this.requestFetch()
 		}
 	}
 
 	override handlePaginationChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handlePaginationChange']>) {
 		super.handlePaginationChange(...args)
-		if (this.paginationParameters) {
+		if (this.hasServerSidePagination) {
 			this.resetPageAndRequestFetch()
 		}
 	}
 
 	override handleSortChange(...args: Parameters<DataGrid<TData, TDetailsElement>['handleSortChange']>) {
 		super.handleSortChange(...args)
-		if (this.sortParameters) {
+		if (this.hasServerSideSort) {
 			this.resetPageAndRequestFetch()
 		}
 	}
@@ -134,17 +143,17 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 		if (this.hasFooter === false) {
 			return this.sortedData
 		}
-		return this.paginationParameters
+		return this.hasServerSidePagination
 			? this.sortedData.slice(0, this.pageSize)
 			: super.renderData
 	}
 
 	override get hasPagination() {
-		return super.hasPagination || this.paginationParameters !== undefined
+		return super.hasPagination || this.hasServerSidePagination
 	}
 
 	override get supportsDynamicPageSize() {
-		return super.supportsDynamicPageSize && this.paginationParameters === undefined
+		return super.supportsDynamicPageSize && !this.hasServerSidePagination
 	}
 
 	private _hasNextPage?: boolean
@@ -154,7 +163,14 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 	private _dataLength = 0
 	override get dataLength() {
-		return this.paginationParameters ? this._dataLength : super.dataLength
+		return this.hasServerSidePagination ? this._dataLength : super.dataLength
+	}
+
+	protected get shallFetchSilently() {
+		return this.silentFetch
+			&& this.data.length > 0
+			&& !this.hasServerSidePagination
+			&& !this.hasServerSideSort
 	}
 
 	async requestFetch() {
@@ -174,7 +190,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 
 		this.setData(
 			result instanceof Array ? result : result.data,
-			this.silentFetch ? DataGridSelectionBehaviorOnDataChange.Maintain : this.selectionBehaviorOnDataChange,
+			this.shallFetchSilently ? DataGridSelectionBehaviorOnDataChange.Maintain : this.selectionBehaviorOnDataChange,
 		)
 	}
 
@@ -192,7 +208,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected override get contentTemplate() {
 		this.switchAttribute('fetching', this.fetcherController.isFetching)
 		switch (true) {
-			case this.fetcherController.isFetching && (this.silentFetch === false || this.data.length === 0):
+			case this.fetcherController.isFetching && this.shallFetchSilently === false:
 				return this.fetchingTemplate
 			case this.data.length === 0 && this.parameters === undefined:
 				return this.noSelectionTemplate
