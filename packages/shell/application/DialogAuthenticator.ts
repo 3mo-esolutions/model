@@ -1,6 +1,7 @@
 import { html, nothing, state, style } from '@a11d/lit'
 import { DialogAuthenticator as DialogAuthenticatorBase } from '@a11d/lit-application-authentication'
 import { Localizer, LanguageCode } from '@3mo/localization'
+import { LocalStorage } from '@a11d/local-storage'
 
 Localizer.register(LanguageCode.German, {
 	'Authenticated successfully': 'Erfolgreich authentifiziert',
@@ -23,6 +24,10 @@ export type User = {
 }
 
 export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticatorBase<User> {
+	static readonly authenticatedUserStorage = new LocalStorage<object | undefined>('DialogAuthenticator.User', undefined)
+
+	protected abstract requestPasswordReset(): Promise<void>
+
 	@state() primaryButtonText = t('Login')
 
 	protected override get template() {
@@ -83,5 +88,26 @@ export abstract class BusinessSuiteDialogAuthenticator extends DialogAuthenticat
 				</mo-flex>
 			</mo-flex>
 		`
+	}
+
+	async resetPassword() {
+		try {
+			await this.requestPasswordReset()
+			notificationHost.notifyInfo('Password reset instructions have been sent to your email address')
+		} catch (error: any) {
+			notificationHost.notifyError(error.message ?? 'Password could not be reset')
+			throw error
+		}
+	}
+
+	override async authenticate() {
+		const user = await super.authenticate()
+		BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value = user
+		return user
+	}
+
+	override async unauthenticate() {
+		await super.unauthenticate()
+		BusinessSuiteDialogAuthenticator.authenticatedUserStorage.value = undefined
 	}
 }
