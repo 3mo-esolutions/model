@@ -2,7 +2,6 @@ import { css, html, property, nothing, style, HTMLTemplateResult, ifDefined, que
 import { Application, deactivateInert, PageComponent, PwaHelper, RouteMatchMode, routerLink } from '@a11d/lit-application'
 import { Authentication } from '@a11d/lit-application-authentication'
 import { DialogReleaseNotes, PagePreferences } from '../../components'
-import { styles } from './styles.css'
 import { Localizer, LanguageCode } from '@3mo/localization'
 import { Navigation } from '../navigation'
 import { observeResize } from '@3mo/resize-observer'
@@ -30,16 +29,53 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	static override get styles() {
 		return css`
-			${styles}
-
 			${super.styles}
 
 			[application] {
-				font-family: var(--mo-font-family) !important;
-				font-size: var(--mo-font-size-default);
-				background-color: var(--mo-color-background);
-				color: var(--mo-color-foreground);
-				min-height: 100%;
+				/* Duration */
+				--mo-duration-quick: 250ms;
+				--mo-duration-slow: 1000ms;
+				/* Thickness */
+				--mo-thickness-s: 4px;
+				--mo-thickness-m: 6px;
+				--mo-thickness-l: 8px;
+				--mo-thickness-xl: 14px;
+				/* Font Sizes */
+				--mo-font-size-xxs: 8px;
+				--mo-font-size-xs: 10px;
+				--mo-font-size-s: 12px;
+				--mo-font-size-m: 14px;
+				--mo-font-size-l: 18px;
+				--mo-font-size-xl: 24px;
+				--mo-font-size-xxl: 36px;
+				/* Override Material Web Components variables */
+				--mdc-icon-font: Material Icons Sharp !important;
+				--mdc-theme-primary: var(--mo-color-accent) !important;
+				--mdc-theme-on-primary: var(--mo-color-accessible) !important;
+				--mdc-theme-secondary: var(--mo-color-accent) !important;
+				--mdc-theme-on-secondary: var(--mo-color-accessible) !important;
+				--mdc-theme-text-secondary-on-background: var(--mo-color-gray) !important;
+				--mdc-theme-surface: var(--mo-color-surface) !important;
+				--mdc-theme-text-primary-on-dark: var(--mo-color-surface) !important;
+				--mdc-theme-on-surface: var(--mo-color-foreground-transparent) !important;
+				--mdc-theme-text-disabled-on-light: var(--mo-color-gray-transparent) !important;
+				--mdc-theme-text-hint-on-background: var(--mo-color-foreground-transparent) !important;
+				--mdc-theme-text-icon-on-background: var(--mo-color-gray) !important;
+				--mdc-theme-text-primary-on-background: var(--mo-color-foreground) !important;
+			}
+
+			[application][data-theme=light] {
+				--mo-color-foreground-transparent: rgb(48, 48, 48) !important;
+				--mo-color-error-base: 176, 0, 32;
+				--mo-field-background: rgba(var(--mo-color-foreground-base), 0.09);
+				--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
+			}
+
+			[application][data-theme=dark] {
+				--mo-color-foreground-transparent: rgb(220, 220, 220) !important;
+				--mo-color-error-base: 255, 61, 96;
+				--mo-field-background: rgba(var(--mo-color-background-base), 0.5);
+				--mo-alternating-background: rgba(var(--mo-color-background-base), 0.2);
 			}
 
 			[application][mobileNavigation] #navbarNavigations {
@@ -131,7 +167,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get navbarHeadingTemplate() {
 		return html`
-			<span ${style({ margin: '2px 0 0 8px', fontSize: '23px', fontFamily: 'Google Sans', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
+			<span ${style({ margin: '2px 0 0 8px', fontSize: '23px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
 				${manifest?.short_name}
 			</span>
 		`

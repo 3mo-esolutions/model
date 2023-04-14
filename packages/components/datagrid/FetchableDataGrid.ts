@@ -86,7 +86,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 			${super.styles}
 
 			:host([fetching]) mo-icon-button[icon=refresh] {
-				animation: rotate var(--mo-duration-super-slow) ease-in-out infinite;
+				animation: rotate 1500ms ease-in-out infinite;
 			}
 
 			@keyframes rotate {

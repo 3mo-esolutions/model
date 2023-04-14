@@ -501,11 +501,11 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 			#flexActions {
 				align-items: center;
 				justify-content: center;
-				padding-inline: var(--mo-thickness-xl) var(--mo-thickness-m);
-				margin: var(--mo-thickness-m) 0;
+				padding-inline: var(--mo-thickness-xl) 6px;
+				margin: 6px 0;
 				cursor: pointer;
 				background: var(--mo-color-accent-transparent);
-				height: calc(100% - calc(2 * var(--mo-thickness-m)));
+				height: calc(100% - calc(2 * 6px));
 				max-height: 45px;
 			}
 
@@ -762,7 +762,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 		return this.selectionToolbarDisabled === true || this.selectedData.length === 0 ? nothing : html`
 			<mo-flex id='flexSelectionToolbar'>
 				<mo-flex direction='horizontal' gap='30px' ${style({ placeSelf: 'stretch' })}>
-					<div ${style({ fontWeight: '500', margin: '0 var(--mo-thickness-m)' })}>
+					<div ${style({ fontWeight: '500', margin: '0 6px' })}>
 						${t('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</div>
 					${!this.getRowContextMenuTemplate ? nothing : html`

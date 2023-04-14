@@ -64,7 +64,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					<mo-icon-button icon='delete' ${tooltip('Delete!')}></mo-icon-button>
 				`}
 		</mo-flex>
-			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='var(--mo-thickness-m)'>
+			<mo-grid columns='repeat(auto-fit, minmax(200px, 1fr))' gap='6px'>
 				${this.photos.filter(photo => !this.parameters.albumId || photo.albumId === this.parameters.albumId).slice(0, 50).map(photo => html`
 					<photos-photo-card
 						.photo=${photo}

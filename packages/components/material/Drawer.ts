@@ -54,7 +54,7 @@ export class Drawer extends ComponentMixin(MwcDrawer) {
 				}
 
 				.mdc-drawer__content {
-					margin-top: var(--mo-thickness-m);
+					margin-top: 6px;
 					scrollbar-color: rgba(128, 128, 128, 0.75) transparent;
 					scrollbar-width: thin;
 				}

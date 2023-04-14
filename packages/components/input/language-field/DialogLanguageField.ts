@@ -6,8 +6,8 @@ import type { LanguageField, Language } from '..'
 export class DialogLanguageField<TValue, TLanguage extends Language> extends DialogComponent<{ readonly languageField: LanguageField<TValue, TLanguage> }> {
 	static override get styles() {
 		return css`
-			mo-flex { padding: var(--mo-thickness-m) 0; }
-			img { padding-inline-end: var(--mo-thickness-m); }
+			mo-flex { padding: 6px 0; }
+			img { padding-inline-end: 6px; }
 		`
 	}
 

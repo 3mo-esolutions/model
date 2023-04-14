@@ -67,6 +67,7 @@
 		"@3mo/switch": "x",
 		"@3mo/tab": "x",
 		"@3mo/tooltip": "x",
+		"@3mo/theme": "x",
 		"@3mo/virtualized-scroller": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
@@ -83,6 +84,7 @@
 		"@ts-stack/markdown": "1.x",
 		"@types/jasmine": "4.x",
 		"bowser": "2.x",
+		"color-string": "^1.9.1",
 		"csstype": "3.x",
 		"favicons": "6.x",
 		"favicons-webpack-plugin": "5.x",
@@ -90,6 +92,7 @@
 	},
 	"devDependencies": {
 		"@a11d/eslint-config": "x",
+		"@types/color-string": "^1.5.2",
 		"@types/copy-webpack-plugin": "10.x",
 		"@types/glob": "8.x",
 		"@typescript-eslint/eslint-plugin": "x",

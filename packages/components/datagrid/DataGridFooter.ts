@@ -76,7 +76,7 @@ export class DataGridFooter<TData> extends Component {
 	protected override get template() {
 		this.switchAttribute('hideTopBorder', this.dataGrid.hasFooter === false)
 		return this.dataGrid.hasFooter === false ? nothing : html`
-			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse' gap='var(--mo-thickness-m)' ${style({ flex: '1', padding: 'var(--mo-thickness-m)' })}>
+			<mo-flex direction='horizontal' justifyContent='space-between' alignItems='center' wrap='wrap-reverse' gap='6px' ${style({ flex: '1', padding: '6px' })}>
 				<mo-flex direction='horizontal' alignItems='center' gap='1vw' ${style({ flexBasis: 'auto' })}>
 					${this.paginationTemplate}
 				</mo-flex>
@@ -100,7 +100,7 @@ export class DataGridFooter<TData> extends Component {
 			hasUnknownDataLength ? undefined : this.dataGrid.dataLength.format(),
 		].filter(Boolean).join(' / ')
 		return !this.dataGrid.hasPagination ? nothing : html`
-			<mo-flex direction='horizontal' gap='var(--mo-thickness-s)' alignItems='center' justifyContent='center'>
+			<mo-flex direction='horizontal' gap='4px' alignItems='center' justifyContent='center'>
 				<mo-icon-button dense icon=${isRtl ? 'last_page' : 'first_page'}
 					?disabled=${this.page === 1}
 					@click=${() => this.setPage(1)}

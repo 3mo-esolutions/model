@@ -6,9 +6,9 @@ export class Label extends Component {
 		return html`
 			<style>
 				:host {
-					padding: var(--mo-thickness-xs) var(--mo-thickness-m);
+					padding: 2px 6px;
 					border-radius: var(--mo-border-radius);
-					margin: 0 var(--mo-thickness-s);
+					margin: 0 4px;
 					color: var(--mo-color-accent);
 					font-weight: 500;
 					background: var(--mo-color-accent-gradient-transparent);

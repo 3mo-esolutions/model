@@ -39,7 +39,7 @@ export class DialogPrompt extends DialogComponent<Parameters, string> {
 				size=${ifDefined(this.parameters.size)}
 				primaryOnEnter
 			>
-				<mo-flex ${style({ width: '100%', height: '100%' })} gap='var(--mo-thickness-m)'>
+				<mo-flex ${style({ width: '100%', height: '100%' })} gap='6px'>
 					${this.parameters.content}
 					${this.textFieldTemplate}
 				</mo-flex>

@@ -103,7 +103,7 @@ export class NavigationItem extends Component {
 					font-size: var(--mo-font-size-m);
 				}
 			</style>
-			<mo-flex direction='horizontal' alignItems='center' justifyContent='center' gap='var(--mo-thickness-xs)'>
+			<mo-flex direction='horizontal' alignItems='center' justifyContent='center' gap='2px'>
 				<span>${this.navigation.label}</span>
 				${!this.navigation.children ? nothing : html`
 					<mo-icon icon=${this.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} ${style({ fontSize: 'var(--mo-font-size-l)' })}></mo-icon>

@@ -1,24 +1,24 @@
-import { component, html, event, ifDefined, nothing, property, css, PropertyValues } from '@a11d/lit'
-import { Input } from '.'
+import { component, html, event, ifDefined, nothing, property, css, Component, query } from '@a11d/lit'
 import { Color } from '../../utilities'
 
+/**
+ * @element mo-color-picker
+ *
+ * @attr value - The current color.
+ * @attr presets - A list of preset colors.
+ *
+ * @fires input - Dispatched when the user changes the color.
+ * @fires change - Dispatched when the user commits the color.
+ */
 @component('mo-color-picker')
-export class ColorPicker extends Input<Color> {
-	@event() private readonly input!: EventDispatcher<Color>
+export class ColorPicker extends Component {
+	@event() readonly input!: EventDispatcher<Color | undefined>
+	@event() readonly change!: EventDispatcher<Color | undefined>
 
-	@property({ type: Object })
-	override get value() { return this._value }
-	override set value(value) { this._value = value }
-
+	@property({ type: Object }) value?: Color
 	@property({ type: Array }) presets?: Array<Color>
 
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
-		this.inputElement.addEventListener('input', e => {
-			e.stopImmediatePropagation()
-			this.input.dispatch(this.toValue(this.inputElement.value))
-		})
-	}
+	@query('input') protected readonly inputElement!: HTMLInputElement
 
 	static override get styles() {
 		return css`
@@ -39,30 +39,32 @@ export class ColorPicker extends Input<Color> {
 
 	protected override get template() {
 		return html`
+			${this.inputTemplate}
+			${this.datalistTemplate}
+		`
+	}
+
+	protected get inputTemplate() {
+		return html`
 			<input id='input' part='input' type='color'
 				list=${ifDefined(this.presets ? 'presetColors' : undefined)}
-				value=${ifDefined(this.value?.baseHex)}
+				.value=${this.value?.hex}
+				@input=${(e: Event) => { e.stopImmediatePropagation(); this.value = this.inputColor; this.input.dispatch(this.inputColor) }}
+				@change=${(e: Event) => { e.stopImmediatePropagation(); this.value = this.inputColor; this.change.dispatch(this.inputColor) }}
 			>
-			${this.datalistTemplate}
 		`
 	}
 
 	private get datalistTemplate() {
 		return !this.presets ? nothing : html`
 			<datalist id='presetColors'>
-				${this.presets.map(color => html`
-					<option>${color.baseHex}</option>
-				`)}
+				${this.presets.map(color => html`<option>${color.hex}</option>`)}
 			</datalist>
 		`
 	}
 
-	protected fromValue(value: Color | undefined) {
-		return value?.baseHex ?? ''
-	}
-
-	protected toValue(value: string) {
-		return this.presets?.find(p => p.baseHex === value) ?? new Color(value as any)
+	protected get inputColor() {
+		return this.presets?.find(p => p.hex === this.inputElement.value) ?? new Color(this.inputElement.value)
 	}
 }
 

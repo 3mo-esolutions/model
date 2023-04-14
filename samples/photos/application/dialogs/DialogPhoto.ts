@@ -26,7 +26,7 @@ export class DialogPhoto extends FetchableDialogComponent<Photo> {
 						width: 100%;
 					}
 				</style>
-				<mo-flex direction='horizontal' gap='var(--mo-thickness-xxl)'>
+				<mo-flex direction='horizontal' gap='18px'>
 					<mo-flex justifyContent='center'>
 						<img src=${this.photo.thumbnailUrl} alt=${this.photo.title}>
 					</mo-flex>

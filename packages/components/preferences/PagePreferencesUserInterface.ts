@@ -1,9 +1,9 @@
 import { html, component, css, style } from '@a11d/lit'
 import { route } from '@a11d/lit-application'
+import { Background, ColorSet, Theme } from '@3mo/theme'
 import { Currency, DataGrid, DataGridPagination } from '..'
 import { PagePreferences, PageSettings } from '.'
 import { Color } from '../../utilities'
-import { Background, ThemeHelper } from '../../shell'
 
 @component('mo-page-preferences-user-interface')
 @route(PagePreferences, '/preferences/user-interface', '/preferences/ui')
@@ -14,17 +14,18 @@ export class PagePreferencesUserInterface extends PageSettings {
 		new Color('rgb(171, 71, 188)'), // Purple
 		new Color('rgb(104, 159, 56)'), // Green
 		new Color('rgb(249, 168, 37)'), // Yellow
-		new Color('rgb(0, 119, 200)', 'rgb(0, 139, 220)', 'rgb(0, 159, 240)'), // Blue Gradient
-		new Color('rgb(0, 128, 128)', 'rgb(0, 148, 148)', 'rgb(0, 168, 168)'), // Teal Gradient
-		new Color('rgb(171, 71, 188)', 'rgb(191, 91, 208)', 'rgb(211, 111, 228)'), // Purple Gradient
-		new Color('rgb(104, 159, 56)', 'rgb(124, 179, 76)', 'rgb(144, 199, 96)'), // Green Gradient
-		new Color('rgb(249, 168, 37)', 'rgb(269, 188, 57)', 'rgb(289, 208, 77)'), // Yellow Gradient
-		new Color('rgb(102, 126, 234)', 'rgb(110, 101, 198)', 'rgb(118, 75, 162)'), // Plum Plate Gradient
-		new Color('rgb(247, 140, 160)', 'rgb(251, 125, 142)', 'rgb(254, 154, 139)'), // Strong Bliss Gradient
+		new ColorSet('rgb(0, 119, 200)', 'rgb(0, 139, 220)', 'rgb(0, 159, 240)'), // Blue Gradient
+		new ColorSet('rgb(0, 128, 128)', 'rgb(0, 148, 148)', 'rgb(0, 168, 168)'), // Teal Gradient
+		new ColorSet('rgb(171, 71, 188)', 'rgb(191, 91, 208)', 'rgb(211, 111, 228)'), // Purple Gradient
+		new ColorSet('rgb(104, 159, 56)', 'rgb(124, 179, 76)', 'rgb(144, 199, 96)'), // Green Gradient
+		new ColorSet('rgb(249, 168, 37)', 'rgb(269, 188, 57)', 'rgb(289, 208, 77)'), // Yellow Gradient
+		new ColorSet('rgb(102, 126, 234)', 'rgb(110, 101, 198)', 'rgb(118, 75, 162)'), // Plum Plate Gradient
+		new ColorSet('rgb(247, 140, 160)', 'rgb(251, 125, 142)', 'rgb(254, 154, 139)'), // Strong Bliss Gradient
 	]
 
 	protected override initialized() {
-		ThemeHelper.background.changed.subscribe(() => this.requestUpdate())
+		Theme.background.changed.subscribe(() => this.requestUpdate())
+		Theme.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
 	static override get styles() {
@@ -82,7 +83,7 @@ export class PagePreferencesUserInterface extends PageSettings {
 	protected override get template() {
 		return html`
 			<mo-page heading='User-Interface'>
-				<mo-flex gap='var(--mo-thickness-xxl)'>
+				<mo-flex gap='18px'>
 					<mo-section heading='Farbthemen'>
 						<mo-card ${style({ height: '*', alignItems: 'center' })}>
 							<mo-flex direction='horizontal' gap='10px'>
@@ -95,9 +96,9 @@ export class PagePreferencesUserInterface extends PageSettings {
 									${PagePreferencesUserInterface.accentPresetColors.map(color => this.getForegroundColorTemplate(color))}
 									<!-- .presets={PagePreferencesUserInterface.accentPresetColors} -->
 									<mo-color-picker ${style({ width: '100%', gridColumn: '1 / -1' })}
-										.value=${new Color('var(--mo-color-accent)')}
-										@input=${(e: CustomEvent<Color>) => ThemeHelper.accent.value = e.detail}
-										@change=${(e: CustomEvent<Color>) => ThemeHelper.accent.value = e.detail}
+										.value=${Theme.accent.medianColor}
+										@input=${(e: CustomEvent<Color>) => Theme.accent.value = e.detail}
+										@change=${(e: CustomEvent<Color>) => Theme.accent.value = e.detail}
 									></mo-color-picker>
 								</mo-grid>
 							</mo-flex>
@@ -163,8 +164,8 @@ export class PagePreferencesUserInterface extends PageSettings {
 			<mo-flex ${style({ width: '*' })} gap='var(--mo-thickness-l)' alignItems='center'>
 				<button class='themePreview'
 					data-background=${background}
-					?data-active=${ThemeHelper.background.value === background}
-					@click=${() => ThemeHelper.background.value = background}
+					?data-active=${Theme.background.value === background}
+					@click=${() => Theme.background.value = background}
 				>
 					<mo-flex gap='var(--mo-thickness-l)'>
 						<div ${style({ position: 'relative', opacity: 1, background: 'var(--mo-color-accent)', height: '20px', width: '100%' })}>
@@ -183,10 +184,11 @@ export class PagePreferencesUserInterface extends PageSettings {
 		`
 	}
 
-	private getForegroundColorTemplate(color: Color) {
+	private getForegroundColorTemplate(color: Color | ColorSet) {
+		const background = color instanceof Color ? color.hex : color.medianColor.hex
 		return html`
-			<button class='accentPreview' ${style({ background: color.baseHex })}
-				@click=${() => ThemeHelper.accent.value = color}
+			<button class='accentPreview' ${style({ background: background })}
+				@click=${() => Theme.accent.value = color}
 			></button>
 		`
 	}

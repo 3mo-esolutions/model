@@ -1,5 +1,5 @@
 import { Component, component, css, html, ifDefined, property } from '@a11d/lit'
-import { ThemeHelper } from '..'
+import { Theme } from '@3mo/theme'
 
 @component('mo-application-logo')
 export class ApplicationLogo extends Component {
@@ -9,7 +9,7 @@ export class ApplicationLogo extends Component {
 	@property() source = ApplicationLogo.source
 
 	protected override initialized() {
-		ThemeHelper.accent.changed.subscribe(() => this.requestUpdate())
+		Theme.accent.changed.subscribe(() => this.requestUpdate())
 	}
 
 	private async replaceColorVariable() {

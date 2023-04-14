@@ -23,7 +23,7 @@ export class Meta extends Component {
 				}
 
 				:host([direction=horizontal]), :host([direction=horizontal-reversed]) {
-					--mo-meta-gap: var(--mo-thickness-m);
+					--mo-meta-gap: 6px;
 				}
 
 				mo-heading {
@@ -43,7 +43,7 @@ export class Meta extends Component {
 				}
 
 				:host([icon]) mo-flex {
-					padding-inline-start: var(--mo-thickness-m)
+					padding-inline-start: 6px
 				}
 
 				:host([direction=vertical]) mo-flex, :host([direction=vertical-reversed]) mo-flex {

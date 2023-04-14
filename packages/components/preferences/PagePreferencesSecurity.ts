@@ -11,7 +11,7 @@ export class PagePreferencesSecurity extends PageSettings {
 	protected override get template() {
 		return html`
 			<mo-page heading='Sicherheit'>
-				<mo-flex gap='var(--mo-thickness-m)'>
+				<mo-flex gap='6px'>
 					<mo-checkbox-list-item
 						?checked=${DialogDeletion.deletionConfirmation.value}
 						@change=${(e: CustomEvent<CheckboxValue>) => DialogDeletion.deletionConfirmation.value = e.detail === 'checked'}
