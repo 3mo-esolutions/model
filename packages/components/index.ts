@@ -35,6 +35,7 @@ export * from '@3mo/menu'
 export * from '@3mo/focus-controller'
 export * from '@3mo/pointer-controller'
 export * from '@3mo/split-button'
+export * from '@3mo/color-picker'
 
 import './composer'
 
