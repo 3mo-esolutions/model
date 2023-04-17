@@ -869,12 +869,17 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 		const dataClone = [...this.data]
 
+		const compare = (a: TData, b: TData) => {
+			const valueA = getValueByKeyPath(a, sorting.selector) ?? Infinity as any
+			const valueB = getValueByKeyPath(b, sorting.selector) ?? Infinity as any
+			return valueB?.localeCompare?.(valueA) ?? (valueB - valueA)
+		}
+
 		switch (sorting.strategy) {
 			case DataGridSortingStrategy.Ascending:
-				return dataClone.sort((a, b) => getValueByKeyPath(a, sorting.selector) > getValueByKeyPath(b, sorting.selector) ? 1 : -1)
+				return dataClone.sort((a, b) => compare(a, b))
 			case DataGridSortingStrategy.Descending:
-				return dataClone.sort((a, b) => getValueByKeyPath(a, sorting.selector) < getValueByKeyPath(b, sorting.selector) ? 1 : -1)
-
+				return dataClone.sort((a, b) => compare(b, a))
 		}
 	}
 
