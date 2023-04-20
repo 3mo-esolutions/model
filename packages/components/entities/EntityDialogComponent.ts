@@ -18,7 +18,7 @@ export abstract class EntityDialogComponent<TEntity, TParameters extends Exclude
 	protected override firstUpdated(props: PropertyValues) {
 		super.firstUpdated(props)
 		this.dialogElement.save = () => this.save(this.entity)
-		if (this.delete) {
+		if (this.delete && this.parameters.id) {
 			this.dialogElement.delete = () => this.delete?.(this.entity)
 		}
 	}
@@ -27,7 +27,8 @@ export abstract class EntityDialogComponent<TEntity, TParameters extends Exclude
 	protected override async handleKeyDown(e: KeyboardEvent) {
 		await super.handleKeyDown(e)
 		if (!this.dialogElement.preventPrimaryOnCtrlS && e.key === 's' && (e.metaKey || e.ctrlKey)) {
-			e.preventDefault()
+			e.preventDefault();
+			(document.activeElement as HTMLElement)?.blur()
 			await this.handleAction(DialogActionKey.Primary)
 		}
 	}
