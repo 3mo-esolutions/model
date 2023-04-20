@@ -27,6 +27,7 @@ Localizer.register(LanguageCode.German, {
 	],
 	'Options': 'Optionen',
 	'More Filters': 'Weitere Filter',
+	'Deselect All': 'Alle deselektieren',
 })
 
 export type DataGridPagination = 'auto' | number
@@ -772,7 +773,10 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 						</mo-flex>
 					`}
 					<div ${style({ width: '*' })}></div>
-					<mo-icon-button icon='close' @click=${() => this.deselectAll()}></mo-icon-button>
+					<mo-icon-button icon='close'
+						${tooltip(t('Deselect All'))}
+						@click=${() => this.deselectAll()}
+					></mo-icon-button>
 				</mo-flex>
 			</mo-flex>
 		`

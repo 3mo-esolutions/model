@@ -92,7 +92,11 @@ export class DataGridSidePanel<TData> extends Component {
 				${this.dataGrid.hasToolbar === false && this.dataGrid.hasFilters === true ? nothing : html`
 					<mo-flex id='flexHeading' direction='horizontal' alignItems='center'>
 						<mo-heading typography='heading6' ${style({ width: '*', color: 'var(--mo-color-on-surface)' })}>${t(this.dataGrid.sidePanelTab === DataGridSidePanelTab.Filters ? 'Extended Filters' : 'Settings')}</mo-heading>
-						<mo-icon-button icon='close' dense ${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })} @click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}></mo-icon-button>
+						<mo-icon-button icon='close' dense
+							${tooltip(t('Close'))}
+							${style({ cursor: 'pointer', color: 'var(--mo-color-gray)' })}
+							@click=${() => this.dataGrid.navigateToSidePanelTab(undefined)}
+						></mo-icon-button>
 					</mo-flex>
 				`}
 
