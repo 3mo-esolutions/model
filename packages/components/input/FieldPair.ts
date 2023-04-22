@@ -9,6 +9,7 @@ export const enum FieldPairMode {
  * @element mo-field-pair
  *
  * @attr mode
+ * @attr reversed
  *
  * @slot - Field
  * @slot attachment - Attachment
@@ -16,25 +17,26 @@ export const enum FieldPairMode {
 @component('mo-field-pair')
 export class FieldPair extends Component {
 	@property({ reflect: true }) mode = FieldPairMode.Attach
+	@property({ type: Boolean, reflect: true }) reversed = false
 
 	static override get styles() {
 		return css`
 			:host {
 				position: relative;
-				display: grid;
-				grid-template-columns: 1fr var(--mo-field-pair-attachment-width, 100px);
+				display: flex;
 			}
 
 			:host([mode=overlay]) {
 				display: block;
 			}
 
-			div {
-				width: var(--mo-field-pair-attachment-width, 100px);
+			slot[name=attachment] {
+				display: inline-block;
+				flex: 0 0 var(--mo-field-pair-attachment-width, 100px);
 				background: var(--mdc-text-field-fill-color);
 			}
 
-			:host([mode=overlay]) div {
+			:host([mode=overlay]) slot[name=attachment] {
 				height: auto;
 				position: absolute;
 				inset-inline-end: 0;
@@ -44,23 +46,38 @@ export class FieldPair extends Component {
 			::slotted(:not([slot])) {
 				width: 100%;
 				height: 100%;
+			}
+
+			:host(:not([reversed])) ::slotted(:not([slot])) {
 				--mo-field-border-start-end-radius: 0px;
+			}
+
+			:host([reversed]) ::slotted(:not([slot])) {
+				--mo-field-border-start-start-radius: 0px;
 			}
 
 			::slotted([slot=attachment]) {
 				height: 100%;
 				align-items: center;
-				--mo-field-border-start-start--radius: 0px;
+			}
+
+			:host(:not([reversed])) ::slotted([slot=attachment]) {
+				--mo-field-border-start-start-radius: 0px;
+			}
+
+			:host([reversed]) ::slotted([slot=attachment]) {
+				--mo-field-border-start-end-radius: 0px;
 			}
 		`
 	}
 
 	protected override get template() {
-		return html`
+		return this.reversed ? html`
+			<slot name='attachment'></slot>
 			<slot></slot>
-			<div>
-				<slot name='attachment'></slot>
-			</div>
+		` : html`
+			<slot></slot>
+			<slot name='attachment'></slot>
 		`
 	}
 }
