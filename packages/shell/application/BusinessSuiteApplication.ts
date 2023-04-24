@@ -31,7 +31,7 @@ export abstract class BusinessSuiteApplication extends Application {
 		return css`
 			${super.styles}
 
-			[application] {
+			:root {
 				/* Duration */
 				--mo-duration-quick: 250ms;
 				--mo-duration-slow: 1000ms;
@@ -64,25 +64,25 @@ export abstract class BusinessSuiteApplication extends Application {
 				--mdc-theme-text-primary-on-background: var(--mo-color-foreground) !important;
 			}
 
-			[application][data-theme=light] {
+			:root[data-theme=light] {
 				--mo-color-foreground-transparent: rgb(48, 48, 48) !important;
 				--mo-color-error-base: 176, 0, 32;
 				--mo-field-background: rgba(var(--mo-color-foreground-base), 0.09);
 				--mo-alternating-background: rgba(var(--mo-color-foreground-base), 0.05);
 			}
 
-			[application][data-theme=dark] {
+			:root[data-theme=dark] {
 				--mo-color-foreground-transparent: rgb(220, 220, 220) !important;
 				--mo-color-error-base: 255, 61, 96;
 				--mo-field-background: rgba(var(--mo-color-background-base), 0.5);
 				--mo-alternating-background: rgba(var(--mo-color-background-base), 0.2);
 			}
 
-			[application][mobileNavigation] #navbarNavigations {
+			:root[mobileNavigation] #navbarNavigations {
 				visibility: hidden;
 			}
 
-			[application]:not([mobileNavigation]) mo-icon-button[icon=menu] {
+			:root:not([mobileNavigation]) mo-icon-button[icon=menu] {
 				display: none;
 			}
 		`
