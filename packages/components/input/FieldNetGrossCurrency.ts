@@ -1,9 +1,10 @@
-import { component, css, html, ifDefined, property, style } from '@a11d/lit'
+import { component, css, html, ifDefined, live, property, style } from '@a11d/lit'
 import { Currency } from '@3mo/localization'
-import { Field } from './Field'
+import { InputFieldComponent } from '@3mo/field'
 
 @component('mo-field-net-gross-currency')
-export class FieldNetGrossCurrency extends Field<NetGrossCurrency> {
+export class FieldNetGrossCurrency extends InputFieldComponent<NetGrossCurrency> {
+	@property({ type: Object }) value: NetGrossCurrency = [undefined, false]
 	@property({ type: Boolean }) isGross = false
 	@property({ type: Object }) currency = Currency.EUR
 	@property() currencySymbol?: string
@@ -20,10 +21,24 @@ export class FieldNetGrossCurrency extends Field<NetGrossCurrency> {
 		]
 	}
 
+	protected override get inputTemplate() {
+		return html`
+			<input
+				part='input'
+				type='text'
+				inputmode='decimal'
+				?readonly=${this.readonly}
+				?required=${this.required}
+				?disabled=${this.disabled}
+				.value=${live(this.inputStringValue || '')}
+				@input=${(e: Event) => this.handleInput(this.toValue(this.inputElement.value), e)}
+				@change=${(e: Event) => this.handleChange(this.toValue(this.inputElement.value), e)}
+			>
+		`
+	}
+
 	static override get styles() {
 		return css`
-			${super.styles}
-
 			button {
 				cursor: pointer;
 				border: none;
@@ -43,9 +58,15 @@ export class FieldNetGrossCurrency extends Field<NetGrossCurrency> {
 		`
 	}
 
-	protected override get template() {
+	protected override get endSlotTemplate() {
 		return html`
-			${super.template}
+			${this.currencyAndSwitcherTemplate}
+			${super.endSlotTemplate}
+		`
+	}
+
+	protected get currencyAndSwitcherTemplate() {
+		return html`
 			<mo-flex direction='horizontal' gap='4px' alignItems='center'>
 				<mo-flex gap='2px' direction=${ifDefined(this.dense ? 'horizontal' : undefined)}>
 					<button tabindex='-1'
@@ -69,7 +90,7 @@ export class FieldNetGrossCurrency extends Field<NetGrossCurrency> {
 	protected setIsGross(value: boolean) {
 		if (this.isGross !== value) {
 			this.isGross = value
-			this.handleChange()
+			this.handleChange(this.value)
 		}
 	}
 }

@@ -1,6 +1,6 @@
 
-import { ClassInfo, component, property } from '@a11d/lit'
-import { DateHelper, html, classMap } from '../../../..'
+import { html, classMap, ClassInfo, component, property } from '@a11d/lit'
+import { DateHelper } from '../../../..'
 import { CalendarSelectionAdapter } from '../../calendar'
 import { FieldDateBase } from './FieldDateBase'
 
@@ -25,10 +25,7 @@ class DateCalendarSelectionAdapter extends CalendarSelectionAdapter<MoDate> {
 export class FieldDate extends FieldDateBase<Date | undefined> {
 	protected calendarSelectionAdapterConstructor = DateCalendarSelectionAdapter
 
-	// For lit-analyzer to solve generic error
-	@property({ type: Object })
-	override get value() { return super.value }
-	override set value(value) { super.value = value }
+	@property({ type: Object }) value?: Date
 
 	protected override handleCalendarChange(value?: Date) {
 		super.handleCalendarChange(value)

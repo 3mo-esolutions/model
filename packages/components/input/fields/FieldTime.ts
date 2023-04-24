@@ -1,14 +1,14 @@
 import { component, html, style } from '@a11d/lit'
-import { FieldTextBase } from './FieldTextBase'
+import { FieldText } from '@3mo/field'
 
 @component('mo-field-time')
-export class FieldTime extends FieldTextBase {
-	protected override readonly inputType = 'time'
+export class FieldTime extends FieldText {
+	override readonly inputMode = 'time'
 
-	protected override get template() {
+	protected override get startSlotTemplate() {
 		return html`
 			<mo-icon @click=${() => this.focus()} icon='schedule' ${style({ color: 'var(--mo-color-gray)' })}></mo-icon>
-			${super.template}
+			${super.startSlotTemplate}
 		`
 	}
 }

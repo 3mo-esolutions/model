@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { component, css, property, event, html, HTMLTemplateResult, PropertyValues } from '@a11d/lit'
+import { component, css, property, event, html, HTMLTemplateResult } from '@a11d/lit'
 import { TemplateHelper } from '../../../library'
 import { FetcherController } from '@3mo/fetcher-controller'
 import { FieldSelect } from './FieldSelect'
@@ -71,8 +71,8 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		return super.template
 	}
 
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
+	protected override firstUpdated() {
+		super.firstUpdated()
 		if (!this.parameters) {
 			this.requestFetch()
 		}
@@ -90,7 +90,7 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		await this.fetcherController.fetch()
 		this.renderFetchedDataOptions()
 		if (!skipValueEvaluation) {
-			this.value = this['_value']
+			// this.value = this['_value']
 		}
 	}
 

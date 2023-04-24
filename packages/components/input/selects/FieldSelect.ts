@@ -1,7 +1,6 @@
-import { html, property, state, css, event, component, PropertyValues, query, style } from '@a11d/lit'
-import { Option, DeprecatedMenu } from '../..'
-import { Field } from '../Field'
+import { html, property, state, css, event, component, query, style, live, eventListener } from '@a11d/lit'
 import { Key } from '@a11d/lit-application'
+import { Option, DeprecatedMenu, InputFieldComponent } from '../..'
 
 type PluralizeUnion<T> = Array<T> | T | undefined
 
@@ -22,7 +21,7 @@ function getOptionsText<T>(options: Array<Option<T>>) {
  * @fires indexChange {CustomEvent<Index>}
  */
 @component('mo-field-select')
-export class FieldSelect<T> extends Field<Value> {
+export class FieldSelect<T> extends InputFieldComponent<Value> {
 	@event() readonly dataChange!: EventDispatcher<Data<T>>
 	@event() readonly indexChange!: EventDispatcher<Index>
 
@@ -46,17 +45,20 @@ export class FieldSelect<T> extends Field<Value> {
 		this.updateComplete.then(() => this.insertBefore(defaultOption, this.firstElementChild))
 	}
 
-	@property()
-	override get value() { return super.value }
-	override set value(value) {
-		value = (value instanceof Array
-			? value.map(v => v.toString())
-			: value?.toString()) as PluralizeUnion<string>
+	@property({
+		type: Object,
+		updated(this: FieldSelect<T>, value?: Value) {
+			value = (value instanceof Array
+				? value.map(v => v.toString())
+				: value?.toString()) as PluralizeUnion<string>
 
-		super.value = value
-		this.programmaticSelection = true
-		this.selectByValue(value).then(() => this.programmaticSelection = false)
-	}
+			super.value = value
+			this.programmaticSelection = true
+			this.selectByValue(value).then(() => this.programmaticSelection = false)
+
+			this.inputStringValue = this.fromValue(value)
+		}
+	}) value?: Value
 
 	@property({ type: Array })
 	get index() {
@@ -82,8 +84,6 @@ export class FieldSelect<T> extends Field<Value> {
 
 	private preventNextChange = false
 
-	override readonly autoComplete = 'off'
-
 	get options() {
 		return Array.from(this.querySelectorAll<Option<T>>('mo-option'))
 	}
@@ -98,8 +98,6 @@ export class FieldSelect<T> extends Field<Value> {
 
 	static override get styles() {
 		return css`
-			${super.styles}
-
 			input:hover {
 				cursor: pointer;
 			}
@@ -131,44 +129,63 @@ export class FieldSelect<T> extends Field<Value> {
 		`
 	}
 
-	protected override firstUpdated(props: PropertyValues) {
-		super.firstUpdated(props)
-		this.value = this.value
-		this.registerEventListeners()
-	}
-
-	private registerEventListeners() {
-		this.addEventListener('mouseover', () => this.manualClose = this.multiple)
-		this.addEventListener('mouseout', () => this.manualClose = false)
-		this.divContainer.addEventListener('click', () => this.open = !this.open)
-		this.addEventListener('keydown', (e: KeyboardEvent) => {
-			const key = e.key as Key
-			const openKeys = [Key.Enter]
-			const navigationKeys = [Key.ArrowDown, Key.ArrowUp]
-
-			if (openKeys.includes(key)) {
-				e.stopImmediatePropagation()
-				if (this.searchable) {
-					this.preventNextChange = true
-				}
-			}
-
-			if (this.open === false && [...openKeys, ...navigationKeys].includes(key)) {
-				this.open = true
-			}
-
-			if (navigationKeys.includes(key)) {
-				const focusedItem = this.menuOptions?.getFocusedItemIndex()
-				this.menuOptions?.focusItemAtIndex(!focusedItem || focusedItem === -1 ? 0 : focusedItem)
-			}
-		})
-		this.addEventListener('defaultClick', () => this.resetSelection())
-	}
-
-	protected override get template() {
+	protected override get inputTemplate() {
 		return html`
-			${super.template}
-			<div>
+			<input
+				part='input'
+				type='text'
+				autocomplete='off'
+				?readonly=${this.readonly}
+				?required=${this.required}
+				?disabled=${this.disabled}
+				.value=${live(this.inputStringValue || '')}
+				@click=${() => this.open = !this.open}
+			>
+		`
+	}
+
+	@eventListener('mouseover')
+	protected handleMouseOver() {
+		this.manualClose = this.multiple
+	}
+
+	@eventListener('mouseout')
+	protected handleMouseOut() {
+		this.manualClose = false
+	}
+
+	@eventListener('keydown')
+	protected handleKeyDown(e: KeyboardEvent) {
+		const key = e.key as Key
+		const openKeys = [Key.Enter]
+		const navigationKeys = [Key.ArrowDown, Key.ArrowUp]
+
+		if (openKeys.includes(key)) {
+			e.stopImmediatePropagation()
+			if (this.searchable) {
+				this.preventNextChange = true
+			}
+		}
+
+		if (this.open === false && [...openKeys, ...navigationKeys].includes(key)) {
+			this.open = true
+		}
+
+		if (navigationKeys.includes(key)) {
+			const focusedItem = this.menuOptions?.getFocusedItemIndex()
+			this.menuOptions?.focusItemAtIndex(!focusedItem || focusedItem === -1 ? 0 : focusedItem)
+		}
+	}
+
+	@eventListener('defaultClick')
+	protected handleDefaultClick() {
+		this.resetSelection()
+	}
+
+	protected override get endSlotTemplate() {
+		return html`
+			${super.endSlotTemplate}
+			<div slot='end'>
 				<mo-icon-button
 					part='dropDownIcon'
 					tabindex='-1'
@@ -228,19 +245,19 @@ export class FieldSelect<T> extends Field<Value> {
 		}
 	}
 
-	protected override handleInput() {
-		super.handleInput()
+	protected override handleInput(v: Value, e: Event) {
+		super.handleInput(v, e)
 		if (this.searchable) {
 			this.searchOptions()
 		}
 	}
 
-	protected override handleChange() {
+	protected override handleChange(v?: Value, e?: Event) {
 		if (this.preventNextChange) {
 			this.preventNextChange = false
 			return
 		}
-		super.handleChange()
+		super.handleChange(v, e)
 	}
 
 	protected handleOptionSelection() {

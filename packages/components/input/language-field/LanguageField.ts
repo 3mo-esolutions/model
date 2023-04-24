@@ -1,5 +1,6 @@
 import { Component, event, html, ifDefined, property, css, nothing, style, HTMLTemplateResult, state } from '@a11d/lit'
-import { FieldPairMode, DialogLanguageField, Language } from '../../input'
+import { DialogLanguageField, Language } from '../../input'
+import { FieldPairMode } from '@3mo/field-pair'
 
 /**
  * @attr mode
@@ -111,8 +112,8 @@ export abstract class LanguageField<TValue, TLanguage extends Language> extends 
 					value=${ifDefined(this.selectedLanguage?.[this.valueKey])}
 					@change=${(e: CustomEvent<TLanguage[keyof TLanguage]>) => this.handleLanguageChange(this._languages.find(l => l[this.valueKey] === e.detail) as TLanguage)}
 				>
-					<mo-flex slot='leading' direction='horizontal' gap='4px'>
-						${this.languageSelectorLeadingTemplate}
+					<mo-flex slot='start' direction='horizontal' gap='4px'>
+						${this.languageSelectorStartTemplate}
 					</mo-flex>
 
 					${this._languages.map(language => html`
@@ -126,7 +127,7 @@ export abstract class LanguageField<TValue, TLanguage extends Language> extends 
 		`
 	}
 
-	protected get languageSelectorLeadingTemplate() {
+	protected get languageSelectorStartTemplate() {
 		return html`
 			${this._languages.length === 1 ? nothing : html`
 				<mo-icon-button icon='launch' ${style({ display: 'flex', alignItems: 'center' })} @click=${() => this.openDialog()}></mo-icon-button>

@@ -111,7 +111,7 @@ export abstract class BusinessSuiteApplication extends Application {
 		return html`
 			<mo-flex direction='horizontal' gap='32px' ${style({ background: 'var(--mo-color-accent)', paddingInlineStart: '4px', height: '48px', overflow: 'hidden' })}>
 				<mo-flex direction='horizontal' alignItems='center' ${style({ color: 'var(--mo-color-accessible)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
-					${this.navbarLeadingTemplate}
+					${this.navbarStartTemplate}
 				</mo-flex>
 
 				<mo-flex id='navbarNavigations' direction='horizontal' alignItems='center' gap='8px'
@@ -142,7 +142,7 @@ export abstract class BusinessSuiteApplication extends Application {
 		this.mobileNavigation = this.navigationsContainer.clientWidth < scrollWidth
 	}
 
-	protected get navbarLeadingTemplate() {
+	protected get navbarStartTemplate() {
 		return html`
 			${this.navbarMenuTemplate}
 			${this.navbarLogoTemplate}

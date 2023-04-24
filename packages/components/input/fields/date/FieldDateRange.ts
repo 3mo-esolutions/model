@@ -1,8 +1,8 @@
 
-import { component, property } from '@a11d/lit'
-import { DateHelper, ClassInfo, classMap, css, html, state, style } from '../../../..'
+import { component, property, classMap, css, html, state, style, ClassInfo } from '@a11d/lit'
+import { MaterialIcon } from '@3mo/icon'
 import { FieldDateBase } from './FieldDateBase'
-import { MaterialIcon } from '../../..'
+import { DateHelper } from '../../../..'
 import { CalendarSelectionAdapter } from '../../calendar'
 
 const enum DateRangeCalendarSelectionAdapterCurrentSelection { StartDate, EndDate }
@@ -93,10 +93,7 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 
 	protected calendarSelectionAdapterConstructor = DateRangeCalendarSelectionAdapter
 
-	// For lit-analyzer to solve generic error
-	@property({ type: Array })
-	override get value() { return super.value || [undefined, undefined] }
-	override set value(value) { super.value = value }
+	@property({ type: Array }) value: DateRange = [undefined, undefined]
 
 	protected override calendarIconButtonIcon: MaterialIcon = 'date_range'
 

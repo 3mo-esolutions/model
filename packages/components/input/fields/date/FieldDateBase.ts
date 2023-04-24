@@ -1,15 +1,15 @@
 
-import { html, nothing, property, query, style } from '@a11d/lit'
-import { MaterialIcon } from '../../..'
+import { html, live, nothing, property, query, style } from '@a11d/lit'
+import { InputFieldComponent } from '@3mo/field'
+import { MaterialIcon } from '@3mo/icon'
 import { CalendarSelectionAdapter, SelectableCalendar } from '../../calendar'
-import { Field } from '../../Field'
 
 /**
  * @attr open - Whether the date picker is open
  * @attr hideDatePicker - Hide the date picker
  * @attr shortcutReferenceDate - The date to use as a reference for shortcuts
  */
-export abstract class FieldDateBase<T> extends Field<T> {
+export abstract class FieldDateBase<T> extends InputFieldComponent<T> {
 	@property({ type: Boolean, reflect: true }) open = false
 	@property({ type: Boolean }) hideDatePicker = false
 	@property({ type: Object }) shortcutReferenceDate = new MoDate
@@ -18,12 +18,34 @@ export abstract class FieldDateBase<T> extends Field<T> {
 
 	protected readonly abstract calendarSelectionAdapterConstructor: Constructor<CalendarSelectionAdapter<T>>
 
-	protected override get template() {
+	protected override get endSlotTemplate() {
 		return html`
-			${super.template}
+			${super.endSlotTemplate}
 			${this.calendarIconButtonTemplate}
 		`
 	}
+
+	protected override handleChange(value?: T, e?: Event) {
+		super.handleChange(value, e)
+		this.inputStringValue = this.fromValue(value)
+	}
+
+	protected override get inputTemplate() {
+		return html`
+			<input
+				part='input'
+				?readonly=${this.readonly}
+				?required=${this.required}
+				?disabled=${this.disabled}
+				.value=${live(this.inputStringValue || '')}
+				@input=${(e: Event) => this.handleInput(this.toValue(this.inputElement.value || ''), e)}
+				@change=${(e: Event) => this.handleChange(this.toValue(this.inputElement.value || ''), e)}
+			>
+		`
+	}
+
+	protected abstract toValue(value: string): T | undefined
+	protected abstract fromValue(value: T | undefined): string
 
 	protected get calendarIconButtonTemplate() {
 		return html`
