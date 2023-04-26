@@ -127,7 +127,7 @@ export class FieldDateRange extends FieldDateBase<DateRange | undefined> {
 		`
 	}
 
-	protected fromValue(value: DateRange | undefined) {
+	protected valueToInputValue(value: DateRange | undefined) {
 		return value ? DateHelper.dateRange(value) ?? '' : ''
 	}
 

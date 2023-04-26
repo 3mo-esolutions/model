@@ -9,7 +9,7 @@ export class FieldNetGrossCurrency extends InputFieldComponent<NetGrossCurrency>
 	@property({ type: Object }) currency = Currency.EUR
 	@property() currencySymbol?: string
 
-	protected fromValue(value?: NetGrossCurrency) {
+	protected valueToInputValue(value?: NetGrossCurrency) {
 		this.isGross = value?.[1] ?? false
 		return typeof value?.[0] === 'number' ? value[0].formatAsCurrency() : ''
 	}

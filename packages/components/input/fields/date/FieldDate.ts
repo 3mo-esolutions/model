@@ -32,7 +32,7 @@ export class FieldDate extends FieldDateBase<Date | undefined> {
 		this.open = false
 	}
 
-	protected fromValue(value: Date | undefined) {
+	protected valueToInputValue(value: Date | undefined) {
 		return value ? DateHelper.date(value) ?? '' : ''
 	}
 

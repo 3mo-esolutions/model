@@ -27,7 +27,7 @@ export abstract class FieldDateBase<T> extends InputFieldComponent<T> {
 
 	protected override handleChange(value?: T, e?: Event) {
 		super.handleChange(value, e)
-		this.inputStringValue = this.fromValue(value)
+		this.inputStringValue = this.valueToInputValue(value)
 	}
 
 	protected override get inputTemplate() {
@@ -45,7 +45,7 @@ export abstract class FieldDateBase<T> extends InputFieldComponent<T> {
 	}
 
 	protected abstract toValue(value: string): T | undefined
-	protected abstract fromValue(value: T | undefined): string
+	protected abstract override valueToInputValue(value: T | undefined): string
 
 	protected get calendarIconButtonTemplate() {
 		return html`

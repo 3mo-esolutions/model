@@ -56,7 +56,7 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 			this.programmaticSelection = true
 			this.selectByValue(value).then(() => this.programmaticSelection = false)
 
-			this.inputStringValue = this.fromValue(value)
+			this.inputStringValue = this.valueToInputValue(value)
 		}
 	}) value?: Value
 
@@ -223,7 +223,7 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 			: option ? [option] : []
 	}
 
-	protected fromValue(value: Value) {
+	protected valueToInputValue(value: Value) {
 		if ((value instanceof Array && value.length === 0) || !value) {
 			return this.reflectDefault ? this.default ?? '' : ''
 		}
