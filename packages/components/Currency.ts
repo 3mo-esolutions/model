@@ -2,8 +2,12 @@ import { property, Component, component, html, css } from '@a11d/lit'
 import { LocalStorage } from '@a11d/local-storage'
 import * as Localization from '@3mo/localization'
 
+// TODO: Deprecate this component
+
 /**
  * @element mo-currency
+ *
+ * @deprecated Use .formatAsCurrency() on a number instead
  *
  * @attr currency - The currency code
  * @attr currencySymbol - The currency symbol
