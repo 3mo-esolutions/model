@@ -1,6 +1,5 @@
 import { component, html, property, nothing } from '@a11d/lit'
 import { DataGrid, DataGridPagination, FieldFetchableSelect } from '..'
-import { ClientInfoHelper } from '../..'
 
 @component('mo-field-select-data-grid-page-size')
 export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPagination> {
@@ -8,22 +7,12 @@ export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPa
 
 	@property({ type: Object }) dataGrid?: DataGrid<any>
 
-	override readonly preventShiftingSelectedItem = true
-
 	override readonly fetch = () => Promise.resolve(FieldSelectDataGridPageSize.data)
 
 	override readonly optionTemplate = (size: DataGridPagination) => {
 		return size === 'auto' && (!this.dataGrid || this.dataGrid.supportsDynamicPageSize === false) ? nothing : html`
 			<mo-option value=${size}>${size === 'auto' ? 'Auto' : size.format()}</mo-option>
 		`
-	}
-
-	protected override handleOptionSelection() {
-		// Safari has an unknown bug, which causes a loop on some select components
-		if (ClientInfoHelper.browser === 'Safari' && this.menuOptions?.index === this.value) {
-			return
-		}
-		return super.handleOptionSelection()
 	}
 }
 

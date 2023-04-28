@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { component, css, property, event, html, HTMLTemplateResult } from '@a11d/lit'
-import { TemplateHelper } from '../../../library'
 import { FetcherController } from '@3mo/fetcher-controller'
 import { FieldSelect } from './FieldSelect'
-import { Option } from './Option'
 
 export type FieldFetchableSelectParametersType = Record<string, unknown> | void
 
@@ -13,13 +10,12 @@ export type FieldFetchableSelectParametersType = Record<string, unknown> | void
  */
 @component('mo-field-fetchable-select')
 export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchableSelectParametersType = void> extends FieldSelect<T> {
-	private static readonly fetchedOptionsRenderLimit = 200
+	private static readonly fetchedOptionsRenderLimit = 250
 
 	@event() readonly dataFetch!: EventDispatcher<Array<T>>
 
 	@property({ type: Number }) optionsRenderLimit = FieldFetchableSelect.fetchedOptionsRenderLimit
 	@property({ type: Object }) optionTemplate?: (data: T, index: number, array: Array<T>) => HTMLTemplateResult
-	@property({ type: Boolean }) preventShiftingSelectedItem = false
 
 	@property({ type: Object, updated(this: FieldFetchableSelect<T>) { this.requestFetch() } }) parameters?: TDataFetcherParameters
 	@property({ type: Object }) searchParameters?: (keyword: string) => Partial<TDataFetcherParameters>
@@ -82,47 +78,21 @@ export class FieldFetchableSelect<T, TDataFetcherParameters extends FieldFetchab
 		if (!this.searchParameters) {
 			return super.search()
 		} else {
-			await this.requestFetch(true)
+			await this.requestFetch()
 		}
 	}
 
-	async requestFetch(skipValueEvaluation = false) {
-		await this.fetcherController.fetch()
-		this.renderFetchedDataOptions()
-		if (!skipValueEvaluation) {
-			// this.value = this['_value']
-		}
+	requestFetch() {
+		return this.fetcherController.fetch()
 	}
 
-	private renderFetchedDataOptions() {
-		const optionsTemplate = html`
-			${this.fetcherController.data?.map((data, index, array) => this.optionTemplate?.(data, index, array) ?? html`
-				<mo-option .data=${data} value=${index}>${data}</mo-option>
+	protected override get optionsTemplate() {
+		return html`
+			${super.optionsTemplate}
+			${this.fetcherController.data?.slice(0, this.optionsRenderLimit)?.map((data, index, array) => this.optionTemplate?.(data, index, array) ?? html`
+				<mo-option .data=${data} value=${index} fetched>${data}</mo-option>
 			`)}
 		`
-		this.fetchedOptions = TemplateHelper.extractAllBySelector(optionsTemplate, 'mo-option') as Array<Option<T>>
-	}
-
-	private get fetchedOptions() { return Array.from(this.querySelectorAll<Option<T>>('mo-option[fetched]')) }
-	private set fetchedOptions(value) {
-		this.fetchedOptions.forEach(o => o.remove())
-		const optionsToAppend = value.slice(0, this.optionsRenderLimit)
-		const fieldValue = this.value
-		if (fieldValue instanceof Array && fieldValue.length > 0) {
-			optionsToAppend.push(...value.filter(o => fieldValue.includes(o.value)))
-		} else if (fieldValue && !this.preventShiftingSelectedItem) {
-			const preselectedValueOption = value.find(o => o.value === fieldValue)
-			if (preselectedValueOption) {
-				optionsToAppend.push(preselectedValueOption)
-			}
-		}
-		optionsToAppend.forEach(o => {
-			o.switchAttribute('fetched', true)
-			if (this.multiple) {
-				o.multiple = true
-			}
-		})
-		this.append(...optionsToAppend)
 	}
 }
 

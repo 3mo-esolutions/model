@@ -1,4 +1,3 @@
-export * from './TemplateHelper'
 export * from './ComponentMixin'
 import './event'
 import './helpers'

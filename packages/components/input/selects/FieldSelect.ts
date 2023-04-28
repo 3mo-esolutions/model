@@ -1,22 +1,22 @@
-import { html, property, state, css, event, component, query, style, live, eventListener } from '@a11d/lit'
-import { Key } from '@a11d/lit-application'
-import { Option, DeprecatedMenu, InputFieldComponent } from '../..'
-
-type PluralizeUnion<T> = Array<T> | T | undefined
-
-type Value = PluralizeUnion<string | number>
-type Data<T> = PluralizeUnion<T>
-type Index = PluralizeUnion<number>
-
-function getOptionsText<T>(options: Array<Option<T>>) {
-	return options
-		.filter(o => !o.default)
-		.map(o => o.text)
-		.join(', ')
-}
+import { html, property, css, event, component, style, live, PropertyValues, query, nothing } from '@a11d/lit'
+import { InputFieldComponent } from '@3mo/field'
+import { Menu } from '@3mo/menu'
+import { Option } from './Option'
+import { Data, FieldSelectValueController, Index, Value } from './SelectValueController'
 
 /**
- * @slot
+ * @element mo-field-select
+ *
+ * @attr default - The default value.
+ * @attr reflectDefault - Whether the default value should be reflected to the attribute.
+ * @attr multiple - Whether multiple options can be selected.
+ * @attr searchable - Whether the options should be searchable.
+ * @attr value - Whether the options should be searchable.
+ * @attr index - Whether the options should be searchable.
+ * @attr data - Whether the options should be searchable.
+ *
+ * @slot - The select options.
+ *
  * @fires dataChange {CustomEvent<Data<T>>}
  * @fires indexChange {CustomEvent<Index>}
  */
@@ -25,75 +25,39 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 	@event() readonly dataChange!: EventDispatcher<Data<T>>
 	@event() readonly indexChange!: EventDispatcher<Index>
 
-	@property({ type: Boolean, reflect: true }) open = false
+	@property() default?: string
+	@property({ type: Boolean }) reflectDefault = false
 	@property({ type: Boolean }) multiple = false
-	@property({ type: Boolean, updated(this: FieldSelect<T>) { this.inputElement.readOnly = !this.searchable } }) searchable = false
-	@property({ type: Boolean, reflect: true, updated(this: FieldSelect<T>) { Promise.delegateToEventLoop(() => this.value = this.value) } }) reflectDefault = false
-	@property()
-	get default() { return this.querySelector<Option<T>>('mo-option[default]')?.text }
-	set default(value) {
-		Array.from(this.querySelectorAll('mo-option[default]')).forEach(o => o.remove())
-
-		if (!value) {
-			return
-		}
-
-		const defaultOption = new Option<T>()
-		defaultOption.default = true
-		defaultOption.innerText = value
-		defaultOption.value = ''
-		this.updateComplete.then(() => this.insertBefore(defaultOption, this.firstElementChild))
-	}
-
-	@property({
-		type: Object,
-		updated(this: FieldSelect<T>, value?: Value) {
-			value = (value instanceof Array
-				? value.map(v => v.toString())
-				: value?.toString()) as PluralizeUnion<string>
-
-			super.value = value
-			this.programmaticSelection = true
-			this.selectByValue(value).then(() => this.programmaticSelection = false)
-
-			this.inputStringValue = this.valueToInputValue(value)
-		}
-	}) value?: Value
-
+	@property({ type: Boolean }) searchable = false
+	@property({ type: Boolean, reflect: true }) open = false
+	@property({ type: Object })
+	get value() { return this.valueController.value }
+	set value(value) { this.valueController.value = value }
 	@property({ type: Array })
-	get index() {
-		return (this.value instanceof Array
-			? this.value.map(v => this.options.findIndex(o => o.value === v))
-			: this.options.findIndex(o => o.value === this.value)) as Index
-	}
-	set index(value) { this.selectByIndex(value) }
-
+	get index() { return this.valueController.index }
+	set index(value) { this.valueController.index = value }
 	@property({ type: Array })
-	get data() {
-		return (this.value instanceof Array
-			? this.value.map(v => this.options.find(o => o.value === v)?.data)
-			: this.options.find(o => o.value === this.value)?.data) as Data<T>
-	}
-	set data(value) { this.selectByData(value) }
+	get data() { return this.valueController.data }
+	set data(value) { this.valueController.data = value }
 
-	@state() private manualClose = false
+	@query('mo-menu') readonly menu?: Menu
 
-	@query('#menuOptions') protected readonly menuOptions?: DeprecatedMenu | null
+	get listItems() { return (this.menu?.list?.items ?? []) }
+	get options() { return this.listItems.filter(i => i instanceof Option) as Array<Option<T>> }
+	get selectedOptions() { return this.options.filter(o => o.selected) }
 
-	private programmaticSelection = false
+	protected readonly valueController: FieldSelectValueController<T> = new FieldSelectValueController<T>(this, () => {
+		this.requestUpdate()
+		this.inputStringValue = this.valueToInputValue(this.value)
+	})
 
-	private preventNextChange = false
-
-	get options() {
-		return Array.from(this.querySelectorAll<Option<T>>('mo-option'))
-	}
-
-	get defaultOption() {
-		return this.options.find(o => o.default)
+	protected override updated(props: PropertyValues<this>) {
+		super.updated(props)
+		this.options.forEach(o => o.multiple = this.multiple)
 	}
 
-	get selectedOptions() {
-		return this.menuOptions?.selected as Array<Option<T>> | Option<T> | undefined
+	protected override get isActive() {
+		return super.isActive || this.open
 	}
 
 	static override get styles() {
@@ -112,9 +76,12 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 				color: var(--mo-color-accent);
 			}
 
-			mo-deprecated-menu {
-				--mdc-theme-surface: var(--mo-color-background);
-				--mdc-menu-item-height: 36px;
+			mo-menu::part(popover) {
+				background: var(--mo-color-background);
+				max-height: 300px;
+				overflow-y: auto;
+				scrollbar-width: thin;
+				color: var(--mo-color-foreground);
 			}
 
 			slot:not([name]) {
@@ -123,8 +90,18 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 				align-items: stretch;
 			}
 
-			::slotted(*[mwc-list-item]:not([selected]):focus), ::slotted(*[mwc-list-item]:not([selected]):hover) {
-				background-color: rgba(var(--mo-color-foreground-base), 0.05);
+			mo-option, ::slotted(mo-option) {
+				transform: scaleY(1);
+				transition: 0.2s ease-in-out;
+				height: 36px;
+				opacity: 1;
+			}
+
+			mo-option[data-search-no-match], ::slotted(mo-option[data-search-no-match]) {
+				transform: scaleY(0);
+				opacity: 0;
+				height: 0px;
+				pointer-events: none;
 			}
 		`
 	}
@@ -135,106 +112,52 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 				part='input'
 				type='text'
 				autocomplete='off'
-				?readonly=${this.readonly}
-				?required=${this.required}
+				?readonly=${!this.searchable}
 				?disabled=${this.disabled}
 				.value=${live(this.inputStringValue || '')}
-				@click=${() => this.open = !this.open}
+				@input=${(e: Event) => this.handleInput((e.target as HTMLInputElement).value, e)}
 			>
 		`
-	}
-
-	@eventListener('mouseover')
-	protected handleMouseOver() {
-		this.manualClose = this.multiple
-	}
-
-	@eventListener('mouseout')
-	protected handleMouseOut() {
-		this.manualClose = false
-	}
-
-	@eventListener('keydown')
-	protected handleKeyDown(e: KeyboardEvent) {
-		const key = e.key as Key
-		const openKeys = [Key.Enter]
-		const navigationKeys = [Key.ArrowDown, Key.ArrowUp]
-
-		if (openKeys.includes(key)) {
-			e.stopImmediatePropagation()
-			if (this.searchable) {
-				this.preventNextChange = true
-			}
-		}
-
-		if (this.open === false && [...openKeys, ...navigationKeys].includes(key)) {
-			this.open = true
-		}
-
-		if (navigationKeys.includes(key)) {
-			const focusedItem = this.menuOptions?.getFocusedItemIndex()
-			this.menuOptions?.focusItemAtIndex(!focusedItem || focusedItem === -1 ? 0 : focusedItem)
-		}
-	}
-
-	@eventListener('defaultClick')
-	protected handleDefaultClick() {
-		this.resetSelection()
 	}
 
 	protected override get endSlotTemplate() {
 		return html`
 			${super.endSlotTemplate}
-			<div slot='end'>
-				<mo-icon-button
-					part='dropDownIcon'
-					tabindex='-1'
-					dense
-					icon='expand_more'
-					${style({ color: 'var(--mo-color-gray)' })}
-					@click=${() => this.open = !this.open}
-				></mo-icon-button>
 
-				<mo-deprecated-menu
-					id='menuOptions'
-					style=${this.offsetWidth ? `--mdc-menu-min-width: ${this.offsetWidth}px;` : ''}
-					.anchor=${this as any}
-					?multi=${this.multiple}
-					?manualClose=${this.manualClose}
-					fixed
-					defaultFocus=${this.searchable ? 'NONE' : this.default ? 'FIRST_ITEM' : 'LIST_ROOT'}
-					corner='BOTTOM_START'
-					activatable
-					?open=${this.open}
-					@opened=${() => this.open = true}
-					@closed=${() => this.open = false}
-					@selected=${() => this.handleOptionSelection()}
-				>
-					<slot></slot>
-				</mo-deprecated-menu>
-			</div>
+			<mo-icon-button tabindex='-1' slot='end'
+				part='dropDownIcon'
+				dense
+				icon='expand_more'
+				${style({ color: 'var(--mo-color-gray)' })}
+			></mo-icon-button>
+
+			<mo-menu tabindex='-1' slot='end'
+				selectionMode=${this.multiple ? 'multiple' : 'single'}
+				.anchor=${this}
+				?open=${this.open}
+				@openChange=${(e: CustomEvent<boolean>) => this.open = e.detail}
+				.value=${this.valueController.menuValue}
+				@change=${(e: CustomEvent<Array<number>>) => this.handleSelection(e.detail)}
+			>${this.optionsTemplate}</mo-menu>
 		`
 	}
 
-	protected getValueOptions(value: Value) {
-		const option = this.options.find(option => option.value === value)
-		return value instanceof Array && this.multiple
-			? this.options.filter(o => value.includes(o.value))
-			: option ? [option] : []
+	protected get optionsTemplate() {
+		return html`
+			${!this.default ? nothing : html`
+				<mo-list-item value='' @click=${() => this.handleSelection([])}>${this.default}</mo-list-item>
+			`}
+			<slot></slot>
+		`
 	}
 
 	protected valueToInputValue(value: Value) {
-		if ((value instanceof Array && value.length === 0) || !value) {
-			return this.reflectDefault ? this.default ?? '' : ''
-		}
-
-		return getOptionsText(this.getValueOptions(value))
-	}
-
-	protected toValue() {
-		return this.selectedOptions instanceof Array
-			? this.selectedOptions.map(o => o.value).filter(o => !!o)
-			: this.selectedOptions?.value
+		const valueArray = value instanceof Array ? value : value === undefined ? undefined : [value]
+		return !valueArray || valueArray.length === 0
+			? this.reflectDefault ? this.default ?? '' : ''
+			: this.options
+				.filter(o => valueArray.some(v => o.valueMatches(v)))
+				.map(o => o.text).join(', ')
 	}
 
 	protected override handleFocus() {
@@ -252,83 +175,18 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 		}
 	}
 
-	protected override handleChange(v?: Value, e?: Event) {
-		if (this.preventNextChange) {
-			this.preventNextChange = false
-			return
-		}
-		super.handleChange(v, e)
-	}
-
-	protected handleOptionSelection() {
-		if (this.programmaticSelection) {
-			return
-		}
-
-		this.value = this.toValue() ?? undefined
-
-		const toNumberIfPossible = (value?: number | string) => typeof value === 'number' ? value : value?.charAt(0) === '0' || isNaN(Number(value)) ? value : Number(value)
-		const handledValues = (this.value instanceof Array
-			? this.value.map(v => toNumberIfPossible(v))
-			: toNumberIfPossible(this.value as string)) as PluralizeUnion<string>
-
-		this.options.filter(o => o.selected && (handledValues instanceof Array
-			? handledValues.includes(toNumberIfPossible(o.value) as string) === false
-			: handledValues !== toNumberIfPossible(o.value))
-		).forEach(o => o.activated = o.selected = false)
-
-		this.change.dispatch(handledValues)
+	protected handleSelection(menuValue: Array<number>) {
+		this.valueController.menuValue = menuValue
+		this.change.dispatch(this.value)
 		this.dataChange.dispatch(this.data)
 		this.indexChange.dispatch(this.index)
-	}
-
-	protected async selectByData(data?: Data<T>) {
-		await this.updateComplete
-		this.value = (!(data instanceof Array)
-			? this.options.find(o => JSON.stringify(o.data) === JSON.stringify(data))?.value
-			: this.options
-				.filter(o => !!o.data)
-				.filter(o => data.map(v => JSON.stringify(v)).includes(JSON.stringify(o.data)))
-				.map(o => o.value)) as Value
-	}
-
-	protected async selectByIndex(index?: Index) {
-		await this.updateComplete
-		this.value = !(index instanceof Array)
-			? this.options[Number(index)]!.value
-			: index.map(i => this.options[i]!.value)
-	}
-
-	protected async selectByValue(value?: Value) {
-		await this.updateComplete
-
-		if (!value) {
-			this.resetSelection()
-			return
+		if (!this.multiple) {
+			this.open = false
 		}
-
-		const options = this.getValueOptions(value)
-
-		const indexes = !(value instanceof Array)
-			? this.options.findIndex(o => o.value === value)
-			: this.options
-				.map((o, i) => options.includes(o) ? i : undefined)
-				.filter(b => b !== undefined) as Array<number>
-
-		const indexesToSelect = indexes instanceof Array
-			? new Set(indexes) as Set<number>
-			: indexes as number
-
-		await this.updateComplete
-		this.menuOptions?.select(indexesToSelect)
-	}
-
-	private resetSelection() {
-		this.menuOptions?.select(this.multiple ? new Set<number>() : -1)
 	}
 
 	protected get searchKeyword() {
-		return this.inputElement.value.toLowerCase()
+		return this.inputElement.value.toLowerCase().trim()
 	}
 
 	private async searchOptions() {
@@ -339,22 +197,14 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 
 	protected search() {
 		const matchedValues = this.options
-			.filter(option => option.text.toLowerCase().includes(this.searchKeyword))
-			.map(option => option.value)
-		this.filterOptions(matchedValues)
-		return Promise.resolve()
-	}
-
-	private filterOptions(matchedValues: Array<Value>) {
-		const matchedOptions = this.options.filter(o => matchedValues.includes(o.value))
-		this.options.forEach(option => {
-			const matches = matchedOptions.includes(option)
-			option.style.height = matches ? '' : '0px'
-			option.switchAttribute('mwc-list-item', matches)
-		})
-		if (this.menuOptions?.listElement?.['items_']) {
-			this.menuOptions.listElement['items_'] = matchedOptions
+			.filter(option => option.textMatches(this.searchKeyword))
+			.map(option => option.normalizedValue)
+		for (const option of this.options) {
+			const matches = matchedValues.some(v => option.valueMatches(v))
+			option.switchAttribute('data-search-no-match', !matches)
+			option.disabled = !matches
 		}
+		return Promise.resolve()
 	}
 }
 
