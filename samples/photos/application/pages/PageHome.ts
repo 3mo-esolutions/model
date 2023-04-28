@@ -93,6 +93,8 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 					.value=${this.dataGridParameters.albumIds}
 					@change=${(event: CustomEvent<Array<number>>) => this.dataGridParameters = { ...this.dataGridParameters, albumIds: event.detail }}>
 				</app-field-select-album>
+				<mo-field-date slot='toolbar' label='Label'></mo-field-date>
+				<mo-field-date-range slot='toolbar' label='Label'></mo-field-date-range>
 
 				<mo-fab slot='fab' icon='add'></mo-fab>
 			</photos-data-grid-photo>

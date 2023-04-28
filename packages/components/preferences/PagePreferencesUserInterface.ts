@@ -1,9 +1,9 @@
 import { html, component, css, style } from '@a11d/lit'
 import { route } from '@a11d/lit-application'
 import { Background, ColorSet, Theme } from '@3mo/theme'
+import { Color } from '@3mo/color'
 import { Currency, DataGrid, DataGridPagination } from '..'
 import { PagePreferences, PageSettings } from '.'
-import { Color } from '../../utilities'
 
 @component('mo-page-preferences-user-interface')
 @route(PagePreferences, '/preferences/user-interface', '/preferences/ui')

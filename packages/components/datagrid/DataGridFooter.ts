@@ -1,5 +1,5 @@
-import { component, property, Component, css, state, html, nothing, query, ifDefined } from '@a11d/lit'
-import { FieldNumber, style } from '../..'
+import { component, property, Component, css, state, html, nothing, query, ifDefined, style } from '@a11d/lit'
+import { FieldNumber } from '@3mo/number-fields'
 import { Localizer, LanguageCode } from '@3mo/localization'
 import { DataGrid, DataGridPagination, FieldSelectDataGridPageSize } from '.'
 

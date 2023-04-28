@@ -8,7 +8,7 @@ export class ModeRepository<TData, TDataFetcherParameters extends FetchableDataG
 
 	constructor(private readonly dataGrid: ModdableDataGrid<TData, TDataFetcherParameters>) {
 		super(`MoDeL.Components.ModdableDataGrids.${dataGrid.tagName.toLowerCase()}.Modes`, [], (_key: string, value: any) => {
-			return (MoDate.isoRegularExpression.test(value))
+			return (DateTime.isoRegularExpression.test(value))
 				? new Date(value)
 				: value
 		})

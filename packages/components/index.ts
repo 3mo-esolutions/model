@@ -38,6 +38,10 @@ export * from '@3mo/split-button'
 export * from '@3mo/color-picker'
 export * from '@3mo/field'
 export * from '@3mo/standard-dialogs'
+export * from '@3mo/date-time'
+export * from '@3mo/number-fields'
+export * from '@3mo/text-fields'
+export * from '@3mo/date-time-fields'
 
 import './composer'
 
