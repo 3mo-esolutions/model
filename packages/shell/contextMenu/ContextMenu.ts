@@ -1,27 +1,8 @@
-import { component, PropertyValues } from '@a11d/lit'
-import { DeprecatedMenu } from '../../components/material'
-import { MenuSurface as MwcMenuSurface } from '@material/mwc-menu/mwc-menu-surface'
+import { component } from '@a11d/lit'
+import { Menu } from '@3mo/menu'
 
 @component('mo-context-menu')
-export class ContextMenu extends DeprecatedMenu {
-	protected override initialized() {
-		super.initialized()
-		this.overrideRootOverflow()
-	}
-
-	protected override updated(props: PropertyValues) {
-		super.updated(props)
-		this.overrideRootOverflow()
-	}
-
-	private overrideRootOverflow() {
-		const surface = this.mdcRoot as MwcMenuSurface | null
-		const div = surface?.mdcRoot as HTMLDivElement | null
-		if (div) {
-			div.style.overflow = 'unset'
-		}
-	}
-}
+export class ContextMenu extends Menu { }
 
 declare global {
 	interface HTMLElementTagNameMap {
