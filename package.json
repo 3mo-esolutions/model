@@ -72,6 +72,7 @@
 		"@3mo/theme": "x",
 		"@3mo/tooltip": "x",
 		"@3mo/virtualized-scroller": "x",
+		"@3mo/standard-dialogs": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

@@ -37,6 +37,7 @@ export * from '@3mo/pointer-controller'
 export * from '@3mo/split-button'
 export * from '@3mo/color-picker'
 export * from '@3mo/field'
+export * from '@3mo/standard-dialogs'
 
 import './composer'
 
@@ -53,7 +54,6 @@ export * from './Meta'
 export * from './PDF'
 export * from './Upload'
 
-export * from './dialogs'
 export * from './datagrid'
 export * from './preferences'
 export * from './entities'

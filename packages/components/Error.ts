@@ -1,5 +1,5 @@
 import { html, component, Component, property, nothing, css, style } from '@a11d/lit'
-import { MaterialIcon } from '.'
+import { MaterialIcon } from '@3mo/icon'
 
 /**
  * @element mo-error

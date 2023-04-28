@@ -1,7 +1,8 @@
 import { html, component, css, property, eventListener, Component, nothing, style } from '@a11d/lit'
-import { DialogAcknowledge, DialogAlert, DialogDeletion, tooltip } from '../..'
-import { ContextMenuHost } from '../../../shell'
+import { DialogAcknowledge, DialogAlert, DialogDeletion } from '@3mo/standard-dialogs'
+import { tooltip } from '@3mo/tooltip'
 import { Localizer, LanguageCode } from '@3mo/localization'
+import { ContextMenuHost } from '../../../shell'
 import { DialogDataGridMode, ModdableDataGrid, Mode } from '.'
 
 Localizer.register(LanguageCode.German, {
