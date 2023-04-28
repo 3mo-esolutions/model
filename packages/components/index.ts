@@ -47,6 +47,7 @@ import './composer'
 
 export * from './Confetti'
 export * from './material'
+export * from './Drawer'
 export * from './input'
 export * from './Avatar'
 export * from './Line'

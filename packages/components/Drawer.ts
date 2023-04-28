@@ -1,6 +1,6 @@
 import { component, css, PropertyValues } from '@a11d/lit'
-import { ComponentMixin } from '../../library'
-import { ClientInfoHelper } from '../../utilities'
+import { ComponentMixin } from '../library'
+import { ClientInfoHelper } from '../utilities'
 import { Drawer as MwcDrawer } from '@material/mwc-drawer'
 
 // This is defined by MWC and cannot be renamed
