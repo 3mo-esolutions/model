@@ -79,6 +79,7 @@
 		"@3mo/virtualized-scroller": "x",
 		"@3mo/fetchable-dialog": "x",
 		"@3mo/entity-dialog": "x",
+		"@3mo/confetti": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

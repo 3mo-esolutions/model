@@ -46,10 +46,10 @@ export * from '@3mo/field-pair'
 export * from '@3mo/color'
 export * from '@3mo/fetchable-dialog'
 export * from '@3mo/entity-dialog'
+export * from '@3mo/confetti'
 
 import './composer'
 
-export * from './Confetti'
 export * from './material'
 export * from './Drawer'
 export * from './input'

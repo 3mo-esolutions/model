@@ -117,7 +117,7 @@ export abstract class LanguageField<TValue, TLanguage extends Language> extends 
 					</mo-flex>
 
 					${this._languages.map(language => html`
-						<mo-option value=${language[this.valueKey]} .data=${language} graphic='avatar'>
+						<mo-option value=${language[this.valueKey]} .data=${language}>
 							<img src=${ifDefined(language?.flagSource)} style='width: 30px'>
 							${language.name}
 						</mo-option>
