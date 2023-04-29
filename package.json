@@ -77,6 +77,8 @@
 		"@3mo/theme": "x",
 		"@3mo/tooltip": "x",
 		"@3mo/virtualized-scroller": "x",
+		"@3mo/fetchable-dialog": "x",
+		"@3mo/entity-dialog": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

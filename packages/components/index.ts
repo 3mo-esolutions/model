@@ -44,6 +44,8 @@ export * from '@3mo/text-fields'
 export * from '@3mo/date-time-fields'
 export * from '@3mo/field-pair'
 export * from '@3mo/color'
+export * from '@3mo/fetchable-dialog'
+export * from '@3mo/entity-dialog'
 
 import './composer'
 

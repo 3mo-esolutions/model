@@ -1,13 +1,15 @@
 import { component, property, PropertyValues, html, nothing, TemplateResult } from '@a11d/lit'
-import { FetchableDataGridParametersType, FetchableDataGrid, EntityDialogComponent, Entity } from '..'
+import { FetchableDialogComponentParameters as EntityWithId } from '@3mo/fetchable-dialog'
+import { EntityDialogComponent } from '@3mo/entity-dialog'
+import { FetchableDataGridParametersType, FetchableDataGrid } from '..'
 
 type CreateAction = (() => unknown | PromiseLike<unknown>)
-type EditAction<TEntity extends Entity> = ((entity: TEntity) => unknown | PromiseLike<unknown>)
+type EditAction<TEntity extends EntityWithId> = ((entity: TEntity) => unknown | PromiseLike<unknown>)
 
-type CreateOrEditAction<TEntity extends Entity> = CreateAction | EditAction<TEntity>
+type CreateOrEditAction<TEntity extends EntityWithId> = CreateAction | EditAction<TEntity>
 
 @component('mo-data-grid-entity')
-export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters extends FetchableDataGridParametersType = Record<string, never>, TDetailsElement extends Element | undefined = undefined> extends FetchableDataGrid<TEntity, TDataFetcherParameters, TDetailsElement> {
+export class DataGridEntity<TEntity extends EntityWithId, TDataFetcherParameters extends FetchableDataGridParametersType = Record<string, never>, TDetailsElement extends Element | undefined = undefined> extends FetchableDataGrid<TEntity, TDataFetcherParameters, TDetailsElement> {
 	@property({ type: Boolean }) disableEditOnClick = false
 	@property({ type: Object }) create?: CreateAction | Constructor<EntityDialogComponent<TEntity>>
 	@property({ type: Object }) edit?: EditAction<TEntity> | Constructor<EntityDialogComponent<TEntity>>
@@ -17,7 +19,7 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 	@property({
 		type: Object,
-		updated(this: DataGridEntity<Entity>) {
+		updated(this: DataGridEntity<TEntity>) {
 			if (this.createOrEdit) {
 				this.create = this.createOrEdit as CreateAction
 				this.edit = this.createOrEdit
@@ -107,6 +109,6 @@ export class DataGridEntity<TEntity extends Entity, TDataFetcherParameters exten
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-data-grid-entity': DataGridEntity<Entity>
+		'mo-data-grid-entity': DataGridEntity<object>
 	}
 }
