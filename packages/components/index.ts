@@ -42,6 +42,8 @@ export * from '@3mo/date-time'
 export * from '@3mo/number-fields'
 export * from '@3mo/text-fields'
 export * from '@3mo/date-time-fields'
+export * from '@3mo/field-pair'
+export * from '@3mo/color'
 
 import './composer'
 

@@ -35,7 +35,10 @@ export class FieldSelectValueController<T> {
 	get value() { return this.getSelectValue(this.selectedOptions.map(o => o.normalizedValue)) as Value }
 	set value(value) { this.setSelectValue(value, (o, values) => values.some(v => o.valueMatches(v))) }
 
-	private getSelectValue<T>(value: PluralizeUnion<T>) { return value instanceof Array ? value : [value] as Array<T> }
+	private getSelectValue<T>(value: PluralizeUnion<T>) {
+		const v = value instanceof Array ? value : [value] as Array<T>
+		return this.multiple ? v : v[0]
+	}
 	private setSelectValue<T>(value: PluralizeUnion<T>, predicate: (option: Option<T>, arrayValue: Array<T>) => boolean) {
 		const array = value instanceof Array ? value : [value] as Array<T>
 		const newIndices = this.options

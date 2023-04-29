@@ -39,6 +39,8 @@ export class FieldNetGrossCurrency extends InputFieldComponent<NetGrossCurrency>
 
 	static override get styles() {
 		return css`
+			${super.styles}
+
 			button {
 				cursor: pointer;
 				border: none;
@@ -67,7 +69,7 @@ export class FieldNetGrossCurrency extends InputFieldComponent<NetGrossCurrency>
 
 	protected get currencyAndSwitcherTemplate() {
 		return html`
-			<mo-flex direction='horizontal' gap='4px' alignItems='center'>
+			<mo-flex direction='horizontal' gap='4px' alignItems='center' slot='end'>
 				<mo-flex gap='2px' direction=${ifDefined(this.dense ? 'horizontal' : undefined)}>
 					<button tabindex='-1'
 						?data-selected=${!this.isGross}

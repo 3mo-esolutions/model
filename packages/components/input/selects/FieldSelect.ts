@@ -62,6 +62,8 @@ export class FieldSelect<T> extends InputFieldComponent<Value> {
 
 	static override get styles() {
 		return css`
+			${super.styles}
+
 			input:hover {
 				cursor: pointer;
 			}
