@@ -1,6 +1,6 @@
 import { component, html } from '@a11d/lit'
 import { DialogComponent, DialogConfirmationStrategy } from '@a11d/lit-application'
-import { FieldFetchableSelect } from '../input'
+import { FieldFetchableSelect } from '@3mo/fetchable-select-field'
 
 @component('mo-field-select-poppable-dialog-confirmation-strategy')
 export class FieldSelectPoppableDialogConfirmationStrategy extends FieldFetchableSelect<DialogConfirmationStrategy> {

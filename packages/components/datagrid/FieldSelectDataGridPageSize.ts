@@ -1,5 +1,6 @@
 import { component, html, property, nothing } from '@a11d/lit'
-import { DataGrid, DataGridPagination, FieldFetchableSelect } from '..'
+import { FieldFetchableSelect } from '@3mo/fetchable-select-field'
+import { DataGrid, DataGridPagination } from '..'
 
 @component('mo-field-select-data-grid-page-size')
 export class FieldSelectDataGridPageSize extends FieldFetchableSelect<DataGridPagination> {
