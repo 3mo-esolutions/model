@@ -1,5 +1,8 @@
 import './Promise'
 import './ObjectExtensions'
+import './event'
+import './helpers'
+import './types'
 export * from './ClientInfoHelper'
 export * from './Downloader'
 export * from './KeyboardHelper'
