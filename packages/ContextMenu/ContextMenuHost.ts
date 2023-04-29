@@ -1,8 +1,8 @@
 import { Component, component, html, nothing, property, query, TemplateResult, queryAll, css, event } from '@a11d/lit'
 import { Corner } from '@material/mwc-menu'
-import { BusinessSuiteApplication, ContextMenu } from '..'
+import { ContextMenu } from '../ContextMenu'
 import { DeprecatedListItem } from '../DeprecatedMenu'
-import { nonInertable } from '@a11d/lit-application'
+import { Application, nonInertable } from '@a11d/lit-application'
 
 type Coordinates = [x: number, y: number]
 type MouseEventOpenArguments = [mouseEvent: MouseEvent, template: TemplateResult]
@@ -18,7 +18,7 @@ type OpenArguments =
 export class ContextMenuHost extends Component {
 	private static readonly lengthBuffer = 16
 
-	static get instance() { return BusinessSuiteApplication.instance!.renderRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
+	static get instance() { return document.querySelector<Application>('[application]')?.renderRoot.querySelector('mo-context-menu-host') as ContextMenuHost }
 	static get open() { return this.instance.open }
 	static get close() { return this.instance.close }
 	static get closed() { return this.instance.closed }

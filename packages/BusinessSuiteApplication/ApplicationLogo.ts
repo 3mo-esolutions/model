@@ -1,6 +1,5 @@
 import { Component, component, css, html, ifDefined, property } from '@a11d/lit'
 import { Theme } from '@3mo/theme'
-import { BusinessSuiteApplication } from './BusinessSuiteApplication'
 
 @component('mo-application-logo')
 export class ApplicationLogo extends Component {
@@ -23,7 +22,7 @@ export class ApplicationLogo extends Component {
 		const tryCount = 10
 		const failWaitTimeInMs = 10
 		for (let i = 0; i < tryCount; i++) {
-			color = isColorCssVariable ? getComputedStyle(BusinessSuiteApplication.instance!).getPropertyValue(colorPropertyName) : this.color
+			color = isColorCssVariable ? getComputedStyle(document.documentElement).getPropertyValue(colorPropertyName) : this.color
 			if (color) {
 				break
 			}
