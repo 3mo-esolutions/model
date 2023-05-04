@@ -63,6 +63,7 @@
 		"@3mo/mutation-observer": "x",
 		"@3mo/pointer-controller": "x",
 		"@3mo/interval-controller": "x",
+		"@3mo/color-field": "x",
 		"@3mo/radio": "x",
 		"@3mo/resize-observer": "x",
 		"@3mo/scroller": "x",
