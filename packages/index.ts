@@ -66,6 +66,7 @@ export * from '@3mo/confetti'
 export * from '@3mo/select-field'
 export * from '@3mo/fetchable-select-field'
 export * from '@3mo/language-field'
+export * from '@3mo/interval-controller'
 export { Dialog } from '@3mo/dialog'
 
 import './composer'
