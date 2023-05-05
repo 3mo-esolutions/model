@@ -69,12 +69,12 @@ export * from '@3mo/language-field'
 export * from '@3mo/interval-controller'
 export * from '@3mo/color-field'
 export * from '@3mo/empty-state'
+export * from '@3mo/drawer'
 export { Dialog } from '@3mo/dialog'
 
 import './composer'
 
 export * from './DeprecatedMenu'
-export * from './Drawer'
 export * from './FieldNetGrossCurrency'
 export * from './BusinessSuiteApplication/Avatar'
 export * from './Line'

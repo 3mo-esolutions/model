@@ -77,11 +77,11 @@ export abstract class BusinessSuiteApplication extends Application {
 				--mo-alternating-background: rgba(var(--mo-color-background-base), 0.2);
 			}
 
-			:root[mobileNavigation] #navbarNavigations {
+			[application][mobileNavigation] #navbarNavigations {
 				visibility: hidden;
 			}
 
-			:root:not([mobileNavigation]) mo-icon-button[icon=menu] {
+			[application]:not([mobileNavigation]) mo-icon-button[icon=menu] {
 				display: none;
 			}
 		`
@@ -212,16 +212,10 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get drawerTemplate() {
 		return html`
-			<mo-drawer
-				?open=${this.drawerOpen}
-				@MDCDrawer:opened=${() => this.drawerOpen = true}
-				@MDCDrawer:closed=${() => this.drawerOpen = false}
-			>
-				<mo-flex slot='title'>
-					${this.drawerTitleTemplate}
-				</mo-flex>
-
+			<mo-drawer ?open=${this.drawerOpen} @openChange=${(e: CustomEvent<boolean>) => this.drawerOpen = e.detail}>
 				<mo-flex ${style({ height: '100%' })}>
+					${this.drawerTitleTemplate}
+
 					<mo-list ${style({ height: '*' })}>
 						${this.drawerContentTemplate}
 					</mo-list>
@@ -270,7 +264,7 @@ export abstract class BusinessSuiteApplication extends Application {
 
 	protected get drawerTitleTemplate() {
 		return html`
-			<mo-flex direction='horizontal' alignItems='center'>
+			<mo-flex direction='horizontal' alignItems='center' style='padding: 24px'>
 				${this.navbarHeadingTemplate}
 			</mo-flex>
 		`
