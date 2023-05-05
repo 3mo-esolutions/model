@@ -226,7 +226,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	protected get noSelectionTemplate() {
 		return html`
 			<slot name='error-no-selection'>
-				<mo-error icon='touch_app'>${t('Make a filter selection')}</mo-error>
+				<mo-empty-state icon='touch_app'>${t('Make a filter selection')}</mo-empty-state>
 			</slot>
 		`
 	}

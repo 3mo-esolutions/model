@@ -10,9 +10,9 @@ export abstract class PageSettingsHost<T extends PageParameters = void> extends 
 	readonly router = new RouterController(this, [], {
 		fallback: {
 			render: () => html`
-				<mo-error icon='touch_app'>
+				<mo-empty-state icon='touch_app'>
 					${t('Select a page')}
-				</mo-error>
+				</mo-empty-state>
 			`
 		}
 	})

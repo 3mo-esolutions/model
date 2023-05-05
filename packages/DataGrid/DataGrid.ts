@@ -535,7 +535,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				z-index: 1;
 			}
 
-			mo-error, ::slotted(mo-error) {
+			mo-empty-state, ::slotted(mo-empty-state) {
 				height: 100%;
 			}
 
@@ -635,7 +635,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 	protected get noContentTemplate() {
 		return html`
 			<slot name='error-no-content'>
-				<mo-error icon='youtube_searched_for'>${t('No results')}</mo-error>
+				<mo-empty-state icon='youtube_searched_for'>${t('No results')}</mo-empty-state>
 			</slot>
 		`
 	}
