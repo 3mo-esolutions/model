@@ -92,7 +92,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 
 	private get hasModebar() {
 		const hasModebar = ModdableDataGrid.disableModes === false && (this.modesRepository.getAll().length !== 0 || this.modes.length !== 0)
-		this.switchAttribute('hasModebar', hasModebar)
+		this.toggleAttribute('hasModebar', hasModebar)
 		return hasModebar
 	}
 

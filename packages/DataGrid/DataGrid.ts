@@ -341,13 +341,13 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	get hasSums() {
 		const hasSums = !!this.columns.find(c => c.sumHeading) || !!this.querySelector('* [slot="sum"]') || !!this.renderRoot.querySelector('slot[name="sum"] > *')
-		this.switchAttribute('hasSums', hasSums)
+		this.toggleAttribute('hasSums', hasSums)
 		return hasSums
 	}
 
 	get hasFabs() {
 		const hasFabs = !!this.querySelector('* [slot=fab]') || !!this.renderRoot.querySelector('#flexFab *:not(slot[name=fab])')
-		this.switchAttribute('hasFabs', hasFabs)
+		this.toggleAttribute('hasFabs', hasFabs)
 		return hasFabs
 	}
 
@@ -642,7 +642,7 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	protected get dataGridTemplate() {
 		this.provideCssColumnsProperties()
-		this.switchAttribute('hasDetails', this.hasDetails)
+		this.toggleAttribute('hasDetails', this.hasDetails)
 		return html`
 			<mo-flex ${style({ width: '*', position: 'relative' })}>
 				<mo-grid ${style({ height: '*' })} rows='* auto'>

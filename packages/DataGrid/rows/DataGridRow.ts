@@ -40,7 +40,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	}
 
 	protected override initialized() {
-		this.switchAttribute('mo-data-grid-row', true)
+		this.toggleAttribute('mo-data-grid-row', true)
 		this.editing = this.dataGrid.editability === DataGridEditability.Always
 	}
 

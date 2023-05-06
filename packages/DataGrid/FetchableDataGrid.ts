@@ -206,7 +206,7 @@ export class FetchableDataGrid<TData, TDataFetcherParameters extends FetchableDa
 	}
 
 	protected override get contentTemplate() {
-		this.switchAttribute('fetching', this.fetcherController.isFetching)
+		this.toggleAttribute('fetching', this.fetcherController.isFetching)
 		switch (true) {
 			case this.fetcherController.isFetching && this.shallFetchSilently === false:
 				return this.fetchingTemplate
