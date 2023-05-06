@@ -87,6 +87,8 @@
 		"@3mo/confetti": "x",
 		"@3mo/empty-state": "x",
 		"@3mo/drawer": "x",
+		"@3mo/pdf": "x",
+		"detect-browser": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",
 		"@a11d/lit-application": "x",

@@ -1,7 +1,7 @@
 import { component, Component, css, html } from '@a11d/lit'
 
 @component('mo-line')
-export class SeparatorLine extends Component {
+export class Line extends Component {
 	static override get styles() {
 		return css`
 			:host {
@@ -42,6 +42,6 @@ export class SeparatorLine extends Component {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'mo-line': SeparatorLine
+		'mo-line': Line
 	}
 }
