@@ -2,7 +2,7 @@ import { html, component, css, style } from '@a11d/lit'
 import { route } from '@a11d/lit-application'
 import { Background, ColorSet, Theme } from '@3mo/theme'
 import { Color } from '@3mo/color'
-import { DataGrid, DataGridPagination } from '../../DataGrid'
+import { DataGrid, DataGridPagination } from '@3mo/data-grid'
 import { PagePreferences, PageSettings } from '.'
 
 @component('mo-page-preferences-user-interface')
