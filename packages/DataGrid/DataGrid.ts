@@ -1,4 +1,4 @@
-import { property, component, Component, html, css, TemplateResult, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml } from '@a11d/lit'
+import { property, component, Component, html, css, live, query, nothing, ifDefined, PropertyValues, event, queryAll, style, literal, staticHtml, HTMLTemplateResult } from '@a11d/lit'
 import { NotificationHost } from '@a11d/lit-application'
 import { LocalStorage } from '@a11d/local-storage'
 import { InstanceofAttributeController } from '@3mo/instanceof-attribute-controller'
@@ -8,7 +8,6 @@ import { observeMutation } from '@3mo/mutation-observer'
 import { MediaQueryController } from '@3mo/media-query-observer'
 import { observeResize } from '@3mo/resize-observer'
 import { Localizer, LanguageCode } from '@3mo/localization'
-import { ContextMenuHost } from '../ContextMenu'
 import { CsvGenerator, ColumnDefinition, DataGridCell, DataGridColumn, DataGridFooter, DataGridHeader, DataGridRow, DataGridSidePanel, DataGridSidePanelTab } from '.'
 
 Localizer.register(LanguageCode.English, {
@@ -163,8 +162,8 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 
 	@property({ reflect: true }) editability = DataGridEditability.Never
 
-	@property({ type: Object }) getRowDetailsTemplate?: (data: TData) => TemplateResult
-	@property({ type: Object }) getRowContextMenuTemplate?: (data: Array<TData>) => TemplateResult
+	@property({ type: Object }) getRowDetailsTemplate?: (data: TData) => HTMLTemplateResult
+	@property({ type: Object }) getRowContextMenuTemplate?: (data: Array<TData>) => HTMLTemplateResult
 
 	@property() sidePanelTab: DataGridSidePanelTab | undefined
 	@property({ type: Boolean }) sidePanelHidden = false
@@ -503,11 +502,10 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				align-items: center;
 				justify-content: center;
 				padding-inline: var(--mo-thickness-xl) 6px;
-				margin: 6px 0;
 				cursor: pointer;
 				background: var(--mo-color-accent-transparent);
 				height: calc(100% - calc(2 * 6px));
-				max-height: 45px;
+				height: 45px;
 			}
 
 			#flexFab {
@@ -767,10 +765,15 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 						${t('${count:pluralityNumber} entries selected', { count: this.selectedData.length })}
 					</div>
 					${!this.getRowContextMenuTemplate ? nothing : html`
-						<mo-flex id='flexActions' direction='horizontal' @click=${this.openContextMenu}>
-							<div ${style({ width: '*' })}>${t('Options')}</div>
-							<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
-						</mo-flex>
+						<mo-popover-container>
+							<mo-flex id='flexActions' direction='horizontal'>
+								<div ${style({ width: '*' })}>${t('Options')}</div>
+								<mo-icon-button dense icon='arrow_drop_down' ${style({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}></mo-icon-button>
+							</mo-flex>
+							<mo-menu slot='popover'>
+								${this.getRowContextMenuTemplate(this.selectedData)}
+							</mo-menu>
+						</mo-popover-container>
 					`}
 					<div ${style({ width: '*' })}></div>
 					<mo-icon-button icon='close'
@@ -798,17 +801,6 @@ export class DataGrid<TData, TDetailsElement extends Element | undefined = undef
 				@click=${() => this.navigateToSidePanelTab(this.sidePanelTab === DataGridSidePanelTab.Settings ? undefined : DataGridSidePanelTab.Settings)}
 			></mo-icon-button>
 		`
-	}
-
-	private readonly openContextMenu = async () => {
-		if (!this.getRowContextMenuTemplate) {
-			return
-		}
-		const actionsFlexElement = this.renderRoot.querySelector<HTMLElement>('#flexActions')
-		if (!actionsFlexElement) {
-			return
-		}
-		await ContextMenuHost.open(actionsFlexElement, 'BOTTOM_START', this.getRowContextMenuTemplate(this.selectedData))
 	}
 
 	// The reason for not doing this in the CSS is that we need to trim all the 0px values out of the columns

@@ -18,7 +18,12 @@ export class NavigationListItem extends SelectableListItem {
 	static override get styles() {
 		return css`
 			${super.styles}
+
 			:host { cursor: pointer; }
+
+			:host([data-router-selected]) {
+				background-color: var(--mo-color-accent-transparent);
+			}
 		`
 	}
 

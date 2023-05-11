@@ -1,8 +1,7 @@
-import { html, component, css, property, eventListener, Component, nothing, style } from '@a11d/lit'
+import { html, component, css, property, eventListener, Component, nothing, style, state } from '@a11d/lit'
 import { DialogAcknowledge, DialogAlert, DialogDeletion } from '@3mo/standard-dialogs'
 import { tooltip } from '@3mo/tooltip'
 import { Localizer, LanguageCode } from '@3mo/localization'
-import { ContextMenuHost } from '../../ContextMenu'
 import { DialogDataGridMode, ModdableDataGrid, Mode } from '.'
 
 Localizer.register(LanguageCode.German, {
@@ -49,6 +48,8 @@ export class DataGridModeChip extends Component {
 	@property({ type: Boolean, reflect: true }) selected = false
 	@property({ type: Boolean, reflect: true }) readOnly = false
 
+	@state() private open = false
+
 	static override get styles() {
 		return css`
 			:host {
@@ -64,13 +65,8 @@ export class DataGridModeChip extends Component {
 				--mo-chip-foreground-color: var(--mo-color-accessible);
 			}
 
-			mo-button::part(button) {
-				padding: 0px 16px !important;
-				transition: 100ms;
-			}
-
-			:host([selected]:not([readOnly])) mo-button::part(button) {
-				padding-inline-end: 8px !important;
+			mo-chip::part(ripple) {
+				display: none;
 			}
 
 			mo-icon-button {
@@ -82,21 +78,6 @@ export class DataGridModeChip extends Component {
 				border-inline-start: 1px solid var(--mo-color-gray-transparent);
 			}
 		`
-	}
-
-	protected override async initialized() {
-		// TODO: Think of a better API for disabling ripple:
-		// 			prop: disableRipple
-		// 			csspart: ripple => display: none
-		const chip = this.shadowRoot!.querySelector('mo-chip')
-		await chip?.updateComplete
-
-		const moButton = chip?.shadowRoot?.querySelector('mo-button')
-		await moButton?.updateComplete
-
-		const button = moButton?.shadowRoot?.querySelector('mwc-button')
-		// @ts-expect-error Overwriting instance method
-		button['renderRipple'] = () => nothing
 	}
 
 	@eventListener('click')
@@ -155,32 +136,38 @@ export class DataGridModeChip extends Component {
 
 				<mo-icon-button ?data-no-border=${this.moddableDataGrid.modesRepository.isSelectedModeSaved} icon='more_vert' tabindex='-1' dense
 					${tooltip(t('More options'))}
-					@click=${this.openMenu}
+					@click=${() => this.open = true}
 				></mo-icon-button>
+
+				${this.menuTemplate}
 			</mo-flex>
 		`
 	}
 
-	protected readonly openMenu = (e: MouseEvent) => {
-		e.stopImmediatePropagation()
-		ContextMenuHost.open(this, 'BOTTOM_START', html`
-			${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
-				<mo-context-menu-item icon='undo' @click=${this.discardChanges}>${t('Discard changes')}</mo-context-menu-item>
-				<mo-context-menu-item icon='save' @click=${this.saveChanges}>${t('Save changes')}</mo-context-menu-item>
-				<mo-line ${style({ margin: '4px 0' })}></mo-line>
-			`}
-			<mo-context-menu-item icon='edit' @click=${this.editMode}>${t('Edit')}</mo-context-menu-item>
-			${this.mode.isArchived === false ? html`
-				<mo-context-menu-item icon='archive'
-					@click=${() => this.moddableDataGrid.modesRepository.archive(this.mode)}
-				>${t('Archive')}</mo-context-menu-item>
-			` : html`
-				<mo-context-menu-item icon='unarchive'
-					@click=${() => this.moddableDataGrid.modesRepository.unarchive(this.mode)}
-				>${t('Unarchive')}</mo-context-menu-item>
-			`}
-			<mo-context-menu-item icon='delete' @click=${this.deleteMode}>${t('Delete')}</mo-context-menu-item>
-		`)
+	protected get menuTemplate() {
+		return html`
+			<mo-menu .anchor=${this}
+				?open=${this.open}
+				@openChange=${(e: CustomEvent<boolean>) => this.open = e.detail}
+			>
+				${this.moddableDataGrid.modesRepository.isSelectedModeSaved ? nothing : html`
+					<mo-menu-item icon='undo' @click=${this.discardChanges}>${t('Discard changes')}</mo-menu-item>
+					<mo-menu-item icon='save' @click=${this.saveChanges}>${t('Save changes')}</mo-menu-item>
+					<mo-line ${style({ margin: '4px 0' })}></mo-line>
+				`}
+				<mo-menu-item icon='edit' @click=${this.editMode}>${t('Edit')}</mo-menu-item>
+				${this.mode.isArchived === false ? html`
+					<mo-menu-item icon='archive'
+						@click=${() => this.moddableDataGrid.modesRepository.archive(this.mode)}
+					>${t('Archive')}</mo-menu-item>
+				` : html`
+					<mo-menu-item icon='unarchive'
+						@click=${() => this.moddableDataGrid.modesRepository.unarchive(this.mode)}
+					>${t('Unarchive')}</mo-menu-item>
+				`}
+				<mo-menu-item icon='delete' @click=${this.deleteMode}>${t('Delete')}</mo-menu-item>
+			</mo-menu>
+		`
 	}
 
 	private readonly discardChanges = async (e: MouseEvent) => {

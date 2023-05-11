@@ -1,6 +1,6 @@
 import { HTMLTemplateResult } from '@a11d/lit'
 
-export type ColumnDefinition<TData, TValue = unknown> = {
+export interface ColumnDefinition<TData, TValue = unknown> {
 	heading: string
 	title?: string
 	dataSelector: KeyPathOf<TData>

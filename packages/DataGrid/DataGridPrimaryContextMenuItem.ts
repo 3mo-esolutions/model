@@ -1,17 +1,16 @@
 import { component, css } from '@a11d/lit'
-import { ContextMenuItem } from '../ContextMenu'
+import { ContextMenuItem } from '@3mo/context-menu'
 
 @component('mo-data-grid-primary-context-menu-item')
 export class DataGridPrimaryContextMenuItem extends ContextMenuItem {
 	static override get styles() {
-		return [
-			...super.styles,
-			css`
-				:host {
-					font-weight: bold;
-				}
-			`
-		]
+		return css`
+			${super.styles}
+
+			:host {
+				font-weight: bold !important;
+			}
+		`
 	}
 }
 

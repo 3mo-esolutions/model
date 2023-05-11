@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { css, html, nothing, property, event, style } from '@a11d/lit'
 import { LocalStorage } from '@a11d/local-storage'
-import { ContextMenuHost } from '../../ContextMenu'
-import { tooltip } from '../..'
+import { contextMenu } from '@3mo/context-menu'
+import { tooltip } from '@3mo/tooltip'
 import { DataGrid, FetchableDataGridParametersType, FetchableDataGrid } from '..'
 import { DialogDataGridMode, Mode, ModeRepository, sortable } from '.'
 
@@ -145,7 +145,7 @@ export abstract class ModdableDataGrid<TData, TDataFetcherParameters extends Fet
 			</mo-flex>
 
 			${this.modesRepository.getArchived().length === 0 ? nothing : html`
-				<mo-icon-button icon='more_vert' @click=${(e: MouseEvent) => ContextMenuHost.open(e, this.archiveMenuTemplate)}></mo-icon-button>
+				<mo-icon-button icon='more_vert' ${contextMenu(this.archiveMenuTemplate)}></mo-icon-button>
 			`}
 		`
 	}

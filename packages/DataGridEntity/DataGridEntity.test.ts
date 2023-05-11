@@ -1,7 +1,7 @@
-import { html, component, style } from '@a11d/lit'
-import { PageEntities } from '.'
-import { ContextMenuHost } from '../..'
 import { ComponentTestFixture } from '@a11d/lit/dist/test/ComponentTestFixture.js'
+import { html, component, style } from '@a11d/lit'
+import { ContextMenu } from '@3mo/context-menu'
+import { PageEntities } from '.'
 
 // TODO: Move to DataGridEntity
 
@@ -44,7 +44,7 @@ xdescribe('PageEntities', () => {
 		createOrEditSpy.calls.reset()
 		await fixture.component.renderRoot.querySelector('mo-data-grid')?.rows[0]?.openContextMenu()
 
-		await ContextMenuHost.instance.items.find(i => i.getAttribute('data-test-id') === 'edit')?.click()
+		await ContextMenu.openInstance?.items.find(i => i.getAttribute('data-test-id') === 'edit')?.click()
 
 		expect(createOrEditSpy).toHaveBeenCalledOnceWith(data[0])
 		expect(fetchDataSpy).toHaveBeenCalledTimes(1)
@@ -55,7 +55,7 @@ xdescribe('PageEntities', () => {
 		deleteSpy.calls.reset()
 		await fixture.component.renderRoot.querySelector('mo-data-grid')?.rows[0]?.openContextMenu()
 
-		await ContextMenuHost.instance.items.find(i => i.getAttribute('data-test-id') === 'delete')?.click()
+		await ContextMenu.openInstance?.items.find(i => i.getAttribute('data-test-id') === 'delete')?.click()
 
 		expect(deleteSpy).toHaveBeenCalledOnceWith(data[0])
 		expect(fetchDataSpy).toHaveBeenCalledTimes(1)
@@ -65,7 +65,7 @@ xdescribe('PageEntities', () => {
 		fixture.component['delete'] = undefined
 		await fixture.component.renderRoot.querySelector('mo-data-grid')?.rows[0]?.openContextMenu()
 
-		expect(ContextMenuHost.instance.items.find(i => i.getAttribute('data-test-id') === 'delete')).not.toBeDefined()
+		expect(ContextMenu.openInstance?.items.find(i => i.getAttribute('data-test-id') === 'delete')).not.toBeDefined()
 	})
 
 	it('should call createOrEdit when the fab is clicked', () => {

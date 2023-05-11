@@ -1,4 +1,4 @@
-import { nothing, PageComponent, component, html, route, state, ContextMenuHost, cache, style, tooltip, NotificationHost } from '@3mo/model'
+import { nothing, PageComponent, component, html, route, state, cache, style, tooltip, NotificationHost, contextMenu } from '@3mo/model'
 import { Photo, PhotoService } from '../../sdk'
 
 const enum Tab {
@@ -70,7 +70,7 @@ export class PageHome extends PageComponent<{ readonly albumId?: number }> {
 						.photo=${photo}
 						?selected=${this.selectedPhotos.includes(photo)}
 						@selectionChange=${(event: CustomEvent<boolean>) => this.updateSelectedPhotos(event.detail, photo)}
-						@contextmenu=${(e: MouseEvent) => ContextMenuHost.open(e, html`
+						${contextMenu(html`
 							<mo-context-menu-item icon='edit'>Edit</mo-context-menu-item>
 							<mo-context-menu-item icon='delete'>Delete</mo-context-menu-item>
 						`)}

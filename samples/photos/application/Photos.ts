@@ -19,24 +19,6 @@ export class Photos extends BusinessSuiteApplication {
 	protected get navigations(): Array<Navigation> {
 		return [
 			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
-			{ icon: 'home', label: 'Home', component: new PageHome({}) },
 		]
 	}
 

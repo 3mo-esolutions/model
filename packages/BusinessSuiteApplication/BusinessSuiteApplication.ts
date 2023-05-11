@@ -94,7 +94,7 @@ export abstract class BusinessSuiteApplication extends Application {
 			${super.template}
 			<mo-context-menu-host></mo-context-menu-host>
 			<mo-confetti></mo-confetti>
-			<mo-tooltip-host></mo-tooltip-host>
+			<mo-popover-host></mo-popover-host>
 		`
 	}
 

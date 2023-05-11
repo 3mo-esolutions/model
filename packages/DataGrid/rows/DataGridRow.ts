@@ -1,5 +1,5 @@
 import { nothing, css, property, Component, html, state, queryAll, style, HTMLTemplateResult, LitElement } from '@a11d/lit'
-import { ContextMenuHost } from '../../ContextMenu'
+import { ContextMenu, contextMenu } from '@3mo/context-menu'
 import { KeyboardHelper } from '../../utilities'
 import { ColumnDefinition } from '../ColumnDefinition'
 import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenuItem, DataGridSelectionMode } from '..'
@@ -8,7 +8,6 @@ import { DataGrid, DataGridCell, DataGridEditability, DataGridPrimaryContextMenu
  * @attr dataGrid
  * @attr data
  * @attr selected
- * @attr contextMenuOpen
  * @attr detailsOpen
  */
 export abstract class DataGridRow<TData, TDetailsElement extends Element | undefined = undefined> extends Component {
@@ -17,9 +16,28 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	@property({ type: Object }) dataGrid!: DataGrid<TData, TDetailsElement>
 	@property({ type: Object }) data!: TData
 	@property({ type: Boolean, reflect: true }) selected = false
-	@property({ type: Boolean, reflect: true }) contextMenuOpen = false
 	@property({ type: Boolean, reflect: true }) detailsOpen = false
+
+	@property({ type: Boolean, reflect: true }) protected contextMenuOpen = false
 	@state() protected editing = false
+
+	private contextMenu?: ContextMenu
+	private setContextMenu(contextMenu: ContextMenu) {
+		this.contextMenu = contextMenu
+		this.contextMenu.openChange.subscribe(this.handleContextMenuOpenChange)
+	}
+
+	protected readonly handleContextMenuOpenChange = async (open: boolean) => {
+		if (open) {
+			if (this.dataGrid.selectedData.includes(this.data) === false) {
+				this.dataGrid.select(this.dataGrid.selectionMode !== DataGridSelectionMode.None ? [this.data] : [])
+			}
+		}
+
+		this.contextMenuOpen = open
+
+		await this.updateComplete
+	}
 
 	get detailsElement() {
 		return this.renderRoot.querySelector('#detailsContainer')?.firstElementChild as TDetailsElement as TDetailsElement | undefined
@@ -27,16 +45,12 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	protected override connected() {
 		this.dataGrid.rowConnected.dispatch(this)
-		ContextMenuHost.closed.subscribe(this.handleContextMenuClosed)
 	}
 
 	protected override disconnected() {
+		this.contextMenu?.openChange.unsubscribe(this.handleContextMenuOpenChange)
+		this.contextMenu = undefined
 		this.dataGrid.rowDisconnected.dispatch(this)
-		ContextMenuHost.closed.unsubscribe(this.handleContextMenuClosed)
-	}
-
-	protected readonly handleContextMenuClosed = () => {
-		this.contextMenuOpen = false
 	}
 
 	protected override initialized() {
@@ -151,8 +165,17 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	}
 
 	protected override get template() {
+		const contextMenuData = this.dataGrid.selectionMode === DataGridSelectionMode.None
+			? [this.data]
+			: this.dataGrid.selectedData.length === 0
+				? [this.data]
+				: this.dataGrid.selectedData
 		return html`
-			<mo-grid id='contentContainer' @click=${() => this.handleContentClick()} @dblclick=${() => this.handleContentDoubleClick()} @contextmenu=${(e: PointerEvent) => this.openContextMenu(e)}>
+			<mo-grid id='contentContainer'
+				${contextMenu(this.dataGrid.getRowContextMenuTemplate?.(contextMenuData) ?? nothing, contextMenu => this.setContextMenu(contextMenu))}
+				@click=${() => this.handleContentClick()}
+				@dblclick=${() => this.handleContentDoubleClick()}
+			>
 				${this.rowTemplate}
 			</mo-grid>
 			<slot id='detailsContainer'>${this.detailsOpen ? this.detailsTemplate : nothing}</slot>
@@ -205,10 +228,7 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	protected get contextMenuIconButtonTemplate() {
 		return this.dataGrid.hasContextMenu === false ? nothing : html`
-			<mo-flex justifyContent='center' alignItems='center'
-				@click=${this.openContextMenu}
-				@dblclick=${(e: Event) => e.stopPropagation()}
-			>
+			<mo-flex justifyContent='center' alignItems='center' @dblclick=${(e: Event) => e.stopPropagation()}>
 				<mo-icon-button id='contextMenuIconButton' icon='more_vert'></mo-icon-button>
 			</mo-flex>
 		`
@@ -293,8 +313,8 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 	protected async handleContentDoubleClick() {
 		if (this.dataGrid.primaryContextMenuItemOnDoubleClick === true && this.dataGrid.hasContextMenu === true && this.dataGrid.selectionMode === DataGridSelectionMode.None) {
 			await this.openContextMenu()
-			ContextMenuHost.instance.items.find(item => item instanceof DataGridPrimaryContextMenuItem)?.click()
-			await this.closeContextMenu()
+			ContextMenu.openInstance?.items.find(item => item instanceof DataGridPrimaryContextMenuItem)?.click()
+			this.closeContextMenu()
 		}
 
 		this.dataGrid.rowDoubleClick.dispatch(this)
@@ -302,33 +322,12 @@ export abstract class DataGridRow<TData, TDetailsElement extends Element | undef
 
 	async openContextMenu(pointerEvent?: PointerEvent) {
 		pointerEvent?.stopPropagation()
-
-		if (this.dataGrid.getRowContextMenuTemplate === undefined) {
-			return
-		}
-
-		if (this.dataGrid.selectedData.includes(this.data) === false) {
-			this.dataGrid.select(this.dataGrid.selectionMode !== DataGridSelectionMode.None ? [this.data] : [])
-		}
-
-		const contextMenuData = this.dataGrid.selectionMode === DataGridSelectionMode.None
-			? [this.data]
-			: this.dataGrid.selectedData.length === 0
-				? [this.data]
-				: this.dataGrid.selectedData
-
-		const contextMenuTemplate = this.dataGrid.getRowContextMenuTemplate(contextMenuData)
-
-		await ContextMenuHost.open(...(pointerEvent
-			? [pointerEvent, contextMenuTemplate]
-			: [[this.clientLeft, this.clientTop], contextMenuTemplate]
-		))
-
-		this.contextMenuOpen = true
+		this.contextMenu?.openWith(pointerEvent ?? [0, 0])
+		await this.handleContextMenuOpenChange(true)
 	}
 
-	async closeContextMenu() {
-		await ContextMenuHost.close()
+	closeContextMenu() {
+		this.contextMenu?.setOpen(false)
 	}
 
 	async setDetails(value: boolean) {
