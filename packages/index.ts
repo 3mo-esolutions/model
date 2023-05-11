@@ -77,10 +77,10 @@ export * from '@3mo/keyboard-controller'
 export * from '@3mo/data-grid'
 export * from '@3mo/fetchable-data-grid'
 export * from '@3mo/moddable-data-grid'
+export * from '@3mo/loading-button-dialog-adapter'
+export * from '@3mo/split-button-dialog-adapter'
 export * as System from 'detect-browser'
 export { Dialog } from '@3mo/dialog'
-
-import './composer'
 
 export * from './Upload'
 export * from './BusinessSuiteApplication'

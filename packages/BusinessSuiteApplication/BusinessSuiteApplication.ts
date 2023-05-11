@@ -5,9 +5,17 @@ import { Localizer, LanguageCode } from '@3mo/localization'
 import { DialogReleaseNotes, PagePreferences, Navigation } from '../BusinessSuiteApplication'
 import { observeResize } from '@3mo/resize-observer'
 import { observeMutation } from '@3mo/mutation-observer'
+import { Icon, IconVariant } from '@3mo/icon'
+
+Icon.defaultVariant = IconVariant.Sharp
 
 Localizer.register(LanguageCode.German, {
 	'User Settings': 'Benutzereinstellungen',
+	'Close': 'Schließen',
+	'Cancel': 'Abbrechen',
+	'Expand': 'Erweitern',
+	'Collapse': 'Reduzieren',
+	'Loading': 'Lädt',
 })
 
 export abstract class BusinessSuiteApplication extends Application {

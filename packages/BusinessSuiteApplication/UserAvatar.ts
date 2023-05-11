@@ -1,6 +1,6 @@
 import { html, component, Component, css, nothing, style, join } from '@a11d/lit'
 import { Authentication } from '@a11d/lit-application-authentication'
-import { BusinessSuiteDialogAuthenticator, User } from './DialogAuthenticator'
+import { BusinessSuiteDialogAuthenticator, User } from './BusinessSuiteDialogAuthenticator'
 
 @component('mo-user-avatar')
 export class UserAvatar extends Component {

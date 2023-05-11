@@ -94,6 +94,8 @@
 		"@3mo/data-grid": "x",
 		"@3mo/fetchable-data-grid": "x",
 		"@3mo/moddable-data-grid": "x",
+		"@3mo/loading-button-dialog-adapter": "x",
+		"@3mo/split-button-dialog-adapter": "x",
 		"detect-browser": "x",
 		"@a11d/array.prototype.group": "x",
 		"@a11d/lit": "x",

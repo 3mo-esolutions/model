@@ -1,5 +1,5 @@
 export * from './BusinessSuiteApplication'
-export * from './DialogAuthenticator'
+export * from './BusinessSuiteDialogAuthenticator'
 export * from './UserAvatar'
 export * from './ApplicationLogo'
 export * from './Avatar'
