@@ -5,7 +5,7 @@ import { Marked } from '@ts-stack/markdown'
 
 @component('mo-dialog-release-notes')
 export class DialogReleaseNotes extends DialogComponent {
-	private static readonly shownReleaseNoteVersion = new LocalStorage('MoDeL.ReleaseNotes.ShownVersion', '')
+	private static readonly shownReleaseNoteVersion = new LocalStorage('DialogReleaseNotes.ShownVersion', '')
 
 	@state() notes = !this.extractReleaseNotes() ? undefined : Marked.parse(this.extractReleaseNotes()!)
 
