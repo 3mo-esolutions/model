@@ -1,2 +1,1 @@
-# 3MO Design Library - MoDeL
-A robust, unified and modern web application library using web components, which includes our [Web Components](https://github.com/3mo-esolutions/web-components).
+### ⚠️ Moved to npm package [@3mo/del](https://www.npmjs.com/package/@3mo/del) and lives in [3MO Web Components Repository](https://github.com/3mo-esolutions/web-components)

@@ -1,5 +1,0 @@
-import '@3mo/model'
-export * from './Photos'
-export * from './components'
-export * from './dialogs'
-export * from './pages'
